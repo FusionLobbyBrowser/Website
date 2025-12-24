@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Fusion Lobby Browser</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="scripts/unity-rich-text/unityRichText.js" type="module"></script>
+  <script src="scripts/dompurify/purify.es.mjs" type="module"></script>
+  <script src="scripts/lobby/lobbies.js" type="module"></script>
+</head>
+
+<body>
+  <li class="lobby lobbyToCopy">
+    <img class="lobbyThumbnail" src="Images/templateAvatar.png">
+    <p field="lobbyName">HAHOOS's Lobby!</p>
+    <p field="lobbyHostName">HAHOOS</p>
+    <p field="levelTitle">7/11</p>
+    <p field="gamemodeTitle">Avatar Infection</p>
+    <p field="playerCount">(0/10)</p>
+    <button class="connect inline">Join!</button>
+    <button class="moreInfo inline">More Info</button>
+  </li>
+  <div class="player playerToCopy">
+    <img class="avatarThumbnail" src="Images/templateAvatar.png">
+    <p class="name">RottenCheese</p>
+    <p class="username">Test</p>
+    <p class="permissions">OWNER</p>
+    <p class="avatarTitle">Fancy Ford</p>
+  </div>
+  <header>
+    <h1>Fusion Lobby Browser</h1>
+    <p>Browse Fusion Lobbies without having to open BONELAB.<br>If you like my work, consider supporting me on <a
+        class="ko-fi" href="https://ko-fi.com/hahoos" target="_blank" rel="noopener noreferrer">Ko-fi</a>!</p>
+    <p id="refresh">Last Refresh: N/A</p>
+    <button id="refreshButton">Refresh</button>
+  </header>
+  <div id="moreDetails-outer">
+    <div id="moreDetails">
+      <p class="lobbyTitle" field="lobbyName">HAHOOS's Lobby!</p>
+      <div class="content">
+        <div class="left-content">
+          <img class="thumbnail" src="Images/templateLevel.png">
+        </div>
+        <div class="right-content">
+          <p class="detail">Description</p>
+          <p class="detail-info" field="lobbyDescription">it's been 5 hours AND A HALF without Bonelab, I can’t stop
+            shaking and I’m having severe mental breakdowns. I woke up
+            today trying to log onto Fusion but the lobbies were down, I had a major panic attack but managed to calm
+            down after a
+            few hours. I couldn’t go to work today, I am so worried that I even took my gun from the shed, thinking of
+            killing
+            myself. I am nothing without Bonelab, it is my life, it is my destiny, without Bonelab, I wouldn't be able
+            to do
+            anything. Bonelab is the best thing ever made and I can't get rid of my addiction to it, it is the best VR
+            game in
+            existence. I can't stop trembling and crying, I am very worried. I don't know what to do. Bonelab can't be
+            gone any
+            longer cause if it does then I'll go insane again.. breaking my VR Headset, controller, house, and
+            everything I own.
+            Bonelab is very amazing and I can't lose it. Bonelab is my life.</p>
+          <p class="detail">Level</p>
+          <p class="detail-info" field="levelTitle">7/11</p>
+          <p class="detail">Gamemode</p>
+          <p class="detail-info" field="gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
+        </div>
+      </div>
+      <p class="playersTitle">Players (11/15)</p>
+      <p class="lobbyHost">Host: asjdjkasdjkasjkdajskd</p>
+      <div class="playersGrid">
+      </div>
+    </div>
+  </div>
+  <h2 class="lobbyCount hidden" align="center">Lobbies (10)</h2>
+  <ul id="searchOptions">
+    <li>
+      <input align="center" type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
+      <label for="showFullLobbies">Show Full Lobbies</label>
+    </li>
+    <li>
+      <input align="center" type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
+      <label for="showFullLobbies">Show 1 Player Lobbies</label>
+    </li>
+    <li>
+      <input align="center" type="checkbox" id="showNSFWThumbnails" name="Show NSFW Thumbnails" />
+      <label for="showNSFWThumbnails">Show NSFW Thumbnails</label>
+    </li>
+    <li>
+      <label for="sortOrder">Sort Order</label>
+      <select name="sortOrder" id="sortOrder">
+        <option value="descending">Descending (most -> least players)</option>
+        <option value="ascending">Ascending (least -> most players)</option>
+      </select>
+    </li>
+  </ul>
+  <p class="error hidden">Test error</p>
+  <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
+  <ul id="lobbies">
+
+  </ul>
+</body>
+
+</html>

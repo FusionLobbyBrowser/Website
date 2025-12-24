@@ -1,0 +1,310 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+body {
+  height: 100%;
+
+  background-color: rgb(30, 30, 30);
+
+  color: white;
+}
+
+header {
+  margin-top: 5rem;
+  padding-bottom: 2.5rem;
+  text-align: center;
+}
+
+h1 {
+  padding-bottom: 5px;
+  font-size: 30px;
+  font-family: "Montserrat", serif;
+  font-weight: 400;
+}
+
+h2 {
+  padding-bottom: 5px;
+  font-size: 20px;
+  font-family: "Montserrat", serif;
+  font-weight: 400;
+}
+
+.inheritParent {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+.blocked {
+  background-color: #d22b2b;
+}
+
+.blocked:hover {
+  cursor: default;
+  background-color: #8b0000;
+}
+
+.inProgress {
+  background-color: gray;
+}
+
+.inProgress:hover {
+  cursor: default;
+  background-color: #606060;
+}
+
+p,
+span,
+button {
+  font-family: "Ubuntu", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  padding-bottom: 35px;
+}
+
+#lobbies {
+  margin-top: 2rem;
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(auto-fill, 15rem);
+  grid-template-rows: repeat(auto-fill, auto-fit);
+  align-items: center;
+  justify-content: center;
+}
+
+#refresh {
+  color: #767676;
+  font-size: 12px;
+}
+
+#notFound {
+  text-align: center;
+}
+
+.error {
+  color: #f4320b;
+  font-size: 15px;
+  text-align: center;
+}
+
+.ko-fi {
+  text-decoration: none;
+  color: #d22b2b;
+  transition: 0.5s;
+}
+
+.ko-fi:hover {
+  color: #8b0000;
+}
+
+.levelRedirect {
+  text-decoration: none;
+  color: white;
+  transition: 0.7s;
+}
+
+.levelRedirect:hover {
+  color: #fa5f55;
+}
+
+.closeInfo {
+  text-decoration: none;
+  color: white;
+  transition: 0.7s;
+  text-align: center;
+  margin-top: 0;
+}
+
+.closeInfo:hover {
+  color: #fa5f55;
+}
+
+.lobby {
+  background-color: rgb(20, 20, 20);
+  box-shadow: 10px 5px 5px rgb(10, 10, 10);
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-radius: 15px;
+
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+
+  transition: 0.75s;
+}
+
+#moreDetails-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#moreDetails {
+  background-color: rgb(20, 20, 20);
+  box-shadow: 10px 5px 5px rgb(10, 10, 10);
+  border-radius: 10px;
+
+  width: 54rem;
+  margin-bottom: 3rem;
+}
+
+#searchOptions > li {
+  padding: 0;
+  text-align: center;
+}
+
+.lobbyToCopy {
+  display: none;
+  visibility: hidden;
+}
+
+.playerToCopy {
+  display: none;
+  visibility: hidden;
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.lobby:hover {
+  box-shadow: 10px 10px 10px rgb(10, 10, 10);
+}
+
+.lobbyTitle {
+  font-size: 25px;
+  text-align: center;
+}
+
+.playersTitle {
+  font-size: 18px;
+  text-align: left;
+  margin-left: 2.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.playersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 11rem);
+  grid-template-rows: repeat(auto-fill, auto-fit);
+  align-items: center;
+  justify-content: center;
+  grid-column-gap: 2.5rem;
+  grid-row-gap: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.detail {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.detail-info {
+  font-size: 12.5px;
+  padding-top: 0px;
+  margin-top: 0px;
+  word-wrap: break-word;
+}
+
+.lobbyHost {
+  color: rgb(100, 100, 100);
+  font-style: italic;
+  font-size: 12.5px;
+
+  text-align: left;
+  margin-left: 2.5rem;
+  margin-top: 0;
+}
+
+@media (min-width: 800px) {
+  .content {
+    display: flex;
+  }
+}
+
+.left-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.right-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.thumbnail {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+.avatarThumbnail {
+  aspect-ratio: 16 / 9;
+  width: 8rem;
+}
+
+.lobbyThumbnail {
+  aspect-ratio: 16 / 9;
+  width: 10rem;
+}
+
+.player {
+  background-color: rgb(10, 10, 10);
+  box-shadow: 10px 5px 5px rgb(5, 5, 5);
+  width: 10rem;
+  text-align: center;
+  padding-top: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 15px;
+
+  transition: 0.75s;
+}
+
+.player:hover {
+  box-shadow: 10px 10px 10px rgb(10, 10, 10);
+}
+
+.name {
+  word-wrap: break-word;
+  margin-bottom: 0;
+}
+
+.username {
+  word-wrap: break-word;
+  color: grey;
+  font-size: 12px;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.permissions {
+  color: white;
+  font-size: 11px;
+  margin-top: 0.25rem;
+}
+
+button {
+  border: none;
+  text-decoration: none;
+  background-color: rgb(0, 128, 255);
+  padding: 5px 15px 5px 15px;
+  border-radius: 7.5px;
+  color: white;
+
+  transition: 0.65s;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: rgb(0, 75, 255);
+}
