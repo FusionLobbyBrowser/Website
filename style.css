@@ -96,13 +96,13 @@ li {
   text-align: center;
 }
 
-.ko-fi {
+a {
   text-decoration: none;
   color: #d22b2b;
   transition: 0.5s;
 }
 
-.ko-fi:hover {
+a:hover {
   color: #8b0000;
 }
 
