@@ -1,7 +1,7 @@
 import { Converter } from "../unity-rich-text/unityRichText.js";
 import DOMPurify from "../dompurify/purify.es.mjs";
 
-const HOST = "https://localhost:7100/";
+const HOST = "https://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/`;
 
