@@ -73,9 +73,17 @@ async function createLobbies() {
         let lobbies = json.lobbies;
 
         allLobbies = structuredClone(lobbies);
-        lobbies = filterLobbies(lobbies);
+        let lobbyCount = hideLobbies();
+        let allowed = getAllowedIDs(lobbies);
 
-        setLobbyCount(lobbies.length, lobbyCountMax);
+        const sorting = document.getElementById("sortOrder").value;
+        lobbies.sort(
+          (first, second) =>
+            parseInt(second.playerCount) - parseInt(first.playerCount)
+        );
+        if (sorting != "descending") lobbies.reverse();
+
+        setLobbyCount(lobbyCount, lobbyCountMax);
         setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
 
         if (lobbies.length == 0)
@@ -84,7 +92,13 @@ async function createLobbies() {
 
         for (const lobby of lobbies) {
           if (controller?.signal?.aborted == true) return;
-          if (await createLobby(lobby, controller?.signal))
+          if (
+            await createLobby(
+              lobby,
+              controller?.signal,
+              !allowed.includes(lobby.lobbyId)
+            )
+          )
             moreInfoUpdated = true;
         }
         if (moreInfoUpdated == false) hideShow(true);
@@ -126,13 +140,15 @@ async function autoRefresh() {
     await createLobbies();
 }
 
-async function createLobby(lobby, signal) {
+async function createLobby(lobby, signal, hidden) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
 
   const lobbyElem = hiddenLobby.cloneNode(true);
   lobbyElem.classList.remove("lobbyToCopy");
+  if (hidden) lobbyElem.classList.add("hidden");
+  else lobbyElem.classList.remove("hidden");
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModId,
@@ -281,7 +297,7 @@ async function moreInfo(lobby, thumbnail, signal) {
 
     const toCopy = document.getElementsByClassName("playerToCopy")[0];
     const playerElem = toCopy.cloneNode(true);
-    await setThumbnail(
+    const thumb = await setThumbnail(
       playerElem.getElementsByClassName("avatarThumbnail")[0],
       player.avatarModId,
       player.avatarTitle,
@@ -536,25 +552,36 @@ function filterLobbies(lobbies) {
 
   if (!document.getElementById("showOnePlayerLobbies").checked)
     lobbies = lobbies.filter((i) => i.playerCount > 1);
-  const sorting = document.getElementById("sortOrder").value;
-  lobbies.sort(
-    (first, second) =>
-      parseInt(second.playerCount) - parseInt(first.playerCount)
-  );
-  if (sorting != "descending") lobbies.reverse();
 
   return lobbies;
 }
 
+function getAllowedIDs(lobbies) {
+  let list = [];
+  var filtered = filterLobbies(structuredClone(lobbies));
+  filtered.forEach((x) => {
+    list.push(x.lobbyId);
+  });
+  return list;
+}
+
+function hideLobbies() {
+  let list = getAllowedIDs(allLobbies);
+
+  var lobbies = document.getElementById("lobbies").children;
+  for (const i of lobbies) {
+    if (list.includes(Number(i.getAttribute("lobbyId"))))
+      i.classList.remove("hidden");
+    else i.classList.add("hidden");
+  }
+  return list.length;
+}
+
 async function updateFilters() {
-  const lobbiesElems = document.getElementById("lobbies");
-  lobbiesElems.replaceChildren();
   let lobbyCountMax = allLobbies.length;
 
-  let lobbies = filterLobbies(structuredClone(allLobbies));
-  setLobbyCount(lobbies.length, lobbyCountMax);
-
-  for (const lobby of lobbies) await createLobby(lobby);
+  let lobbies = hideLobbies();
+  setLobbyCount(lobbies, lobbyCountMax);
 }
 
 window.addEventListener("load", async (e) => {
@@ -567,10 +594,10 @@ window.addEventListener("load", async (e) => {
     .addEventListener("change", async () => await updateFilters());
   document
     .getElementById("showNSFWThumbnails")
-    .addEventListener("change", async () => await updateFilters());
+    .addEventListener("change", async () => await createLobbies());
   document
     .getElementById("sortOrder")
-    .addEventListener("change", async () => await updateFilters());
+    .addEventListener("change", async () => await createLobbies());
   document
     .getElementById("refreshButton")
     .addEventListener("click", async (e) => await createLobbies());
