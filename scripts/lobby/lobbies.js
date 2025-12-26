@@ -288,17 +288,18 @@ async function createLobbies() {
     refreshBtn.classList.remove("inProgress");
     refreshBtn.blocked = false;
     if (refresh.hasAttribute("date"))
-      refreshButton(Date.parse(refresh.getAttribute("date")));
+      await refreshButton(Date.parse(refresh.getAttribute("date")));
   }
 }
 
-function refreshButton(date) {
+async function refreshButton(date) {
   const seconds = Math.floor((new Date() - date) / 1000);
   const button = document.getElementById("refreshButton");
   if (seconds >= refreshInterval) {
     button.disabled = false;
     button.classList.remove("blocked");
     button.textContent = "Refresh";
+    autoRefresh();
   } else {
     button.disabled = true;
     if (button.classList.contains("inProgress")) {
@@ -309,6 +310,11 @@ function refreshButton(date) {
       button.textContent = `Refresh (${refreshInterval - seconds})`;
     }
   }
+}
+
+async function autoRefresh() {
+  if (!document.hidden && document.getElementById("autoRefresh").checked)
+    await createLobbies();
 }
 
 async function createLobby(lobby) {
@@ -405,7 +411,8 @@ function setAllLobbiesMoreInfo(enabled) {
 async function moreInfo(lobby, thumbnail) {
   moreInfoView = lobby.lobbyId;
   const lobbyInfo = document.getElementById("moreDetails");
-  getChild(lobbyInfo, "lobbyName").innerHTML = DOMPurify.sanitize(
+  const header = lobbyInfo.getElementsByClassName("header")[0];
+  getChild(header, "lobbyName").innerHTML = DOMPurify.sanitize(
     convertToHTML(
       lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
     )
@@ -537,7 +544,10 @@ function hideShow(hide) {
   });
 
   const lobbyInfo = document.getElementById("moreDetails");
-  if (hide) lobbyInfo.removeAttribute("lobbyId");
+  if (hide) {
+    lobbyInfo.removeAttribute("lobbyId");
+    moreInfoView = -1;
+  }
 }
 
 async function getThumbnail(modId, search, isAvatar) {
@@ -730,6 +740,9 @@ window.addEventListener("load", async (e) => {
   document
     .getElementById("refreshButton")
     .addEventListener("click", async (e) => await createLobbies());
+  document
+    .getElementById("closeMoreInfo")
+    .addEventListener("click", (e) => hideShow(true));
   updateTime();
   await createLobbies();
 });
@@ -742,7 +755,7 @@ async function updateTime() {
       refresh.textContent = "Last Refresh: " + timeSince(date);
       refresh.classList.remove("hidden");
 
-      refreshButton(date);
+      await refreshButton(date);
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));

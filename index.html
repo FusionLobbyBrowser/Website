@@ -51,7 +51,10 @@
   </header>
   <div id="moreDetails-outer">
     <div id="moreDetails">
-      <p class="lobbyTitle" field="lobbyName">HAHOOS's Lobby!</p>
+      <div class="header">
+        <p class="lobbyTitle" field="lobbyName">HAHOOS's Lobby!</p>
+        <a id="closeMoreInfo" href="#">Close</a>
+      </div>
       <div class="content">
         <div class="left-content">
           <img class="thumbnail" src="images/templateLevel.png">
@@ -86,27 +89,30 @@
     </div>
   </div>
   <h2 class="lobbyCount hidden" align="center">Lobbies (10)</h2>
-  <ul id="searchOptions">
-    <li>
+  <div id="searchOptions">
+    <div class="checkbox-wrapper">
+      <input align="center" type="checkbox" id="autoRefresh" name="Auto Refresh" checked />
+      <label for="autoRefresh">Auto Refresh</label>
+    </div>
+    <div cla <div class="checkbox-wrapper">
       <input align="center" type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
-      <label for="showFullLobbies">Show Full Lobbies</label>
-    </li>
-    <li>
+      <label for="showFullLobbies">Show Full
+        Lobbies</label>
+    </div>
+    <div class="checkbox-wrapper">
       <input align="center" type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
       <label for="showFullLobbies">Show 1 Player Lobbies</label>
-    </li>
-    <li>
+    </div>
+    <div class="checkbox-wrapper">
       <input align="center" type="checkbox" id="showNSFWThumbnails" name="Show NSFW Thumbnails" />
       <label for="showNSFWThumbnails">Show NSFW Thumbnails</label>
-    </li>
-    <li>
-      <label for="sortOrder">Sort Order</label>
-      <select name="sortOrder" id="sortOrder">
-        <option value="descending">Descending (most -> least players)</option>
-        <option value="ascending">Ascending (least -> most players)</option>
-      </select>
-    </li>
-  </ul>
+    </div>
+    <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
+    <select name="sortOrder" id="sortOrder">
+      <option value="descending">Descending (most -> least players)</option>
+      <option value="ascending">Ascending (least -> most players)</option>
+    </select>
+  </div>
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
   <ul id="lobbies">

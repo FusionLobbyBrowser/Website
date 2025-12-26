@@ -52,9 +52,14 @@ h2 {
   background-color: #606060;
 }
 
+#sortOrderLabel {
+  margin-top: 1rem;
+}
+
 p,
 span,
-button {
+button,
+label {
   font-family: "Ubuntu", serif;
   font-weight: 400;
   font-style: normal;
@@ -69,6 +74,16 @@ ul {
 
 li {
   padding-bottom: 35px;
+}
+
+.header {
+  display: grid;
+  place-items: center;
+}
+
+#closeMoreInfo {
+  width: 100%;
+  text-align: center;
 }
 
 #lobbies {
@@ -89,6 +104,83 @@ li {
 #notFound {
   text-align: center;
 }
+
+#searchOptions {
+  display: grid;
+  place-items: center;
+}
+
+/* Code from https://getcssscan.com/css-checkboxes-examples */
+
+.checkbox-wrapper input {
+  display: inline-block;
+  appearance: none;
+  background-color: #dfe1e4;
+  border-radius: 72px;
+  border-style: none;
+  flex-shrink: 0;
+  height: 20px;
+  margin: 0;
+  position: relative;
+  width: 30px;
+}
+
+label {
+  display: inline-block;
+}
+
+.checkbox-wrapper input::before {
+  bottom: -6px;
+  content: "";
+  left: -6px;
+  position: absolute;
+  right: -6px;
+  top: -6px;
+}
+
+.checkbox-wrapper input,
+.checkbox-wrapper input::after {
+  transition: all 100ms ease-out;
+}
+
+.checkbox-wrapper input::after {
+  background-color: #fff;
+  border-radius: 50%;
+  content: "";
+  height: 14px;
+  left: 3px;
+  position: absolute;
+  top: 3px;
+  width: 14px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  cursor: default;
+}
+
+.checkbox-wrapper input:hover {
+  background-color: #c9cbcd;
+  transition-duration: 0s;
+}
+
+.checkbox-wrapper input:checked {
+  background-color: #6e79d6;
+}
+
+.checkbox-wrapper input:checked::after {
+  background-color: #fff;
+  left: 13px;
+}
+
+.checkbox-wrapper :focus:not(.focus-visible) {
+  outline: 0;
+}
+
+.checkbox-wrapper input:checked:hover {
+  background-color: #535db3;
+}
+
+/* End of code from https://getcssscan.com/css-checkboxes-examples */
 
 .error {
   color: #f4320b;
@@ -184,6 +276,9 @@ a:hover {
 .lobbyTitle {
   font-size: 25px;
   text-align: center;
+
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .playersTitle {
