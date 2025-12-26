@@ -339,6 +339,10 @@ function hideShow(hide) {
     }
   });
 
+  const header = document.getElementsByTagName("header")[0];
+  if (!hide) header.classList.add("header-moreInfoOpened");
+  else header.classList.remove("header-moreInfoOpened");
+
   const lobbyInfo = document.getElementById("moreDetails");
   if (hide) {
     lobbyInfo.removeAttribute("lobbyId");

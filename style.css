@@ -7,10 +7,14 @@ body {
   color: white;
 }
 
+.header-moreInfoOpened {
+  padding-bottom: 2.5rem;
+}
+
 header {
   margin-top: 5rem;
-  padding-bottom: 2.5rem;
   text-align: center;
+  padding-bottom: 0.5rem;
 }
 
 h1 {
