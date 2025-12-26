@@ -1,3 +1,5 @@
+// Name is the name of the file in the /images/default folder
+
 const mappedBarcodes = [
   // Avatars
   {

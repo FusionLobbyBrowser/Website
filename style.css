@@ -96,6 +96,7 @@ li {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
 }
 
 #refresh {
@@ -232,9 +233,6 @@ a:hover {
 
   width: 14rem;
 
-  margin-right: 2rem;
-  margin-bottom: 1rem;
-
   transition: 0.75s;
 }
 
@@ -298,6 +296,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   margin-bottom: 1rem;
+  gap: 1.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
@@ -364,9 +363,6 @@ a:hover {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   border-radius: 15px;
-
-  margin-right: 2rem;
-  margin-bottom: 1rem;
 
   transition: 0.75s;
 }
