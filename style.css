@@ -92,10 +92,8 @@ li {
 
 #lobbies {
   margin-top: 2rem;
-  display: grid;
-  flex: 1;
-  grid-template-columns: repeat(auto-fill, 15rem);
-  grid-template-rows: repeat(auto-fill, auto-fit);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 }
@@ -232,6 +230,8 @@ a:hover {
   padding-bottom: 1rem;
   border-radius: 15px;
 
+  width: 14rem;
+
   margin-right: 2rem;
   margin-bottom: 1rem;
 
@@ -293,14 +293,13 @@ a:hover {
 }
 
 .playersGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 11rem);
-  grid-template-rows: repeat(auto-fill, auto-fit);
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  grid-column-gap: 2.5rem;
-  grid-row-gap: 2.5rem;
   margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .detail {
@@ -359,12 +358,15 @@ a:hover {
 .player {
   background-color: rgb(10, 10, 10);
   box-shadow: 10px 5px 5px rgb(5, 5, 5);
-  width: 10rem;
+  width: 9rem;
   text-align: center;
   padding-top: 1rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   border-radius: 15px;
+
+  margin-right: 2rem;
+  margin-bottom: 1rem;
 
   transition: 0.75s;
 }
