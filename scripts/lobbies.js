@@ -14,7 +14,16 @@ let moreInfoView = -1;
 
 let refreshInterval = 10;
 
+let lobbiesSignal;
+let moreInfoSignal;
+
 async function createLobbies() {
+  if (lobbiesSignal) {
+    console.log("abort");
+    lobbiesSignal.abort();
+  }
+  const controller = new AbortController();
+  lobbiesSignal = controller;
   const refreshBtn = document.getElementById("refreshButton");
   const refresh = document.getElementById("refresh");
   try {
@@ -74,7 +83,9 @@ async function createLobbies() {
         else document.getElementById("notFound").classList.add("hidden");
 
         for (const lobby of lobbies) {
-          if (await createLobby(lobby)) moreInfoUpdated = true;
+          if (controller?.signal?.aborted == true) return;
+          if (await createLobby(lobby, controller?.signal))
+            moreInfoUpdated = true;
         }
         if (moreInfoUpdated == false) hideShow(true);
       } else {
@@ -115,7 +126,7 @@ async function autoRefresh() {
     await createLobbies();
 }
 
-async function createLobby(lobby) {
+async function createLobby(lobby, signal) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
@@ -131,7 +142,7 @@ async function createLobby(lobby) {
 
   if (moreInfoView != -1 && moreInfoView == lobby.lobbyId) {
     moreInfoUpdated = true;
-    await moreInfo(lobby, thumb);
+    if (signal?.aborted != true) await moreInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyId);
   getChild(lobbyElem, "lobbyName").innerHTML = DOMPurify.sanitize(
@@ -167,27 +178,27 @@ async function createLobby(lobby) {
 
   const moreInfoBtn = lobbyElem.getElementsByClassName("moreInfo")[0];
 
-  connectBtn.addEventListener("click", async () => {
+  connectBtn.onclick = async () => {
     setButton(connectBtn, false);
     try {
       await requestJoin(lobby.lobbyCode);
     } finally {
       setButton(connectBtn, true);
     }
-  });
+  };
 
-  moreInfoBtn.addEventListener("click", async () => {
+  moreInfoBtn.onclick = async () => {
     moreInfoView = lobby.lobbyId;
 
     setAllLobbiesMoreInfo(false);
     try {
-      await moreInfo(lobby, thumb);
+      await moreInfo(lobby, thumb, signal);
     } finally {
       setAllLobbiesMoreInfo(true);
     }
-  });
+  };
 
-  lobbies.appendChild(lobbyElem);
+  if (signal?.aborted != true) lobbies.appendChild(lobbyElem);
   return moreInfoUpdated;
 }
 
@@ -206,7 +217,11 @@ function setAllLobbiesMoreInfo(enabled) {
     setButton(lobby.getElementsByClassName("moreInfo")[0], enabled);
 }
 
-async function moreInfo(lobby, thumbnail) {
+async function moreInfo(lobby, thumbnail, signal) {
+  if (moreInfoSignal) moreInfoSignal.abort();
+
+  var controller = new AbortController();
+  moreInfoSignal = controller;
   moreInfoView = lobby.lobbyId;
   const lobbyInfo = document.getElementById("moreDetails");
   const header = lobbyInfo.getElementsByClassName("header")[0];
@@ -262,6 +277,8 @@ async function moreInfo(lobby, thumbnail) {
       parseInt(second.permissionLevel) - parseInt(first.permissionLevel)
   );
   for (const player of players) {
+    if (controller?.signal?.aborted == true) return;
+
     const toCopy = document.getElementsByClassName("playerToCopy")[0];
     const playerElem = toCopy.cloneNode(true);
     await setThumbnail(
@@ -296,6 +313,7 @@ async function moreInfo(lobby, thumbnail) {
     );
     playerElem.classList.remove("playerToCopy");
     playerElem.setAttribute("playerId", player.longId);
+    if (signal?.aborted == true || controller?.signal?.aborted == true) return;
     playersList.appendChild(playerElem);
   }
   lobbyInfo.setAttribute("lobbyId", lobby.lobbyId);
