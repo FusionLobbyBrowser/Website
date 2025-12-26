@@ -11,3 +11,5 @@ Third-party Libraries used as Source Code:
 - [unity-rich-text-converter](https://github.com/AWaterColorPen/unity-rich-text-converter) is licensed under the MIT License. See [LICENSE](https://github.com/AWaterColorPen/unity-rich-text-converter/blob/master/LICENSE) for the full License.
 
 Icons from [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) were used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
+
+The style for checkboxes is from [CSS Scan](https://getcssscan.com/css-checkboxes-examples)
