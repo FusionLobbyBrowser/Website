@@ -2,7 +2,7 @@ import { Converter } from "./unityRichText.js";
 import DOMPurify from "./purify.es.mjs";
 import Barcodes from "./defaultBarcodes.js";
 
-const HOST = "http://localhost:5000/";
+const HOST = "http://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/`;
 
