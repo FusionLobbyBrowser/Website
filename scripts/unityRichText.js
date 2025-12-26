@@ -21,6 +21,8 @@ const boldconverter = {
 
 // fontsize.ts
 
+const decReg = new RegExp("[1-9]{1}[0-9]*");
+
 const fontsize4unity2html = {
   pattern: new RegExp("<size=([^>]*)>(.*?)</size>"),
   replace: (match, p1, p2) => {

@@ -2,7 +2,7 @@ import { Converter } from "./unityRichText.js";
 import DOMPurify from "./purify.es.mjs";
 import Barcodes from "./defaultBarcodes.js";
 
-const HOST = "https://fusionapi.hahoos.dev/";
+const HOST = "http://localhost:5000/";
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/`;
 
@@ -40,6 +40,7 @@ async function createLobbies() {
       refresh.classList.add("hidden");
 
       setLobbyCount(-1);
+      setPlayerCount(-1, -1);
       hideShow(true);
     } else {
       error.classList.add("hidden");
@@ -66,6 +67,7 @@ async function createLobbies() {
         lobbies = filterLobbies(lobbies);
 
         setLobbyCount(lobbies.length, lobbyCountMax);
+        setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
 
         if (lobbies.length == 0)
           document.getElementById("notFound").classList.remove("hidden");
@@ -416,7 +418,7 @@ function modRedirect(id, name) {
 }
 
 function setLobbyCount(count, max) {
-  const elem = document.getElementsByClassName("lobbyCount")[0];
+  const elem = document.getElementsByClassName("lobbyHeader")[0];
   if (count == -1) {
     elem.classList.add("hidden");
   } else {
@@ -424,6 +426,20 @@ function setLobbyCount(count, max) {
     if (count == max) elem.textContent = `Lobbies (${count})`;
     else elem.textContent = `Lobbies (${count}/${max})`;
   }
+}
+
+function setPlayerCount(players, lobbies) {
+  if (players == -1 || lobbies == -1) {
+    document.getElementsByClassName("lobbyInfo")[0].classList.add("hidden");
+    return;
+  }
+  document.getElementsByClassName("lobbyInfo")[0].classList.remove("hidden");
+  document.getElementsByClassName(
+    "playerCount"
+  )[0].textContent = `${players} players`;
+  document.getElementsByClassName(
+    "lobbyCount"
+  )[0].textContent = `${lobbies} lobbies`;
 }
 
 function getChild(lobbyElem, field) {
