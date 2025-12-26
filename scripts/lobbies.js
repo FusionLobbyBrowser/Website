@@ -272,15 +272,13 @@ async function moreInfo(lobby, thumbnail, signal) {
 
   const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
   playersTitle.innerHTML = DOMPurify.sanitize(
-    `Players <span class="playerCount">(${lobby.playerCount}/${lobby.maxPlayers})</span>`
+    `Players <span class="plrCount">(${lobby.playerCount}/${lobby.maxPlayers})</span>`
   );
 
   if (lobby.playerCount >= lobby.maxPlayers)
-    playersTitle.getElementsByClassName("playerCount")[0].style.color =
-      "#FF0000";
+    playersTitle.getElementsByClassName("plrCount")[0].style.color = "#FF0000";
   else
-    playersTitle.getElementsByClassName("playerCount")[0].style.color =
-      "#00FF00";
+    playersTitle.getElementsByClassName("plrCount")[0].style.color = "#00FF00";
 
   const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
   host.textContent = `Host: ${lobby.lobbyHostName}`;
@@ -515,6 +513,9 @@ async function requestJoin(code) {
     console.error(ex);
     window.location.replace(`bonelab-flb://SteamVR-${code}/`);
   }
+  window.alert(
+    "You don't join a lobby when you pressed the button? Install the mod (link on the page, press the red 'mod' text). Have the mod already and cant join? Create an issue on github!"
+  );
 }
 
 // https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
