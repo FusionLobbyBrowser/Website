@@ -173,7 +173,7 @@ async function createLobby(lobby, signal, hidden) {
       lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
     )
   );
-  getChild(lobbyElem, "lobbyHostName").textContent = DOMPurify.sanitize(
+  getChild(lobbyElem, "lobbyHostName").innerHTML = DOMPurify.sanitize(
     convertToHTML(lobby.lobbyHostName)
   );
   getChild(lobbyElem, "levelTitle").innerHTML = modRedirect(

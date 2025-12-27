@@ -318,6 +318,10 @@ a:hover {
   word-wrap: break-word;
 }
 
+.lobbyName {
+  word-wrap: break-word;
+}
+
 .lobbyInfo {
   text-align: center;
 }
