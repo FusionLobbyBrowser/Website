@@ -105,21 +105,35 @@ const colors = [
 ];
 
 const color4unity2html = {
-  pattern: new RegExp("<color=([^>]*)>(.*?)(?=</color>|<color=[^>]*>)"),
-  replace: (match, p1, p2) => {
+  pattern: new RegExp(
+    "(?:<color=(?<Color>[^>]*)>|<(?<Color>#[a-fA-F0-9]{6})>)(?<Content>.*?)(?=</color>|<color=[^>]*>|<#[a-fA-F0-9]{6}>|$)"
+  ),
+  replace: (match, ...args) => {
+    let { Color, Content } = args.pop();
+
+    Color = Color.replaceAll('"', "");
+
     let hex = true;
-    if (!p1.match(new RegExp("#[a-fA-F0-9]{6}"))) {
+
+    if (!Color) {
+      console.error(`error color code or color name : ${match}`);
+      return "Error!";
+    }
+
+    if (!Color.match(new RegExp("#[a-fA-F0-9]{6}"))) {
       hex = false;
     }
 
-    const color = colors.find((v) => v.name === p1);
+    const color = colors.find((v) => v.name === Color);
 
-    if (!color && !hex)
-      throw new Error(`error color code or color name : ${match}`);
+    if (!color && !hex) {
+      console.error(`error color code or color name : ${match}`);
+      return "Error!";
+    }
 
     return `<span class="inheritParent" style="color: ${
-      color ? color.color : p1.slice(0, 7).toLowerCase()
-    }">${p2}</span>`;
+      color ? color.color : Color.slice(0, 7).toLowerCase()
+    }">${Content}</span>`;
   },
 };
 

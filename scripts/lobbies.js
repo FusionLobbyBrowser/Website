@@ -26,6 +26,7 @@ async function createLobbies() {
   lobbiesSignal = controller;
   const refreshBtn = document.getElementById("refreshButton");
   const refresh = document.getElementById("refresh");
+  const highLobby = document.getElementById("lobbyLimit");
   try {
     refreshBtn.classList.remove("blocked");
     refreshBtn.classList.add("inProgress");
@@ -47,6 +48,8 @@ async function createLobbies() {
       refresh.removeAttribute("date");
       refresh.textContent = "Last Refresh: N/A";
       refresh.classList.add("hidden");
+
+      highLobby.classList.add("hidden");
 
       setLobbyCount(-1);
       setPlayerCount(-1, -1);
@@ -285,7 +288,9 @@ async function moreInfo(lobby, thumbnail, signal) {
     playersTitle.getElementsByClassName("plrCount")[0].style.color = "#00FF00";
 
   const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
-  host.textContent = `Host: ${lobby.lobbyHostName}`;
+  host.innerHTML = `Host: ${DOMPurify.sanitize(
+    convertToHTML(lobby.lobbyHostName)
+  )}`;
 
   const playersList = lobbyInfo.getElementsByClassName("playersGrid")[0];
   playersList.replaceChildren();
@@ -315,7 +320,7 @@ async function moreInfo(lobby, thumbnail, signal) {
     const username = playerElem.getElementsByClassName("username")[0];
     if (hasNickname) {
       username.classList.remove("hidden");
-      username.textContent = player.username;
+      username.innerHTML = DOMPurify.sanitize(convertToHTML(player.username));
     } else {
       username.classList.add("hidden");
     }
@@ -476,6 +481,10 @@ function setPlayerCount(players, lobbies) {
   document.getElementsByClassName(
     "lobbyCount"
   )[0].textContent = `${lobbies} lobbies`;
+
+  const highLobby = document.getElementById("lobbyLimit");
+  if (lobbies >= 49) highLobby.classList.remove("hidden");
+  else highLobby.classList.add("hidden");
 }
 
 function getChild(lobbyElem, field) {
