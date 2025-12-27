@@ -136,7 +136,11 @@ async function refreshButton(date) {
 }
 
 async function autoRefresh() {
-  if (!document.hidden && document.getElementById("autoRefresh").checked)
+  if (
+    !document.hidden &&
+    document.hasFocus() &&
+    document.getElementById("autoRefresh").checked
+  )
     await createLobbies();
 }
 
