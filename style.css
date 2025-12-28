@@ -18,15 +18,13 @@ header {
 }
 
 h1 {
-  padding-bottom: 5px;
-  font-size: 30px;
+  font-size: 1.875rem;
   font-family: "Montserrat", serif;
   font-weight: 400;
 }
 
 h2 {
-  padding-bottom: 5px;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-family: "Montserrat", serif;
   font-weight: 400;
 }
@@ -60,24 +58,41 @@ h2 {
   margin-top: 1rem;
 }
 
+a {
+  text-decoration: none;
+  color: #d22b2b;
+  transition: 0.5s;
+}
+
+a:hover {
+  color: #8b0000;
+}
+
+.levelRedirect {
+  text-decoration: none;
+  color: white;
+  transition: 0.7s;
+}
+
+.levelRedirect:hover {
+  color: #fa5f55;
+}
+
 p,
 span,
 button,
-label {
+label,
+a {
   font-family: "Ubuntu", serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 15px;
+  font-size: 1rem;
 }
 
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-}
-
-li {
-  padding-bottom: 35px;
 }
 
 .header {
@@ -111,6 +126,17 @@ li {
 #searchOptions {
   display: grid;
   place-items: center;
+}
+
+#searchTitle {
+  margin-top: 0;
+  padding: 0;
+  margin-bottom: 0.35rem;
+}
+
+.lobby > .info {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 /* Code from https://getcssscan.com/css-checkboxes-examples */
@@ -189,26 +215,6 @@ label {
   color: #f4320b;
   font-size: 15px;
   text-align: center;
-}
-
-a {
-  text-decoration: none;
-  color: #d22b2b;
-  transition: 0.5s;
-}
-
-a:hover {
-  color: #8b0000;
-}
-
-.levelRedirect {
-  text-decoration: none;
-  color: white;
-  transition: 0.7s;
-}
-
-.levelRedirect:hover {
-  color: #fa5f55;
 }
 
 .closeInfo {
@@ -323,7 +329,14 @@ a:hover {
 }
 
 .lobbyInfo {
+  margin-top: 0.35rem;
+  margin-bottom: 0.2rem;
   text-align: center;
+}
+
+#lobbyLimit {
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .playerCount {
@@ -332,6 +345,11 @@ a:hover {
 
 .lobbyCount {
   color: yellow;
+}
+
+.lobbyHeader {
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .lobbyHost {

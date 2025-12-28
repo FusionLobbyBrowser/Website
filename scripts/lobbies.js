@@ -18,10 +18,7 @@ let lobbiesSignal;
 let moreInfoSignal;
 
 async function createLobbies() {
-  if (lobbiesSignal) {
-    console.log("abort");
-    lobbiesSignal.abort();
-  }
+  if (lobbiesSignal) lobbiesSignal.abort();
   const controller = new AbortController();
   lobbiesSignal = controller;
   const refreshBtn = document.getElementById("refreshButton");

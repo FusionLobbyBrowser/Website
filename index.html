@@ -15,6 +15,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" crossOrigin="anonymous" />
+
   <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/defaultBarcodes.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/purify.es.mjs" type="module" crossOrigin="anonymous"></script>
@@ -24,11 +25,11 @@
 <body>
   <div class="lobby lobbyToCopy">
     <img class="lobbyThumbnail" src="images/templateLevel.png">
-    <p field="lobbyName">HAHOOS's Lobby!</p>
-    <p field="lobbyHostName">HAHOOS</p>
-    <p field="levelTitle">7/11</p>
-    <p field="gamemodeTitle">Avatar Infection</p>
-    <p field="playerCount">(0/10)</p>
+    <p class="info" field="lobbyName">HAHOOS's Lobby!</p>
+    <p class="info" field="lobbyHostName">HAHOOS</p>
+    <p class="info" field="levelTitle">7/11</p>
+    <p class="info" field="gamemodeTitle">Avatar Infection</p>
+    <p class="info" field="playerCount">(0/10)</p>
     <button class="connect inline">Join!</button>
     <button class="moreInfo inline">More Info</button>
   </div>
@@ -90,11 +91,14 @@
     </div>
   </div>
   <h2 class="lobbyHeader hidden" align="center">Lobbies (10)</h2>
-  <p class="lobbyInfo">There are currently <span class="playerCount">0 players</span> playing on <span
-      class="lobbyCount">35 lobbies</span></p>
-  <p id="lobbyLimit">Steam has a limit of 50 lobbies, due to the high number of lobbies some may not appear. This is a
+  <p class="lobbyInfo">There are currently <span class="playerCount">-1 players</span> playing on <span
+      class="lobbyCount">-1 lobbies</span></p>
+  <p id="lobbyLimit" class="hidden">Steam has a limit of 50 lobbies, due to the high number of lobbies some may not
+    appear and some may
+    not be joinable. This is a
     limit implemented by Steam themselves and nothing can be done about it!</p>
   <div id="searchOptions">
+    <h2 id="searchTitle">Options</h2>
     <div class="checkbox-wrapper">
       <input align="center" type="checkbox" id="autoRefresh" name="Auto Refresh" checked />
       <label for="autoRefresh">Auto Refresh</label>
