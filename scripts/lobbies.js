@@ -165,25 +165,29 @@ async function createLobby(lobby, signal, hidden) {
     if (signal?.aborted != true) await moreInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyId);
-  getChild(lobbyElem, "lobbyName").innerHTML = DOMPurify.sanitize(
-    convertToHTML(
-      lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
-    )
-  );
-  getChild(lobbyElem, "lobbyHostName").innerHTML = DOMPurify.sanitize(
-    convertToHTML(lobby.lobbyHostName)
-  );
-  getChild(lobbyElem, "levelTitle").innerHTML = modRedirect(
+  lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML =
+    DOMPurify.sanitize(
+      convertToHTML(
+        lobby.lobbyName != ""
+          ? lobby.lobbyName
+          : `${lobby.lobbyHostName}'s Lobby`
+      )
+    );
+  lobbyElem.getElementsByClassName("lobbyHostName")[0].innerHTML =
+    DOMPurify.sanitize(convertToHTML(lobby.lobbyHostName));
+  censorModTitle(
+    lobbyElem.getElementsByClassName("levelTitle")[0],
     lobby.levelModId,
-    lobby.levelTitle
+    lobby.levelTitle,
+    thumb.nsfw
   );
 
-  getChild(lobbyElem, "gamemodeTitle").innerHTML =
+  lobbyElem.getElementsByClassName("gamemodeTitle")[0].innerHTML =
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
       ? DOMPurify.sanitize(convertToHTML(lobby.gamemodeTitle))
       : "Sandbox";
 
-  const playerCount = getChild(lobbyElem, "playerCount");
+  const playerCount = lobbyElem.getElementsByClassName("lobbyPlayerCount")[0];
   const connectBtn = lobbyElem.getElementsByClassName("connect")[0];
   playerCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
   if (lobby.playerCount >= lobby.maxPlayers) {
@@ -245,7 +249,7 @@ async function moreInfo(lobby, thumbnail, signal) {
   moreInfoView = lobby.lobbyId;
   const lobbyInfo = document.getElementById("moreDetails");
   const header = lobbyInfo.getElementsByClassName("header")[0];
-  getChild(header, "lobbyName").innerHTML = DOMPurify.sanitize(
+  header.getElementsByClassName("lobbyTitle")[0].innerHTML = DOMPurify.sanitize(
     convertToHTML(
       lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
     )
@@ -253,21 +257,27 @@ async function moreInfo(lobby, thumbnail, signal) {
   const content = lobbyInfo.getElementsByClassName("content")[0];
   const right = content.getElementsByClassName("right-content")[0];
   const left = content.getElementsByClassName("left-content")[0];
-  left.getElementsByClassName("thumbnail")[0].setAttribute("src", thumbnail);
-  getChild(right, "lobbyDescription").innerHTML = DOMPurify.sanitize(
-    convertToHTML(
-      (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
-        "\n",
-        "<br>"
+  left
+    .getElementsByClassName("thumbnail")[0]
+    .setAttribute("src", thumbnail.thumbnail);
+  right.getElementsByClassName("lobbyDescription")[0].innerHTML =
+    DOMPurify.sanitize(
+      convertToHTML(
+        (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
+          "\n",
+          "<br>"
+        )
       )
-    )
-  );
-  getChild(right, "levelTitle").innerHTML = modRedirect(
+    );
+
+  censorModTitle(
+    right.getElementsByClassName("levelTitle")[0],
     lobby.levelModId,
-    lobby.levelTitle
+    lobby.levelTitle,
+    thumbnail.nsfw
   );
 
-  getChild(right, "gamemode").innerHTML =
+  right.getElementsByClassName("gamemode")[0].innerHTML =
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
       ? DOMPurify.sanitize(
           `${convertToHTML(lobby.gamemodeTitle)} (${lobby.gamemodeBarcode})`
@@ -297,6 +307,11 @@ async function moreInfo(lobby, thumbnail, signal) {
       parseInt(second.permissionLevel) - parseInt(first.permissionLevel)
   );
   for (const player of players) {
+    if (
+      (!player.username || player.username == "") &&
+      (!player.nickname || player.nickname == "")
+    )
+      continue;
     if (controller?.signal?.aborted == true) return;
 
     const toCopy = document.getElementsByClassName("playerToCopy")[0];
@@ -327,9 +342,12 @@ async function moreInfo(lobby, thumbnail, signal) {
       player.avatarTitle && player.avatarTitle != ""
         ? convertToHTML(player.avatarTitle)
         : "N/A";
-    playerElem.getElementsByClassName("avatarTitle")[0].innerHTML = modRedirect(
+
+    censorModTitle(
+      playerElem.getElementsByClassName("avatarTitle")[0],
       player.avatarModId,
-      avatar
+      avatar,
+      thumb.nsfw
     );
     playerElem.classList.remove("playerToCopy");
     playerElem.setAttribute("playerId", player.longId);
@@ -338,6 +356,14 @@ async function moreInfo(lobby, thumbnail, signal) {
   }
   lobbyInfo.setAttribute("lobbyId", lobby.lobbyId);
   hideShow(false);
+}
+
+function censorModTitle(elem, modId, title, nsfw) {
+  if (nsfw && !document.getElementById("showNSFW").checked) {
+    elem.innerHTML = '<span style="color: #FF0000">[NSFW]</span>';
+  } else {
+    elem.innerHTML = modRedirect(modId, title);
+  }
 }
 
 async function isLobbyOnline() {
@@ -416,7 +442,6 @@ async function getThumbnail(modId, search, isAvatar) {
   try {
     const response = await fetch(THUMBNAIL + modId);
     if (!response.ok) return { error: await response.text() };
-
     return {
       thumbnail: URL.createObjectURL(await response.blob()),
       nsfw: response.headers.get("modio-maturity") == "nsfw" ? true : false,
@@ -434,16 +459,22 @@ async function setThumbnail(elem, modId, search, isAvatar) {
   var thumbnail = await getThumbnail(modId, search, isAvatar);
   if (thumbnail.error != null) {
     elem.setAttribute("src", "images/errorThumbnail.png");
-    return "images/errorThumbnail.png";
+    return {
+      thumbnail: "images/errorThumbnail.png",
+      nsfw: false,
+    };
   } else if (
     thumbnail.nsfw == true &&
-    !document.getElementById("showNSFWThumbnails").checked
+    !document.getElementById("showNSFW").checked
   ) {
     elem.setAttribute("src", "images/nsfwCover.png");
-    return "images/nsfwCover.png";
+    return {
+      thumbnail: "images/nsfwCover.png",
+      nsfw: true,
+    };
   } else {
     elem.src = thumbnail.thumbnail;
-    return thumbnail.thumbnail;
+    return thumbnail;
   }
 }
 
@@ -482,17 +513,6 @@ function setPlayerCount(players, lobbies) {
   const highLobby = document.getElementById("lobbyLimit");
   if (lobbies >= 49) highLobby.classList.remove("hidden");
   else highLobby.classList.add("hidden");
-}
-
-function getChild(lobbyElem, field) {
-  let elem = null;
-  for (const child of lobbyElem.children) {
-    if (child.hasAttribute("field") && child.getAttribute("field") == field) {
-      elem = child;
-      break;
-    }
-  }
-  return elem;
 }
 
 function convertToHTML(text) {
@@ -604,7 +624,7 @@ window.addEventListener("load", async (e) => {
     .getElementById("showOnePlayerLobbies")
     .addEventListener("change", async () => await updateFilters());
   document
-    .getElementById("showNSFWThumbnails")
+    .getElementById("showNSFW")
     .addEventListener("change", async () => await createLobbies());
   document
     .getElementById("sortOrder")

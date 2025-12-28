@@ -25,11 +25,11 @@
 <body>
   <div class="lobby lobbyToCopy">
     <img class="lobbyThumbnail" src="images/templateLevel.png">
-    <p class="info" field="lobbyName">HAHOOS's Lobby!</p>
-    <p class="info" field="lobbyHostName">HAHOOS</p>
-    <p class="info" field="levelTitle">7/11</p>
-    <p class="info" field="gamemodeTitle">Avatar Infection</p>
-    <p class="info" field="playerCount">(0/10)</p>
+    <p class="info lobbyName">HAHOOS's Lobby!</p>
+    <p class="info lobbyHostName">HAHOOS</p>
+    <p class="info levelTitle">7/11</p>
+    <p class="info gamemodeTitle">Avatar Infection</p>
+    <p class="info lobbyPlayerCount">(0/10)</p>
     <button class="connect inline">Join!</button>
     <button class="moreInfo inline">More Info</button>
   </div>
@@ -54,7 +54,7 @@
   <div id="moreDetails-outer">
     <div id="moreDetails">
       <div class="header">
-        <p class="lobbyTitle" field="lobbyName">HAHOOS's Lobby!</p>
+        <p class="lobbyTitle">HAHOOS's Lobby!</p>
         <a id="closeMoreInfo" href="#">Close</a>
       </div>
       <div class="content">
@@ -63,7 +63,7 @@
         </div>
         <div class="right-content">
           <p class="detail">Description</p>
-          <p class="detail-info" field="lobbyDescription">it's been 5 hours AND A HALF without Bonelab, I can’t stop
+          <p class="detail-info lobbyDescription">it's been 5 hours AND A HALF without Bonelab, I can’t stop
             shaking and I’m having severe mental breakdowns. I woke up
             today trying to log onto Fusion but the lobbies were down, I had a major panic attack but managed to calm
             down after a
@@ -79,9 +79,9 @@
             everything I own.
             Bonelab is very amazing and I can't lose it. Bonelab is my life.</p>
           <p class="detail">Level</p>
-          <p class="detail-info" field="levelTitle">7/11</p>
+          <p class="detail-info levelTitle">7/11</p>
           <p class="detail">Gamemode</p>
-          <p class="detail-info" field="gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
+          <p class="detail-info gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
         </div>
       </div>
       <p class="playersTitle">Players (11/15)</p>
@@ -113,8 +113,8 @@
       <label for="showFullLobbies">Show 1 Player Lobbies</label>
     </div>
     <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="showNSFWThumbnails" name="Show NSFW Thumbnails" />
-      <label for="showNSFWThumbnails">Show NSFW Thumbnails</label>
+      <input align="center" type="checkbox" id="showNSFW" name="Show NSFW" />
+      <label for="showNSFWThumbnails">Show NSFW</label>
     </div>
     <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
     <select name="sortOrder" id="sortOrder">

@@ -69,6 +69,7 @@ a:hover {
 }
 
 .levelRedirect {
+  font-size: inherit;
   text-decoration: none;
   color: white;
   transition: 0.7s;
@@ -313,19 +314,22 @@ label {
 }
 
 .detail {
-  font-size: 15px;
+  font-size: 0.938rem;
   font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
 .detail-info {
-  font-size: 12.5px;
+  font-size: 0.781rem;
   padding-top: 0px;
   margin-top: 0px;
   word-wrap: break-word;
 }
 
 .lobbyName {
+  text-align: center;
   word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .lobbyInfo {
