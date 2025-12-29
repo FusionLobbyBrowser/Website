@@ -244,6 +244,9 @@ label {
 
   width: 14rem;
 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
   transition: 0.75s;
 }
 
@@ -409,6 +412,9 @@ label {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   border-radius: 15px;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   transition: 0.75s;
 }
