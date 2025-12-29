@@ -288,6 +288,11 @@ export class Converter {
     return input;
   }
 
+  static removeRichText(input) {
+    input = input.replaceAll(/<.*?>/g, "");
+    return input;
+  }
+
   verityinput(input) {
     if (input === undefined || input === null) {
       throw new Error(`input is undefined or null: ${input}`);

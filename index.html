@@ -51,13 +51,13 @@
     <p id="refresh">Last Refresh: N/A</p>
     <button id="refreshButton">Refresh</button>
   </header>
-  <div id="moreDetails-outer">
-    <div id="moreDetails">
+  <div id="moreDetails-outer" class="hidden">
+    <div id="moreDetails" class="hidden">
       <div class="header">
         <p class="lobbyTitle">HAHOOS's Lobby!</p>
         <a id="closeMoreInfo" href="#">Close</a>
       </div>
-      <div class="content">
+      <div class="content hidden">
         <div class="left-content">
           <img class="thumbnail" src="images/templateLevel.png">
         </div>
@@ -84,9 +84,9 @@
           <p class="detail-info gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
         </div>
       </div>
-      <p class="playersTitle">Players (11/15)</p>
+      <p class="playersTitle hidden">Players <span class="plrCount">(11/15)</span></p>
       <p class="lobbyHost">Host: asjdjkasdjkasjkdajskd</p>
-      <div class="playersGrid">
+      <div class="playersGrid hidden">
       </div>
     </div>
   </div>
@@ -111,6 +111,10 @@
     <div class="checkbox-wrapper">
       <input align="center" type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
       <label for="showFullLobbies">Show 1 Player Lobbies</label>
+    </div>
+    <div class="checkbox-wrapper">
+      <input align="center" type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
+      <label for="showFullLobbies">Show Roleplay Lobbies</label>
     </div>
     <div class="checkbox-wrapper">
       <input align="center" type="checkbox" id="showNSFW" name="Show NSFW" />

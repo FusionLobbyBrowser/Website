@@ -6,6 +6,9 @@ const HOST = "https://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/`;
 
+const PROFANITY_LIST =
+  "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
+
 const HTTP_JOIN = "http://localhost:25712/join?code=[code]&layer=SteamVR";
 
 let allLobbies;
@@ -17,101 +20,115 @@ let refreshInterval = 10;
 let lobbiesSignal;
 let moreInfoSignal;
 
+let profanities = [];
+
 async function createLobbies() {
-  if (lobbiesSignal) lobbiesSignal.abort();
-  const controller = new AbortController();
-  lobbiesSignal = controller;
-  const refreshBtn = document.getElementById("refreshButton");
-  const refresh = document.getElementById("refresh");
-  const highLobby = document.getElementById("lobbyLimit");
   try {
-    refreshBtn.classList.remove("blocked");
-    refreshBtn.classList.add("inProgress");
-    refreshBtn.textContent = "Refresh";
-    refreshBtn.blocked = true;
+    if (lobbiesSignal) lobbiesSignal.abort();
+    const controller = new AbortController();
+    lobbiesSignal = controller;
+    const refreshBtn = document.getElementById("refreshButton");
+    const refresh = document.getElementById("refresh");
+    const highLobby = document.getElementById("lobbyLimit");
+    try {
+      refreshBtn.classList.remove("blocked");
+      refreshBtn.classList.add("inProgress");
+      refreshBtn.textContent = "Refresh";
+      refreshBtn.blocked = true;
 
-    const lobbies = document.getElementById("lobbies");
-    lobbies.replaceChildren();
-    const json = await getJSON();
-    const error = document.getElementsByClassName("error")[0];
-    if (json.error != null) {
-      if (!(await isLobbyOnline())) {
-        error.textContent = "Server is offline, try again later.";
-      } else {
-        error.textContent = json.error;
-      }
-      error.classList.remove("hidden");
+      const lobbies = document.getElementById("lobbies");
+      lobbies.replaceChildren();
+      const json = await getJSON();
+      const error = document.getElementsByClassName("error")[0];
+      if (json.error != null) {
+        if (!(await isLobbyOnline())) {
+          error.textContent = "Server is offline, try again later.";
+        } else {
+          error.textContent = json.error;
+        }
+        error.classList.remove("hidden");
 
-      refresh.removeAttribute("date");
-      refresh.textContent = "Last Refresh: N/A";
-      refresh.classList.add("hidden");
-
-      highLobby.classList.add("hidden");
-
-      setLobbyCount(-1);
-      setPlayerCount(-1, -1);
-      hideShow(true);
-    } else {
-      error.classList.add("hidden");
-
-      if (json.interval) refreshInterval = parseInt(json.interval);
-
-      if (json.date != null) {
-        refresh.setAttribute("date", json.date);
-        const date = Date.parse(json.date);
-        refresh.textContent = "Last Refresh: " + timeSince(date);
-        refresh.classList.remove("hidden");
-      } else {
         refresh.removeAttribute("date");
         refresh.textContent = "Last Refresh: N/A";
         refresh.classList.add("hidden");
-      }
 
-      if (json.lobbies != null) {
-        let moreInfoUpdated = false;
-        let lobbyCountMax = json.lobbies.length;
-        let lobbies = json.lobbies;
+        highLobby.classList.add("hidden");
 
-        allLobbies = structuredClone(lobbies);
-        let lobbyCount = hideLobbies();
-        let allowed = getAllowedIDs(lobbies);
-
-        const sorting = document.getElementById("sortOrder").value;
-        lobbies.sort(
-          (first, second) =>
-            parseInt(second.playerCount) - parseInt(first.playerCount)
-        );
-        if (sorting != "descending") lobbies.reverse();
-
-        setLobbyCount(lobbyCount, lobbyCountMax);
-        setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
-
-        if (lobbies.length == 0)
-          document.getElementById("notFound").classList.remove("hidden");
-        else document.getElementById("notFound").classList.add("hidden");
-
-        for (const lobby of lobbies) {
-          if (controller?.signal?.aborted == true) return;
-          if (
-            await createLobby(
-              lobby,
-              controller?.signal,
-              !allowed.includes(lobby.lobbyId)
-            )
-          )
-            moreInfoUpdated = true;
-        }
-        if (moreInfoUpdated == false) hideShow(true);
-      } else {
+        setLobbyCount(-1);
+        setPlayerCount(-1, -1);
         hideShow(true);
+      } else {
+        error.classList.add("hidden");
+
+        if (json.interval) refreshInterval = parseInt(json.interval);
+
+        if (json.date != null) {
+          refresh.setAttribute("date", json.date);
+          const date = Date.parse(json.date);
+          refresh.textContent = "Last Refresh: " + timeSince(date);
+          refresh.classList.remove("hidden");
+        } else {
+          refresh.removeAttribute("date");
+          refresh.textContent = "Last Refresh: N/A";
+          refresh.classList.add("hidden");
+        }
+
+        if (json.lobbies != null) {
+          let moreInfoUpdated = false;
+          let lobbyCountMax = json.lobbies.length;
+          let lobbies = json.lobbies;
+
+          allLobbies = structuredClone(lobbies);
+          let lobbyCount = hideLobbies();
+          let allowed = getAllowedIDs(lobbies);
+
+          const sorting = document.getElementById("sortOrder").value;
+          lobbies.sort(
+            (first, second) =>
+              parseInt(second.playerCount) - parseInt(first.playerCount)
+          );
+          if (sorting != "descending") lobbies.reverse();
+
+          setLobbyCount(lobbyCount, lobbyCountMax);
+          setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
+
+          if (lobbies.length == 0)
+            document.getElementById("notFound").classList.remove("hidden");
+          else document.getElementById("notFound").classList.add("hidden");
+
+          for (const lobby of lobbies) {
+            if (controller?.signal?.aborted == true) return;
+            if (
+              await createLobby(
+                lobby,
+                controller?.signal,
+                !allowed.includes(lobby.lobbyId)
+              )
+            )
+              moreInfoUpdated = true;
+          }
+          if (moreInfoUpdated == false) hideShow(true);
+        } else {
+          hideShow(true);
+        }
       }
+    } finally {
+      refreshBtn.textContent = "Refresh";
+      refreshBtn.classList.remove("inProgress");
+      refreshBtn.blocked = false;
+      if (refresh.hasAttribute("date"))
+        await refreshButton(Date.parse(refresh.getAttribute("date")));
     }
-  } finally {
-    refreshBtn.textContent = "Refresh";
-    refreshBtn.classList.remove("inProgress");
-    refreshBtn.blocked = false;
-    if (refresh.hasAttribute("date"))
-      await refreshButton(Date.parse(refresh.getAttribute("date")));
+  } catch (ex) {
+    const error = document.getElementsByClassName("error")[0];
+    error.textContent =
+      "Failed to create lobbies, check the console for more information";
+    error.classList.remove("hidden");
+    console.error("Failed to create lobbies: " + ex);
+
+    const lobbies = document.getElementById("lobbies");
+    lobbies.replaceChildren();
+    hideShow(true);
   }
 }
 
@@ -165,16 +182,12 @@ async function createLobby(lobby, signal, hidden) {
     if (signal?.aborted != true) await moreInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyId);
-  lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML =
-    DOMPurify.sanitize(
-      convertToHTML(
-        lobby.lobbyName != ""
-          ? lobby.lobbyName
-          : `${lobby.lobbyHostName}'s Lobby`
-      )
-    );
-  lobbyElem.getElementsByClassName("lobbyHostName")[0].innerHTML =
-    DOMPurify.sanitize(convertToHTML(lobby.lobbyHostName));
+  lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
+    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
+  );
+  lobbyElem.getElementsByClassName("lobbyHostName")[0].innerHTML = convert(
+    lobby.lobbyHostName
+  );
   censorModTitle(
     lobbyElem.getElementsByClassName("levelTitle")[0],
     lobby.levelModId,
@@ -184,7 +197,7 @@ async function createLobby(lobby, signal, hidden) {
 
   lobbyElem.getElementsByClassName("gamemodeTitle")[0].innerHTML =
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
-      ? DOMPurify.sanitize(convertToHTML(lobby.gamemodeTitle))
+      ? convert(lobby.gamemodeTitle)
       : "Sandbox";
 
   const playerCount = lobbyElem.getElementsByClassName("lobbyPlayerCount")[0];
@@ -249,10 +262,8 @@ async function moreInfo(lobby, thumbnail, signal) {
   moreInfoView = lobby.lobbyId;
   const lobbyInfo = document.getElementById("moreDetails");
   const header = lobbyInfo.getElementsByClassName("header")[0];
-  header.getElementsByClassName("lobbyTitle")[0].innerHTML = DOMPurify.sanitize(
-    convertToHTML(
-      lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
-    )
+  header.getElementsByClassName("lobbyTitle")[0].innerHTML = convert(
+    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
   );
   const content = lobbyInfo.getElementsByClassName("content")[0];
   const right = content.getElementsByClassName("right-content")[0];
@@ -260,15 +271,12 @@ async function moreInfo(lobby, thumbnail, signal) {
   left
     .getElementsByClassName("thumbnail")[0]
     .setAttribute("src", thumbnail.thumbnail);
-  right.getElementsByClassName("lobbyDescription")[0].innerHTML =
-    DOMPurify.sanitize(
-      convertToHTML(
-        (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
-          "\n",
-          "<br>"
-        )
-      )
-    );
+  right.getElementsByClassName("lobbyDescription")[0].innerHTML = convert(
+    (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
+      "\n",
+      "<br>"
+    )
+  );
 
   censorModTitle(
     right.getElementsByClassName("levelTitle")[0],
@@ -279,33 +287,29 @@ async function moreInfo(lobby, thumbnail, signal) {
 
   right.getElementsByClassName("gamemode")[0].innerHTML =
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
-      ? DOMPurify.sanitize(
-          `${convertToHTML(lobby.gamemodeTitle)} (${lobby.gamemodeBarcode})`
-        )
+      ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
       : "Sandbox";
 
   const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
-  playersTitle.innerHTML = DOMPurify.sanitize(
-    `Players <span class="plrCount">(${lobby.playerCount}/${lobby.maxPlayers})</span>`
-  );
+  const plrCount = playersTitle.getElementsByClassName("plrCount")[0];
+  plrCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
 
-  if (lobby.playerCount >= lobby.maxPlayers)
-    playersTitle.getElementsByClassName("plrCount")[0].style.color = "#FF0000";
-  else
-    playersTitle.getElementsByClassName("plrCount")[0].style.color = "#00FF00";
+  if (lobby.playerCount >= lobby.maxPlayers) plrCount.style.color = "#FF0000";
+  else plrCount.style.color = "#00FF00";
 
   const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
-  host.innerHTML = `Host: ${DOMPurify.sanitize(
-    convertToHTML(lobby.lobbyHostName)
-  )}`;
+  host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;
 
   const playersList = lobbyInfo.getElementsByClassName("playersGrid")[0];
   playersList.replaceChildren();
   const players = lobby.playerList.players;
-  players.sort(
-    (first, second) =>
-      parseInt(second.permissionLevel) - parseInt(first.permissionLevel)
-  );
+  players.sort((first, second) => {
+    if (second.longId == lobby.lobbyId) return 100;
+
+    if (first.longId == lobby.lobbyId) return -100;
+
+    return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
+  });
   for (const player of players) {
     if (
       (!player.username || player.username == "") &&
@@ -326,13 +330,11 @@ async function moreInfo(lobby, thumbnail, signal) {
     let name = hasNickname ? player.nickname : player.username;
     if (!player.nickname && !player.username) name = "N/A";
     if (name.includes("\n")) name = name.split("\n")[0];
-    playerElem.getElementsByClassName("name")[0].innerHTML = DOMPurify.sanitize(
-      convertToHTML(name)
-    );
+    playerElem.getElementsByClassName("name")[0].innerHTML = convert(name);
     const username = playerElem.getElementsByClassName("username")[0];
     if (hasNickname) {
       username.classList.remove("hidden");
-      username.innerHTML = DOMPurify.sanitize(convertToHTML(player.username));
+      username.innerHTML = convert(player.username);
     } else {
       username.classList.add("hidden");
     }
@@ -387,6 +389,27 @@ function colorPermission(perm) {
     case 2:
       return '<span class="inheritParent" style="color: #FFBF00">OWNER</span>';
   }
+}
+
+function convert(text) {
+  return DOMPurify.sanitize(convertToHTML(censorWords(text)));
+}
+
+function censorWords(text) {
+  let mapped = [];
+  let plain = text.replace(/<.*?>/g, (match, offset) => {
+    mapped.push({ tag: match, offset: offset });
+    return "";
+  });
+  for (const s of profanities) {
+    let regex = new RegExp(s, "gmi");
+    plain = plain.replaceAll(regex, "*".repeat(s.length));
+  }
+  for (const m of mapped) {
+    plain =
+      plain.slice(0, m.offset) + m.tag + plain.slice(m.offset, plain.length);
+  }
+  return plain;
 }
 
 function hideShow(hide) {
@@ -481,7 +504,7 @@ async function setThumbnail(elem, modId, search, isAvatar) {
 function modRedirect(id, name) {
   if (id == -1) return name;
 
-  return `<a class="levelRedirect" href="https://mod.io/search/mods/${id}" target="_blank" rel="noopener noreferrer"">${DOMPurify.sanitize(
+  return `<a class="levelRedirect" href="https://mod.io/search/mods/${id}" target="_blank" rel="noopener noreferrer"">${convert(
     name
   )}</a>`;
 }
@@ -584,6 +607,22 @@ function filterLobbies(lobbies) {
   if (!document.getElementById("showOnePlayerLobbies").checked)
     lobbies = lobbies.filter((i) => i.playerCount > 1);
 
+  const rpStrings = ["hood", "rp", "war", "roleplay"];
+  if (!document.getElementById("showRPLobbies").checked) {
+    lobbies = lobbies.filter((i) => {
+      if (!i || i == "") return true;
+      let found = false;
+      for (const s of rpStrings) {
+        const iName = Converter.removeRichText(i.lobbyName);
+        if (iName.toLowerCase().includes(s.toLowerCase())) {
+          found = true;
+          break;
+        }
+      }
+      return !found;
+    });
+  }
+
   return lobbies;
 }
 
@@ -615,6 +654,18 @@ async function updateFilters() {
   setLobbyCount(lobbies, lobbyCountMax);
 }
 
+async function loadProfanities() {
+  try {
+    const res = await fetch(PROFANITY_LIST);
+    if (res.ok) {
+      const json = await res.json();
+      for (const word of json.words) profanities.push(word);
+    }
+  } catch (ex) {
+    console.error(ex);
+  }
+}
+
 window.addEventListener("load", async (e) => {
   hideShow(true);
   document
@@ -622,6 +673,9 @@ window.addEventListener("load", async (e) => {
     .addEventListener("change", async () => await updateFilters());
   document
     .getElementById("showOnePlayerLobbies")
+    .addEventListener("change", async () => await updateFilters());
+  document
+    .getElementById("showRPLobbies")
     .addEventListener("change", async () => await updateFilters());
   document
     .getElementById("showNSFW")
@@ -636,6 +690,7 @@ window.addEventListener("load", async (e) => {
     .getElementById("closeMoreInfo")
     .addEventListener("click", (e) => hideShow(true));
   updateTime();
+  await loadProfanities();
   await createLobbies();
 });
 
