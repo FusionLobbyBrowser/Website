@@ -12,4 +12,6 @@ Third-party Libraries used as Source Code:
 
 Icons from [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) were used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
 
+Profanity List from [Fusion-Lists](https://github.com/Lakatrazz/Fusion-Lists) was used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/Fusion-Lists/blob/main/LICENSE) for the full License.
+
 The style for checkboxes is from [CSS Scan](https://getcssscan.com/css-checkboxes-examples)
