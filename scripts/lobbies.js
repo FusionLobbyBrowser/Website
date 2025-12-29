@@ -396,6 +396,8 @@ function convert(text) {
 }
 
 function censorWords(text) {
+  if (!document.getElementById("filterProfanities").checked) return text;
+
   let mapped = [];
   let plain = text.replace(/<.*?>/g, (match, offset) => {
     mapped.push({ tag: match, offset: offset });
@@ -684,11 +686,14 @@ window.addEventListener("load", async (e) => {
     .getElementById("sortOrder")
     .addEventListener("change", async () => await createLobbies());
   document
+    .getElementById("filterProfanities")
+    .addEventListener("change", async () => await createLobbies());
+  document
     .getElementById("refreshButton")
-    .addEventListener("click", async (e) => await createLobbies());
+    .addEventListener("click", async () => await createLobbies());
   document
     .getElementById("closeMoreInfo")
-    .addEventListener("click", (e) => hideShow(true));
+    .addEventListener("click", () => hideShow(true));
   updateTime();
   await loadProfanities();
   await createLobbies();

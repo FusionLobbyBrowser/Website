@@ -142,6 +142,10 @@ ul {
 
 /* Code from https://getcssscan.com/css-checkboxes-examples */
 
+.checkbox-wrapper {
+  margin-bottom: 0.1rem;
+}
+
 .checkbox-wrapper input {
   display: inline-block;
   appearance: none;
