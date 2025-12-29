@@ -300,7 +300,7 @@ async function moreInfo(lobby, thumbnail, signal) {
   const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
   host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;
 
-  const playersList = lobbyInfo.getElementsByClassName("playersGrid")[0];
+  const playersList = lobbyInfo.getElementsByClassName("players")[0];
   playersList.replaceChildren();
   const players = lobby.playerList.players;
   players.sort((first, second) => {
@@ -420,7 +420,7 @@ function hideShow(hide) {
     "#moreDetails-outer",
     ".content",
     ".playersTitle",
-    ".playersGrid",
+    ".players",
   ];
   elements.forEach((match) => {
     const elem = document.querySelector(match);
@@ -669,6 +669,7 @@ async function loadProfanities() {
 }
 
 window.addEventListener("load", async (e) => {
+  document.getElementById("javascriptRequired").classList.add("hidden");
   hideShow(true);
   document
     .getElementById("showFullLobbies")

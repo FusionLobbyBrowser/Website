@@ -53,15 +53,17 @@
   </header>
   <div id="moreDetails-outer" class="hidden">
     <div id="moreDetails" class="hidden">
-      <div class="header">
-        <p class="lobbyTitle">HAHOOS's Lobby!</p>
-        <a id="closeMoreInfo" href="#">Close</a>
+      <div class="header-outer">
+        <div class="header">
+          <p class="lobbyTitle">HAHOOS's Lobby!</p>
+          <a id="closeMoreInfo" href="#">Close</a>
+        </div>
       </div>
       <div class="content hidden">
-        <div class="left-content">
+        <div class="left-content side">
           <img class="thumbnail" src="images/templateLevel.png">
         </div>
-        <div class="right-content">
+        <div class="right-content side">
           <p class="detail">Description</p>
           <p class="detail-info lobbyDescription">it's been 5 hours AND A HALF without Bonelab, I can’t stop
             shaking and I’m having severe mental breakdowns. I woke up
@@ -86,49 +88,52 @@
       </div>
       <p class="playersTitle hidden">Players <span class="plrCount">(11/15)</span></p>
       <p class="lobbyHost">Host: asjdjkasdjkasjkdajskd</p>
-      <div class="playersGrid hidden">
+      <div class="players hidden">
       </div>
     </div>
   </div>
   <h2 class="lobbyHeader hidden" align="center">Lobbies (10)</h2>
-  <p class="lobbyInfo">There are currently <span class="playerCount">-1 players</span> playing on <span
+  <p class="lobbyInfo hidden">There are currently <span class="playerCount">-1 players</span> playing on <span
       class="lobbyCount">-1 lobbies</span></p>
   <p id="lobbyLimit" class="hidden">Steam has a limit of 50 lobbies, due to the high number of lobbies some may not
     appear and some may
     not be joinable. This is a
     limit implemented by Steam themselves and nothing can be done about it!</p>
-  <div id="searchOptions">
-    <h2 id="searchTitle">Options</h2>
-    <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="autoRefresh" name="Auto Refresh" checked />
-      <label for="autoRefresh">Auto Refresh</label>
+  <p id="javascriptRequired">This site requires JavaScript to be enabled.</p>
+  <div id="searchOptions-outer">
+    <div id="searchOptions">
+      <h2 id="searchTitle">Options</h2>
+      <div class="checkbox-wrapper">
+        <input align="center" type="checkbox" id="autoRefresh" name="Auto Refresh" checked />
+        <label for="autoRefresh">Auto Refresh</label>
+      </div>
+      <div cla <div class="checkbox-wrapper">
+        <input align="center" type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
+        <label for="showFullLobbies">Show Full
+          Lobbies</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input align="center" type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
+        <label for="showFullLobbies">Show 1 Player Lobbies</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input align="center" type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
+        <label for="showFullLobbies">Show Roleplay Lobbies</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input align="center" type="checkbox" id="filterProfanities" name="Filter Profanities" checked />
+        <label for="filterProfanities">Filter Profanities</label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input align="center" type="checkbox" id="showNSFW" name="Show NSFW" />
+        <label for="showNSFWThumbnails">Show NSFW</label>
+      </div>
+      <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
+      <select name="sortOrder" id="sortOrder">
+        <option value="descending">Descending (most -> least players)</option>
+        <option value="ascending">Ascending (least -> most players)</option>
+      </select>
     </div>
-    <div cla <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
-      <label for="showFullLobbies">Show Full
-        Lobbies</label>
-    </div>
-    <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
-      <label for="showFullLobbies">Show 1 Player Lobbies</label>
-    </div>
-    <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
-      <label for="showFullLobbies">Show Roleplay Lobbies</label>
-    </div>
-    <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="filterProfanities" name="Filter Profanities" checked />
-      <label for="filterProfanities">Filter Profanities</label>
-    </div>
-    <div class="checkbox-wrapper">
-      <input align="center" type="checkbox" id="showNSFW" name="Show NSFW" />
-      <label for="showNSFWThumbnails">Show NSFW</label>
-    </div>
-    <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
-    <select name="sortOrder" id="sortOrder">
-      <option value="descending">Descending (most -> least players)</option>
-      <option value="ascending">Ascending (least -> most players)</option>
-    </select>
   </div>
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>

@@ -97,8 +97,20 @@ ul {
 }
 
 .header {
-  display: grid;
-  place-items: center;
+  width: 100%;
+}
+
+.header-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  width: 100%;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 #closeMoreInfo {
@@ -124,9 +136,17 @@ ul {
   text-align: center;
 }
 
+#searchOptions-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  width: 100%;
+}
+
 #searchOptions {
-  display: grid;
-  place-items: center;
+  width: 100%;
 }
 
 #searchTitle {
@@ -138,6 +158,15 @@ ul {
 .lobby > .info {
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
+}
+
+.side {
+  width: 50%;
+}
+
+#javascriptRequired {
+  color: red;
+  text-align: center;
 }
 
 /* Code from https://getcssscan.com/css-checkboxes-examples */
@@ -300,11 +329,11 @@ label {
 .playersTitle {
   font-size: 18px;
   text-align: left;
-  margin-left: 2.5rem;
+  margin-left: 1rem;
   margin-bottom: 0.25rem;
 }
 
-.playersGrid {
+.players {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -368,7 +397,7 @@ label {
   font-size: 12.5px;
 
   text-align: left;
-  margin-left: 2.5rem;
+  margin-left: 1rem;
   margin-top: 0;
 }
 
