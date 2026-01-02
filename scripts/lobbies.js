@@ -398,6 +398,8 @@ function convert(text) {
 function censorWords(text) {
   if (!document.getElementById("filterProfanities").checked) return text;
 
+  if (text == null || text == "") return text;
+
   let mapped = [];
   let plain = text.replace(/<.*?>/g, (match, offset) => {
     mapped.push({ tag: match, offset: offset });

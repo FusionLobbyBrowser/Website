@@ -8,23 +8,23 @@ body {
 }
 
 .header-moreInfoOpened {
-  padding-bottom: 2.5rem;
+  padding-bottom: 2.5em;
 }
 
 header {
-  margin-top: 5rem;
+  margin-top: 5em;
   text-align: center;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.5em;
 }
 
 h1 {
-  font-size: 1.875rem;
+  font-size: 1.875em;
   font-family: "Montserrat", serif;
   font-weight: 400;
 }
 
 h2 {
-  font-size: 1.25rem;
+  font-size: 1.25em;
   font-family: "Montserrat", serif;
   font-weight: 400;
 }
@@ -55,7 +55,7 @@ h2 {
 }
 
 #sortOrderLabel {
-  margin-top: 1rem;
+  margin-top: 1em;
 }
 
 a {
@@ -87,7 +87,7 @@ a {
   font-family: "Ubuntu", serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 ul {
@@ -119,12 +119,12 @@ ul {
 }
 
 #lobbies {
-  margin-top: 2rem;
+  margin-top: 2em;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 2em;
 }
 
 #refresh {
@@ -152,12 +152,12 @@ ul {
 #searchTitle {
   margin-top: 0;
   padding: 0;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.35em;
 }
 
 .lobby > .info {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
 
 .side {
@@ -172,7 +172,7 @@ ul {
 /* Code from https://getcssscan.com/css-checkboxes-examples */
 
 .checkbox-wrapper {
-  margin-bottom: 0.1rem;
+  margin-bottom: 0.1em;
 }
 
 .checkbox-wrapper input {
@@ -267,11 +267,11 @@ label {
   background-color: rgb(20, 20, 20);
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
   text-align: center;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 1em;
+  padding-bottom: 1em;
   border-radius: 15px;
 
-  width: 14rem;
+  width: 14em;
 
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -290,8 +290,8 @@ label {
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
   border-radius: 10px;
 
-  width: 54rem;
-  margin-bottom: 3rem;
+  width: 54em;
+  margin-bottom: 3em;
 }
 
 #searchOptions > li {
@@ -329,8 +329,8 @@ label {
 .playersTitle {
   font-size: 18px;
   text-align: left;
-  margin-left: 1rem;
-  margin-bottom: 0.25rem;
+  margin-left: 1em;
+  margin-bottom: 0.25em;
 }
 
 .players {
@@ -338,10 +338,10 @@ label {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
-  gap: 1.5rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  margin-bottom: 1em;
+  gap: 1.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 #lobbyLimit {
@@ -350,13 +350,13 @@ label {
 }
 
 .detail {
-  font-size: 0.938rem;
+  font-size: 0.938em;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
 }
 
 .detail-info {
-  font-size: 0.781rem;
+  font-size: 0.781em;
   padding-top: 0px;
   margin-top: 0px;
   word-wrap: break-word;
@@ -369,8 +369,8 @@ label {
 }
 
 .lobbyInfo {
-  margin-top: 0.35rem;
-  margin-bottom: 0.2rem;
+  margin-top: 0.35em;
+  margin-bottom: 0.2em;
   text-align: center;
 }
 
@@ -397,7 +397,7 @@ label {
   font-size: 12.5px;
 
   text-align: left;
-  margin-left: 1rem;
+  margin-left: 1em;
   margin-top: 0;
 }
 
@@ -409,12 +409,12 @@ label {
 
 .left-content {
   flex: 1;
-  padding: 1rem;
+  padding: 1em;
 }
 
 .right-content {
   flex: 1;
-  padding: 1rem;
+  padding: 1em;
 }
 
 .thumbnail {
@@ -424,22 +424,22 @@ label {
 
 .avatarThumbnail {
   aspect-ratio: 16 / 9;
-  width: 8rem;
+  width: 8em;
 }
 
 .lobbyThumbnail {
   aspect-ratio: 16 / 9;
-  width: 10rem;
+  width: 10em;
 }
 
 .player {
   background-color: rgb(10, 10, 10);
   box-shadow: 10px 5px 5px rgb(5, 5, 5);
-  width: 9rem;
+  width: 9em;
   text-align: center;
-  padding-top: 1rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-top: 1em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   border-radius: 15px;
 
   word-wrap: break-word;
@@ -461,14 +461,14 @@ label {
   word-wrap: break-word;
   color: grey;
   font-size: 12px;
-  margin-top: 0.25rem;
+  margin-top: 0.25em;
   margin-bottom: 0;
 }
 
 .permissions {
   color: white;
   font-size: 11px;
-  margin-top: 0.25rem;
+  margin-top: 0.25em;
 }
 
 button {
