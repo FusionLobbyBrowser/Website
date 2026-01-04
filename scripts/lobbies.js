@@ -102,7 +102,7 @@ async function createLobbies() {
               await createLobby(
                 lobby,
                 controller?.signal,
-                !allowed.includes(lobby.lobbyId)
+                !allowed.includes(lobby.lobbyID)
               )
             )
               moreInfoUpdated = true;
@@ -172,16 +172,16 @@ async function createLobby(lobby, signal, hidden) {
   else lobbyElem.classList.remove("hidden");
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
-    lobby.levelModId,
+    lobby.levelModID,
     lobby.levelBarcode,
     false
   );
 
-  if (moreInfoView != -1 && moreInfoView == lobby.lobbyId) {
+  if (moreInfoView != -1 && moreInfoView == lobby.lobbyID) {
     moreInfoUpdated = true;
     if (signal?.aborted != true) await moreInfo(lobby, thumb, signal);
   }
-  lobbyElem.setAttribute("lobbyId", lobby.lobbyId);
+  lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
   );
@@ -190,7 +190,7 @@ async function createLobby(lobby, signal, hidden) {
   );
   censorModTitle(
     lobbyElem.getElementsByClassName("levelTitle")[0],
-    lobby.levelModId,
+    lobby.levelModID,
     lobby.levelTitle,
     thumb.nsfw
   );
@@ -225,7 +225,7 @@ async function createLobby(lobby, signal, hidden) {
   };
 
   moreInfoBtn.onclick = async () => {
-    moreInfoView = lobby.lobbyId;
+    moreInfoView = lobby.lobbyID;
 
     setAllLobbiesMoreInfo(false);
     try {
@@ -259,7 +259,7 @@ async function moreInfo(lobby, thumbnail, signal) {
 
   var controller = new AbortController();
   moreInfoSignal = controller;
-  moreInfoView = lobby.lobbyId;
+  moreInfoView = lobby.lobbyID;
   const lobbyInfo = document.getElementById("moreDetails");
   const header = lobbyInfo.getElementsByClassName("header")[0];
   header.getElementsByClassName("lobbyTitle")[0].innerHTML = convert(
@@ -280,7 +280,7 @@ async function moreInfo(lobby, thumbnail, signal) {
 
   censorModTitle(
     right.getElementsByClassName("levelTitle")[0],
-    lobby.levelModId,
+    lobby.levelModID,
     lobby.levelTitle,
     thumbnail.nsfw
   );
@@ -304,9 +304,9 @@ async function moreInfo(lobby, thumbnail, signal) {
   playersList.replaceChildren();
   const players = lobby.playerList.players;
   players.sort((first, second) => {
-    if (second.longId == lobby.lobbyId) return 100;
+    if (second.platformID == lobby.lobbyID) return 100;
 
-    if (first.longId == lobby.lobbyId) return -100;
+    if (first.platformID == lobby.lobbyID) return -100;
 
     return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
   });
@@ -322,7 +322,7 @@ async function moreInfo(lobby, thumbnail, signal) {
     const playerElem = toCopy.cloneNode(true);
     const thumb = await setThumbnail(
       playerElem.getElementsByClassName("avatarThumbnail")[0],
-      player.avatarModId,
+      player.avatarModID,
       player.avatarTitle,
       true
     );
@@ -347,16 +347,16 @@ async function moreInfo(lobby, thumbnail, signal) {
 
     censorModTitle(
       playerElem.getElementsByClassName("avatarTitle")[0],
-      player.avatarModId,
+      player.avatarModID,
       avatar,
       thumb.nsfw
     );
     playerElem.classList.remove("playerToCopy");
-    playerElem.setAttribute("playerId", player.longId);
+    playerElem.setAttribute("playerId", player.platformID);
     if (signal?.aborted == true || controller?.signal?.aborted == true) return;
     playersList.appendChild(playerElem);
   }
-  lobbyInfo.setAttribute("lobbyId", lobby.lobbyId);
+  lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
   hideShow(false);
 }
 
@@ -634,7 +634,7 @@ function getAllowedIDs(lobbies) {
   let list = [];
   var filtered = filterLobbies(structuredClone(lobbies));
   filtered.forEach((x) => {
-    list.push(x.lobbyId);
+    list.push(x.lobbyID);
   });
   return list;
 }
