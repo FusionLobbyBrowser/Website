@@ -18,13 +18,13 @@ header {
 }
 
 h1 {
-  font-size: 1.875em;
+  font-size: 1.875rem;
   font-family: "Montserrat", serif;
   font-weight: 400;
 }
 
 h2 {
-  font-size: 1.25em;
+  font-size: 1.25rem;
   font-family: "Montserrat", serif;
   font-weight: 400;
 }
@@ -80,14 +80,20 @@ a:hover {
 }
 
 p,
-span,
 button,
 label,
 a {
   font-family: "Ubuntu", serif;
   font-weight: 400;
   font-style: normal;
-  font-size: 1em;
+  font-size: 1rem;
+}
+
+span {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
 }
 
 ul {
@@ -129,7 +135,14 @@ ul {
 
 #refresh {
   color: #767676;
-  font-size: 12px;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+#uptime {
+  color: #767676;
+  font-size: 0.75rem;
+  margin-bottom: 0;
 }
 
 #notFound {
@@ -247,7 +260,7 @@ label {
 
 .error {
   color: #f4320b;
-  font-size: 15px;
+  font-size: 0.938rem;
   text-align: center;
 }
 
@@ -319,7 +332,7 @@ label {
 }
 
 .lobbyTitle {
-  font-size: 25px;
+  font-size: 1.563rem;
   text-align: center;
 
   padding-bottom: 0;
@@ -327,10 +340,19 @@ label {
 }
 
 .playersTitle {
-  font-size: 18px;
+  font-size: 1.125rem;
   text-align: left;
   margin-left: 1em;
   margin-bottom: 0.25em;
+}
+
+.lobbyHost {
+  color: rgb(100, 100, 100);
+  font-size: 0.781rem;
+
+  text-align: left;
+  margin-left: 1.5em;
+  margin-top: 0;
 }
 
 .players {
@@ -350,13 +372,13 @@ label {
 }
 
 .detail {
-  font-size: 0.938em;
+  font-size: 0.938rem;
   font-weight: 500;
   margin-bottom: 0.5em;
 }
 
 .detail-info {
-  font-size: 0.781em;
+  font-size: 0.781rem;
   padding-top: 0px;
   margin-top: 0px;
   word-wrap: break-word;
@@ -390,15 +412,6 @@ label {
 .lobbyHeader {
   margin-bottom: 0;
   padding-bottom: 0;
-}
-
-.lobbyHost {
-  color: rgb(100, 100, 100);
-  font-size: 12.5px;
-
-  text-align: left;
-  margin-left: 1em;
-  margin-top: 0;
 }
 
 @media (min-width: 800px) {
@@ -460,14 +473,14 @@ label {
 .username {
   word-wrap: break-word;
   color: grey;
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 0.25em;
   margin-bottom: 0;
 }
 
 .permissions {
   color: white;
-  font-size: 11px;
+  font-size: 0.688rem;
   margin-top: 0.25em;
 }
 

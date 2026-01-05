@@ -106,7 +106,7 @@ const colors = [
 
 const color4unity2html = {
   pattern: new RegExp(
-    "(?:<color=(?<Color>[^>]*)>|<(?<Color>#[a-fA-F0-9]{6})>)(?<Content>.*?)(?=</color>|<color=[^>]*>|<#[a-fA-F0-9]{6}>|$)"
+    "(?:<color=(?<Color>[^>]*)>|<(?<Color>#[a-fA-F0-9]{3,8})>)(?<Content>.*?)(?=</color>|<color=[^>]*>|<#[a-fA-F0-9]{3,8}>|$)"
   ),
   replace: (match, ...args) => {
     let { Color, Content } = args.pop();
@@ -120,7 +120,7 @@ const color4unity2html = {
       return "Error!";
     }
 
-    if (!Color.match(new RegExp("#[a-fA-F0-9]{6}"))) {
+    if (!Color.match(new RegExp("#[a-fA-F0-9]{3,8}"))) {
       hex = false;
     }
 
@@ -132,7 +132,7 @@ const color4unity2html = {
     }
 
     return `<span class="inheritParent" style="color: ${
-      color ? color.color : Color.slice(0, 7).toLowerCase()
+      color ? color.color : Color.toLowerCase()
     }">${Content}</span>`;
   },
 };
@@ -142,7 +142,7 @@ const color4html2unity = {
     '<span style="color: *([^>"]*)">(.*?(?!<span).*?)</span>'
   ),
   replace: (match, p1, p2) => {
-    if (!p1.match(new RegExp("#[a-fA-F0-9]{6}"))) {
+    if (!p1.match(new RegExp("#[a-fA-F0-9]{3,8}"))) {
       throw new Error(`error color code : ${match}`);
     }
 

@@ -10,6 +10,7 @@ const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
 
 const HTTP_JOIN = "http://localhost:25712/join?code=[code]&layer=SteamVR";
+const URI_JOIN = "bonelab-flb://SteamVR-[code]/";
 
 let allLobbies;
 
@@ -29,6 +30,7 @@ async function createLobbies() {
     lobbiesSignal = controller;
     const refreshBtn = document.getElementById("refreshButton");
     const refresh = document.getElementById("refresh");
+    const uptime = document.getElementById("uptime");
     const highLobby = document.getElementById("lobbyLimit");
     try {
       refreshBtn.classList.remove("blocked");
@@ -38,7 +40,8 @@ async function createLobbies() {
 
       const lobbies = document.getElementById("lobbies");
       lobbies.replaceChildren();
-      const json = await getJSON();
+      const res = await getJSON();
+      const json = res.res ?? res;
       const error = document.getElementsByClassName("error")[0];
       if (json.error != null) {
         if (!(await isLobbyOnline())) {
@@ -51,6 +54,10 @@ async function createLobbies() {
         refresh.removeAttribute("date");
         refresh.textContent = "Last Refresh: N/A";
         refresh.classList.add("hidden");
+
+        uptime.removeAttribute("date");
+        uptime.textContent = "Backend up since: N/A";
+        uptime.classList.add("hidden");
 
         highLobby.classList.add("hidden");
 
@@ -71,6 +78,18 @@ async function createLobbies() {
           refresh.removeAttribute("date");
           refresh.textContent = "Last Refresh: N/A";
           refresh.classList.add("hidden");
+        }
+
+        if (res.uptime != null) {
+          const uptimeNum = Number(res.uptime);
+          uptime.setAttribute("date", uptimeNum);
+          const date = new Date(uptimeNum * 1000);
+          uptime.textContent = "Backend up since: " + timeSince(date);
+          uptime.classList.remove("hidden");
+        } else {
+          uptime.removeAttribute("date");
+          uptime.textContent = "Backend up since: N/A";
+          uptime.classList.add("hidden");
         }
 
         if (json.lobbies != null) {
@@ -358,6 +377,7 @@ async function moreInfo(lobby, thumbnail, signal) {
   }
   lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
   hideShow(false);
+  lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function censorModTitle(elem, modId, title, nsfw) {
@@ -552,7 +572,10 @@ async function getJSON() {
     const response = await fetch(LOBBY_LIST);
     if (!response.ok) return { error: await response.text() };
 
-    return await response.json();
+    return {
+      res: await response.json(),
+      uptime: response.headers.get("server-uptime"),
+    };
   } catch (ex) {
     console.error(ex);
     return {
@@ -565,18 +588,19 @@ async function getJSON() {
 async function requestJoin(code) {
   try {
     const response = await fetch(HTTP_JOIN.replace("[code]", code));
-    if (!response.ok) window.location.replace(`bonelab-flb://SteamVR-${code}/`);
+    if (!response.ok) window.location.replace(URI_JOIN.replace("[code]", code));
   } catch (ex) {
     console.error(ex);
-    window.location.replace(`bonelab-flb://SteamVR-${code}/`);
+    window.location.replace(URI_JOIN.replace("[code]", code));
   }
   window.alert(
-    "You don't join a lobby when you pressed the button? Install the mod (link on the page, press the red 'mod' text). Have the mod already and cant join? Create an issue on github!"
+    "You don't join a lobby when you pressed the button? Install the mod (link on the page, press the red 'mod' text). Have the mod already and cant join? Create an issue on Github!"
   );
 }
 
 // https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
 // To be fair I could have done it myself, but I'm not really familiar with the language
+// EDIT: I was fucking lazy and i just thought there was a method in Date that does it automatically, but well there is none.
 function timeSince(date) {
   var seconds = Math.floor((new Date() - date) / 1000);
 
@@ -640,6 +664,8 @@ function getAllowedIDs(lobbies) {
 }
 
 function hideLobbies() {
+  if (!allLobbies) return;
+
   let list = getAllowedIDs(allLobbies);
 
   var lobbies = document.getElementById("lobbies").children;
@@ -652,6 +678,8 @@ function hideLobbies() {
 }
 
 async function updateFilters() {
+  if (!allLobbies) return;
+
   let lobbyCountMax = allLobbies.length;
 
   let lobbies = hideLobbies();
@@ -670,40 +698,49 @@ async function loadProfanities() {
   }
 }
 
+function filterEvent(elem, redo = false) {
+  if (!elem) return;
+
+  const element = document.getElementById(elem);
+  if (!element) return;
+
+  element.addEventListener("change", async () => {
+    if (redo) await createLobbies();
+    else await updateFilters();
+  });
+}
+
 window.addEventListener("load", async (e) => {
   document.getElementById("javascriptRequired").classList.add("hidden");
+
   hideShow(true);
-  document
-    .getElementById("showFullLobbies")
-    .addEventListener("change", async () => await updateFilters());
-  document
-    .getElementById("showOnePlayerLobbies")
-    .addEventListener("change", async () => await updateFilters());
-  document
-    .getElementById("showRPLobbies")
-    .addEventListener("change", async () => await updateFilters());
-  document
-    .getElementById("showNSFW")
-    .addEventListener("change", async () => await createLobbies());
-  document
-    .getElementById("sortOrder")
-    .addEventListener("change", async () => await createLobbies());
-  document
-    .getElementById("filterProfanities")
-    .addEventListener("change", async () => await createLobbies());
+
+  // Do not require lobby list to be created again
+  filterEvent("showFullLobbies", false);
+  filterEvent("showOnePlayerLobbies", false);
+  filterEvent("showRPLobbies", false);
+
+  // Require the lobby list to be created again
+  filterEvent("showNSFW", true);
+  filterEvent("sortOrder", true);
+  filterEvent("filterProfanities", true);
+
   document
     .getElementById("refreshButton")
     .addEventListener("click", async () => await createLobbies());
   document
     .getElementById("closeMoreInfo")
     .addEventListener("click", () => hideShow(true));
+
   updateTime();
+
   await loadProfanities();
   await createLobbies();
 });
 
 async function updateTime() {
   const refresh = document.getElementById("refresh");
+  const uptime = document.getElementById("uptime");
   while (true) {
     if (refresh.hasAttribute("date")) {
       const date = Date.parse(refresh.getAttribute("date"));
@@ -711,6 +748,12 @@ async function updateTime() {
       refresh.classList.remove("hidden");
 
       await refreshButton(date);
+    }
+
+    if (uptime.hasAttribute("date")) {
+      const date = new Date(Number(uptime.getAttribute("date")) * 1000);
+      uptime.textContent = "Backend up since: " + timeSince(date);
+      uptime.classList.remove("hidden");
     }
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
