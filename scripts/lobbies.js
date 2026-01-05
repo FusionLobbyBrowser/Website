@@ -1,5 +1,4 @@
 import { Converter } from "./unityRichText.js";
-import DOMPurify from "./purify.es.mjs";
 import Barcodes from "./defaultBarcodes.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
