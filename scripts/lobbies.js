@@ -68,28 +68,8 @@ async function createLobbies() {
 
         if (json.interval) refreshInterval = parseInt(json.interval);
 
-        if (json.date != null) {
-          refresh.setAttribute("date", json.date);
-          const date = Date.parse(json.date);
-          refresh.textContent = "Last Refresh: " + timeAgo(date);
-          refresh.classList.remove("hidden");
-        } else {
-          refresh.removeAttribute("date");
-          refresh.textContent = "Last Refresh: N/A";
-          refresh.classList.add("hidden");
-        }
-
-        if (res.uptime != null) {
-          const uptimeNum = Number(res.uptime);
-          uptime.setAttribute("date", uptimeNum);
-          const date = new Date(uptimeNum * 1000);
-          uptime.textContent = "Backend up since: " + timeAgo(date);
-          uptime.classList.remove("hidden");
-        } else {
-          uptime.removeAttribute("date");
-          uptime.textContent = "Backend up since: N/A";
-          uptime.classList.add("hidden");
-        }
+        timeFromResponse(refresh, json.date);
+        timeFromResponse(uptime, res.uptime);
 
         if (json.lobbies != null) {
           let moreInfoUpdated = false;
@@ -136,7 +116,9 @@ async function createLobbies() {
       refreshBtn.classList.remove("inProgress");
       refreshBtn.blocked = false;
       if (refresh.hasAttribute("date"))
-        await refreshButton(Date.parse(refresh.getAttribute("date")));
+        await refreshButton(
+          new Date(Number(refresh.getAttribute("date")) * 1000),
+        );
     }
   } catch (ex) {
     const error = document.getElementsByClassName("error")[0];
@@ -152,7 +134,7 @@ async function createLobbies() {
 }
 
 async function refreshButton(date) {
-  const seconds = Math.floor((new Date() - date) / 1000);
+  const seconds = Math.floor((Date.now() - date) / 1000);
   const button = document.getElementById("refreshButton");
   if (seconds >= refreshInterval) {
     button.disabled = false;
@@ -661,9 +643,7 @@ function filterByName(lobbies, array) {
 function getAllowedIDs(lobbies) {
   let list = [];
   var filtered = filterLobbies(structuredClone(lobbies));
-  filtered.forEach((x) => {
-    list.push(x.lobbyID);
-  });
+  filtered.forEach((x) => list.push(x.lobbyID));
   return list;
 }
 
@@ -761,20 +741,38 @@ async function updateTime() {
   const refresh = document.getElementById("refresh");
   const uptime = document.getElementById("uptime");
   while (true) {
-    if (refresh.hasAttribute("date")) {
-      const date = Date.parse(refresh.getAttribute("date"));
-      refresh.textContent = "Last Refresh: " + timeAgo(date);
-      refresh.classList.remove("hidden");
+    timeAgoElem(refresh);
+    timeAgoElem(uptime);
 
-      await refreshButton(date);
-    }
-
-    if (uptime.hasAttribute("date")) {
-      const date = new Date(Number(uptime.getAttribute("date")) * 1000);
-      uptime.textContent = "Backend up since: " + timeAgo(date);
-      uptime.classList.remove("hidden");
-    }
+    await refreshButton(new Date(Number(refresh.getAttribute("date")) * 1000));
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
+}
+
+function timeAgoElem(elem) {
+  if (elem.hasAttribute("date")) {
+    const date = new Date(Number(elem.getAttribute("date")) * 1000);
+    setTimeElem(elem, timeAgo(date));
+  }
+}
+
+function setTimeElem(elem, val) {
+  if (!val) val = "N/A";
+  const text = elem.textContent.split(": ")[0];
+  elem.textContent = `${text}: ${val}`;
+  if (val == "N/A") {
+    elem.removeAttribute("date");
+    elem.classList.add("hidden");
+  } else {
+    elem.classList.remove("hidden");
+  }
+}
+
+function timeFromResponse(elem, val) {
+  if (val != null) {
+    const num = Number(val);
+    elem.setAttribute("date", num);
+  }
+  timeAgoElem(elem);
 }
