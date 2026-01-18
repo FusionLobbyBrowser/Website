@@ -18,7 +18,7 @@
 
   <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/defaultBarcodes.js" type="module" crossOrigin="anonymous"></script>
-  <script type="text/javascript" src="scripts/purify.min.js" crossOrigin="anonymous"></script>
+  <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
   <script src="scripts/lobbies.js" type="module" crossOrigin="anonymous"></script>
 </head>
 
@@ -66,21 +66,13 @@
         </div>
         <div class="right-content side">
           <p class="detail">Description</p>
-          <p class="detail-info lobbyDescription">it's been 5 hours AND A HALF without Bonelab, I can’t stop
-            shaking and I’m having severe mental breakdowns. I woke up
-            today trying to log onto Fusion but the lobbies were down, I had a major panic attack but managed to calm
-            down after a
-            few hours. I couldn’t go to work today, I am so worried that I even took my gun from the shed, thinking of
-            killing
-            myself. I am nothing without Bonelab, it is my life, it is my destiny, without Bonelab, I wouldn't be able
-            to do
-            anything. Bonelab is the best thing ever made and I can't get rid of my addiction to it, it is the best VR
-            game in
-            existence. I can't stop trembling and crying, I am very worried. I don't know what to do. Bonelab can't be
-            gone any
-            longer cause if it does then I'll go insane again.. breaking my VR Headset, controller, house, and
-            everything I own.
-            Bonelab is very amazing and I can't lose it. Bonelab is my life.</p>
+          <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
+            faucibus ex sapien vitae pellentesque sem placerat. In
+            id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+            fringilla lacus
+            nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+            vel class
+            aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
           <p class="detail">Level</p>
           <p class="detail-info levelTitle">7/11</p>
           <p class="detail">Gamemode</p>
@@ -101,38 +93,46 @@
     limit implemented by Steam themselves and nothing can be done about it!</p>
   <p id="javascriptRequired">This site requires JavaScript to be enabled.</p>
   <div id="searchOptions-outer">
-    <div id="searchOptions">
-      <h2 id="searchTitle">Options</h2>
-      <div class="checkbox-wrapper">
-        <input align="center" type="checkbox" id="autoRefresh" name="Auto Refresh" checked />
-        <label for="autoRefresh">Auto Refresh</label>
+    <div id="searchOptions" class="collapsable">
+      <a class="searchOptions-clickable" data-toggle="collapse">
+        <h2 id="searchTitle">Options</h2>
+      </a>
+      <div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="autoRefresh" name="Auto Refresh" checked />
+          <label for="autoRefresh">Auto Refresh</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
+          <label for="showFullLobbies">Show Full
+            Lobbies</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
+          <label for="showFullLobbies">Show 1 Player Lobbies</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
+          <label for="showFullLobbies">Show Roleplay Lobbies</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="showRussianLobbies" name="Show Russian Lobbies" checked />
+          <label for="showFullLobbies">Show Russian Lobbies</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="filterProfanities" name="Filter Profanities" checked />
+          <label for="filterProfanities">Filter Profanities</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="showNSFW" name="Show NSFW" />
+          <label for="showNSFW">Show NSFW</label>
+        </div>
+        <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
+        <select name="sortOrder" id="sortOrder">
+          <option value="descending">Descending (most -> least players)</option>
+          <option value="ascending">Ascending (least -> most players)</option>
+        </select>
       </div>
-      <div cla <div class="checkbox-wrapper">
-        <input align="center" type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
-        <label for="showFullLobbies">Show Full
-          Lobbies</label>
-      </div>
-      <div class="checkbox-wrapper">
-        <input align="center" type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
-        <label for="showFullLobbies">Show 1 Player Lobbies</label>
-      </div>
-      <div class="checkbox-wrapper">
-        <input align="center" type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
-        <label for="showFullLobbies">Show Roleplay Lobbies</label>
-      </div>
-      <div class="checkbox-wrapper">
-        <input align="center" type="checkbox" id="filterProfanities" name="Filter Profanities" checked />
-        <label for="filterProfanities">Filter Profanities</label>
-      </div>
-      <div class="checkbox-wrapper">
-        <input align="center" type="checkbox" id="showNSFW" name="Show NSFW" />
-        <label for="showNSFWThumbnails">Show NSFW</label>
-      </div>
-      <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
-      <select name="sortOrder" id="sortOrder">
-        <option value="descending">Descending (most -> least players)</option>
-        <option value="ascending">Ascending (least -> most players)</option>
-      </select>
     </div>
   </div>
   <p class="error hidden">Test error</p>

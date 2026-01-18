@@ -71,7 +71,7 @@ async function createLobbies() {
         if (json.date != null) {
           refresh.setAttribute("date", json.date);
           const date = Date.parse(json.date);
-          refresh.textContent = "Last Refresh: " + timeSince(date);
+          refresh.textContent = "Last Refresh: " + timeAgo(date);
           refresh.classList.remove("hidden");
         } else {
           refresh.removeAttribute("date");
@@ -83,7 +83,7 @@ async function createLobbies() {
           const uptimeNum = Number(res.uptime);
           uptime.setAttribute("date", uptimeNum);
           const date = new Date(uptimeNum * 1000);
-          uptime.textContent = "Backend up since: " + timeSince(date);
+          uptime.textContent = "Backend up since: " + timeAgo(date);
           uptime.classList.remove("hidden");
         } else {
           uptime.removeAttribute("date");
@@ -103,7 +103,7 @@ async function createLobbies() {
           const sorting = document.getElementById("sortOrder").value;
           lobbies.sort(
             (first, second) =>
-              parseInt(second.playerCount) - parseInt(first.playerCount)
+              parseInt(second.playerCount) - parseInt(first.playerCount),
           );
           if (sorting != "descending") lobbies.reverse();
 
@@ -114,13 +114,14 @@ async function createLobbies() {
             document.getElementById("notFound").classList.remove("hidden");
           else document.getElementById("notFound").classList.add("hidden");
 
+          console.log(`Creating ${lobbies.length} lobbies`);
           for (const lobby of lobbies) {
             if (controller?.signal?.aborted == true) return;
             if (
               await createLobby(
                 lobby,
                 controller?.signal,
-                !allowed.includes(lobby.lobbyID)
+                !allowed.includes(lobby.lobbyID),
               )
             )
               moreInfoUpdated = true;
@@ -180,6 +181,7 @@ async function autoRefresh() {
 }
 
 async function createLobby(lobby, signal, hidden) {
+  console.log(` > Creating lobby ${lobby.lobbyID}`);
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
@@ -192,7 +194,7 @@ async function createLobby(lobby, signal, hidden) {
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
     lobby.levelBarcode,
-    false
+    false,
   );
 
   if (moreInfoView != -1 && moreInfoView == lobby.lobbyID) {
@@ -201,16 +203,16 @@ async function createLobby(lobby, signal, hidden) {
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
-    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
+    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
   lobbyElem.getElementsByClassName("lobbyHostName")[0].innerHTML = convert(
-    lobby.lobbyHostName
+    lobby.lobbyHostName,
   );
   censorModTitle(
     lobbyElem.getElementsByClassName("levelTitle")[0],
     lobby.levelModID,
     lobby.levelTitle,
-    thumb.nsfw
+    thumb.nsfw,
   );
 
   lobbyElem.getElementsByClassName("gamemodeTitle")[0].innerHTML =
@@ -274,6 +276,7 @@ function setAllLobbiesMoreInfo(enabled) {
 
 async function moreInfo(lobby, thumbnail, signal) {
   if (moreInfoSignal) moreInfoSignal.abort();
+  console.log(` > Displaying more info for ${lobby.lobbyID}`);
 
   var controller = new AbortController();
   moreInfoSignal = controller;
@@ -281,7 +284,7 @@ async function moreInfo(lobby, thumbnail, signal) {
   const lobbyInfo = document.getElementById("moreDetails");
   const header = lobbyInfo.getElementsByClassName("header")[0];
   header.getElementsByClassName("lobbyTitle")[0].innerHTML = convert(
-    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`
+    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
   const content = lobbyInfo.getElementsByClassName("content")[0];
   const right = content.getElementsByClassName("right-content")[0];
@@ -292,15 +295,15 @@ async function moreInfo(lobby, thumbnail, signal) {
   right.getElementsByClassName("lobbyDescription")[0].innerHTML = convert(
     (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
       "\n",
-      "<br>"
-    )
+      "<br>",
+    ),
   );
 
   censorModTitle(
     right.getElementsByClassName("levelTitle")[0],
     lobby.levelModID,
     lobby.levelTitle,
-    thumbnail.nsfw
+    thumbnail.nsfw,
   );
 
   right.getElementsByClassName("gamemode")[0].innerHTML =
@@ -342,7 +345,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       playerElem.getElementsByClassName("avatarThumbnail")[0],
       player.avatarModID,
       player.avatarTitle,
-      true
+      true,
     );
     const hasNickname = player.nickname != "" && player.nickname;
     let name = hasNickname ? player.nickname : player.username;
@@ -367,7 +370,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       playerElem.getElementsByClassName("avatarTitle")[0],
       player.avatarModID,
       avatar,
-      thumb.nsfw
+      thumb.nsfw,
     );
     playerElem.classList.remove("playerToCopy");
     playerElem.setAttribute("playerId", player.platformID);
@@ -468,7 +471,7 @@ async function getThumbnail(modId, search, isAvatar) {
       (x) =>
         x.barcode == search ||
         search?.startsWith(x.name) == true ||
-        x.name == search
+        x.name == search,
     );
     if (value) {
       return {
@@ -528,7 +531,7 @@ function modRedirect(id, name) {
   if (id == -1) return name;
 
   return `<a class="levelRedirect" href="https://mod.io/search/mods/${id}" target="_blank" rel="noopener noreferrer"">${convert(
-    name
+    name,
   )}</a>`;
 }
 
@@ -549,12 +552,10 @@ function setPlayerCount(players, lobbies) {
     return;
   }
   document.getElementsByClassName("lobbyInfo")[0].classList.remove("hidden");
-  document.getElementsByClassName(
-    "playerCount"
-  )[0].textContent = `${players} players`;
-  document.getElementsByClassName(
-    "lobbyCount"
-  )[0].textContent = `${lobbies} lobbies`;
+  document.getElementsByClassName("playerCount")[0].textContent =
+    `${players} players`;
+  document.getElementsByClassName("lobbyCount")[0].textContent =
+    `${lobbies} lobbies`;
 
   const highLobby = document.getElementById("lobbyLimit");
   if (lobbies >= 49) highLobby.classList.remove("hidden");
@@ -593,38 +594,32 @@ async function requestJoin(code) {
     window.location.replace(URI_JOIN.replace("[code]", code));
   }
   window.alert(
-    "You don't join a lobby when you pressed the button? Install the mod (link on the page, press the red 'mod' text). Have the mod already and cant join? Create an issue on Github!"
+    "You don't join a lobby when you pressed the button? Install the mod (link on the page, press the red 'mod' text). Have the mod already and cant join? Create an issue on Github!",
   );
 }
 
 // https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
 // To be fair I could have done it myself, but I'm not really familiar with the language
 // EDIT: I was fucking lazy and i just thought there was a method in Date that does it automatically, but well there is none.
-function timeSince(date) {
-  var seconds = Math.floor((new Date() - date) / 1000);
-
-  var interval = seconds / 31536000;
-
-  if (interval > 1) {
-    return Math.floor(interval) + " years ago";
+function timeAgo(input) {
+  const date = input instanceof Date ? input : new Date(input);
+  const formatter = new Intl.RelativeTimeFormat("en");
+  const ranges = {
+    years: 3600 * 24 * 365,
+    months: 3600 * 24 * 30,
+    weeks: 3600 * 24 * 7,
+    days: 3600 * 24,
+    hours: 3600,
+    minutes: 60,
+    seconds: 1,
+  };
+  const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+  for (let key in ranges) {
+    if (ranges[key] < Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / ranges[key];
+      return formatter.format(Math.round(delta), key);
+    }
   }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return Math.floor(interval) + " months ago";
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return Math.floor(interval) + " days ago";
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return Math.floor(interval) + " hours ago";
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return Math.floor(interval) + " minutes ago";
-  }
-  return Math.floor(seconds) + " seconds ago";
 }
 
 function filterLobbies(lobbies) {
@@ -634,21 +629,31 @@ function filterLobbies(lobbies) {
   if (!document.getElementById("showOnePlayerLobbies").checked)
     lobbies = lobbies.filter((i) => i.playerCount > 1);
 
-  const rpStrings = ["hood", "rp", "war", "roleplay"];
-  if (!document.getElementById("showRPLobbies").checked) {
-    lobbies = lobbies.filter((i) => {
-      if (!i || i == "") return true;
-      let found = false;
-      for (const s of rpStrings) {
-        const iName = Converter.removeRichText(i.lobbyName);
-        if (iName.toLowerCase().includes(s.toLowerCase())) {
+  if (!document.getElementById("showRPLobbies").checked)
+    lobbies = filterByName(lobbies, ["hood", "rp", "war", "roleplay"]);
+
+  if (!document.getElementById("showRussianLobbies").checked)
+    lobbies = filterByName(lobbies, ["russian", "rus", "russ"]);
+
+  return lobbies;
+}
+
+function filterByName(lobbies, array) {
+  lobbies = lobbies.filter((i) => {
+    if (!i || !i.lobbyName || i.lobbyName == "") return true;
+    const iName = Converter.removeRichText(i.lobbyName);
+    const words = iName.split(" ");
+    let found = false;
+    for (const s of array) {
+      for (const w of words) {
+        if (w.toLowerCase() == s.toLowerCase()) {
           found = true;
           break;
         }
       }
-      return !found;
-    });
-  }
+    }
+    return !found;
+  });
 
   return lobbies;
 }
@@ -686,10 +691,12 @@ async function updateFilters() {
 }
 
 async function loadProfanities() {
+  console.log(`Loading profanities from ${PROFANITY_LIST}`);
   try {
     const res = await fetch(PROFANITY_LIST);
     if (res.ok) {
       const json = await res.json();
+      console.log(`Successfully loaded ${json.words.length} profanities`);
       for (const word of json.words) profanities.push(word);
     }
   } catch (ex) {
@@ -709,14 +716,27 @@ function filterEvent(elem, redo = false) {
   });
 }
 
-window.addEventListener("load", async (e) => {
+function collapsableMenus() {
+  const menus = document.querySelectorAll('[data-toggle="collapse"]');
+  for (const menu of menus) {
+    menu.addEventListener("click", () => {
+      menu.classList.toggle("collapsed");
+    });
+  }
+}
+
+document.getElementById("javascriptRequired").classList.add("hidden");
+
+window.addEventListener("load", async () => {
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   hideShow(true);
+  collapsableMenus();
 
   // Do not require lobby list to be created again
   filterEvent("showFullLobbies", false);
   filterEvent("showOnePlayerLobbies", false);
+  filterEvent("showRussianLobbies", false);
   filterEvent("showRPLobbies", false);
 
   // Require the lobby list to be created again
@@ -724,12 +744,8 @@ window.addEventListener("load", async (e) => {
   filterEvent("sortOrder", true);
   filterEvent("filterProfanities", true);
 
-  document
-    .getElementById("refreshButton")
-    .addEventListener("click", async () => await createLobbies());
-  document
-    .getElementById("closeMoreInfo")
-    .addEventListener("click", () => hideShow(true));
+  clickEvent("refreshButton", async () => await createLobbies());
+  clickEvent("closeMoreInfo", () => hideShow(true));
 
   updateTime();
 
@@ -737,13 +753,17 @@ window.addEventListener("load", async (e) => {
   await createLobbies();
 });
 
+function clickEvent(id, callback) {
+  document.getElementById(id).addEventListener("click", callback);
+}
+
 async function updateTime() {
   const refresh = document.getElementById("refresh");
   const uptime = document.getElementById("uptime");
   while (true) {
     if (refresh.hasAttribute("date")) {
       const date = Date.parse(refresh.getAttribute("date"));
-      refresh.textContent = "Last Refresh: " + timeSince(date);
+      refresh.textContent = "Last Refresh: " + timeAgo(date);
       refresh.classList.remove("hidden");
 
       await refreshButton(date);
@@ -751,7 +771,7 @@ async function updateTime() {
 
     if (uptime.hasAttribute("date")) {
       const date = new Date(Number(uptime.getAttribute("date")) * 1000);
-      uptime.textContent = "Backend up since: " + timeSince(date);
+      uptime.textContent = "Backend up since: " + timeAgo(date);
       uptime.classList.remove("hidden");
     }
 
