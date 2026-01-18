@@ -23,6 +23,8 @@ let moreInfoSignal;
 let profanities = [];
 
 async function createLobbies() {
+  console.log("Fetching lobbies");
+  const start = Date.now();
   try {
     if (lobbiesSignal) lobbiesSignal.abort();
     const controller = new AbortController();
@@ -94,7 +96,12 @@ async function createLobbies() {
             document.getElementById("notFound").classList.remove("hidden");
           else document.getElementById("notFound").classList.add("hidden");
 
-          console.log(`Creating ${lobbies.length} lobbies`);
+          console.log(
+            `Creating %c${lobbies.length}%c %s`,
+            "color: #0ff",
+            "color: inherit",
+            "lobbies",
+          );
           for (const lobby of lobbies) {
             if (controller?.signal?.aborted == true) return;
             if (
@@ -130,6 +137,9 @@ async function createLobbies() {
     const lobbies = document.getElementById("lobbies");
     lobbies.replaceChildren();
     hideShow(true);
+  } finally {
+    const time = (Date.now() - start) / 1000;
+    console.log(`Creating lobbies took %c${time}s`, "color: #FF0");
   }
 }
 
@@ -163,7 +173,7 @@ async function autoRefresh() {
 }
 
 async function createLobby(lobby, signal, hidden) {
-  console.log(` > Creating lobby ${lobby.lobbyID}`);
+  console.log(` > Creating lobby %c${lobby.lobbyID}`, "color: #0f0");
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
@@ -676,7 +686,12 @@ async function loadProfanities() {
     const res = await fetch(PROFANITY_LIST);
     if (res.ok) {
       const json = await res.json();
-      console.log(`Successfully loaded ${json.words.length} profanities`);
+      console.log(
+        `Successfully loaded %c${json.words.length}%c %s`,
+        "color: #f00",
+        "color: inherit",
+        "profanities",
+      );
       for (const word of json.words) profanities.push(word);
     }
   } catch (ex) {
