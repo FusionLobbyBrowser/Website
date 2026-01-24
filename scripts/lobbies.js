@@ -180,7 +180,7 @@ async function autoRefresh() {
     fullyLoaded &&
     !refreshing
   ) {
-    console.log("auto refresh | lobby creation");
+    console.log("[Auto Refresh] Creating lobbies");
     await createLobbies();
   }
 }
@@ -743,7 +743,7 @@ function filterEvent(elem, redo = false) {
 
   element.addEventListener("change", async () => {
     if (redo) {
-      console.log("filter changed | lobby creation");
+      console.log("[Filters] Creating lobbies");
       if (fullyLoaded) await createLobbies();
     } else await updateFilters();
   });
@@ -784,7 +784,7 @@ window.addEventListener("load", async () => {
   updateTime();
 
   await loadProfanities();
-  console.log("initial lobby creation");
+  console.log("[Init] Creating lobbies");
   fullyLoaded = true;
   await createLobbies();
 });
