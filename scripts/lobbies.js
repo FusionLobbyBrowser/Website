@@ -19,6 +19,8 @@ let refreshInterval = 10;
 
 let refreshing = false;
 
+let fullyLoaded = false;
+
 let lobbiesSignal;
 let moreInfoSignal;
 
@@ -174,9 +176,13 @@ async function autoRefresh() {
   if (
     !document.hidden &&
     document.hasFocus() &&
-    document.getElementById("autoRefresh").checked
-  )
+    document.getElementById("autoRefresh").checked &&
+    fullyLoaded &&
+    !refreshing
+  ) {
+    console.log("auto refresh | lobby creation");
     await createLobbies();
+  }
 }
 
 async function createLobby(lobby, signal, hidden) {
@@ -736,8 +742,10 @@ function filterEvent(elem, redo = false) {
   if (!element) return;
 
   element.addEventListener("change", async () => {
-    if (redo) await createLobbies();
-    else await updateFilters();
+    if (redo) {
+      console.log("filter changed | lobby creation");
+      if (fullyLoaded) await createLobbies();
+    } else await updateFilters();
   });
 }
 
@@ -753,6 +761,7 @@ function collapsableMenus() {
 document.getElementById("javascriptRequired").classList.add("hidden");
 
 window.addEventListener("load", async () => {
+  console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   hideShow(true);
@@ -775,6 +784,8 @@ window.addEventListener("load", async () => {
   updateTime();
 
   await loadProfanities();
+  console.log("initial lobby creation");
+  fullyLoaded = true;
   await createLobbies();
 });
 
