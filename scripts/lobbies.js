@@ -17,12 +17,15 @@ let moreInfoView = -1;
 
 let refreshInterval = 10;
 
+let refreshing = false;
+
 let lobbiesSignal;
 let moreInfoSignal;
 
 let profanities = [];
 
 async function createLobbies() {
+  refreshing = true;
   console.log("Fetching lobbies");
   const start = Date.now();
   try {
@@ -138,8 +141,12 @@ async function createLobbies() {
     lobbies.replaceChildren();
     hideShow(true);
   } finally {
+    refreshing = false;
     const time = (Date.now() - start) / 1000;
-    console.log(`Creating lobbies took %c${time}s`, "color: #FF0");
+    console.log(
+      `Creating lobbies took %c${time.toPrecision(4)}s`,
+      "color: #FF0",
+    );
   }
 }
 
@@ -150,7 +157,7 @@ async function refreshButton(date) {
     button.disabled = false;
     button.classList.remove("blocked");
     button.textContent = "Refresh";
-    autoRefresh();
+    if (!refreshing) autoRefresh();
   } else {
     button.disabled = true;
     if (button.classList.contains("inProgress")) {
@@ -173,6 +180,7 @@ async function autoRefresh() {
 }
 
 async function createLobby(lobby, signal, hidden) {
+  const date = Date.now();
   console.log(` > Creating lobby %c${lobby.lobbyID}`, "color: #0f0");
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
@@ -191,7 +199,7 @@ async function createLobby(lobby, signal, hidden) {
 
   if (moreInfoView != -1 && moreInfoView == lobby.lobbyID) {
     moreInfoUpdated = true;
-    if (signal?.aborted != true) await moreInfo(lobby, thumb, signal);
+    if (signal?.aborted != true) moreInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
@@ -248,6 +256,12 @@ async function createLobby(lobby, signal, hidden) {
   };
 
   if (signal?.aborted != true) lobbies.appendChild(lobbyElem);
+  const time = (Date.now() - date) / 1000;
+  console.log(
+    ` > Created lobby %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
+    "color: #0f0",
+    "color: #0ff",
+  );
   return moreInfoUpdated;
 }
 
@@ -268,7 +282,8 @@ function setAllLobbiesMoreInfo(enabled) {
 
 async function moreInfo(lobby, thumbnail, signal) {
   if (moreInfoSignal) moreInfoSignal.abort();
-  console.log(` > Displaying more info for ${lobby.lobbyID}`);
+  const start = Date.now();
+  console.log(` > Displaying more info for %c${lobby.lobbyID}`, "color: #0f0");
 
   var controller = new AbortController();
   moreInfoSignal = controller;
@@ -324,12 +339,15 @@ async function moreInfo(lobby, thumbnail, signal) {
     return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
   });
   for (const player of players) {
+    const plrStart = Date.now();
     if (
       (!player.username || player.username == "") &&
       (!player.nickname || player.nickname == "")
     )
       continue;
     if (controller?.signal?.aborted == true) return;
+
+    console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
 
     const toCopy = document.getElementsByClassName("playerToCopy")[0];
     const playerElem = toCopy.cloneNode(true);
@@ -368,10 +386,22 @@ async function moreInfo(lobby, thumbnail, signal) {
     playerElem.setAttribute("playerId", player.platformID);
     if (signal?.aborted == true || controller?.signal?.aborted == true) return;
     playersList.appendChild(playerElem);
+    const time = (Date.now() - plrStart) / 1000;
+    console.log(
+      `  > Created player %c${player.platformID}%c (${time.toPrecision(4)}s)`,
+      "color: #0f0",
+      "color: #0ff",
+    );
   }
   lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
   hideShow(false);
   lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
+  const time = (Date.now() - start) / 1000;
+  console.log(
+    ` > Displayed more info for %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
+    "color: #0f0",
+    "color: #0ff",
+  );
 }
 
 function censorModTitle(elem, modId, title, nsfw) {
