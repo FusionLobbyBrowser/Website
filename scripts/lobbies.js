@@ -45,25 +45,19 @@ async function createLobbies() {
       refreshBtn.blocked = true;
 
       const lobbies = document.getElementById("lobbies");
-      lobbies.replaceChildren();
       const res = await getJSON();
       const json = res.res ?? res;
       const error = document.getElementsByClassName("error")[0];
       if (json.error != null) {
-        if (!(await isLobbyOnline())) {
+        lobbies.replaceChildren();
+        if (!(await isLobbyOnline()))
           error.textContent = "Server is offline, try again later.";
-        } else {
-          error.textContent = json.error;
-        }
+        else error.textContent = json.error;
+
         error.classList.remove("hidden");
 
-        refresh.removeAttribute("date");
-        refresh.textContent = "Last Refresh: N/A";
-        refresh.classList.add("hidden");
-
-        uptime.removeAttribute("date");
-        uptime.textContent = "Backend up since: N/A";
-        uptime.classList.add("hidden");
+        setTimeElem(refresh, null);
+        setTimeElem(uptime, null);
 
         highLobby.classList.add("hidden");
 
@@ -72,55 +66,57 @@ async function createLobbies() {
         hideShow(true);
       } else {
         error.classList.add("hidden");
+        if (refresh.getAttribute("date") / 1000 != json.date) {
+          lobbies.replaceChildren();
+          if (json.interval) refreshInterval = Number(json.interval);
 
-        if (json.interval) refreshInterval = parseInt(json.interval);
+          timeFromResponse(refresh, json.date);
+          timeFromResponse(uptime, res.uptime);
 
-        timeFromResponse(refresh, json.date);
-        timeFromResponse(uptime, res.uptime);
+          if (json.lobbies != null) {
+            let moreInfoUpdated = false;
+            let lobbyCountMax = json.lobbies.length;
+            let lobbies = json.lobbies;
 
-        if (json.lobbies != null) {
-          let moreInfoUpdated = false;
-          let lobbyCountMax = json.lobbies.length;
-          let lobbies = json.lobbies;
+            allLobbies = structuredClone(lobbies);
+            let lobbyCount = hideLobbies();
+            let allowed = getAllowedIDs(lobbies);
 
-          allLobbies = structuredClone(lobbies);
-          let lobbyCount = hideLobbies();
-          let allowed = getAllowedIDs(lobbies);
+            const sorting = document.getElementById("sortOrder").value;
+            lobbies.sort(
+              (first, second) =>
+                parseInt(second.playerCount) - parseInt(first.playerCount),
+            );
+            if (sorting != "descending") lobbies.reverse();
 
-          const sorting = document.getElementById("sortOrder").value;
-          lobbies.sort(
-            (first, second) =>
-              parseInt(second.playerCount) - parseInt(first.playerCount),
-          );
-          if (sorting != "descending") lobbies.reverse();
+            setLobbyCount(lobbyCount, lobbyCountMax);
+            setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
 
-          setLobbyCount(lobbyCount, lobbyCountMax);
-          setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
+            if (lobbies.length == 0)
+              document.getElementById("notFound").classList.remove("hidden");
+            else document.getElementById("notFound").classList.add("hidden");
 
-          if (lobbies.length == 0)
-            document.getElementById("notFound").classList.remove("hidden");
-          else document.getElementById("notFound").classList.add("hidden");
-
-          console.log(
-            `Creating %c${lobbies.length}%c %s`,
-            "color: #0ff",
-            "color: inherit",
-            "lobbies",
-          );
-          for (const lobby of lobbies) {
-            if (controller?.signal?.aborted == true) return;
-            if (
-              await createLobby(
-                lobby,
-                controller?.signal,
-                !allowed.includes(lobby.lobbyID),
+            console.log(
+              `Creating %c${lobbies.length}%c %s`,
+              "color: #0ff",
+              "color: inherit",
+              "lobbies",
+            );
+            for (const lobby of lobbies) {
+              if (controller?.signal?.aborted == true) return;
+              if (
+                await createLobby(
+                  lobby,
+                  controller?.signal,
+                  !allowed.includes(lobby.lobbyID),
+                )
               )
-            )
-              moreInfoUpdated = true;
+                moreInfoUpdated = true;
+            }
+            if (moreInfoUpdated == false) hideShow(true);
+          } else {
+            hideShow(true);
           }
-          if (moreInfoUpdated == false) hideShow(true);
-        } else {
-          hideShow(true);
         }
       }
     } finally {
@@ -128,9 +124,7 @@ async function createLobbies() {
       refreshBtn.classList.remove("inProgress");
       refreshBtn.blocked = false;
       if (refresh.hasAttribute("date"))
-        await refreshButton(
-          new Date(Number(refresh.getAttribute("date")) * 1000),
-        );
+        await refreshButton(new Date(Number(refresh.getAttribute("date"))));
     }
   } catch (ex) {
     const error = document.getElementsByClassName("error")[0];
@@ -153,7 +147,7 @@ async function createLobbies() {
 }
 
 async function refreshButton(date) {
-  const seconds = Math.floor((Date.now() - date) / 1000);
+  const seconds = Math.round((Date.now() - date) / 1000);
   const button = document.getElementById("refreshButton");
   if (seconds >= refreshInterval) {
     button.disabled = false;
@@ -648,6 +642,8 @@ function timeAgo(input) {
       return formatter.format(Math.round(delta), key);
     }
   }
+  // Handle times less than 1 second ago
+  return formatter.format(0, "seconds");
 }
 
 function filterLobbies(lobbies) {
@@ -800,21 +796,21 @@ async function updateTime() {
     timeAgoElem(refresh);
     timeAgoElem(uptime);
 
-    await refreshButton(new Date(Number(refresh.getAttribute("date")) * 1000));
+    await refreshButton(new Date(Number(refresh.getAttribute("date"))));
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 }
 
-function timeAgoElem(elem) {
-  if (elem.hasAttribute("date")) {
-    const date = new Date(Number(elem.getAttribute("date")) * 1000);
-    setTimeElem(elem, timeAgo(date));
+function timeAgoElem(elem, date = null) {
+  if (date != null || elem.hasAttribute("date")) {
+    const _date = date ?? new Date(Number(elem.getAttribute("date")));
+    setTimeElem(elem, timeAgo(_date));
   }
 }
 
 function setTimeElem(elem, val) {
-  if (!val) val = "N/A";
+  if (val == null || val == undefined) val = "N/A";
   const text = elem.textContent.split(": ")[0];
   elem.textContent = `${text}: ${val}`;
   if (val == "N/A") {
@@ -826,9 +822,12 @@ function setTimeElem(elem, val) {
 }
 
 function timeFromResponse(elem, val) {
-  if (val != null) {
-    const num = Number(val);
+  let date = null;
+  if (val != null && val != undefined) {
+    console.log(val);
+    const num = Number(val) * 1000;
+    date = new Date(num);
     elem.setAttribute("date", num);
   }
-  timeAgoElem(elem);
+  timeAgoElem(elem, date);
 }

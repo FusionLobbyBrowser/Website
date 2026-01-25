@@ -399,6 +399,7 @@ label {
 
 .detail-info {
   font-size: 0.781rem;
+  width: 95%;
   padding-top: 0;
   margin-top: 0;
   word-wrap: break-word;
@@ -509,7 +510,16 @@ label {
   box-shadow: 10px 10px 10px rgb(10, 10, 10);
 }
 
+.avatarTitle {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .name {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
   word-wrap: break-word;
   margin-bottom: 0;
 }
@@ -542,6 +552,10 @@ label {
 }
 
 .username {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+
   word-wrap: break-word;
   color: grey;
   font-size: 0.75rem;
@@ -550,9 +564,19 @@ label {
 }
 
 .permissions {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+
   color: white;
   font-size: 0.688rem;
   margin-top: 0.25em;
+}
+
+.info {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 button {
