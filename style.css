@@ -37,7 +37,7 @@ h2 {
 }
 
 .blocked {
-  background-color: #d22b2b;
+  background-color: #9f1e1e;
 }
 
 .blocked:hover {
@@ -56,12 +56,12 @@ h2 {
 
 a {
   text-decoration: none;
-  color: #ee9696;
+  color: #33cbff;
   transition: 0.5s;
 }
 
 a:hover {
-  color: #f8c4c4;
+  color: #00b8f5;
 }
 
 .levelRedirect {
@@ -137,6 +137,10 @@ ul {
   color: #a8a8a8;
   font-size: 0.75rem;
   margin-top: 0.25rem;
+}
+
+#refreshButton {
+  min-width: 7em;
 }
 
 #uptime {
