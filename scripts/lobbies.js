@@ -643,7 +643,7 @@ function timeAgo(input) {
     }
   }
   // Handle times less than 1 second ago
-  return formatter.format(0, "seconds");
+  return formatter.format(-2, "seconds").replace("2", "0");
 }
 
 function filterLobbies(lobbies) {
@@ -798,7 +798,7 @@ async function updateTime() {
 
     await refreshButton(new Date(Number(refresh.getAttribute("date"))));
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }
 
