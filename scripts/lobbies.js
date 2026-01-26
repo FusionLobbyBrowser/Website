@@ -193,6 +193,7 @@ async function createLobby(lobby, signal, hidden) {
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
+    lobby.levelTitle,
     lobby.levelBarcode,
     false,
   );
@@ -355,6 +356,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       playerElem.getElementsByClassName("avatarThumbnail")[0],
       player.avatarModID,
       player.avatarTitle,
+      player.avatarTitle,
       true,
     );
     const hasNickname = player.nickname != "" && player.nickname;
@@ -438,7 +440,6 @@ function colorPermission(perm) {
 function convert(text) {
   return DOMPurify.sanitize(convertToHTML(censorWords(text)));
 }
-
 function censorWords(text) {
   if (!document.getElementById("filterProfanities").checked) return text;
 
@@ -487,7 +488,7 @@ function hideShow(hide) {
   }
 }
 
-async function getThumbnail(modId, search, isAvatar) {
+async function getThumbnail(modId, title, search, isAvatar) {
   if (modId == -1 || modId == 0 || modId == null) {
     const value = Barcodes.find(
       (x) =>
@@ -498,6 +499,7 @@ async function getThumbnail(modId, search, isAvatar) {
     if (value) {
       return {
         thumbnail: `/images/default/${value.name}.png`,
+        alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
         nsfw: false,
       };
     } else {
@@ -505,6 +507,7 @@ async function getThumbnail(modId, search, isAvatar) {
         thumbnail: `/images/default/${
           isAvatar ? "Mods_Avatar" : "Mods_Level"
         }.png`,
+        alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. No corresponding thumbnail for it was found, so a default one was applied`,
         nsfw: false,
       };
     }
@@ -515,6 +518,7 @@ async function getThumbnail(modId, search, isAvatar) {
     if (!response.ok) return { error: await response.text() };
     return {
       thumbnail: URL.createObjectURL(await response.blob()),
+      alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
       nsfw: response.headers.get("modio-maturity") == "nsfw" ? true : false,
     };
   } catch (ex) {
@@ -526,25 +530,36 @@ async function getThumbnail(modId, search, isAvatar) {
   }
 }
 
-async function setThumbnail(elem, modId, search, isAvatar) {
-  var thumbnail = await getThumbnail(modId, search, isAvatar);
+async function setThumbnail(elem, modId, title, search, isAvatar) {
+  var thumbnail = await getThumbnail(modId, title, search, isAvatar);
   if (thumbnail.error != null) {
+    const alt = Converter.removeRichText(
+      `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
+    );
     elem.setAttribute("src", "images/errorThumbnail.png");
+    elem.setAttribute("alt", alt);
     return {
       thumbnail: "images/errorThumbnail.png",
+      alt: alt,
       nsfw: false,
     };
   } else if (
     thumbnail.nsfw == true &&
     !document.getElementById("showNSFW").checked
   ) {
+    const alt = Converter.removeRichText(
+      `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was censored as it is an NSFW one.`,
+    );
     elem.setAttribute("src", "images/nsfwCover.png");
+    elem.setAttribute("alt", alt);
     return {
       thumbnail: "images/nsfwCover.png",
+      alt: alt,
       nsfw: true,
     };
   } else {
-    elem.src = thumbnail.thumbnail;
+    elem.setAttribute("src", thumbnail.thumbnail);
+    elem.setAttribute("alt", Converter.removeRichText(thumbnail.alt));
     return thumbnail;
   }
 }

@@ -56,12 +56,12 @@ h2 {
 
 a {
   text-decoration: none;
-  color: #d22b2b;
+  color: #ee9696;
   transition: 0.5s;
 }
 
 a:hover {
-  color: #8b0000;
+  color: #f8c4c4;
 }
 
 .levelRedirect {
@@ -134,13 +134,13 @@ ul {
 }
 
 #refresh {
-  color: #767676;
+  color: #a8a8a8;
   font-size: 0.75rem;
   margin-top: 0.25rem;
 }
 
 #uptime {
-  color: #767676;
+  color: #a8a8a8;
   font-size: 0.75rem;
   margin-bottom: 0;
 }
@@ -582,7 +582,7 @@ label {
 button {
   border: none;
   text-decoration: none;
-  background-color: rgb(0, 128, 255);
+  background-color: rgb(32, 77, 197);
   padding: 5px 15px 5px 15px;
   border-radius: 7.5px;
   color: white;
@@ -592,5 +592,5 @@ button {
 
 button:hover {
   cursor: pointer;
-  background-color: rgb(0, 75, 255);
+  background-color: rgb(0, 45, 255);
 }
