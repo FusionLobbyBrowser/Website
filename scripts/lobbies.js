@@ -461,7 +461,7 @@ function censorWords(text) {
   return plain;
 }
 
-function hideShow(hide) {
+function hideShow(hide, removeView = true) {
   const elements = [
     "#moreDetails",
     "#moreDetails-outer",
@@ -482,10 +482,20 @@ function hideShow(hide) {
   else header.classList.remove("header-moreInfoOpened");
 
   const lobbyInfo = document.getElementById("moreDetails");
+  const url = new URL(window.location.href);
   if (hide) {
     lobbyInfo.removeAttribute("lobbyId");
-    moreInfoView = -1;
+    if (removeView) {
+      url.searchParams.delete("lobbyView");
+      moreInfoView = -1;
+    }
+  } else {
+    url.searchParams.set("lobbyView", moreInfoView);
   }
+  if (url.searchParams.size <= 0)
+    url.searchParams.forEach((_, key) => url.searchParams.delete(key));
+
+  window.history.pushState(null, "", url.toString());
 }
 
 async function getThumbnail(modId, title, search, isAvatar) {
@@ -775,7 +785,13 @@ window.addEventListener("load", async () => {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
-  hideShow(true);
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("lobbyView")) {
+    const num = Number(params.get("lobbyView"));
+    if (num) moreInfoView = num;
+  }
+
+  hideShow(true, false);
   collapsableMenus();
 
   // Do not require lobby list to be created again
