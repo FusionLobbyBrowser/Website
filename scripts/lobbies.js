@@ -66,57 +66,55 @@ async function createLobbies() {
         hideShow(true);
       } else {
         error.classList.add("hidden");
-        if (refresh.getAttribute("date") / 1000 != json.date) {
-          lobbies.replaceChildren();
-          if (json.interval) refreshInterval = Number(json.interval);
+        lobbies.replaceChildren();
+        if (json.interval) refreshInterval = Number(json.interval);
 
-          timeFromResponse(refresh, json.date);
-          timeFromResponse(uptime, res.uptime);
+        timeFromResponse(refresh, json.date);
+        timeFromResponse(uptime, res.uptime);
 
-          if (json.lobbies != null) {
-            let moreInfoUpdated = false;
-            let lobbyCountMax = json.lobbies.length;
-            let lobbies = json.lobbies;
+        if (json.lobbies != null) {
+          let moreInfoUpdated = false;
+          let lobbyCountMax = json.lobbies.length;
+          let lobbies = json.lobbies;
 
-            allLobbies = structuredClone(lobbies);
-            let lobbyCount = hideLobbies();
-            let allowed = getAllowedIDs(lobbies);
+          allLobbies = structuredClone(lobbies);
+          let lobbyCount = hideLobbies();
+          let allowed = getAllowedIDs(lobbies);
 
-            const sorting = document.getElementById("sortOrder").value;
-            lobbies.sort(
-              (first, second) =>
-                parseInt(second.playerCount) - parseInt(first.playerCount),
-            );
-            if (sorting != "descending") lobbies.reverse();
+          const sorting = document.getElementById("sortOrder").value;
+          lobbies.sort(
+            (first, second) =>
+              parseInt(second.playerCount) - parseInt(first.playerCount),
+          );
+          if (sorting != "descending") lobbies.reverse();
 
-            setLobbyCount(lobbyCount, lobbyCountMax);
-            setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
+          setLobbyCount(lobbyCount, lobbyCountMax);
+          setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
 
-            if (lobbies.length == 0)
-              document.getElementById("notFound").classList.remove("hidden");
-            else document.getElementById("notFound").classList.add("hidden");
+          if (lobbies.length == 0)
+            document.getElementById("notFound").classList.remove("hidden");
+          else document.getElementById("notFound").classList.add("hidden");
 
-            console.log(
-              `Creating %c${lobbies.length}%c %s`,
-              "color: #0ff",
-              "color: inherit",
-              "lobbies",
-            );
-            for (const lobby of lobbies) {
-              if (controller?.signal?.aborted == true) return;
-              if (
-                await createLobby(
-                  lobby,
-                  controller?.signal,
-                  !allowed.includes(lobby.lobbyID),
-                )
+          console.log(
+            `Creating %c${lobbies.length}%c %s`,
+            "color: #0ff",
+            "color: inherit",
+            "lobbies",
+          );
+          for (const lobby of lobbies) {
+            if (controller?.signal?.aborted == true) return;
+            if (
+              await createLobby(
+                lobby,
+                controller?.signal,
+                !allowed.includes(lobby.lobbyID),
               )
-                moreInfoUpdated = true;
-            }
-            if (moreInfoUpdated == false) hideShow(true);
-          } else {
-            hideShow(true);
+            )
+              moreInfoUpdated = true;
           }
+          if (moreInfoUpdated == false) hideShow(true);
+        } else {
+          hideShow(true);
         }
       }
     } finally {

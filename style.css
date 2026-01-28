@@ -56,12 +56,12 @@ h2 {
 
 a {
   text-decoration: none;
-  color: #4da3ff;
+  color: #3380cc;
   transition: 0.5s;
 }
 
 a:hover {
-  color: #7ab8ff;
+  color: #5599dd;
 }
 
 .levelRedirect {
