@@ -853,7 +853,6 @@ function setTimeElem(elem, val) {
 function timeFromResponse(elem, val) {
   let date = null;
   if (val != null && val != undefined) {
-    console.log(val);
     const num = Number(val) * 1000;
     date = new Date(num);
     elem.setAttribute("date", num);
