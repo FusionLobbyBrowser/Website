@@ -295,9 +295,9 @@ async function moreInfo(lobby, thumbnail, signal) {
   const content = lobbyInfo.getElementsByClassName("content")[0];
   const right = content.getElementsByClassName("right-content")[0];
   const left = content.getElementsByClassName("left-content")[0];
-  left
-    .getElementsByClassName("thumbnail")[0]
-    .setAttribute("src", thumbnail.thumbnail);
+  const thumb = left.getElementsByClassName("thumbnail")[0];
+  thumb.setAttribute("src", thumbnail.thumbnail);
+  thumb.setAttribute("alt", thumbnail.alt);
   right.getElementsByClassName("lobbyDescription")[0].innerHTML = convert(
     (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
       "\n",
@@ -357,9 +357,11 @@ async function moreInfo(lobby, thumbnail, signal) {
       player.avatarTitle,
       true,
     );
-    const hasNickname = player.nickname != "" && player.nickname;
+    let hasNickname = player.nickname != "" && player.nickname;
     let name = hasNickname ? player.nickname : player.username;
     if (!player.nickname && !player.username) name = "N/A";
+    else if (hasNickname && player.nickname == player.username)
+      hasNickname = false;
     if (name.includes("\n")) name = name.split("\n")[0];
     playerElem.getElementsByClassName("name")[0].innerHTML = convert(name);
     const username = playerElem.getElementsByClassName("username")[0];
@@ -487,7 +489,7 @@ function hideShow(hide, removeView = true) {
       url.searchParams.delete("lobbyView");
       moreInfoView = -1;
     }
-  } else {
+  } else if (moreInfoView != -1) {
     url.searchParams.set("lobbyView", moreInfoView);
   }
   if (url.searchParams.size <= 0)
@@ -556,7 +558,7 @@ async function setThumbnail(elem, modId, title, search, isAvatar) {
     !document.getElementById("showNSFW").checked
   ) {
     const alt = Converter.removeRichText(
-      `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was censored as it is an NSFW one.`,
+      `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
     elem.setAttribute("src", "images/nsfwCover.png");
     elem.setAttribute("alt", alt);
