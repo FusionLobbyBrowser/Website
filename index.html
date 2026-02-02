@@ -57,10 +57,18 @@
   <link rel="manifest" href="/images/favicon/site.webmanifest" />
 
   <!-- Scripts & Styles -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
+  <script src="https://unpkg.com/@popperjs/core@2" type="module" crossOrigin="anonymous"></script>
+  <script src="https://unpkg.com/tippy.js@6" type="module" crossOrigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+
   <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/defaultBarcodes.js" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
   <script src="scripts/lobbies.js" type="module" crossOrigin="anonymous"></script>
+
   <link rel="stylesheet" href="styles/fonts.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="styles/style.css" crossOrigin="anonymous" />
 </head>
@@ -83,13 +91,25 @@
     <p class="permissions">OWNER</p>
     <p class="avatarTitle">Fancy Ford</p>
   </div>
+  <div class="discord discordToCopy">
+    <img class="serverIcon" src="images/templateAvatar.png" alt="Template icon">
+    <p class="inline serverName">RottenCheese's Server</p>
+    <p class="inline memberCount">569 members</p>
+    <a class="discordJoin inline" target="_blank" rel="noopener noreferrer">
+      <button class="discordJoinBtn">Join!</button>
+    </a>
+  </div>
   <header>
     <h1>Fusion Lobby Browser</h1>
-    <p>Browse Fusion Lobbies without having to open BONELAB.
-      <br>If you like my work, consider supporting me on <a href="https://ko-fi.com/hahoos" target="_blank"
-        rel="noopener noreferrer">Ko-fi!</a>
-      <br>To join LabFusion lobbies, install the <a href="https://github.com/FusionLobbyBrowser/Mod/releases/latest"
-        target="_blank" rel="noopener noreferrer">mod</a> and run the game at least once for it to set up everything
+    <p class="headerText">Browse Fusion Lobbies without having to open BONELAB.</p>
+    <p class="headerText">If you like my work, consider supporting me on <a href="https://ko-fi.com/hahoos"
+        target="_blank" rel="noopener noreferrer">Ko-fi!</a></p>
+    <p class="headerText">To join LabFusion lobbies, install the <a
+        href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank"
+        rel="noopener noreferrer">mod</a> and run the game at least once for it to set up everything
+    </p>
+    <p class="headerText">Encountered a bug or have a suggestion? Go to the GitHub page and create an <a
+        href="https://github.com/FusionLobbyBrowser/Website" target="_blank" rel="noopener noreferrer">issue!</a>
     </p>
     <p class="hidden" id="uptime">Backend up since: N/A</p>
     <p class="hidden" id="refresh">Last Refresh: N/A</p>

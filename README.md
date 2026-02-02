@@ -12,8 +12,16 @@ Third-party Libraries used as Source Code:
 
 - [unity-rich-text-converter](https://github.com/AWaterColorPen/unity-rich-text-converter) is licensed under the MIT License. See [LICENSE](https://github.com/AWaterColorPen/unity-rich-text-converter/blob/master/LICENSE) for the full License.
 
+Third-party Libraries imported when opened:
+
+- [tippyjs](https://github.com/atomiks/tippyjs) is licensed under the MIT License. See [LICENSE](https://github.com/atomiks/tippyjs/blob/master/LICENSE) for the full License
+
+- [numeraljs](https://github.com/adamwdraper/Numeral-js) is licensed under the MIT License. See [LICENSE](https://github.com/adamwdraper/Numeral-js/blob/master/LICENSE) for the full License.
+
 Icons from [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) were used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
 
 Profanity List from [Fusion-Lists](https://github.com/Lakatrazz/Fusion-Lists) was used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/Fusion-Lists/blob/main/LICENSE) for the full License.
 
 The style for checkboxes is from [CSS Scan](https://getcssscan.com/css-checkboxes-examples)
+
+The person icon for the Discord Server View is from [Font Awesome](https://fontawesome.com/icons/people-group?f=classic&s=solid)

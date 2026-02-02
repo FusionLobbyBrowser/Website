@@ -1,5 +1,6 @@
 import { Converter } from "./unityRichText.js";
 import Barcodes from "./defaultBarcodes.js";
+import Discord from "./discord.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist`;
@@ -18,6 +19,7 @@ let moreInfoView = -1;
 let refreshInterval = 10;
 
 let refreshing = false;
+let lastRefresh = Date.now();
 
 let fullyLoaded = false;
 
@@ -26,7 +28,7 @@ let moreInfoSignal;
 
 let profanities = [];
 
-async function createLobbies() {
+async function fetchAndCreateLobbies() {
   refreshing = true;
   console.log("Fetching lobbies");
   const start = Date.now();
@@ -65,56 +67,25 @@ async function createLobbies() {
         setPlayerCount(-1, -1);
         hideShow(true);
       } else {
-        error.classList.add("hidden");
-        lobbies.replaceChildren();
         if (json.interval) refreshInterval = Number(json.interval);
+        let date = refresh.getAttribute("date");
+        let numDate = -1;
+        if (date) numDate = Number(date) / 1000;
+        if (numDate == -1 || numDate != json.date) {
+          error.classList.add("hidden");
+          lobbies.replaceChildren();
 
-        timeFromResponse(refresh, json.date);
-        timeFromResponse(uptime, res.uptime);
+          timeFromResponse(refresh, json.date);
+          timeFromResponse(uptime, res.uptime);
 
-        if (json.lobbies != null) {
-          let moreInfoUpdated = false;
-          let lobbyCountMax = json.lobbies.length;
-          let lobbies = json.lobbies;
+          if (json.lobbies != null) {
+            let lobbies = json.lobbies;
 
-          allLobbies = structuredClone(lobbies);
-          let lobbyCount = hideLobbies();
-          let allowed = getAllowedIDs(lobbies);
-
-          const sorting = document.getElementById("sortOrder").value;
-          lobbies.sort(
-            (first, second) =>
-              parseInt(second.playerCount) - parseInt(first.playerCount),
-          );
-          if (sorting != "descending") lobbies.reverse();
-
-          setLobbyCount(lobbyCount, lobbyCountMax);
-          setPlayerCount(json.playerCount.players, json.playerCount.lobbies);
-
-          if (lobbies.length == 0)
-            document.getElementById("notFound").classList.remove("hidden");
-          else document.getElementById("notFound").classList.add("hidden");
-
-          console.log(
-            `Creating %c${lobbies.length}%c %s`,
-            "color: #0ff",
-            "color: inherit",
-            "lobbies",
-          );
-          for (const lobby of lobbies) {
-            if (controller?.signal?.aborted == true) return;
-            if (
-              await createLobby(
-                lobby,
-                controller?.signal,
-                !allowed.includes(lobby.lobbyID),
-              )
-            )
-              moreInfoUpdated = true;
+            allLobbies = structuredClone(lobbies);
+            createLobbies(controller?.signal);
+          } else {
+            hideShow(true);
           }
-          if (moreInfoUpdated == false) hideShow(true);
-        } else {
-          hideShow(true);
         }
       }
     } finally {
@@ -144,6 +115,50 @@ async function createLobbies() {
   }
 }
 
+async function createLobbies(signal) {
+  let moreInfoUpdated = false;
+  const lobbies = document.getElementById("lobbies");
+  lobbies.replaceChildren();
+  const lobbyList = structuredClone(allLobbies);
+  let lobbyCountMax = lobbyList.length;
+  let lobbyCount = hideLobbies();
+  let allowed = getAllowedIDs(lobbyList);
+
+  const sorting = document.getElementById("sortOrder").value;
+  lobbyList.sort(
+    (first, second) =>
+      parseInt(second.playerCount) - parseInt(first.playerCount),
+  );
+  if (sorting != "descending") lobbyList.reverse();
+
+  let players = 0;
+  lobbyList.forEach((val) => {
+    if (!val) return;
+
+    players += Number(val.playerCount);
+  });
+
+  setLobbyCount(lobbyCount, lobbyCountMax);
+  setPlayerCount(players, allLobbies.length);
+
+  if (lobbyList.length == 0)
+    document.getElementById("notFound").classList.remove("hidden");
+  else document.getElementById("notFound").classList.add("hidden");
+
+  console.log(
+    `Creating %c${lobbyList.length}%c %s`,
+    "color: #0ff",
+    "color: inherit",
+    "lobbies",
+  );
+  for (const lobby of lobbyList) {
+    if (signal?.aborted == true) return;
+    if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
+      moreInfoUpdated = true;
+  }
+  if (moreInfoUpdated == false) hideShow(true);
+}
+
 async function refreshButton(date) {
   const seconds = Math.round((Date.now() - date) / 1000);
   const button = document.getElementById("refreshButton");
@@ -170,10 +185,12 @@ async function autoRefresh() {
     document.hasFocus() &&
     document.getElementById("autoRefresh").checked &&
     fullyLoaded &&
-    !refreshing
+    !refreshing &&
+    Date.now() - lastRefresh > 1500
   ) {
     console.log("[Auto Refresh] Creating lobbies");
-    await createLobbies();
+    lastRefresh = Date.now();
+    await fetchAndCreateLobbies();
   }
 }
 
@@ -231,6 +248,13 @@ async function createLobby(lobby, signal, hidden) {
     connectBtn.classList.remove("blocked");
     connectBtn.disabled = false;
   }
+  tippy(connectBtn, {
+    content:
+      'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
+    allowHTML: true,
+    interactive: true,
+    animation: "scale",
+  });
 
   const moreInfoBtn = lobbyElem.getElementsByClassName("moreInfo")[0];
 
@@ -266,11 +290,8 @@ async function createLobby(lobby, signal, hidden) {
 
 function setButton(btn, enabled) {
   btn.blocked = !enabled;
-  if (enabled) {
-    btn.classList.remove("inProgress");
-  } else {
-    btn.classList.add("inProgress");
-  }
+  if (enabled) btn.classList.remove("inProgress");
+  else btn.classList.add("inProgress");
 }
 
 function setAllLobbiesMoreInfo(enabled) {
@@ -296,14 +317,17 @@ async function moreInfo(lobby, thumbnail, signal) {
   const right = content.getElementsByClassName("right-content")[0];
   const left = content.getElementsByClassName("left-content")[0];
   const thumb = left.getElementsByClassName("thumbnail")[0];
+  const description = right.getElementsByClassName("lobbyDescription")[0];
   thumb.setAttribute("src", thumbnail.thumbnail);
   thumb.setAttribute("alt", thumbnail.alt);
-  right.getElementsByClassName("lobbyDescription")[0].innerHTML = convert(
-    (lobby.lobbyDescription != "" ? lobby.lobbyDescription : "N/A").replace(
-      "\n",
-      "<br>",
-    ),
+  description.innerHTML = convert(
+    (lobby.lobbyDescription != ""
+      ? lobby.lobbyDescription
+      : "No description provided"
+    ).replace("\n", "<br>"),
   );
+
+  const discord = await Discord(description.textContent);
 
   censorModTitle(
     right.getElementsByClassName("levelTitle")[0],
@@ -316,6 +340,28 @@ async function moreInfo(lobby, thumbnail, signal) {
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
       ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
       : "Sandbox";
+
+  if (discord) {
+    let discordElem = right.getElementsByClassName("discordElem")?.item(0);
+    if (!discordElem) {
+      const title = document.createElement("p");
+      title.classList.add("detail");
+      title.classList.add("discordTitle");
+      title.textContent = "Discord Server";
+      right.appendChild(title);
+      const info = document.createElement("p");
+      info.classList.add("discordElem");
+      right.appendChild(info);
+      discordElem = info;
+    }
+    discordElem.replaceChildren();
+    discordElem.appendChild(discord);
+  } else {
+    let discordElem = right.getElementsByClassName("discordElem")?.item(0);
+    let discordTitle = right.getElementsByClassName("discordTitle")?.item(0);
+    if (discordElem) right.removeChild(discordElem);
+    if (discordTitle) right.removeChild(discordTitle);
+  }
 
   const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
   const plrCount = playersTitle.getElementsByClassName("plrCount")[0];
@@ -363,7 +409,15 @@ async function moreInfo(lobby, thumbnail, signal) {
     else if (hasNickname && player.nickname == player.username)
       hasNickname = false;
     if (name.includes("\n")) name = name.split("\n")[0];
-    playerElem.getElementsByClassName("name")[0].innerHTML = convert(name);
+    const nameElem = playerElem.getElementsByClassName("name")[0];
+    nameElem.innerHTML = convert(name);
+    if (player.description && player.description != "") {
+      tippy(nameElem, {
+        content: convert(player.description),
+        animation: "scale",
+        allowHTML: true,
+      });
+    }
     const username = playerElem.getElementsByClassName("username")[0];
     if (hasNickname) {
       username.classList.remove("hidden");
@@ -407,11 +461,9 @@ async function moreInfo(lobby, thumbnail, signal) {
 }
 
 function censorModTitle(elem, modId, title, nsfw) {
-  if (nsfw && !document.getElementById("showNSFW").checked) {
+  if (nsfw && !document.getElementById("showNSFW").checked)
     elem.innerHTML = '<span style="color: #FF0000">[NSFW]</span>';
-  } else {
-    elem.innerHTML = modRedirect(modId, title);
-  }
+  else elem.innerHTML = modRedirect(modId, title);
 }
 
 async function isLobbyOnline() {
@@ -640,9 +692,6 @@ async function requestJoin(code) {
     console.error(ex);
     window.location.replace(URI_JOIN.replace("[code]", code));
   }
-  window.alert(
-    "You don't join a lobby when you pressed the button? Install the mod (link on the page, press the red 'mod' text). Have the mod already and cant join? Create an issue on Github!",
-  );
 }
 
 // https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
@@ -765,8 +814,15 @@ function filterEvent(elem, redo = false) {
   element.addEventListener("change", async () => {
     if (redo) {
       console.log("[Filters] Creating lobbies");
-      if (fullyLoaded) await createLobbies();
-    } else await updateFilters();
+      if (fullyLoaded) {
+        if (lobbiesSignal) lobbiesSignal.abort();
+        const controller = new AbortController();
+        lobbiesSignal = controller;
+        await createLobbies(controller?.signal);
+      } else {
+        await updateFilters();
+      }
+    }
   });
 }
 
@@ -805,7 +861,7 @@ window.addEventListener("load", async () => {
   filterEvent("sortOrder", true);
   filterEvent("filterProfanities", true);
 
-  clickEvent("refreshButton", async () => await createLobbies());
+  clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("closeMoreInfo", () => hideShow(true));
 
   updateTime();
@@ -813,7 +869,7 @@ window.addEventListener("load", async () => {
   await loadProfanities();
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
-  await createLobbies();
+  await fetchAndCreateLobbies();
 });
 
 function clickEvent(id, callback) {

@@ -35,6 +35,12 @@ h2 {
   font-weight: inherit;
 }
 
+.modLink {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+}
+
 .blocked {
   background-color: #9f1e1e;
 }
@@ -278,6 +284,72 @@ label {
 }
 
 /* End of code from https://getcssscan.com/css-checkboxes-examples */
+
+/* Discord rich element */
+
+.discord {
+  width: 95%;
+  display: flex;
+  background-color: rgb(30, 30, 30);
+  box-shadow: 10px 5px 5px rgb(10, 10, 10);
+  color: white;
+  align-items: center;
+  height: 3.5em;
+  border-radius: 5px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.serverIcon {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+  max-width: 10%;
+  margin-left: 2%;
+}
+
+.serverName,
+.memberCount,
+.serverIcon {
+  display: inline-block;
+  font-size: 1rem;
+  padding-right: 2%;
+}
+
+.serverName {
+  width: 42.5%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.memberCount {
+  width: 20%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.memberCount > img {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
+    contrast(103%);
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.discordToCopy {
+  display: none;
+  visibility: hidden;
+}
+
+/* End of Discord Rich Element */
+
+.headerText {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
 
 .error {
   color: #f4320b;
