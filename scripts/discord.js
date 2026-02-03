@@ -49,12 +49,14 @@ function createServerElem(obj, code) {
     tippy(serverNameElem, {
       content: `${obj.guild.name} • ${obj.guild.description}`,
       placement: "bottom",
+      appendTo: "parent",
       animation: "scale",
     });
   } else {
     tippy(serverNameElem, {
       content: `${obj.guild.name}`,
       placement: "bottom",
+      appendTo: "parent",
       animation: "scale",
     });
   }
@@ -65,6 +67,7 @@ function createServerElem(obj, code) {
   tippy(memberCountElem, {
     content: `${obj.profile.online_count} online`,
     placement: "bottom",
+    appendTo: "parent",
     animation: "scale",
   });
   joinElem.setAttribute("href", `https://discord.gg/${code}`);

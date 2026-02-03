@@ -28,6 +28,8 @@ let moreInfoSignal;
 
 let profanities = [];
 
+let showingMoreInfo = false;
+
 async function fetchAndCreateLobbies() {
   refreshing = true;
   console.log("Fetching lobbies");
@@ -252,6 +254,7 @@ async function createLobby(lobby, signal, hidden) {
     content:
       'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
     allowHTML: true,
+    appendTo: "parent",
     interactive: true,
     animation: "scale",
   });
@@ -277,6 +280,7 @@ async function createLobby(lobby, signal, hidden) {
       setAllLobbiesMoreInfo(true);
     }
   };
+  if (showingMoreInfo) setButton(moreInfoBtn, false);
 
   if (signal?.aborted != true) lobbies.appendChild(lobbyElem);
   const time = (Date.now() - date) / 1000;
@@ -302,162 +306,175 @@ function setAllLobbiesMoreInfo(enabled) {
 
 async function moreInfo(lobby, thumbnail, signal) {
   if (moreInfoSignal) moreInfoSignal.abort();
-  const start = Date.now();
-  console.log(` > Displaying more info for %c${lobby.lobbyID}`, "color: #0f0");
-
-  var controller = new AbortController();
-  moreInfoSignal = controller;
-  moreInfoView = lobby.lobbyID;
-  const lobbyInfo = document.getElementById("moreDetails");
-  const header = lobbyInfo.getElementsByClassName("header")[0];
-  header.getElementsByClassName("lobbyTitle")[0].innerHTML = convert(
-    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
-  );
-  const content = lobbyInfo.getElementsByClassName("content")[0];
-  const right = content.getElementsByClassName("right-content")[0];
-  const left = content.getElementsByClassName("left-content")[0];
-  const thumb = left.getElementsByClassName("thumbnail")[0];
-  const description = right.getElementsByClassName("lobbyDescription")[0];
-  thumb.setAttribute("src", thumbnail.thumbnail);
-  thumb.setAttribute("alt", thumbnail.alt);
-  description.innerHTML = convert(
-    (lobby.lobbyDescription != ""
-      ? lobby.lobbyDescription
-      : "No description provided"
-    ).replace("\n", "<br>"),
-  );
-
-  const discord = await Discord(description.textContent);
-
-  censorModTitle(
-    right.getElementsByClassName("levelTitle")[0],
-    lobby.levelModID,
-    lobby.levelTitle,
-    thumbnail.nsfw,
-  );
-
-  right.getElementsByClassName("gamemode")[0].innerHTML =
-    lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
-      ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
-      : "Sandbox";
-
-  if (discord) {
-    let discordElem = right.getElementsByClassName("discordElem")?.item(0);
-    if (!discordElem) {
-      const title = document.createElement("p");
-      title.classList.add("detail");
-      title.classList.add("discordTitle");
-      title.textContent = "Discord Server";
-      right.appendChild(title);
-      const info = document.createElement("p");
-      info.classList.add("discordElem");
-      right.appendChild(info);
-      discordElem = info;
-    }
-    discordElem.replaceChildren();
-    discordElem.appendChild(discord);
-  } else {
-    let discordElem = right.getElementsByClassName("discordElem")?.item(0);
-    let discordTitle = right.getElementsByClassName("discordTitle")?.item(0);
-    if (discordElem) right.removeChild(discordElem);
-    if (discordTitle) right.removeChild(discordTitle);
-  }
-
-  const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
-  const plrCount = playersTitle.getElementsByClassName("plrCount")[0];
-  plrCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
-
-  if (lobby.playerCount >= lobby.maxPlayers) plrCount.style.color = "#FF0000";
-  else plrCount.style.color = "#00FF00";
-
-  const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
-  host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;
-
-  const playersList = lobbyInfo.getElementsByClassName("players")[0];
-  playersList.replaceChildren();
-  const players = lobby.playerList.players;
-  players.sort((first, second) => {
-    if (second.platformID == lobby.lobbyID) return 100;
-
-    if (first.platformID == lobby.lobbyID) return -100;
-
-    return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
-  });
-  for (const player of players) {
-    const plrStart = Date.now();
-    if (
-      (!player.username || player.username == "") &&
-      (!player.nickname || player.nickname == "")
-    )
-      continue;
-    if (controller?.signal?.aborted == true) return;
-
-    console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
-
-    const toCopy = document.getElementsByClassName("playerToCopy")[0];
-    const playerElem = toCopy.cloneNode(true);
-    const thumb = await setThumbnail(
-      playerElem.getElementsByClassName("avatarThumbnail")[0],
-      player.avatarModID,
-      player.avatarTitle,
-      player.avatarTitle,
-      true,
+  showingMoreInfo = true;
+  try {
+    const start = Date.now();
+    console.log(
+      ` > Displaying more info for %c${lobby.lobbyID}`,
+      "color: #0f0",
     );
-    let hasNickname = player.nickname != "" && player.nickname;
-    let name = hasNickname ? player.nickname : player.username;
-    if (!player.nickname && !player.username) name = "N/A";
-    else if (hasNickname && player.nickname == player.username)
-      hasNickname = false;
-    if (name.includes("\n")) name = name.split("\n")[0];
-    const nameElem = playerElem.getElementsByClassName("name")[0];
-    nameElem.innerHTML = convert(name);
-    if (player.description && player.description != "") {
-      tippy(nameElem, {
-        content: convert(player.description),
-        animation: "scale",
-        allowHTML: true,
-      });
-    }
-    const username = playerElem.getElementsByClassName("username")[0];
-    if (hasNickname) {
-      username.classList.remove("hidden");
-      username.innerHTML = convert(player.username);
-    } else {
-      username.classList.add("hidden");
-    }
-    playerElem.getElementsByClassName("permissions")[0].innerHTML =
-      colorPermission(player.permissionLevel);
-    let avatar =
-      player.avatarTitle && player.avatarTitle != ""
-        ? convertToHTML(player.avatarTitle)
-        : "N/A";
+
+    var controller = new AbortController();
+    moreInfoSignal = controller;
+    moreInfoView = lobby.lobbyID;
+    const lobbyInfo = document.getElementById("moreDetails");
+    const header = lobbyInfo.getElementsByClassName("header")[0];
+    header.getElementsByClassName("lobbyTitle")[0].innerHTML = convert(
+      lobby.lobbyName != ""
+        ? lobby.lobbyName
+        : `${lobby.lobbyHostName}'s Lobby`,
+    );
+    const content = lobbyInfo.getElementsByClassName("content")[0];
+    const right = content.getElementsByClassName("right-content")[0];
+    const left = content.getElementsByClassName("left-content")[0];
+    const thumb = left.getElementsByClassName("thumbnail")[0];
+    const description = right.getElementsByClassName("lobbyDescription")[0];
+    thumb.setAttribute("src", thumbnail.thumbnail);
+    thumb.setAttribute("alt", thumbnail.alt);
+    description.innerHTML = convert(
+      (lobby.lobbyDescription != ""
+        ? lobby.lobbyDescription
+        : "No description provided"
+      ).replace("\n", "<br>"),
+    );
+
+    const discord = await Discord(description.textContent);
 
     censorModTitle(
-      playerElem.getElementsByClassName("avatarTitle")[0],
-      player.avatarModID,
-      avatar,
-      thumb.nsfw,
+      right.getElementsByClassName("levelTitle")[0],
+      lobby.levelModID,
+      lobby.levelTitle,
+      thumbnail.nsfw,
     );
-    playerElem.classList.remove("playerToCopy");
-    playerElem.setAttribute("playerId", player.platformID);
-    if (signal?.aborted == true || controller?.signal?.aborted == true) return;
-    playersList.appendChild(playerElem);
-    const time = (Date.now() - plrStart) / 1000;
+
+    right.getElementsByClassName("gamemode")[0].innerHTML =
+      lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
+        ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
+        : "Sandbox";
+
+    if (discord) {
+      let discordElem = right.getElementsByClassName("discordElem")?.item(0);
+      if (!discordElem) {
+        const title = document.createElement("p");
+        title.classList.add("detail");
+        title.classList.add("discordTitle");
+        title.textContent = "Discord Server";
+        right.appendChild(title);
+        const info = document.createElement("p");
+        info.classList.add("discordElem");
+        right.appendChild(info);
+        discordElem = info;
+      }
+      discordElem.replaceChildren();
+      discordElem.appendChild(discord);
+    } else {
+      let discordElem = right.getElementsByClassName("discordElem")?.item(0);
+      let discordTitle = right.getElementsByClassName("discordTitle")?.item(0);
+      if (discordElem) right.removeChild(discordElem);
+      if (discordTitle) right.removeChild(discordTitle);
+    }
+
+    const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
+    const plrCount = playersTitle.getElementsByClassName("plrCount")[0];
+    plrCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
+
+    if (lobby.playerCount >= lobby.maxPlayers) plrCount.style.color = "#FF0000";
+    else plrCount.style.color = "#00FF00";
+
+    const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
+    host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;
+
+    const playersList = lobbyInfo.getElementsByClassName("players")[0];
+    playersList.replaceChildren();
+    const players = lobby.playerList.players;
+    players.sort((first, second) => {
+      if (second.platformID == lobby.lobbyID) return 100;
+
+      if (first.platformID == lobby.lobbyID) return -100;
+
+      return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
+    });
+    for (const player of players) {
+      const plrStart = Date.now();
+      if (
+        (!player.username || player.username == "") &&
+        (!player.nickname || player.nickname == "")
+      )
+        continue;
+      if (controller?.signal?.aborted == true) return;
+
+      console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
+
+      const toCopy = document.getElementsByClassName("playerToCopy")[0];
+      const playerElem = toCopy.cloneNode(true);
+      const thumb = await setThumbnail(
+        playerElem.getElementsByClassName("avatarThumbnail")[0],
+        player.avatarModID,
+        player.avatarTitle,
+        player.avatarTitle,
+        true,
+      );
+      let hasNickname = player.nickname != "" && player.nickname;
+      let name = hasNickname ? player.nickname : player.username;
+      if (!player.nickname && !player.username) name = "N/A";
+      else if (hasNickname && player.nickname == player.username)
+        hasNickname = false;
+      if (name.includes("\n")) name = name.split("\n")[0];
+      const nameElem = playerElem.getElementsByClassName("name")[0];
+      nameElem.innerHTML = convert(name);
+      if (player.description && player.description != "") {
+        tippy(nameElem, {
+          content: convert(player.description),
+          animation: "scale",
+          appendTo: "parent",
+          allowHTML: true,
+        });
+      }
+      const username = playerElem.getElementsByClassName("username")[0];
+      if (hasNickname) {
+        username.classList.remove("hidden");
+        username.innerHTML = convert(player.username);
+      } else {
+        username.classList.add("hidden");
+      }
+      playerElem.getElementsByClassName("permissions")[0].innerHTML =
+        colorPermission(player.permissionLevel);
+      let avatar =
+        player.avatarTitle && player.avatarTitle != ""
+          ? convertToHTML(player.avatarTitle)
+          : "N/A";
+
+      censorModTitle(
+        playerElem.getElementsByClassName("avatarTitle")[0],
+        player.avatarModID,
+        avatar,
+        thumb.nsfw,
+      );
+      playerElem.classList.remove("playerToCopy");
+      playerElem.setAttribute("playerId", player.platformID);
+      if (signal?.aborted == true || controller?.signal?.aborted == true)
+        return;
+      playersList.appendChild(playerElem);
+      const time = (Date.now() - plrStart) / 1000;
+      console.log(
+        `  > Created player %c${player.platformID}%c (${time.toPrecision(4)}s)`,
+        "color: #0f0",
+        "color: #0ff",
+      );
+    }
+    lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
+    hideShow(false);
+    lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
+    const time = (Date.now() - start) / 1000;
     console.log(
-      `  > Created player %c${player.platformID}%c (${time.toPrecision(4)}s)`,
+      ` > Displayed more info for %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
       "color: #0f0",
       "color: #0ff",
     );
+  } finally {
+    showingMoreInfo = false;
+    setAllLobbiesMoreInfo(true);
   }
-  lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
-  hideShow(false);
-  lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
-  const time = (Date.now() - start) / 1000;
-  console.log(
-    ` > Displayed more info for %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
-    "color: #0f0",
-    "color: #0ff",
-  );
 }
 
 function censorModTitle(elem, modId, title, nsfw) {
