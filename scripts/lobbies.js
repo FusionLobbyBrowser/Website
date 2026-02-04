@@ -748,7 +748,13 @@ function filterLobbies(lobbies) {
     lobbies = filterByName(lobbies, ["hood", "rp", "war", "roleplay"]);
 
   if (!document.getElementById("showRussianLobbies").checked)
-    lobbies = filterByName(lobbies, ["russian", "rus", "russ"]);
+    lobbies = filterByName(lobbies, [
+      "russian",
+      "rus",
+      "russ",
+      "russi",
+      "russkie",
+    ]);
 
   return lobbies;
 }
@@ -831,14 +837,14 @@ function filterEvent(elem, redo = false) {
   element.addEventListener("change", async () => {
     if (redo) {
       console.log("[Filters] Creating lobbies");
-      if (fullyLoaded) {
+      if (fullyLoaded && !refreshing) {
         if (lobbiesSignal) lobbiesSignal.abort();
         const controller = new AbortController();
         lobbiesSignal = controller;
         await createLobbies(controller?.signal);
-      } else {
-        await updateFilters();
       }
+    } else {
+      await updateFilters();
     }
   });
 }
