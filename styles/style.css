@@ -534,6 +534,10 @@ label {
 
 @media (max-width: 600px) {
   .right-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
   }
 
