@@ -754,6 +754,7 @@ function filterLobbies(lobbies) {
       "russ",
       "russi",
       "russkie",
+      "ru",
     ]);
 
   return lobbies;
@@ -767,7 +768,7 @@ function filterByName(lobbies, array) {
     let found = false;
     for (const s of array) {
       for (const w of words) {
-        if (w.toLowerCase() == s.toLowerCase()) {
+        if (removeSymbols(w).toLowerCase() == removeSymbols(s).toLowerCase()) {
           found = true;
           break;
         }
@@ -777,6 +778,10 @@ function filterByName(lobbies, array) {
   });
 
   return lobbies;
+}
+
+function removeSymbols(text) {
+  return text.replace(/[^a-zA-Z0-9]/gm, "");
 }
 
 function getAllowedIDs(lobbies) {
