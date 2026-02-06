@@ -1,7 +1,7 @@
 import { Converter } from "./unityRichText.js";
 
 const regex = new RegExp(
-  /(?:https?:\/\/discord\.gg|(?<=^|\s)(?:discord)?\.gg)\/(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
+  /(?:https?:\/\/discord\.gg\/|(?<=^|\s)(?:discord)?\.gg\/|Discord(?: Server| Link|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
 );
 
 function getServerIconURL(guildId, id, size = 256) {
@@ -62,10 +62,10 @@ function createServerElem(obj, code) {
   }
   const num = numeral(obj.profile.member_count ?? -1);
   memberCountElem.innerHTML = DOMPurify.sanitize(
-    `<img src="images/people.svg"> ${num.format("0.0a")}`,
+    `<img src="images/people.svg">${num.format("0a")}`,
   );
   tippy(memberCountElem, {
-    content: `${obj.profile.online_count} online`,
+    content: `${obj.profile.member_count} members • ${obj.profile.online_count} online`,
     placement: "bottom",
     appendTo: "parent",
     animation: "scale",
