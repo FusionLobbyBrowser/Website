@@ -36,7 +36,7 @@ const fontsize4unity2html = {
 
 const fontsize4html2unity = {
   pattern: new RegExp(
-    '<span style="font-size: *([^>"]*)px">(.*?(?!<span).*?)</span>'
+    '<span style="font-size: *([^>"]*)px">(.*?(?!<span).*?)</span>',
   ),
   replace: (match, p1, p2) => {
     if (!p1.match(decReg)) {
@@ -105,8 +105,9 @@ const colors = [
 ];
 
 const color4unity2html = {
+  // From what I remember, this regex pattern was created using AI for the most part
   pattern: new RegExp(
-    "(?:<color=(?<Color>[^>]*)>|<(?<Color>#[a-fA-F0-9]{3,8})>)(?<Content>.*?)(?=</color>|<color=[^>]*>|<#[a-fA-F0-9]{3,8}>|$)"
+    "(?:<color=(?<Color>[^>]*)>|<(?<Color>#[a-fA-F0-9]{3,8})>)(?<Content>.*?)(?=</color>|<color=[^>]*>|<#[a-fA-F0-9]{3,8}>|$)",
   ),
   replace: (match, ...args) => {
     let { Color, Content } = args.pop();
@@ -139,7 +140,7 @@ const color4unity2html = {
 
 const color4html2unity = {
   pattern: new RegExp(
-    '<span style="color: *([^>"]*)">(.*?(?!<span).*?)</span>'
+    '<span style="color: *([^>"]*)">(.*?(?!<span).*?)</span>',
   ),
   replace: (match, p1, p2) => {
     if (!p1.match(new RegExp("#[a-fA-F0-9]{3,8}"))) {

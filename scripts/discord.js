@@ -1,5 +1,6 @@
 import { Converter } from "./unityRichText.js";
 
+// From what I remember, this RegEx was created using AI, because my little brain cannot comprehend creating regex patterns
 const regex = new RegExp(
   /(?:https?:\/\/discord\.gg\/|(?<=^|\s)(?:discord)?\.gg\/|Discord(?: Server| Link|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
 );

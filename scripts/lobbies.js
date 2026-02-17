@@ -12,6 +12,8 @@ const PROFANITY_LIST =
 const HTTP_JOIN = "http://localhost:25712/join?code=[code]&layer=SteamVR";
 const URI_JOIN = "bonelab-flb://SteamVR-[code]/";
 
+const LOBBY_PARAM = "lobby";
+
 let allLobbies;
 
 let moreInfoView = -1;
@@ -555,11 +557,11 @@ function hideShow(hide, removeView = true) {
   if (hide) {
     lobbyInfo.removeAttribute("lobbyId");
     if (removeView) {
-      url.searchParams.delete("lobbyView");
+      url.searchParams.delete(LOBBY_PARAM);
       moreInfoView = -1;
     }
   } else if (moreInfoView != -1) {
-    url.searchParams.set("lobbyView", moreInfoView);
+    url.searchParams.set(LOBBY_PARAM, moreInfoView);
   }
   if (url.searchParams.size <= 0)
     url.searchParams.forEach((_, key) => url.searchParams.delete(key));
@@ -870,8 +872,8 @@ window.addEventListener("load", async () => {
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   const params = new URLSearchParams(window.location.search);
-  if (params.has("lobbyView")) {
-    const num = Number(params.get("lobbyView"));
+  if (params.has(LOBBY_PARAM)) {
+    const num = Number(params.get(LOBBY_PARAM));
     if (num) moreInfoView = num;
   }
 
