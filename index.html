@@ -57,12 +57,15 @@
   <link rel="manifest" href="/images/favicon/site.webmanifest" />
 
   <!-- Scripts & Styles -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+  <!-- [ External ] -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js" crossOrigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" crossOrigin="anonymous"></script>
 
   <script src="https://unpkg.com/@popperjs/core@2" type="module" crossOrigin="anonymous"></script>
   <script src="https://unpkg.com/tippy.js@6" type="module" crossOrigin="anonymous"></script>
-  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
-
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" crossOrigin="anonymous" />
+  <!-- [ Internal ] -->
   <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/defaultBarcodes.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
@@ -187,7 +190,7 @@
           <label for="filterProfanities">Filter Profanities</label>
         </div>
         <div class="checkbox-wrapper">
-          <input type="checkbox" id="showNSFW" name="Show NSFW" />
+          <input type="checkbox" id="showNSFW" name="Show NSFW" readonly="true" />
           <label for="showNSFW">Show NSFW</label>
         </div>
         <label id="sortOrderLabel" for="sortOrder">Sort Order</label>

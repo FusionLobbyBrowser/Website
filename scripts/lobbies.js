@@ -892,13 +892,42 @@ window.addEventListener("load", async () => {
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("closeMoreInfo", () => hideShow(true));
 
+  document
+    .getElementById("showNSFW")
+    .addEventListener("click", showNSFWConfirmation);
   updateTime();
 
   await loadProfanities();
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
+
   await fetchAndCreateLobbies();
 });
+
+function showNSFWConfirmation(e) {
+  if (document.getElementById("showNSFW").checked) {
+    e.preventDefault();
+    Swal.fire({
+      title: "Are you sure?",
+      toast: true,
+      text: "This will display text & images on levels and avatars intended to be shown only to people over the age of 18 if any are present.",
+      icon: "warning",
+      theme: "dark",
+      showCancelButton: true,
+    }).then(async (x) => {
+      if (x.isConfirmed) {
+        document.getElementById("showNSFW").checked = true;
+        console.log("[Filters] Creating lobbies");
+        if (fullyLoaded && !refreshing) {
+          if (lobbiesSignal) lobbiesSignal.abort();
+          const controller = new AbortController();
+          lobbiesSignal = controller;
+          await createLobbies(controller?.signal);
+        }
+      }
+    });
+  }
+}
 
 function clickEvent(id, callback) {
   document.getElementById(id).addEventListener("click", callback);
