@@ -579,7 +579,7 @@ async function getThumbnail(modId, title, search, isAvatar) {
     );
     if (value) {
       return {
-        thumbnail: `/images/default/${value.name}.png`,
+        thumbnail: `/images/default/${value.name}.webp`,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
         nsfw: false,
       };
@@ -587,7 +587,7 @@ async function getThumbnail(modId, title, search, isAvatar) {
       return {
         thumbnail: `/images/default/${
           isAvatar ? "Mods_Avatar" : "Mods_Level"
-        }.png`,
+        }.webp`,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. No corresponding thumbnail for it was found, so a default one was applied`,
         nsfw: false,
       };
@@ -617,10 +617,10 @@ async function setThumbnail(elem, modId, title, search, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
-    elem.setAttribute("src", "images/errorThumbnail.png");
+    elem.setAttribute("src", "images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: "images/errorThumbnail.png",
+      thumbnail: "images/errorThumbnail.webp",
       alt: alt,
       nsfw: false,
     };
@@ -631,10 +631,10 @@ async function setThumbnail(elem, modId, title, search, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
-    elem.setAttribute("src", "images/nsfwCover.png");
+    elem.setAttribute("src", "images/nsfwCover.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: "images/nsfwCover.png",
+      thumbnail: "images/nsfwCover.webp",
       alt: alt,
       nsfw: true,
     };
