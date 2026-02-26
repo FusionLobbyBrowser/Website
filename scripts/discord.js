@@ -14,8 +14,12 @@ async function getServerInfo(inviteCode) {
     const res = await fetch(
       `https://discord.com/api/invite/${inviteCode}?with_counts=true`,
     );
-    const json = res.json();
-    return json;
+    if (res.ok) {
+      const json = res.json();
+      return json;
+    } else {
+      return null;
+    }
   } catch (ex) {
     console.error(
       "An unexpected error has occurred while trying to fetch information about Discord server, response: " +
