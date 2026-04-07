@@ -63,6 +63,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" crossOrigin="anonymous"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@aejkatappaja/phantom-ui/dist/phantom-ui.cdn.js"
+    crossOrigin="anonymous"></script>
+
   <script src="https://unpkg.com/@popperjs/core@2" type="module" crossOrigin="anonymous"></script>
   <script src="https://unpkg.com/tippy.js@6" type="module" crossOrigin="anonymous"></script>
   <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" crossOrigin="anonymous" />
@@ -81,7 +84,7 @@
 
 <body>
   <div class="lobby lobbyToCopy">
-    <img class="lobbyThumbnail" src="images/templateLevel.webp" alt="Template thumbnail">
+    <img class="lobbyThumbnail" src="images/default/VoidG114.webp" alt="Template thumbnail">
     <p class="info lobbyName">HAHOOS's Lobby!</p>
     <p class="info lobbyHostName">HAHOOS</p>
     <p class="info levelTitle">7/11</p>
@@ -91,14 +94,14 @@
     <button class="moreInfo inline">More Info</button>
   </div>
   <div class="player playerToCopy">
-    <img class="avatarThumbnail" src="images/templateAvatar.webp" alt="Template thumbnail">
+    <img class="avatarThumbnail" src="images/default/Jay.webp" alt="Template thumbnail">
     <p class="name">RottenCheese</p>
     <p class="username">Test</p>
     <p class="permissions">OWNER</p>
     <p class="avatarTitle">Fancy Ford</p>
   </div>
   <div class="discord discordToCopy">
-    <img class="serverIcon" src="images/templateAvatar.webp" alt="Template icon">
+    <img class="serverIcon" src="images/default/Jay.webp" alt="Template icon">
     <p class="inline serverName">RottenCheese's Server</p>
     <p class="inline memberCount">569 members</p>
     <a class="discordJoin inline" href="#" target="_blank" rel="noopener noreferrer">
@@ -117,39 +120,41 @@
     <p class="hidden" id="refresh">Last Refresh: N/A</p>
     <button id="refreshButton">Refresh</button>
   </header>
-  <div id="moreDetails-outer" class="hidden">
-    <div id="moreDetails" class="hidden">
-      <div class="header-outer">
-        <div class="header">
-          <p class="lobbyTitle">HAHOOS's Lobby!</p>
-          <a id="closeMoreInfo" href="#">Close</a>
+  <phantom-ui id="moreDetails-loader">
+    <div id="moreDetails-outer" class="hidden">
+      <div id="moreDetails" class="hidden">
+        <div class="header-outer">
+          <div class="header">
+            <p class="lobbyTitle">HAHOOS's Lobby!</p>
+            <a id="closeMoreInfo" href="#">Close</a>
+          </div>
         </div>
-      </div>
-      <div class="content hidden">
-        <div class="left-content side">
-          <img class="thumbnail" src="images/templateLevel.webp" alt="Template thumbnail">
+        <div class="content hidden">
+          <div class="left-content side">
+            <img class="thumbnail" src="images/templateLevel.webp" alt="Template thumbnail">
+          </div>
+          <div class="right-content side">
+            <p class="detail">Description</p>
+            <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
+              faucibus ex sapien vitae pellentesque sem placerat. In
+              id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+              fringilla lacus
+              nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+              vel class
+              aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+            <p class="detail">Level</p>
+            <p class="detail-info levelTitle">7/11</p>
+            <p class="detail">Gamemode</p>
+            <p class="detail-info gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
+          </div>
         </div>
-        <div class="right-content side">
-          <p class="detail">Description</p>
-          <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque
-            faucibus ex sapien vitae pellentesque sem placerat. In
-            id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
-            fringilla lacus
-            nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
-            vel class
-            aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-          <p class="detail">Level</p>
-          <p class="detail-info levelTitle">7/11</p>
-          <p class="detail">Gamemode</p>
-          <p class="detail-info gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
+        <p class="playersTitle hidden">Players <span class="plrCount">(11/15)</span></p>
+        <p class="lobbyHost">Host: asjdjkasdjkasjkdajskd</p>
+        <div class="players hidden">
         </div>
-      </div>
-      <p class="playersTitle hidden">Players <span class="plrCount">(11/15)</span></p>
-      <p class="lobbyHost">Host: asjdjkasdjkasjkdajskd</p>
-      <div class="players hidden">
       </div>
     </div>
-  </div>
+  </phantom-ui>
   <h2 class="lobbyHeader hidden" align="center">Lobbies (10)</h2>
   <p class="lobbyInfo hidden">There are currently <span class="playerCount">-1 players</span> playing on <span
       class="lobbyCount">-1 lobbies</span></p>
