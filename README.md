@@ -18,6 +18,8 @@ Third-party Libraries imported when opened:
 
 - [numeraljs](https://github.com/adamwdraper/Numeral-js) is licensed under the MIT License. See [LICENSE](https://github.com/adamwdraper/Numeral-js/blob/master/LICENSE) for the full License.
 
+- [phantom-ui](https://github.com/Aejkatappaja/phantom-ui) is licensed under the MIT License. See [LICENSE](https://github.com/Aejkatappaja/phantom-ui/blob/main/LICENSE) for the full License.
+
 Icons from [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) were used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
 
 Profanity List from [Fusion-Lists](https://github.com/Lakatrazz/Fusion-Lists) was used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/Fusion-Lists/blob/main/LICENSE) for the full License.
