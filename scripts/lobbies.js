@@ -949,7 +949,10 @@ function collapsableMenus() {
 
 document.getElementById("javascriptRequired").classList.add("hidden");
 
-window.addEventListener("DOMContentLoaded", async () => {
+if (document.readyState !== "loading") init();
+else window.addEventListener("DOMContentLoaded", init);
+
+async function init() {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
@@ -986,7 +989,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   fullyLoaded = true;
 
   await fetchAndCreateLobbies();
-});
+}
 
 function showNSFWConfirmation(e) {
   if (document.getElementById("showNSFW").checked) {
