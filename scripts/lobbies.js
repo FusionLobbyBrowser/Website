@@ -29,6 +29,9 @@ let lobbiesSignal;
 let moreInfoSignal;
 
 let profanities = [];
+let thumbnailCache = new Map();
+
+const cacheExpireTime = 15 * 60;
 
 let showingMoreInfo = false;
 
@@ -85,7 +88,7 @@ async function fetchAndCreateLobbies() {
             let lobbies = json.lobbies;
 
             allLobbies = structuredClone(lobbies);
-            createLobbies(controller?.signal);
+            await createLobbies(controller?.signal);
           } else {
             hideShow(true);
           }
@@ -640,13 +643,33 @@ async function getThumbnail(modId, title, search, isAvatar) {
   }
 
   try {
+    const cacheItem = thumbnailCache[`${modId}`];
+    if (
+      cacheItem &&
+      cacheItem.src &&
+      cacheItem.createdAt &&
+      Date.now() / 1000 - cacheItem.createdAt < cacheExpireTime
+    ) {
+      console.log("  > Using a thumbnail from cache!");
+      return {
+        thumbnail: cacheItem.src,
+        alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
+        nsfw: cacheItem.isNSFW,
+      };
+    }
     const response = await fetch(THUMBNAIL + modId);
     if (!response.ok) return { error: await response.text() };
-    return {
+    const res = {
       thumbnail: URL.createObjectURL(await response.blob()),
       alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
       nsfw: response.headers.get("modio-maturity") == "nsfw" ? true : false,
     };
+    thumbnailCache[`${modId}`] = {
+      src: res.thumbnail,
+      isNSFW: res.nsfw,
+      createdAt: Date.now() / 1000,
+    };
+    return res;
   } catch (ex) {
     console.error(ex);
     return {
