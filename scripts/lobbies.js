@@ -179,12 +179,10 @@ async function createLobbies(signal) {
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       moreInfoUpdated = true;
   }
-  const loaders = document.querySelectorAll(
-    "#lobbies > phantom-ui:not([lobbyId])",
-  );
-  loaders.forEach((x) => x.remove());
-  const lobbyLoaders = document.querySelectorAll("#lobbies > phantom-ui");
-  lobbyLoaders.forEach((x) => x.removeAttribute("loading"));
+  lobbies.querySelectorAll("phantom-ui").forEach((x) => x.remove());
+  lobbies
+    .querySelectorAll('.lobby:not([filteredOut="true"])')
+    .forEach((x) => x.classList.remove("hidden"));
   if (moreInfoUpdated == false) hideShow(true);
 }
 
@@ -229,11 +227,12 @@ async function createLobby(lobby, signal, hidden) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
 
-  const loader = document.querySelector("#lobbies > phantom-ui:not([lobbyId])");
-  const lobbyElem = loader.childNodes[0];
+  const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
+
+  const lobbyElem = hiddenLobby.cloneNode(true);
   lobbyElem.classList.remove("lobbyToCopy");
-  if (hidden) lobbyElem.classList.add("hidden");
-  else lobbyElem.classList.remove("hidden");
+  lobbyElem.setAttribute("filteredOut", hidden);
+  lobbyElem.classList.add("hidden");
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
@@ -247,7 +246,6 @@ async function createLobby(lobby, signal, hidden) {
     if (signal?.aborted != true) moreInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
-  loader.setAttribute("lobbyId", lobby.lobbyID);
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
@@ -310,6 +308,7 @@ async function createLobby(lobby, signal, hidden) {
   };
   if (showingMoreInfo) setButton(moreInfoBtn, false);
 
+  if (signal?.aborted != true) lobbies.appendChild(lobbyElem);
   const time = (Date.now() - date) / 1000;
   console.log(
     ` > Created lobby %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
@@ -426,8 +425,8 @@ async function moreInfo(lobby, thumbnail, signal) {
 
       return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
     });
-    // TODO: if there are over than 30 players, this will result in an error as there is no empty loader left, this must be fixed later on
-    for (let index = 0; index < 30; index++) {
+
+    for (let index = 0; index < 10; index++) {
       const toCopy = document.getElementsByClassName("playerToCopy")[0];
       const playerElem = toCopy.cloneNode(true);
       playerElem.classList.remove("playerToCopy");
@@ -444,7 +443,10 @@ async function moreInfo(lobby, thumbnail, signal) {
 
       console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
 
-      const playerElem = playersList.querySelector("div:not([playerId])");
+      const toCopy = document.getElementsByClassName("playerToCopy")[0];
+      const playerElem = toCopy.cloneNode(true);
+      playerElem.classList.remove("playerToCopy");
+      playerElem.classList.add("hidden");
       const thumb = await setThumbnail(
         playerElem.getElementsByClassName("avatarThumbnail")[0],
         player.avatarModID,
@@ -491,6 +493,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       playerElem.setAttribute("playerId", player.platformID);
       if (signal?.aborted == true || controller?.signal?.aborted == true)
         return;
+      playersList.appendChild(playerElem);
       const time = (Date.now() - plrStart) / 1000;
       console.log(
         `  > Created player %c${player.platformID}%c (${time.toPrecision(4)}s)`,
@@ -498,8 +501,12 @@ async function moreInfo(lobby, thumbnail, signal) {
         "color: #0ff",
       );
     }
-    const loaders = playersList.querySelectorAll("div:not([playerId])");
-    loaders.forEach((x) => x.remove());
+    playersList
+      .querySelectorAll("div:not([playerId])")
+      .forEach((x) => x.remove());
+    playersList
+      .querySelectorAll("div")
+      .forEach((x) => x.classList.remove("hidden"));
     lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
     lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
     const time = (Date.now() - start) / 1000;
@@ -510,7 +517,8 @@ async function moreInfo(lobby, thumbnail, signal) {
     );
   } finally {
     showingMoreInfo = false;
-    loader.removeAttribute("loading");
+    if (signal?.aborted != true && controller?.signal?.aborted != true)
+      loader.removeAttribute("loading");
     setAllLobbiesMoreInfo(true);
   }
 }
