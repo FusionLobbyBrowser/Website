@@ -130,6 +130,7 @@ function createSkeletonLobby() {
   const loader = document.createElement("phantom-ui");
   const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
   loader.setAttribute("loading", null);
+  loader.classList.add("lobbySkeleton");
   const lobbyElem = hiddenLobby.cloneNode(true);
   lobbyElem.classList.remove("lobbyToCopy");
   loader.appendChild(lobbyElem);
