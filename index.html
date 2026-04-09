@@ -77,13 +77,14 @@
   <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
   <script src="scripts/lobbies.js" type="module" crossOrigin="anonymous"></script>
 
-  <link rel="stylesheet preload" href="styles/fonts.css" crossOrigin="anonymous" />
+  <link rel="preload" href="styles/fonts.css" as="style" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="styles/fonts.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="styles/style.css" crossOrigin="anonymous" />
 </head>
 
 <body>
   <div class="lobby lobbyToCopy">
-    <img class="lobbyThumbnail" src="images/default/VoidG114.webp" alt="Template thumbnail">
+    <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
     <p class="info lobbyName">HAHOOS's Lobby!</p>
     <p class="info lobbyHostName">HAHOOS</p>
     <p class="info levelTitle">7/11</p>
@@ -93,14 +94,14 @@
     <button class="moreInfo inline">More Info</button>
   </div>
   <div class="player playerToCopy">
-    <img class="avatarThumbnail" src="images/default/Jay.webp" alt="Template thumbnail">
+    <img class="avatarThumbnail" src="images/default/Jay.webp" loading="lazy" alt="Template thumbnail">
     <p class="name">RottenCheese</p>
     <p class="username">Test</p>
     <p class="permissions">OWNER</p>
     <p class="avatarTitle">Fancy Ford</p>
   </div>
   <div class="discord discordToCopy">
-    <img class="serverIcon" src="images/default/Jay.webp" alt="Template icon">
+    <img class="serverIcon" src="images/default/Jay.webp" loading="lazy" alt="Template icon">
     <p class="inline serverName">RottenCheese's Server</p>
     <p class="inline memberCount">569 members</p>
     <a class="discordJoin inline" href="#" target="_blank" rel="noopener noreferrer">
@@ -130,7 +131,7 @@
         </div>
         <div class="content hidden">
           <div class="left-content side">
-            <img class="thumbnail" src="images/default/VoidG114.webp" alt="Template thumbnail">
+            <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
           </div>
           <div class="right-content side">
             <p class="detail">Description</p>

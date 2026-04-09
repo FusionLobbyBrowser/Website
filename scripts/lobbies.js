@@ -151,7 +151,7 @@ async function createLobbies(signal) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
-  createSkeletionLobbies();
+  createSkeletionLobbies(window.screen.innerWidth > 600 ? 50 : 10);
   const lobbyList = structuredClone(allLobbies);
   let lobbyCountMax = lobbyList.length;
   let lobbyCount = hideLobbies(false);
@@ -949,7 +949,7 @@ function collapsableMenus() {
 
 document.getElementById("javascriptRequired").classList.add("hidden");
 
-window.addEventListener("load", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
@@ -981,7 +981,7 @@ window.addEventListener("load", async () => {
     .addEventListener("click", showNSFWConfirmation);
   updateTime();
 
-  await loadProfanities();
+  loadProfanities();
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
 
