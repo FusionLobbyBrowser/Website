@@ -279,11 +279,11 @@ async function createLobby(lobby, signal, hidden) {
   const connectBtn = lobbyElem.getElementsByClassName("connect")[0];
   playerCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
   if (lobby.playerCount >= lobby.maxPlayers) {
-    playerCount.style.color = "#FF0000";
+    playerCount.classList.add("fullServer");
     connectBtn.classList.add("blocked");
     connectBtn.disabled = true;
   } else {
-    playerCount.style.color = "#00FF00";
+    playerCount.classList.add("availableServer");
     connectBtn.classList.remove("blocked");
     connectBtn.disabled = false;
   }
@@ -417,11 +417,12 @@ async function moreInfo(lobby, thumbnail, signal) {
     }
 
     const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
-    const plrCount = playersTitle.getElementsByClassName("plrCount")[0];
+    const plrCount = lobbyInfo.getElementsByClassName("plrCount")[0];
     plrCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
 
-    if (lobby.playerCount >= lobby.maxPlayers) plrCount.style.color = "#FF0000";
-    else plrCount.style.color = "#00FF00";
+    if (lobby.playerCount >= lobby.maxPlayers)
+      plrCount.classList.add("fullServer");
+    else plrCount.classList.add("availableServer");
 
     const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
     host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;

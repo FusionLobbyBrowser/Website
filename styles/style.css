@@ -322,6 +322,21 @@ label {
   white-space: nowrap;
 }
 
+.plrCount {
+  display: inline-block;
+  margin-left: 0.1em;
+  margin-bottom: 0.25em;
+  font-size: 1.125rem;
+}
+
+.fullServer {
+  color: red;
+}
+
+.availableServer {
+  color: chartreuse;
+}
+
 .serverName {
   width: 50%;
   text-overflow: ellipsis;
@@ -449,6 +464,7 @@ label {
 }
 
 .playersTitle {
+  display: inline-block;
   font-size: 1.125rem;
   text-align: left;
   margin-left: 1em;
