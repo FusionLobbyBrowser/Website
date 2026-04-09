@@ -151,7 +151,7 @@ async function createLobbies(signal) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
-  createSkeletionLobbies(window.screen.innerWidth > 600 ? 50 : 10);
+  createSkeletionLobbies(window.screen.width > 600 ? 50 : 10);
   const lobbyList = structuredClone(allLobbies);
   let lobbyCountMax = lobbyList.length;
   let lobbyCount = hideLobbies(false);
