@@ -988,7 +988,7 @@ async function init() {
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
 
-  await fetchAndCreateLobbies();
+  fetchAndCreateLobbies();
 }
 
 function showNSFWConfirmation(e) {
