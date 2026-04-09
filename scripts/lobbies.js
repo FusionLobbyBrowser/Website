@@ -35,6 +35,13 @@ const cacheExpireTime = 15 * 60;
 
 let showingMoreInfo = false;
 
+const permissions = [
+  [-1, "guest"],
+  [0, "default"],
+  [1, "operator"],
+  [2, "owner"],
+];
+
 async function fetchAndCreateLobbies() {
   refreshing = true;
   console.log("Fetching lobbies");
@@ -461,7 +468,11 @@ async function moreInfo(lobby, thumbnail, signal) {
       let hasNickname = player.nickname != "" && player.nickname;
       let name = hasNickname ? player.nickname : player.username;
       if (!player.nickname && !player.username) name = "N/A";
-      else if (hasNickname && player.nickname == player.username)
+      else if (
+        hasNickname &&
+        Converter.removeRichText(player.username) ==
+          Converter.removeRichText(player.nickname)
+      )
         hasNickname = false;
       if (name.includes("\n")) name = name.split("\n")[0];
       const nameElem = playerElem.getElementsByClassName("name")[0];
@@ -481,8 +492,10 @@ async function moreInfo(lobby, thumbnail, signal) {
       } else {
         username.classList.add("hidden");
       }
-      playerElem.getElementsByClassName("permissions")[0].innerHTML =
-        colorPermission(player.permissionLevel);
+      const perms = colorPermission(player.permissionLevel);
+      const permsElem = playerElem.getElementsByClassName("permissions")[0];
+      permsElem.classList.add(perms.class);
+      permsElem.textContent = perms.text;
       let avatar =
         player.avatarTitle && player.avatarTitle != ""
           ? convertToHTML(player.avatarTitle)
@@ -528,9 +541,10 @@ async function moreInfo(lobby, thumbnail, signal) {
 }
 
 function censorModTitle(elem, modId, title, nsfw) {
-  if (nsfw && !document.getElementById("showNSFW").checked)
-    elem.innerHTML = '<span style="color: #FF0000">[NSFW]</span>';
-  else elem.innerHTML = modRedirect(modId, title);
+  if (nsfw && !document.getElementById("showNSFW").checked) {
+    elem.textContent = "[NSFW]";
+    elem.classList.add("filterNSFW");
+  } else elem.innerHTML = modRedirect(modId, title);
 }
 
 async function isLobbyOnline() {
@@ -544,16 +558,13 @@ async function isLobbyOnline() {
 }
 
 function colorPermission(perm) {
-  switch (perm) {
-    case -1:
-      return '<span class="inheritParent" style="color: #808080">GUEST</span>';
-    case 0:
-      return '<span class="inheritParent">DEFAULT</span>';
-    case 1:
-      return '<span class="inheritParent" style="color: #FA8072">OPERATOR</span>';
-    case 2:
-      return '<span class="inheritParent" style="color: #FFBF00">OWNER</span>';
-  }
+  let name = "default";
+  const mapped = new Map(permissions).get(perm);
+  if (mapped) name = mapped;
+  return {
+    class: `permission-${name.toLowerCase()}`,
+    text: name.toUpperCase(),
+  };
 }
 
 function convert(text) {
@@ -650,7 +661,7 @@ async function getThumbnail(modId, title, search, isAvatar) {
       cacheItem.createdAt &&
       Date.now() / 1000 - cacheItem.createdAt < cacheExpireTime
     ) {
-      console.log("  > Using a thumbnail from cache!");
+      console.log("   > Using a thumbnail from cache!");
       return {
         thumbnail: cacheItem.src,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,

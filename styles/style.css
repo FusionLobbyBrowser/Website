@@ -45,6 +45,10 @@ h2 {
   background-color: #9f1e1e;
 }
 
+.filterNSFW {
+  color: red;
+}
+
 .blocked:hover {
   cursor: default;
   background-color: #8b0000;
@@ -683,4 +687,18 @@ button {
 button:hover {
   cursor: pointer;
   background-color: rgb(0, 45, 255);
+}
+
+/* Permissions */
+
+.permission-guest {
+  color: #808080;
+}
+
+.permission-operator {
+  color: #fa8072;
+}
+
+.permission-owner {
+  color: #ffbf00;
 }
