@@ -329,11 +329,11 @@ label {
   font-size: 1.125rem;
 }
 
-.fullServer {
+.fullLobby {
   color: red;
 }
 
-.availableServer {
+.availableLobby {
   color: chartreuse;
 }
 

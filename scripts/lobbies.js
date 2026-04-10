@@ -66,7 +66,7 @@ async function fetchAndCreateLobbies() {
       const error = document.getElementsByClassName("error")[0];
       if (json.error != null) {
         lobbies.replaceChildren();
-        if (!(await isLobbyOnline()))
+        if (!(await isServerOnline()))
           error.textContent = "Server is offline, try again later.";
         else error.textContent = json.error;
 
@@ -234,6 +234,10 @@ async function autoRefresh() {
 
 async function createLobby(lobby, signal, hidden) {
   const date = Date.now();
+  if (!lobby || !lobby.lobbyID || lobby.lobbyID == 0) {
+    console.log("%c > Invalid lobby, cannot create", "color: #f00");
+    return false;
+  }
   console.log(` > Creating lobby %c${lobby.lobbyID}`, "color: #0f0");
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
@@ -279,11 +283,11 @@ async function createLobby(lobby, signal, hidden) {
   const connectBtn = lobbyElem.getElementsByClassName("connect")[0];
   playerCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
   if (lobby.playerCount >= lobby.maxPlayers) {
-    playerCount.classList.add("fullServer");
+    playerCount.classList.add("fullLobby");
     connectBtn.classList.add("blocked");
     connectBtn.disabled = true;
   } else {
-    playerCount.classList.add("availableServer");
+    playerCount.classList.add("availableLobby");
     connectBtn.classList.remove("blocked");
     connectBtn.disabled = false;
   }
@@ -548,7 +552,7 @@ function censorModTitle(elem, modId, title, nsfw) {
   } else elem.innerHTML = modRedirect(modId, title);
 }
 
-async function isLobbyOnline() {
+async function isServerOnline() {
   try {
     const res = await fetch(HOST);
     return res.ok;
@@ -693,6 +697,7 @@ async function getThumbnail(modId, title, search, isAvatar) {
 
 async function setThumbnail(elem, modId, title, search, isAvatar) {
   var thumbnail = await getThumbnail(modId, title, search, isAvatar);
+  elem.removeAttribute("loading");
   if (thumbnail.error != null) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
