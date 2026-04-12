@@ -425,8 +425,8 @@ async function moreInfo(lobby, thumbnail, signal) {
     plrCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
 
     if (lobby.playerCount >= lobby.maxPlayers)
-      plrCount.classList.add("fullServer");
-    else plrCount.classList.add("availableServer");
+      plrCount.classList.add("fullLobby");
+    else plrCount.classList.add("availableLobby");
 
     const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
     host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;
