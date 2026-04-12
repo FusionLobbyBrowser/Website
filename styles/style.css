@@ -128,9 +128,8 @@ ul {
   overflow-wrap: break-word;
 }
 
-#closeMoreInfo {
-  width: 100%;
-  text-align: center;
+.infoControls {
+  margin-top: 0.5em;
 }
 
 #lobbies {

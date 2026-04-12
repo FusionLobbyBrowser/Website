@@ -370,6 +370,22 @@ async function moreInfo(lobby, thumbnail, signal) {
         ? lobby.lobbyName
         : `${lobby.lobbyHostName}'s Lobby`,
     );
+    const connectBtn = header.getElementsByClassName("connect")[0];
+    connectBtn.onclick = async () => {
+      setButton(connectBtn, false);
+      try {
+        await requestJoin(lobby.lobbyCode);
+      } finally {
+        setButton(connectBtn, true);
+      }
+    };
+    if (lobby.playerCount >= lobby.maxPlayers) {
+      connectBtn.classList.add("blocked");
+      connectBtn.disabled = true;
+    } else {
+      connectBtn.classList.remove("blocked");
+      connectBtn.disabled = false;
+    }
     const content = lobbyInfo.getElementsByClassName("content")[0];
     const right = content.getElementsByClassName("right-content")[0];
     const left = content.getElementsByClassName("left-content")[0];
@@ -988,6 +1004,17 @@ async function init() {
   document
     .getElementById("showNSFW")
     .addEventListener("click", showNSFWConfirmation);
+  const connectBtn = document.querySelector(
+    "#moreDetails > .header-outer > .header > .infoControls > .connect",
+  );
+  tippy(connectBtn, {
+    content:
+      'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
+    allowHTML: true,
+    appendTo: "parent",
+    interactive: true,
+    animation: "scale",
+  });
   updateTime();
 
   loadProfanities();
