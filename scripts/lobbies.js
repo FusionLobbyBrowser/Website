@@ -886,9 +886,13 @@ function hideLobbies(changeElem = true) {
   var lobbies = document.getElementById("lobbies").children;
   if (changeElem) {
     for (const i of lobbies) {
-      if (list.includes(Number(i.getAttribute("lobbyId"))))
+      if (list.includes(Number(i.getAttribute("lobbyId")))) {
         i.classList.remove("hidden");
-      else i.classList.add("hidden");
+        i.setAttribute("filteredout", false);
+      } else {
+        i.classList.add("hidden");
+        i.setAttribute("filteredout", true);
+      }
     }
   }
   return list.length;
