@@ -410,6 +410,11 @@ label {
   transition: 0.75s;
 }
 
+.lobby[filteredout="true"] {
+  display: none;
+  visibility: hidden;
+}
+
 .lobbySkeleton {
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
 }

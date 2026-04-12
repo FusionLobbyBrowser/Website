@@ -192,7 +192,7 @@ async function createLobbies(signal) {
   }
   lobbies.querySelectorAll("phantom-ui").forEach((x) => x.remove());
   lobbies
-    .querySelectorAll('.lobby:not([filteredOut="true"])')
+    .querySelectorAll(".lobby")
     .forEach((x) => x.classList.remove("hidden"));
   if (moreInfoUpdated == false) hideShow(true);
 }
@@ -886,13 +886,10 @@ function hideLobbies(changeElem = true) {
   var lobbies = document.getElementById("lobbies").children;
   if (changeElem) {
     for (const i of lobbies) {
-      if (list.includes(Number(i.getAttribute("lobbyId")))) {
-        i.classList.remove("hidden");
-        i.setAttribute("filteredout", false);
-      } else {
-        i.classList.add("hidden");
-        i.setAttribute("filteredout", true);
-      }
+      i.setAttribute(
+        "filteredout",
+        !list.includes(Number(i.getAttribute("lobbyId"))),
+      );
     }
   }
   return list.length;
