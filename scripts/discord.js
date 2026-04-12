@@ -87,6 +87,8 @@ export default async function elem(text) {
     if (g) {
       if (!g) return null;
 
+      console.log(`  > Found a discord server: %c${g}`, "color: #0ff");
+
       const serverInfo = await getServerInfo(g);
       if (!serverInfo) return null;
 

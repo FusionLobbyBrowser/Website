@@ -400,7 +400,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       ).replace("\n", "<br>"),
     );
 
-    const discord = await Discord(description.textContent);
+    const discord = await Discord(lobby.lobbyDescription ?? "N/A");
 
     censorModTitle(
       right.getElementsByClassName("levelTitle")[0],
