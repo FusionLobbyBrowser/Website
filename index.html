@@ -59,6 +59,24 @@
   <!-- Scripts & Styles -->
 
   <!-- [ External ] -->
+
+  <style>
+    phantom-ui[loading] * {
+      -webkit-text-fill-color: transparent !important;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    phantom-ui[loading] img,
+    phantom-ui[loading] svg,
+    phantom-ui[loading] video,
+    phantom-ui[loading] canvas,
+    phantom-ui[loading] button,
+    phantom-ui[loading] [role="button"] {
+      opacity: 0 !important;
+    }
+  </style>
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js" defer crossOrigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer crossOrigin="anonymous"></script>
@@ -80,23 +98,6 @@
   <link rel="preload" href="styles/fonts.css" as="style" crossOrigin="anonymous" />
   <link rel="stylesheet" href="styles/fonts.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="styles/style.css" crossOrigin="anonymous" />
-
-  <style>
-    phantom-ui[loading] * {
-      -webkit-text-fill-color: transparent !important;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    phantom-ui[loading] img,
-    phantom-ui[loading] svg,
-    phantom-ui[loading] video,
-    phantom-ui[loading] canvas,
-    phantom-ui[loading] button,
-    phantom-ui[loading] [role="button"] {
-      opacity: 0 !important;
-    }
-  </style>
 </head>
 
 <body>
