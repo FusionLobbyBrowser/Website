@@ -92,8 +92,15 @@ export default async function elem(text) {
       const serverInfo = await getServerInfo(g);
       if (!serverInfo) return null;
 
-      const elem = createServerElem(serverInfo, g);
-      if (!elem) return null;
+      try {
+        const elem = createServerElem(serverInfo, g);
+        if (!elem) return null;
+      } catch (ex) {
+        console.error(
+          `Failed to create discord server element. Exception:\n${ex}`,
+        );
+        return null;
+      }
 
       return elem;
     }
