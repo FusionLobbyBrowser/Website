@@ -92,8 +92,9 @@ export default async function elem(text) {
       const serverInfo = await getServerInfo(g);
       if (!serverInfo) return null;
 
+      let elem;
       try {
-        const elem = createServerElem(serverInfo, g);
+        elem = createServerElem(serverInfo, g);
         if (!elem) return null;
       } catch (ex) {
         console.error(
