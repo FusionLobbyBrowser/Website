@@ -30,6 +30,10 @@ For it to be displayed, you need to actually "link" a discord server. This can b
   - On PC, hovering the mouse over the player's name, if an about me is found it will be displayed
   - On Mobile, press the players name and it will display the same like on the PC.
 
+### Q: Why does the website not appear on Google Search Engine?
+
+**A:** The website is deemed basically not worthy by Google, though they did not give a clear reason as to why, but rather a general `Crawled - not indexed`. It's an issue that still needs to be fixed. For the time being use a search engine like Bing.
+
 ## Licenses
 
 Website is licensed under the MIT License. See [LICENSE](https://github.com/FusionLobbyBrowser/Website/blob/main/LICENSE) for the full License.
