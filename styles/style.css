@@ -409,7 +409,7 @@ label {
   transition: 0.75s;
 }
 
-.lobby[filteredout="true"] {
+phantom-ui[filteredout="true"] > .lobby {
   display: none;
   visibility: hidden;
 }

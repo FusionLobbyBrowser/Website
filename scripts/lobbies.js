@@ -190,10 +190,12 @@ async function createLobbies(signal) {
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       moreInfoUpdated = true;
   }
-  lobbies.querySelectorAll("phantom-ui").forEach((x) => x.remove());
   lobbies
-    .querySelectorAll(".lobby")
-    .forEach((x) => x.classList.remove("hidden"));
+    .querySelectorAll("phantom-ui:not([lobbyId])")
+    .forEach((x) => x.remove());
+  lobbies
+    .querySelectorAll("phantom-ui")
+    .forEach((x) => x.removeAttribute("loading"));
   if (moreInfoUpdated == false) hideShow(true);
 }
 
@@ -242,12 +244,9 @@ async function createLobby(lobby, signal, hidden) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
 
-  const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
-
-  const lobbyElem = hiddenLobby.cloneNode(true);
-  lobbyElem.classList.remove("lobbyToCopy");
-  lobbyElem.setAttribute("filteredOut", hidden);
-  lobbyElem.classList.add("hidden");
+  const loader = lobbies.querySelector("phantom-ui:not([lobbyId])");
+  const lobbyElem = loader.childNodes[0];
+  loader.setAttribute("filteredOut", hidden);
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
@@ -260,7 +259,7 @@ async function createLobby(lobby, signal, hidden) {
     moreInfoUpdated = true;
     if (signal?.aborted != true) moreInfo(lobby, thumb, signal);
   }
-  lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
+  loader.setAttribute("lobbyId", lobby.lobbyID);
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
@@ -323,7 +322,6 @@ async function createLobby(lobby, signal, hidden) {
   };
   if (showingMoreInfo) setButton(moreInfoBtn, false);
 
-  if (signal?.aborted != true) lobbies.appendChild(lobbyElem);
   const time = (Date.now() - date) / 1000;
   console.log(
     ` > Created lobby %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
