@@ -242,6 +242,11 @@ async function createLobby(lobby, signal, hidden) {
   const lobbies = document.getElementById("lobbies");
 
   const loader = lobbies.querySelector("phantom-ui:not([lobbyId])");
+  if (!loader) {
+    loader = createSkeletonLobby();
+    lobbies.appendChild(loader);
+  }
+
   const lobbyElem = loader.childNodes[0];
   loader.setAttribute("filteredOut", hidden);
   const thumb = await setThumbnail(
