@@ -121,10 +121,7 @@ async function fetchAndCreateLobbies() {
   } finally {
     refreshing = false;
     const time = (Date.now() - start) / 1000;
-    console.log(
-      `Creating lobbies took %c${time.toPrecision(4)}s`,
-      "color: #FF0",
-    );
+    console.log(`Creating lobbies took %c${time.toFixed(4)}s`, "color: #FF0");
   }
 }
 
@@ -324,7 +321,7 @@ async function createLobby(lobby, signal, hidden) {
 
   const time = (Date.now() - date) / 1000;
   console.log(
-    ` > Created lobby %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
+    ` > Created lobby %c${lobby.lobbyID}%c (${time.toFixed(4)}s)`,
     "color: #0f0",
     "color: #0ff",
   );
@@ -532,7 +529,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       playersList.appendChild(playerElem);
       const time = (Date.now() - plrStart) / 1000;
       console.log(
-        `  > Created player %c${player.platformID}%c (${time.toPrecision(4)}s)`,
+        `  > Created player %c${player.platformID}%c (${time.toFixed(4)}s)`,
         "color: #0f0",
         "color: #0ff",
       );
@@ -547,7 +544,7 @@ async function moreInfo(lobby, thumbnail, signal) {
     lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
     const time = (Date.now() - start) / 1000;
     console.log(
-      ` > Displayed more info for %c${lobby.lobbyID}%c (${time.toPrecision(4)}s)`,
+      ` > Displayed more info for %c${lobby.lobbyID}%c (${time.toFixed(4)}s)`,
       "color: #0f0",
       "color: #0ff",
     );

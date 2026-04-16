@@ -29,6 +29,15 @@ async function getServerInfo(inviteCode) {
   }
 }
 
+// This is probably horrible, but hey it works
+function formatNumber(num) {
+  if (num < 1000) return `${num}`;
+  else if (num >= 1000 && num < 1000 * 1000)
+    return `${(num / 1000).toFixed(num % 1000 > 0 ? 1 : 0)}k`;
+  else if (num >= 1000 * 1000)
+    return `${(num / (1000 * 1000)).toFixed(num % (1000 * 1000) > 0 ? 1 : 0)}m`;
+}
+
 function createServerElem(obj, code) {
   if (!obj) return null;
 
@@ -65,9 +74,9 @@ function createServerElem(obj, code) {
       animation: "scale",
     });
   }
-  const num = numeral(obj.profile.member_count ?? -1);
+  const num = obj.profile.member_count ?? -1;
   memberCountElem.innerHTML = DOMPurify.sanitize(
-    `<img src="images/people.svg">${num.format("0a")}`,
+    `<img src="images/people.svg">${formatNumber(num)}`,
   );
   tippy(memberCountElem, {
     content: `${obj.profile.member_count} members • ${obj.profile.online_count} online`,
