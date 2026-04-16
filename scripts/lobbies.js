@@ -431,7 +431,6 @@ async function moreInfo(lobby, thumbnail, signal) {
       if (discordTitle) right.removeChild(discordTitle);
     }
 
-    const playersTitle = lobbyInfo.getElementsByClassName("playersTitle")[0];
     const plrCount = lobbyInfo.getElementsByClassName("plrCount")[0];
     plrCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
 
