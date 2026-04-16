@@ -33,15 +33,15 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Minify Files
-        uses: nizarmah/auto-minify@v3.0.0
-        with:
-          overwrite: true
+      - name: Installing minifier
+        run: sudo apt-get install minify
+      - name: Minifying files
+        run: minify -r ./ -o ./site-dist/ --html-keep-document-tags --html-keep-end-tags --html-keep-default-attrval
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: '.'
+          path: './site-dist/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
