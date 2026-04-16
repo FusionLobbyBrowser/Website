@@ -536,10 +536,7 @@ phantom-ui[filteredout="true"] > .lobby {
   }
 }
 
-.left-content {
-  flex: 1;
-}
-
+.left-content,
 .right-content {
   flex: 1;
 }
