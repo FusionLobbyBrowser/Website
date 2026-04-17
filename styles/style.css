@@ -394,7 +394,8 @@ label {
   transition: 0.75s;
 }
 
-phantom-ui[filteredout="true"] > .lobby {
+phantom-ui[filteredout="true"]:not([loading]),
+phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   display: none;
   visibility: hidden;
 }

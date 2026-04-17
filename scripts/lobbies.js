@@ -241,7 +241,7 @@ async function createLobby(lobby, signal, hidden) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
 
-  const loader = lobbies.querySelector("phantom-ui:not([lobbyId])");
+  let loader = lobbies.querySelector("phantom-ui:not([lobbyId])");
   if (!loader) {
     loader = createSkeletonLobby();
     lobbies.appendChild(loader);
