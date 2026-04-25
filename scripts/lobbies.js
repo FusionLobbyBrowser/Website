@@ -47,7 +47,7 @@ let serviceAtFetch = "Steam";
 
 const limit = [
   ["Steam", 50],
-  ["Epic", 100],
+  ["Epic", null], // At this point I have no clue if there is one
 ];
 
 async function fetchAndCreateLobbies() {
@@ -792,10 +792,11 @@ function setPlayerCount(players, lobbies) {
     `${lobbies} lobbies`;
 
   const highLobby = document.getElementById("lobbyLimit");
-  if (lobbies >= limit[service]) {
+  const limitNum = new Map(limit).get(service);
+  if (limitNum && lobbies >= limitNum) {
     highLobby.textContent = format
       .replace("[service]", service)
-      .replace("[limit", limit[service]);
+      .replace("[limit]", limitNum);
     highLobby.classList.remove("hidden");
   } else highLobby.classList.add("hidden");
 }
