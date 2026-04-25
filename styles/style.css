@@ -122,6 +122,10 @@ ul {
   margin-top: 0.5em;
 }
 
+.serverSelection {
+  text-align: center;
+}
+
 #lobbies {
   margin-top: 0.25em;
   display: flex;
@@ -152,6 +156,8 @@ ul {
 }
 
 #searchOptions-outer {
+  margin-top: 0.75em;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -477,6 +483,17 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
 #lobbyLimit {
   text-align: center;
   color: red;
+
+  margin-top: 0.5em;
+  padding-top: 0;
+}
+
+.activeServer {
+  background-color: #32cd32;
+}
+
+.activeServer:hover {
+  background-color: #4cbb17;
 }
 
 .detail {
@@ -503,11 +520,6 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   margin-top: 0.15em;
   margin-bottom: 0.75em;
   text-align: center;
-}
-
-#lobbyLimit {
-  margin-top: 0;
-  padding-top: 0;
 }
 
 .playerCount {

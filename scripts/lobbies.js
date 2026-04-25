@@ -3,7 +3,7 @@ import Barcodes from "./defaultBarcodes.js";
 import Discord from "./discord.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
-const LOBBY_LIST = `${HOST}lobbylist`;
+const LOBBY_LIST = `${HOST}lobbylist?service=[service]`;
 const THUMBNAIL = `${HOST}thumbnail/`;
 
 const PROFANITY_LIST =
@@ -40,6 +40,14 @@ const permissions = [
   [0, "default"],
   [1, "operator"],
   [2, "owner"],
+];
+
+let service = "Steam";
+let serviceAtFetch = "Steam";
+
+const limit = [
+  ["Steam", 50],
+  ["Epic", 100],
 ];
 
 async function fetchAndCreateLobbies() {
@@ -85,7 +93,12 @@ async function fetchAndCreateLobbies() {
         let date = refresh.getAttribute("date");
         let numDate = -1;
         if (date) numDate = Number(date) / 1000;
-        if (numDate == -1 || numDate != json.date) {
+        if (
+          serviceAtFetch != service ||
+          numDate == -1 ||
+          numDate != json.date
+        ) {
+          serviceAtFetch = structuredClone(service);
           error.classList.add("hidden");
 
           timeFromResponse(refresh, json.date);
@@ -765,6 +778,9 @@ function setLobbyCount(count, max) {
 }
 
 function setPlayerCount(players, lobbies) {
+  const format =
+    "[service] has a limit of [limit] lobbies, due to the high number of lobbies some may not appear. This is a limit implemented by Steam themselves and nothing can be done about it!";
+
   if (players == -1 || lobbies == -1) {
     document.getElementsByClassName("lobbyInfo")[0].classList.add("hidden");
     return;
@@ -776,8 +792,12 @@ function setPlayerCount(players, lobbies) {
     `${lobbies} lobbies`;
 
   const highLobby = document.getElementById("lobbyLimit");
-  if (lobbies >= 49) highLobby.classList.remove("hidden");
-  else highLobby.classList.add("hidden");
+  if (lobbies >= limit[service]) {
+    highLobby.textContent = format
+      .replace("[service]", service)
+      .replace("[limit", limit[service]);
+    highLobby.classList.remove("hidden");
+  } else highLobby.classList.add("hidden");
 }
 
 function convertToHTML(text) {
@@ -787,7 +807,7 @@ function convertToHTML(text) {
 
 async function getJSON() {
   try {
-    const response = await fetch(LOBBY_LIST);
+    const response = await fetch(LOBBY_LIST.replace("[service]", service));
     if (!response.ok) return { error: await response.text() };
 
     return {
@@ -973,6 +993,20 @@ document.getElementById("javascriptRequired").classList.add("hidden");
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
+function updateService(setTo = "Steam") {
+  if (setTo == "Steam" && service != "Steam") {
+    service = setTo;
+    document.getElementById("steamServer").classList.add("activeServer");
+    document.getElementById("epicServer").classList.remove("activeServer");
+    fetchAndCreateLobbies();
+  } else if (setTo == "Epic" && service != "Epic") {
+    service = setTo;
+    document.getElementById("steamServer").classList.remove("activeServer");
+    document.getElementById("epicServer").classList.add("activeServer");
+    fetchAndCreateLobbies();
+  }
+}
+
 async function init() {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
@@ -999,6 +1033,9 @@ async function init() {
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("closeMoreInfo", () => hideShow(true));
+
+  clickEvent("steamServer", () => updateService("Steam"));
+  clickEvent("epicServer", () => updateService("Epic"));
 
   document
     .getElementById("showNSFW")
