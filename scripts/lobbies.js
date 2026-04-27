@@ -358,6 +358,15 @@ function setAllLobbiesMoreInfo(enabled) {
     setButton(lobby.getElementsByClassName("moreInfo")[0], enabled);
 }
 
+const permsList = [
+  "teleportation",
+  "banning",
+  "kicking",
+  ["customAvatars", "Custom Avatars"],
+  "constrainer",
+  "devTools",
+];
+
 async function moreInfo(lobby, thumbnail, signal) {
   if (moreInfoSignal) moreInfoSignal.abort();
   showingMoreInfo = true;
@@ -421,6 +430,39 @@ async function moreInfo(lobby, thumbnail, signal) {
       lobby.levelTitle,
       thumbnail.nsfw,
     );
+
+    const permissionLevels =
+      right.getElementsByClassName("permissionsLevels")[0];
+    const permissionList = right.getElementsByClassName("permissionsList")[0];
+    permissionLevels.replaceChildren();
+    permissionList.replaceChildren();
+    const perms = new Map(permissions);
+    perms.forEach((val, key, m) => {
+      const item = document.createElement("p");
+      item.classList.add(`permission-${val}`);
+      item.classList.add("permissionLevel");
+      item.textContent = val.toUpperCase();
+      permissionLevels.appendChild(item);
+    });
+
+    permsList.forEach((val) => {
+      let entryName;
+      let displayName;
+      if (Array.isArray(val)) {
+        entryName = val[0];
+        displayName = val[1];
+      } else {
+        entryName = val;
+        displayName =
+          String(val).charAt(0).toUpperCase() + String(val).slice(1);
+      }
+      const item = document.createElement("p");
+      const level = perms.get(lobby[val]);
+      item.classList.add(`permission-${level}`);
+      item.classList.add("permissionItem");
+      item.textContent = displayName;
+      permissionList.appendChild(item);
+    });
 
     right.getElementsByClassName("gamemode")[0].innerHTML =
       lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode

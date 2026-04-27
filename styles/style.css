@@ -635,14 +635,30 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   color: rgb(200, 200, 200);
 }
 
-.collapsable a.collapsed h2:after {
+.collapsable button.collapsed h2:after,
+.collapsable button.collapsed p:after {
   content: " ▾";
 }
-.collapsable a:not(.collapsed) h2:after {
+.collapsable button:not(.collapsed) h2:after,
+.collapsable button:not(.collapsed) p:after {
   content: " ▴";
 }
-.collapsable a:not(.collapsed) + div {
+.collapsable button:not(.collapsed) + div {
   display: none;
+}
+
+.textButton {
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+  transition: 0.65s;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.textButton:hover {
+  color: grey;
 }
 
 #sortOrder {
@@ -669,7 +685,7 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   margin-right: auto;
 }
 
-button {
+button:not(.textButton) {
   border: none;
   text-decoration: none;
   background-color: rgb(32, 77, 197);
@@ -680,7 +696,7 @@ button {
   transition: 0.65s;
 }
 
-button:hover {
+button:not(.textButton):hover {
   cursor: pointer;
   background-color: rgb(0, 45, 255);
 }
@@ -714,4 +730,32 @@ button:hover {
 
 .permission-owner {
   color: #ffbf00;
+}
+
+.permissionsTitle {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+
+.permissionLevel {
+  font-size: 9px;
+  display: inline;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.permissionItem {
+  font-size: 14px;
+  display: inline;
+  margin-right: 0.5em;
+  margin-bottom: 0.1em;
+  flex: 1 0 30%;
+  text-align: center;
+}
+
+.permissionsList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
