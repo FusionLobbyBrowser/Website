@@ -47,7 +47,7 @@ let serviceAtFetch = "Steam";
 
 const limit = [
   ["Steam", 50],
-  ["Epic", null], // At this point I have no clue if there is one
+  ["Epic", 200],
 ];
 
 async function fetchAndCreateLobbies() {
