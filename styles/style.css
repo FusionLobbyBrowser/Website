@@ -699,6 +699,7 @@ button:hover {
 
 .textButton:hover {
   color: grey;
+  background-color: transparent;
 }
 
 .tippy-box[data-animation="scale"][data-placement^="top"] {
