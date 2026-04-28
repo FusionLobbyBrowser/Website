@@ -487,15 +487,6 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   margin-top: 0.5em;
   padding-top: 0;
 }
-
-.activeServer {
-  background-color: #32cd32;
-}
-
-.activeServer:hover {
-  background-color: #4cbb17;
-}
-
 .detail {
   font-size: 0.938rem;
   font-weight: 500;
@@ -647,20 +638,6 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   display: none;
 }
 
-.textButton {
-  border: none;
-  text-decoration: none;
-  background-color: transparent;
-  transition: 0.65s;
-  color: white;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.textButton:hover {
-  color: grey;
-}
-
 #sortOrder {
   margin-bottom: 1.75em;
 }
@@ -685,7 +662,7 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   margin-right: auto;
 }
 
-button:not(.textButton) {
+button {
   border: none;
   text-decoration: none;
   background-color: rgb(32, 77, 197);
@@ -696,9 +673,32 @@ button:not(.textButton) {
   transition: 0.65s;
 }
 
-button:not(.textButton):hover {
+button:hover {
   cursor: pointer;
   background-color: rgb(0, 45, 255);
+}
+
+.activeServer {
+  background-color: rgb(0, 175, 255);
+}
+
+.activeServer:hover {
+  background-color: rgb(0, 140, 200);
+  cursor: auto;
+}
+
+.textButton {
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+  transition: 0.65s;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.textButton:hover {
+  color: grey;
 }
 
 .tippy-box[data-animation="scale"][data-placement^="top"] {
