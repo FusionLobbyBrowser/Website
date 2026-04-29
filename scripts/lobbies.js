@@ -554,7 +554,18 @@ async function moreInfo(lobby, thumbnail, signal) {
         hasNickname = false;
       if (name.includes("\n")) name = name.split("\n")[0];
       const nameElem = playerElem.getElementsByClassName("name")[0];
-      nameElem.innerHTML = convert(name);
+      if (service != "Steam") {
+        nameElem.innerHTML = convert(name);
+      } else {
+        const link = document.createElement("a");
+        link.href = `http://steamcommunity.com/profiles/${player.platformID}`;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.classList.add("textButton");
+        link.innerHTML = convert(name);
+        nameElem.textContent = "";
+        nameElem.appendChild(link);
+      }
       if (player.description && player.description != "") {
         tippy(nameElem, {
           content: convert(player.description),
