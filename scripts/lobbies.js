@@ -281,10 +281,15 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
-  setContent(
-    lobbyElem.getElementsByClassName("lobbyHostName")[0],
-    convert(lobby.lobbyHostName),
+
+  const player = lobby.playerList.players.find(
+    (val) => val.platformID == lobby.lobbyID,
   );
+  let name;
+  if (player) name = getName(player).name;
+  else name = convert(lobby.lobbyHostName);
+
+  setContent(lobbyElem.getElementsByClassName("lobbyHostName")[0], name);
   censorModTitle(
     lobbyElem.getElementsByClassName("levelTitle")[0],
     lobby.levelModID,
@@ -350,6 +355,23 @@ async function createLobby(lobby, signal, hidden) {
     "color: #0ff",
   );
   return moreInfoUpdated;
+}
+
+function getName(player) {
+  let hasNickname = player.nickname != "" && player.nickname;
+  let name = hasNickname ? player.nickname : player.username;
+  if (!player.nickname && !player.username) name = "N/A";
+  else if (
+    hasNickname &&
+    Converter.removeRichText(player.username) ==
+      Converter.removeRichText(player.nickname)
+  )
+    hasNickname = false;
+  if (name.includes("\n")) name = name.split("\n")[0];
+  return {
+    name: name,
+    hasNickName: hasNickname,
+  };
 }
 
 function setButton(btn, enabled) {
@@ -546,26 +568,17 @@ async function moreInfo(lobby, thumbnail, signal) {
         player.avatarTitle,
         true,
       );
-      let hasNickname = player.nickname != "" && player.nickname;
-      let name = hasNickname ? player.nickname : player.username;
-      if (!player.nickname && !player.username) name = "N/A";
-      else if (
-        hasNickname &&
-        Converter.removeRichText(player.username) ==
-          Converter.removeRichText(player.nickname)
-      )
-        hasNickname = false;
-      if (name.includes("\n")) name = name.split("\n")[0];
+      const name = getName(player);
       const nameElem = playerElem.getElementsByClassName("name")[0];
       if (service != "Steam") {
-        nameElem.innerHTML = convert(name);
+        nameElem.innerHTML = convert(name.name);
       } else {
         const link = document.createElement("a");
         link.href = `http://steamcommunity.com/profiles/${player.platformID}`;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         link.classList.add("textButton");
-        link.innerHTML = convert(name);
+        link.innerHTML = convert(name.name);
         nameElem.textContent = "";
         nameElem.appendChild(link);
       }
@@ -578,7 +591,7 @@ async function moreInfo(lobby, thumbnail, signal) {
         });
       }
       const username = playerElem.getElementsByClassName("username")[0];
-      if (hasNickname) {
+      if (name.hasNickname) {
         username.classList.remove("hidden");
         username.innerHTML = convert(player.username);
       } else {
