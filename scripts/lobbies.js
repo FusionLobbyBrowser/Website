@@ -281,8 +281,9 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
-  lobbyElem.getElementsByClassName("lobbyHostName")[0].innerHTML = convert(
-    lobby.lobbyHostName,
+  setContent(
+    lobbyElem.getElementsByClassName("lobbyHostName")[0],
+    convert(lobby.lobbyHostName),
   );
   censorModTitle(
     lobbyElem.getElementsByClassName("levelTitle")[0],
@@ -291,10 +292,12 @@ async function createLobby(lobby, signal, hidden) {
     thumb.nsfw,
   );
 
-  lobbyElem.getElementsByClassName("gamemodeTitle")[0].innerHTML =
+  setContent(
+    lobbyElem.getElementsByClassName("gamemodeTitle")[0],
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
       ? convert(lobby.gamemodeTitle)
-      : "Sandbox";
+      : "Sandbox",
+  );
 
   const playerCount = lobbyElem.getElementsByClassName("lobbyPlayerCount")[0];
   const connectBtn = lobbyElem.getElementsByClassName("connect")[0];
@@ -629,10 +632,13 @@ async function moreInfo(lobby, thumbnail, signal) {
   }
 }
 
-function censorModTitle(elem, modId, title, nsfw) {
+function censorModTitle(elem, modId, title, nsfw, usesIcon = true) {
   if (nsfw && !document.getElementById("showNSFW").checked) {
-    elem.textContent = "[NSFW]";
+    if (usesIcon) setContent(elem, "[NSFW]");
+    else elem.textContent = "[NSFW]";
     elem.classList.add("filterNSFW");
+  } else if (usesIcon) {
+    setContent(elem, modRedirect(modId, title));
   } else elem.innerHTML = modRedirect(modId, title);
 }
 
@@ -678,6 +684,20 @@ function censorWords(text) {
       plain.slice(0, m.offset) + m.tag + plain.slice(m.offset, plain.length);
   }
   return plain;
+}
+
+// DOES NOT sanitize!!!
+function setContent(elem, content) {
+  const contents = elem.getElementsByClassName("elemContent");
+  if (contents && contents.length > 0) {
+    const span = contents[0];
+    if (span) {
+      span.innerHTML = content;
+      return;
+    }
+  }
+
+  elem.innerHTML = content;
 }
 
 function hideShow(hide, removeView = true) {

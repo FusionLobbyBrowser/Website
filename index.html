@@ -91,6 +91,8 @@
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3/dist/tippy.umd.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6.3/dist/tippy.min.css">
 
+  <script src="https://kit.fontawesome.com/edacd157b2.js" crossorigin="anonymous"></script>
+
   <!-- [ Internal ] -->
 
   <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
@@ -107,12 +109,15 @@
   <div class="lobby lobbyToCopy">
     <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
     <p class="info lobbyName" data-shimmer-no-children>HAHOOS's Lobby!</p>
-    <p class="info lobbyHostName" data-shimmer-no-children>HAHOOS</p>
-    <p class="info levelTitle" data-shimmer-no-children>7/11</p>
-    <p class="info gamemodeTitle" data-shimmer-no-children>Avatar Infection</p>
+    <p class="info lobbyHostName" data-shimmer-no-children><i class="fa-solid fa-user textIcon"></i><span
+        class="elemContent">RottenCheese</span></p>
+    <p class="info levelTitle" data-shimmer-no-children><i class="fa-solid fa-map textIcon"></i><span
+        class="elemContent">7/11</span></p>
+    <p class="info gamemodeTitle" data-shimmer-no-children><i class="fa-solid fa-puzzle-piece textIcon"></i><span
+        class="elemContent">Avatar Infection</span></p>
     <p class="info lobbyPlayerCount" data-shimmer-no-children>(0/10)</p>
-    <button class="connect inline">Join!</button>
-    <button class="moreInfo inline">More Info</button>
+    <button class="connect inline"><i class="fa-solid fa-link textIcon"></i>Join</button>
+    <button class="moreInfo inline"><i class="fa-solid fa-info textIcon"></i>Info</button>
   </div>
   <div class="player playerToCopy">
     <img class="avatarThumbnail" src="images/default/Jay.webp" loading="lazy" alt="Template thumbnail">
@@ -131,15 +136,10 @@
   </div>
   <header>
     <h1>Fusion Lobby Browser</h1>
-    <p class="headerText">Browse Fusion Lobbies without having to open BONELAB.</p>
-    <p class="headerText">If you like my work, consider supporting me on <a href="https://ko-fi.com/hahoos"
-        target="_blank" rel="noopener noreferrer">Ko-fi!</a></p>
-    <p class="headerText">Encountered a bug or have a suggestion? Go to the GitHub page and create an <a
-        href="https://github.com/FusionLobbyBrowser/Website/issues" target="_blank" rel="noopener noreferrer">issue!</a>
-    </p>
+    <p class="headerText">Browse lobbies without having to open BONELAB!</p>
     <p class="hidden" id="uptime">Backend up since: N/A</p>
     <p class="hidden" id="refresh">Last Refresh: N/A</p>
-    <button id="refreshButton">Refresh</button>
+    <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i>Refresh</button>
   </header>
   <phantom-ui id="moreDetails-loader">
     <div id="moreDetails-outer" class="hidden">

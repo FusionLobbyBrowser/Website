@@ -17,14 +17,15 @@ header {
 }
 
 h1 {
-  font-size: 1.875rem;
-  font-family: "Montserrat", serif;
+  font-size: 2rem;
+  font-family: "Outfit", serif;
   font-weight: 400;
+  margin-bottom: 0.135em;
 }
 
 h2 {
   font-size: 1.25rem;
-  font-family: "Montserrat", serif;
+  font-family: "Outfit", serif;
   font-weight: 400;
 }
 
@@ -179,11 +180,17 @@ ul {
 .lobbyName {
   margin-top: 0.75em;
   font-size: 1.125rem;
+  height: 45px;
+  text-overflow: ellipsis;
   margin-bottom: 0;
 }
 
+.textIcon {
+  margin-right: 0.15em;
+}
+
 .lobbyHostName {
-  margin-top: 0.25em;
+  margin-top: 0.5em;
   margin-bottom: 0.65em;
   font-size: 0.813rem;
 }
@@ -196,11 +203,6 @@ ul {
 .gamemodeTitle {
   margin-top: 0;
   margin-bottom: 0.75em;
-}
-
-.lobbyPlayerCount {
-  margin-top: 0;
-  margin-bottom: 0.55em;
 }
 
 #javascriptRequired {
@@ -362,8 +364,10 @@ label {
 /* End of Discord Rich Element */
 
 .headerText {
-  margin-top: 0.25em;
+  margin-top: 0.1em;
   margin-bottom: 0.25em;
+  font-style: italic;
+  font-size: 0.95rem;
 }
 
 .error {
@@ -388,16 +392,20 @@ label {
   background-color: rgb(20, 20, 20);
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
   text-align: center;
-  padding-bottom: 1em;
+  padding-bottom: 0.35em;
   border-radius: 15px;
 
-  width: 14em;
+  width: 13em;
 
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  text-overflow: ellipsis;
   overflow: hidden;
 
   transition: 0.75s;
+}
+
+.lobby > button {
+  width: 45%;
+  height: 2em;
 }
 
 phantom-ui[filteredout="true"]:not([loading]),
@@ -662,12 +670,26 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   margin-right: auto;
 }
 
+.lobbyPlayerCount {
+  position: absolute;
+  text-align: center;
+  top: 2%;
+  right: 5%;
+  margin-top: 0;
+  margin-bottom: 0.55em;
+  width: auto;
+  padding: 0.3em 0.3em 0.3em 0.3em;
+
+  background-color: rgba(21, 21, 21, 0.5);
+  border-radius: 5px;
+}
+
 button {
   border: none;
   text-decoration: none;
   background-color: rgb(32, 77, 197);
   padding: 5px 15px 5px 15px;
-  border-radius: 7.5px;
+  border-radius: 6px;
   color: white;
 
   transition: 0.65s;
