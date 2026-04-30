@@ -408,8 +408,7 @@ label {
   height: 2em;
 }
 
-phantom-ui[filteredout="true"]:not([loading]),
-phantom-ui[filteredout="true"]:not([loading]) > .lobby {
+.lobby[filteredout="true"]:not([loading]) {
   display: none;
   visibility: hidden;
 }
@@ -440,9 +439,9 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
   text-align: center;
 }
 
-.lobbyToCopy,
-.playerToCopy,
-.discordToCopy,
+#lobbyToCopy,
+#playerToCopy,
+#discordToCopy,
 .hidden {
   display: none;
   visibility: hidden;
@@ -673,7 +672,7 @@ phantom-ui[filteredout="true"]:not([loading]) > .lobby {
 .lobbyPlayerCount {
   position: absolute;
   text-align: center;
-  top: 2%;
+  top: 5%;
   right: 5%;
   margin-top: 0;
   margin-bottom: 0.55em;

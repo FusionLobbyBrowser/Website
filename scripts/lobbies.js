@@ -141,30 +141,10 @@ async function fetchAndCreateLobbies() {
   }
 }
 
-function createSkeletionLobbies(count = 50) {
-  const lobbies = document.getElementById("lobbies");
-  for (let index = 0; index < count; index++) {
-    const skeleton = createSkeletonLobby();
-    lobbies.appendChild(skeleton);
-  }
-}
-
-function createSkeletonLobby() {
-  const loader = document.createElement("phantom-ui");
-  const hiddenLobby = document.getElementsByClassName("lobbyToCopy")[0];
-  loader.setAttribute("loading", null);
-  loader.classList.add("lobbySkeleton");
-  const lobbyElem = hiddenLobby.cloneNode(true);
-  lobbyElem.classList.remove("lobbyToCopy");
-  loader.appendChild(lobbyElem);
-  return loader;
-}
-
 async function createLobbies(signal) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
-  createSkeletionLobbies(window.screen.width > 600 ? 50 : 10);
   const lobbyList = structuredClone(allLobbies);
   let lobbyCountMax = lobbyList.length;
   let lobbyCount = hideLobbies(false);
@@ -203,12 +183,6 @@ async function createLobbies(signal) {
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       moreInfoUpdated = true;
   }
-  lobbies
-    .querySelectorAll("phantom-ui:not([lobbyId])")
-    .forEach((x) => x.remove());
-  lobbies
-    .querySelectorAll("phantom-ui")
-    .forEach((x) => x.removeAttribute("loading"));
   if (moreInfoUpdated == false) hideShow(true);
 }
 
@@ -257,14 +231,11 @@ async function createLobby(lobby, signal, hidden) {
   let moreInfoUpdated = false;
   const lobbies = document.getElementById("lobbies");
 
-  let loader = lobbies.querySelector("phantom-ui:not([lobbyId])");
-  if (!loader) {
-    loader = createSkeletonLobby();
-    lobbies.appendChild(loader);
-  }
+  const copy = document.getElementById("lobbyToCopy");
+  let lobbyElem = copy.cloneNode(true);
+  lobbyElem.removeAttribute("id");
 
-  const lobbyElem = loader.childNodes[0];
-  loader.setAttribute("filteredOut", hidden);
+  lobbyElem.setAttribute("filteredOut", hidden);
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
@@ -277,7 +248,7 @@ async function createLobby(lobby, signal, hidden) {
     moreInfoUpdated = true;
     if (signal?.aborted != true) moreInfo(lobby, thumb, signal);
   }
-  loader.setAttribute("lobbyId", lobby.lobbyID);
+  lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
@@ -348,6 +319,8 @@ async function createLobby(lobby, signal, hidden) {
   };
   if (showingMoreInfo) setButton(moreInfoBtn, false);
 
+  lobbies.appendChild(lobbyElem);
+
   const time = (Date.now() - date) / 1000;
   console.log(
     ` > Created lobby %c${lobby.lobbyID}%c (${time.toFixed(4)}s)`,
@@ -398,7 +371,6 @@ const permsList = [
 async function moreInfo(lobby, thumbnail, signal) {
   if (moreInfoSignal) moreInfoSignal.abort();
   showingMoreInfo = true;
-  const loader = document.getElementById("moreDetails-loader");
   try {
     const start = Date.now();
     console.log(
@@ -410,7 +382,6 @@ async function moreInfo(lobby, thumbnail, signal) {
     moreInfoSignal = controller;
     moreInfoView = lobby.lobbyID;
 
-    loader.setAttribute("loading", null);
     hideShow(false);
 
     const lobbyInfo = document.getElementById("moreDetails");
@@ -539,13 +510,6 @@ async function moreInfo(lobby, thumbnail, signal) {
 
       return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
     });
-
-    for (let index = 0; index < 10; index++) {
-      const toCopy = document.getElementsByClassName("playerToCopy")[0];
-      const playerElem = toCopy.cloneNode(true);
-      playerElem.classList.remove("playerToCopy");
-      playersList.appendChild(playerElem);
-    }
     for (const player of players) {
       const plrStart = Date.now();
       if (
@@ -557,10 +521,9 @@ async function moreInfo(lobby, thumbnail, signal) {
 
       console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
 
-      const toCopy = document.getElementsByClassName("playerToCopy")[0];
+      const toCopy = document.getElementById("playerToCopy");
       const playerElem = toCopy.cloneNode(true);
-      playerElem.classList.remove("playerToCopy");
-      playerElem.classList.add("hidden");
+      playerElem.removeAttribute("id");
       const thumb = await setThumbnail(
         playerElem.getElementsByClassName("avatarThumbnail")[0],
         player.avatarModID,
@@ -639,8 +602,6 @@ async function moreInfo(lobby, thumbnail, signal) {
     );
   } finally {
     showingMoreInfo = false;
-    if (signal?.aborted != true && controller?.signal?.aborted != true)
-      loader.removeAttribute("loading");
     setAllLobbiesMoreInfo(true);
   }
 }

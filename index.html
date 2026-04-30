@@ -64,27 +64,7 @@
 
   <!-- [ External ] -->
 
-  <style>
-    phantom-ui[loading] * {
-      -webkit-text-fill-color: transparent !important;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    phantom-ui[loading] img,
-    phantom-ui[loading] svg,
-    phantom-ui[loading] video,
-    phantom-ui[loading] canvas,
-    phantom-ui[loading] button,
-    phantom-ui[loading] [role="button"] {
-      opacity: 0 !important;
-    }
-  </style>
-
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer crossOrigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@aejkatappaja/phantom-ui/dist/phantom-ui.cdn.js"
-    crossOrigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11/dist/umd/popper.min.js"></script>
 
@@ -107,27 +87,26 @@
 </head>
 
 <body>
-  <div class="lobby lobbyToCopy">
+  <div class="lobby" id="lobbyToCopy">
     <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
-    <p class="info lobbyName" data-shimmer-no-children>HAHOOS's Lobby!</p>
-    <p class="info lobbyHostName" data-shimmer-no-children><i class="fa-solid fa-user textIcon"></i><span
-        class="elemContent">RottenCheese</span></p>
-    <p class="info levelTitle" data-shimmer-no-children><i class="fa-solid fa-map textIcon"></i><span
-        class="elemContent">7/11</span></p>
-    <p class="info gamemodeTitle" data-shimmer-no-children><i class="fa-solid fa-puzzle-piece textIcon"></i><span
-        class="elemContent">Avatar Infection</span></p>
-    <p class="info lobbyPlayerCount" data-shimmer-no-children>(0/10)</p>
+    <p class="info lobbyName">HAHOOS's Lobby!</p>
+    <p class="info lobbyHostName"><i class="fa-solid fa-user textIcon"></i><span class="elemContent">RottenCheese</span>
+    </p>
+    <p class="info levelTitle"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">7/11</span></p>
+    <p class="info gamemodeTitle"><i class="fa-solid fa-puzzle-piece textIcon"></i><span class="elemContent">Avatar
+        Infection</span></p>
+    <p class="info lobbyPlayerCount">(0/10)</p>
     <button class="connect inline"><i class="fa-solid fa-link textIcon"></i>Join</button>
     <button class="moreInfo inline"><i class="fa-solid fa-info textIcon"></i>Info</button>
   </div>
-  <div class="player playerToCopy">
+  <div class="player" id="playerToCopy">
     <img class="avatarThumbnail" src="images/default/Jay.webp" loading="lazy" alt="Template thumbnail">
-    <p class="name" data-shimmer-no-children>RottenCheese</p>
-    <p class="username" data-shimmer-no-children>Test</p>
-    <p class="permissions" data-shimmer-no-children>OWNER</p>
-    <p class="avatarTitle" data-shimmer-no-children>Fancy Ford</p>
+    <p class="name">RottenCheese</p>
+    <p class="username">Test</p>
+    <p class="permissions">OWNER</p>
+    <p class="avatarTitle">Fancy Ford</p>
   </div>
-  <div class="discord discordToCopy">
+  <div class="discord" id="discordToCopy">
     <img class="serverIcon" src="images/default/Jay.webp" loading="lazy" alt="Template icon">
     <p class="inline serverName">RottenCheese's Server</p>
     <p class="inline memberCount">569 members</p>
@@ -142,61 +121,59 @@
     <p class="hidden" id="refresh">Last Refresh: N/A</p>
     <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i>Refresh</button>
   </header>
-  <phantom-ui id="moreDetails-loader">
-    <div id="moreDetails-outer" class="hidden">
-      <div id="moreDetails" class="hidden">
-        <div class="header-outer">
-          <div class="header">
-            <p class="lobbyTitle" data-shimmer-no-children>HAHOOS's Lobby!</p>
-            <div class="inline infoControls">
-              <button class="connect">Join!</button>
-              <button id="closeMoreInfo">Close</button>
-            </div>
+  <div id="moreDetails-outer" class="hidden">
+    <div id="moreDetails" class="hidden">
+      <div class="header-outer">
+        <div class="header">
+          <p class="lobbyTitle">HAHOOS's Lobby!</p>
+          <div class="inline infoControls">
+            <button class="connect">Join!</button>
+            <button id="closeMoreInfo">Close</button>
           </div>
         </div>
-        <div class="content hidden">
-          <div class="left-content side">
-            <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
-          </div>
-          <div class="right-content side">
-            <p class="detail">Description</p>
-            <p class="detail-info lobbyDescription" data-shimmer-no-children>Lorem ipsum dolor sit amet consectetur
-              adipiscing elit. Quisque
-              faucibus ex sapien vitae pellentesque sem placerat. In
-              id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
-              fringilla lacus
-              nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
-              vel class
-              aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-            <p class="detail">Level</p>
-            <p class="detail-info levelTitle" data-shimmer-no-children>7/11</p>
-            <p class="detail">Gamemode</p>
-            <p class="detail-info gamemode" data-shimmer-no-children>Avatar Infection (HAHOOS.AvatarInfection)</p>
-            <div class="collapsable">
-              <button class="textButton" data-toggle="collapse">
-                <p class="detail permissionsTitle">Permissions</p>
-              </button>
-              <div>
-                <div class="inline permissionsLevels">
+      </div>
+      <div class="content hidden">
+        <div class="left-content side">
+          <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+        </div>
+        <div class="right-content side">
+          <p class="detail">Description</p>
+          <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur
+            adipiscing elit. Quisque
+            faucibus ex sapien vitae pellentesque sem placerat. In
+            id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+            fringilla lacus
+            nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+            vel class
+            aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p class="detail">Level</p>
+          <p class="detail-info levelTitle">7/11</p>
+          <p class="detail">Gamemode</p>
+          <p class="detail-info gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
+          <div class="collapsable">
+            <button class="textButton" data-toggle="collapse">
+              <p class="detail permissionsTitle">Permissions</p>
+            </button>
+            <div>
+              <div class="inline permissionsLevels">
 
-                </div>
-                <div class="inline permissionsList">
+              </div>
+              <div class="inline permissionsList">
 
-                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="inline">
-          <p class="playersTitle hidden" data-shimmer-no-children>Players</p>
-          <p class="plrCount" data-shimmer-no-children>(11/15)</p>
-        </div>
-        <p class="lobbyHost" data-shimmer-no-children>Host: RottenCheese</p>
-        <div class="players hidden">
-        </div>
+      </div>
+      <div class="inline">
+        <p class="playersTitle hidden">Players</p>
+        <p class="plrCount">(11/15)</p>
+      </div>
+      <p class="lobbyHost">Host: RottenCheese</p>
+      <div class="players hidden">
       </div>
     </div>
-  </phantom-ui>
+  </div>
   <h2 class="lobbyHeader hidden" align="center">Lobbies (10)</h2>
   <p class="lobbyInfo hidden">There are currently <span class="playerCount">-1 players</span> playing on <span
       class="lobbyCount">-1 lobbies</span></p>
