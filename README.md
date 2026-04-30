@@ -50,7 +50,7 @@ Third-party Libraries imported when opened:
 
 - [sweetalert2](https://github.com/sweetalert2/sweetalert2) is licensed under the MIT License. See [LICENSE](https://github.com/sweetalert2/sweetalert2/blob/main/LICENSE) for the full License.
 
-- [phantom-ui](https://github.com/Aejkatappaja/phantom-ui) is licensed under the MIT License. See [LICENSE](https://github.com/Aejkatappaja/phantom-ui/blob/main/LICENSE) for the full License.
+- [oneko.js](https://github.com/adryd325/oneko.js/) is licensed under the MIT License. See [LICENSE](https://github.com/adryd325/oneko.js/blob/main/LICENSE) for the full License.
 
 Icons from [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) were used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
 
