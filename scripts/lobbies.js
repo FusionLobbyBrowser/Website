@@ -4,7 +4,7 @@ import Discord from "./discord.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist?service=[service]`;
-const THUMBNAIL = `${HOST}thumbnail/`;
+const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode="[barcode]"`;
 
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
@@ -262,13 +262,10 @@ async function createLobby(lobby, signal, hidden) {
   if (player) name = getName(player).name;
   else name = convert(lobby.lobbyHostName);
 
-  setContent(lobbyElem.getElementsByClassName("lobbyHostName")[0], name);
-  censorModTitle(
-    lobbyElem.getElementsByClassName("levelTitle")[0],
-    lobby.levelModID,
-    lobby.levelTitle,
-    thumb.nsfw,
-  );
+  const hostName = lobbyElem.getElementsByClassName("lobbyHostName")[0];
+  setContent(hostName, name);
+  const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
+  censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, thumb.nsfw);
 
   const gamemode = lobbyElem.getElementsByClassName("gamemodeTitle")[0];
   setContent(
@@ -324,10 +321,13 @@ async function createLobby(lobby, signal, hidden) {
 
   lobbies.appendChild(lobbyElem);
 
-  console.log(lobbyName.getBoundingClientRect());
-
   if (lobbyName.getBoundingClientRect().height <= 20)
     gamemode.classList.add("oneLine");
+
+  const ellipsisElems = [lobbyName, gamemode, levelTitle, hostName];
+  ellipsisElems.forEach((val) => {
+    if (isEllipsisActive(val)) createToolTip(val, val.innerHTML);
+  });
 
   const time = (Date.now() - date) / 1000;
   console.log(
@@ -336,6 +336,19 @@ async function createLobby(lobby, signal, hidden) {
     "color: #0ff",
   );
   return moreInfoUpdated;
+}
+
+function isEllipsisActive(e) {
+  return e.offsetWidth < e.scrollWidth;
+}
+
+function createToolTip(e, content) {
+  tippy(e, {
+    content: content,
+    animation: "scale",
+    appendTo: "parent",
+    allowHTML: true,
+  });
 }
 
 function getName(player) {
@@ -722,13 +735,13 @@ function setURLParams() {
   window.history.pushState(null, "", url.toString());
 }
 
-async function getThumbnail(modId, title, search, isAvatar) {
+async function getThumbnail(modId, title, barcode, isAvatar) {
   if (modId == -1 || modId == 0 || modId == null) {
     const value = Barcodes.find(
       (x) =>
-        x.barcode == search ||
-        search?.startsWith(x.name) == true ||
-        x.name == search,
+        x.barcode == barcode ||
+        barcode?.startsWith(x.name) == true ||
+        x.name == barcode,
     );
     if (value) {
       return {
@@ -736,19 +749,11 @@ async function getThumbnail(modId, title, search, isAvatar) {
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
         nsfw: false,
       };
-    } else {
-      return {
-        thumbnail: `/images/default/${
-          isAvatar ? "Mods_Avatar" : "Mods_Level"
-        }.webp`,
-        alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. No corresponding thumbnail for it was found, so a default one was applied`,
-        nsfw: false,
-      };
     }
   }
 
   try {
-    const cacheItem = thumbnailCache[`${modId}`];
+    const cacheItem = thumbnailCache[`${barcode}`];
     if (
       cacheItem &&
       cacheItem.src &&
@@ -762,7 +767,9 @@ async function getThumbnail(modId, title, search, isAvatar) {
         nsfw: cacheItem.isNSFW,
       };
     }
-    const response = await fetch(THUMBNAIL + modId);
+    const response = await fetch(
+      THUMBNAIL.replace("[modId]", modId).replace("[barcode]", barcode),
+    );
     if (!response.ok)
       return { error: await response.text(), status: response.status };
     const res = {
@@ -770,7 +777,7 @@ async function getThumbnail(modId, title, search, isAvatar) {
       alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
       nsfw: response.headers.get("modio-maturity") == "nsfw" ? true : false,
     };
-    thumbnailCache[`${modId}`] = {
+    thumbnailCache[`${barcode}`] = {
       src: res.thumbnail,
       isNSFW: res.nsfw,
       createdAt: Date.now() / 1000,
@@ -785,8 +792,8 @@ async function getThumbnail(modId, title, search, isAvatar) {
   }
 }
 
-async function setThumbnail(elem, modId, title, search, isAvatar) {
-  var thumbnail = await getThumbnail(modId, title, search, isAvatar);
+async function setThumbnail(elem, modId, title, barcode, isAvatar) {
+  var thumbnail = await getThumbnail(modId, title, barcode, isAvatar);
   elem.removeAttribute("loading");
   if (thumbnail.error != null) {
     if (thumbnail.status == 404) {
@@ -992,14 +999,12 @@ function hideLobbies(changeElem = true) {
   if (!allLobbies) return;
 
   let list = getAllowedIDs(allLobbies);
+  console.log(list);
 
   var lobbies = document.getElementById("lobbies").children;
   if (changeElem) {
     for (const i of lobbies) {
-      i.setAttribute(
-        "filteredout",
-        !list.includes(Number(i.getAttribute("lobbyId"))),
-      );
+      i.setAttribute("filteredout", !list.includes(i.getAttribute("lobbyid")));
     }
   }
   return list.length;
