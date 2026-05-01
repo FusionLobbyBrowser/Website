@@ -26,9 +26,7 @@ const decReg = new RegExp("[1-9]{1}[0-9]*");
 const fontsize4unity2html = {
   pattern: new RegExp("<size=([^>]*)>(.*?)</size>"),
   replace: (match, p1, p2) => {
-    if (!p1.match(decReg)) {
-      throw new Error(`error font size : ${match}`);
-    }
+    if (!p1.match(decReg)) throw new Error(`error font size : ${match}`);
 
     return `<span style="font-size: ${p1}px">${p2}</span>`;
   },
@@ -39,9 +37,7 @@ const fontsize4html2unity = {
     '<span style="font-size: *([^>"]*)px">(.*?(?!<span).*?)</span>',
   ),
   replace: (match, p1, p2) => {
-    if (!p1.match(decReg)) {
-      throw new Error(`error font size : ${match}`);
-    }
+    if (!p1.match(decReg)) throw new Error(`error font size : ${match}`);
 
     return `<size=${p1}>${p2}</size>`;
   },
@@ -121,9 +117,7 @@ const color4unity2html = {
       return "Error!";
     }
 
-    if (!Color.match(new RegExp("#[a-fA-F0-9]{3,8}"))) {
-      hex = false;
-    }
+    if (!Color.match(new RegExp("#[a-fA-F0-9]{3,8}"))) hex = false;
 
     const color = colors.find((v) => v.name === Color);
 
@@ -143,9 +137,8 @@ const color4html2unity = {
     '<span style="color: *([^>"]*)">(.*?(?!<span).*?)</span>',
   ),
   replace: (match, p1, p2) => {
-    if (!p1.match(new RegExp("#[a-fA-F0-9]{3,8}"))) {
+    if (!p1.match(new RegExp("#[a-fA-F0-9]{3,8}")))
       throw new Error(`error color code : ${match}`);
-    }
 
     return `<color=${p1.toLowerCase()}ff>${p2}</color>`;
   },
@@ -172,16 +165,16 @@ class ParagraphConverter {
       pattern !== "(.*)"
         ? input.match(new RegExp(pattern, "g"))
         : input.split("\n");
-    if (!matcharray) {
+    if (!matcharray)
       throw new Error(`error no paragraph in html input ${input}`);
-    }
+
     const output = matcharray
       .map((item) => {
         const regexp = new RegExp(pattern);
         const regExpMatchArray = item.match(regexp);
-        if (!regExpMatchArray) {
+        if (!regExpMatchArray)
           throw new Error(`error invalid paragraph in ${item}`);
-        }
+
         return fill(regExpMatchArray);
       })
       .join(separator);
@@ -190,13 +183,11 @@ class ParagraphConverter {
   }
 
   html2unityfill(r) {
-    const paragraph = r[1];
-    return `${paragraph}`;
+    return `${r[1]}`;
   }
 
   unity2htmlfill(r) {
-    const paragraph = r[1];
-    return `${paragraph}`;
+    return `${r[1]}`;
   }
 }
 
@@ -218,9 +209,8 @@ class LinearConverter {
   convert(input, parse) {
     this.converters.forEach((converter) => {
       const parser = parse(converter);
-      while (input.match(parser.pattern)) {
+      while (input.match(parser.pattern))
         input = input.replace(parser.pattern, parser.replace);
-      }
     });
     return input;
   }
@@ -252,9 +242,7 @@ class NestedConverter {
         }
       });
 
-      if (ismatch === false) {
-        break;
-      }
+      if (ismatch === false) break;
     }
 
     return input;
@@ -295,12 +283,10 @@ export class Converter {
   }
 
   verityinput(input) {
-    if (input === undefined || input === null) {
+    if (input === undefined || input === null)
       throw new Error(`input is undefined or null: ${input}`);
-    }
 
-    if (typeof input !== "string") {
+    if (typeof input !== "string")
       throw new Error(`input is not string type: ${input}`);
-    }
   }
 }

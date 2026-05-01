@@ -101,6 +101,7 @@ async function fetchAndCreateLobbies() {
           numDate == -1 ||
           numDate != json.date
         ) {
+          setURLParams();
           serviceAtFetch = structuredClone(service);
           error.classList.add("hidden");
 
@@ -249,7 +250,8 @@ async function createLobby(lobby, signal, hidden) {
     if (signal?.aborted != true) moreInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
-  lobbyElem.getElementsByClassName("lobbyName")[0].innerHTML = convert(
+  const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
+  lobbyName.innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
 
@@ -268,8 +270,9 @@ async function createLobby(lobby, signal, hidden) {
     thumb.nsfw,
   );
 
+  const gamemode = lobbyElem.getElementsByClassName("gamemodeTitle")[0];
   setContent(
-    lobbyElem.getElementsByClassName("gamemodeTitle")[0],
+    gamemode,
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
       ? convert(lobby.gamemodeTitle)
       : "Sandbox",
@@ -320,6 +323,11 @@ async function createLobby(lobby, signal, hidden) {
   if (showingMoreInfo) setButton(moreInfoBtn, false);
 
   lobbies.appendChild(lobbyElem);
+
+  console.log(lobbyName.getBoundingClientRect());
+
+  if (lobbyName.getBoundingClientRect().height <= 20)
+    gamemode.classList.add("oneLine");
 
   const time = (Date.now() - date) / 1000;
   console.log(
@@ -695,16 +703,19 @@ function hideShow(hide, removeView = true) {
   else header.classList.remove("header-moreInfoOpened");
 
   const lobbyInfo = document.getElementById("moreDetails");
-  const url = new URL(window.location.href);
   if (hide) {
     lobbyInfo.removeAttribute("lobbyId");
-    if (removeView) {
-      url.searchParams.delete(LOBBY_PARAM);
-      moreInfoView = -1;
-    }
-  } else if (moreInfoView != -1) {
-    url.searchParams.set(LOBBY_PARAM, moreInfoView);
+    if (removeView) moreInfoView = -1;
   }
+  setURLParams();
+}
+
+function setURLParams() {
+  const url = new URL(window.location.href);
+  if (moreInfoView != -1) {
+    url.searchParams.set(LOBBY_PARAM, moreInfoView);
+  } else url.searchParams.delete(LOBBY_PARAM);
+  if (service) url.searchParams.set("service", service);
   if (url.searchParams.size <= 0)
     url.searchParams.forEach((_, key) => url.searchParams.delete(key));
 
@@ -752,7 +763,8 @@ async function getThumbnail(modId, title, search, isAvatar) {
       };
     }
     const response = await fetch(THUMBNAIL + modId);
-    if (!response.ok) return { error: await response.text() };
+    if (!response.ok)
+      return { error: await response.text(), status: response.status };
     const res = {
       thumbnail: URL.createObjectURL(await response.blob()),
       alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
@@ -777,6 +789,18 @@ async function setThumbnail(elem, modId, title, search, isAvatar) {
   var thumbnail = await getThumbnail(modId, title, search, isAvatar);
   elem.removeAttribute("loading");
   if (thumbnail.error != null) {
+    if (thumbnail.status == 404) {
+      const alt = Converter.removeRichText(
+        `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
+      );
+      elem.setAttribute("src", "images/default/Mods_Level.webp");
+      elem.setAttribute("alt", alt);
+      return {
+        thumbnail: "images/default/Mods_Level.webp",
+        alt: alt,
+        nsfw: false,
+      };
+    }
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
@@ -1044,17 +1068,17 @@ document.getElementById("javascriptRequired").classList.add("hidden");
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
-function updateService(setTo = "Steam") {
+function updateService(setTo = "Steam", fetchLobbies = true) {
   if (setTo == "Steam" && service != "Steam") {
     service = setTo;
     document.getElementById("steamServer").classList.add("activeServer");
     document.getElementById("epicServer").classList.remove("activeServer");
-    fetchAndCreateLobbies();
+    if (fetchLobbies) fetchAndCreateLobbies();
   } else if (setTo == "Epic" && service != "Epic") {
     service = setTo;
     document.getElementById("steamServer").classList.remove("activeServer");
     document.getElementById("epicServer").classList.add("activeServer");
-    fetchAndCreateLobbies();
+    if (fetchLobbies) fetchAndCreateLobbies();
   }
 }
 
@@ -1068,7 +1092,11 @@ async function init() {
     if (num) moreInfoView = num;
   }
 
-  hideShow(true, false);
+  if (params.has("service")) {
+    const name = params.get("service");
+    if (name == "Steam" || name == "Epic") updateService(name, false);
+  }
+
   collapsableMenus();
 
   // Do not require lobby list to be created again
