@@ -363,7 +363,7 @@ function getName(player) {
     hasNickname = false;
   if (name.includes("\n")) name = name.split("\n")[0];
   return {
-    name: name,
+    name: convert(name),
     hasNickName: hasNickname,
   };
 }
@@ -386,7 +386,7 @@ const permsList = [
   "kicking",
   ["customAvatars", "Custom Avatars"],
   "constrainer",
-  "devTools",
+  ["devTools", "Dev Tools"],
 ];
 
 async function moreInfo(lobby, thumbnail, signal) {
@@ -412,6 +412,26 @@ async function moreInfo(lobby, thumbnail, signal) {
         ? lobby.lobbyName
         : `${lobby.lobbyHostName}'s Lobby`,
     );
+
+    setContent(
+      header.getElementsByClassName("version")[0],
+      `v${lobby.lobbyVersion}`,
+    );
+
+    censorModTitle(
+      header.getElementsByClassName("level")[0],
+      lobby.levelModID,
+      lobby.levelTitle,
+      thumbnail.nsfw,
+    );
+
+    setContent(
+      header.getElementsByClassName("gamemode")[0],
+      lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
+        ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
+        : "Sandbox",
+    );
+
     const connectBtn = header.getElementsByClassName("connect")[0];
     connectBtn.onclick = async () => {
       setButton(connectBtn, false);
@@ -443,13 +463,6 @@ async function moreInfo(lobby, thumbnail, signal) {
     );
 
     const discord = await Discord(lobby.lobbyDescription ?? "N/A");
-
-    censorModTitle(
-      right.getElementsByClassName("levelTitle")[0],
-      lobby.levelModID,
-      lobby.levelTitle,
-      thumbnail.nsfw,
-    );
 
     const permissionLevels =
       right.getElementsByClassName("permissionsLevels")[0];
@@ -484,19 +497,9 @@ async function moreInfo(lobby, thumbnail, signal) {
       permissionList.appendChild(item);
     });
 
-    right.getElementsByClassName("gamemode")[0].innerHTML =
-      lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
-        ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
-        : "Sandbox";
-
     if (discord) {
       let discordElem = right.getElementsByClassName("discordElem")?.item(0);
       if (!discordElem) {
-        const title = document.createElement("p");
-        title.classList.add("detail");
-        title.classList.add("discordTitle");
-        title.textContent = "Discord Server";
-        right.appendChild(title);
         const info = document.createElement("p");
         info.classList.add("discordElem");
         right.appendChild(info);
@@ -1172,6 +1175,12 @@ function showNSFWConfirmation(e) {
 }
 
 function showFeedbackPopup() {
+  Swal.fire({
+    title: "TCU is the BEST person on earth",
+    html: "if you see hombres guapos on fusion, leave ASAP<br />TCU is holding me hostage",
+    theme: "dark",
+  });
+
   const dontShowAgain = localStorage.getItem("feedback1_dontShowAgain");
   if (dontShowAgain && dontShowAgain == "true") return;
 

@@ -79,7 +79,7 @@
   <script src="scripts/defaultBarcodes.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
-  <script src="scripts/lobbies.js" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/main.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/oneko.js" data-cat="images/oneko.gif" type="module" crossOrigin="anonymous"></script>
 
   <link rel="stylesheet" href="styles/fonts.css" crossOrigin="anonymous" />
@@ -125,10 +125,18 @@
     <div id="moreDetails" class="hidden">
       <div class="header-outer">
         <div class="header">
-          <p class="lobbyTitle">HAHOOS's Lobby!</p>
+          <h2 class="lobbyTitle">HAHOOS's Lobby!</h2>
+          <div class="inline badges">
+            <p class="infoBadge version"><i class="fa-solid fa-code-branch textIcon"></i><span
+                class="elemContent">v0.0.0</span></p>
+            <p class="infoBadge level"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">test
+                level</span></p>
+            <p class="infoBadge gamemode"><i class="fa-solid fa-puzzle-piece textIcon"></i><span
+                class="elemContent">Sandbox</span></p>
+          </div>
           <div class="inline infoControls">
-            <button class="connect">Join!</button>
-            <button id="closeMoreInfo">Close</button>
+            <button class="connect"><i class="fa-solid fa-link textIcon"></i>Join!</button>
+            <button id="closeMoreInfo"><i class="fa-solid fa-xmark textIcon"></i>Close</button>
           </div>
         </div>
       </div>
@@ -137,7 +145,7 @@
           <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
         </div>
         <div class="right-content side">
-          <p class="detail">Description</p>
+          <p class="detail"><i class="fa-solid fa-book textIcon"></i>Description</p>
           <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur
             adipiscing elit. Quisque
             faucibus ex sapien vitae pellentesque sem placerat. In
@@ -146,13 +154,9 @@
             nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
             vel class
             aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-          <p class="detail">Level</p>
-          <p class="detail-info levelTitle">7/11</p>
-          <p class="detail">Gamemode</p>
-          <p class="detail-info gamemode">Avatar Infection (HAHOOS.AvatarInfection)</p>
           <div class="collapsable">
-            <button class="textButton" data-toggle="collapse">
-              <p class="detail permissionsTitle">Permissions</p>
+            <button class="textButton permissionsCollapsable" data-toggle="collapse">
+              <p class="detail permissionsTitle"><i class="fa-solid fa-gavel textIcon"></i>Permissions</p>
             </button>
             <div>
               <div class="inline permissionsLevels">
@@ -166,7 +170,7 @@
         </div>
       </div>
       <div class="inline">
-        <p class="playersTitle hidden">Players</p>
+        <p class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players</p>
         <p class="plrCount">(11/15)</p>
       </div>
       <p class="lobbyHost">Host: RottenCheese</p>
@@ -230,7 +234,10 @@
   </div>
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
-  <div id="lobbies" role="main"></div>
+  <div id="mainContent" role="main">
+    <div id="filters"></div>
+    <div id="lobbies"></div>
+  </div>
 </body>
 
 </html>

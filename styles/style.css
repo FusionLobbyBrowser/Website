@@ -407,9 +407,31 @@ label {
   color: #fa5f55;
 }
 
+#closeMoreInfo {
+  background-color: #ff0000;
+}
+
+#closeMoreInfo:hover {
+  background-color: #dd0000;
+}
+
+#mainContent {
+  display: flex;
+}
+
+#lobbies {
+  flex: 0 0 85%;
+}
+
+#filters {
+  flex: 0 0 15%;
+  background-color: rgb(20, 20, 20);
+  border-radius: 20px;
+}
+
 .lobby {
   position: relative;
-  background-color: rgb(20, 20, 20);
+  background-color: rgba(20, 20, 20, 0.5);
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
   text-align: center;
   padding-bottom: 0.35em;
@@ -483,11 +505,12 @@ label {
 }
 
 .lobbyTitle {
-  font-size: 1.563rem;
+  font-size: 1.75rem;
   text-align: center;
 
   padding-bottom: 0;
   margin-bottom: 0;
+  margin-top: 0.4em;
 }
 
 .playersTitle {
@@ -526,17 +549,36 @@ label {
   padding-top: 0;
 }
 .detail {
-  font-size: 0.938rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  margin-bottom: 0.5em;
+  margin-top: 0;
+  margin-bottom: 0.34em;
 }
 
 .detail-info {
-  font-size: 0.781rem;
+  font-size: 0.9rem;
   width: 95%;
   padding-top: 0;
   margin-top: 0;
   word-wrap: break-word;
+  margin-bottom: 0.5em;
+}
+
+.infoBadge {
+  display: inline;
+  border-radius: 10px;
+  background-color: rgba(0, 56, 61, 0.7);
+  padding: 6px 6px 6px 6px;
+  transition: 0.5s;
+}
+
+.infoBadge {
+  background-color: rgba(0, 36, 40, 0.7);
+}
+
+.badges {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
 }
 
 .lobbyName {
@@ -571,10 +613,6 @@ label {
 @media (min-width: 600px) {
   .content {
     display: flex;
-  }
-
-  .side {
-    width: 50%;
   }
 }
 
@@ -811,4 +849,8 @@ button:hover {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+}
+
+.permissionsCollapsable {
+  padding-bottom: 0;
 }

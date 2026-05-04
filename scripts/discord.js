@@ -44,9 +44,9 @@ function createServerElem(obj, code) {
   // NSFW Guilds will not appear and there are no plans on adding it, even with it being censored
   if (obj.guild.nsfw == true) return null;
 
-  const toCopy = document.getElementsByClassName("discordToCopy")[0];
+  const toCopy = document.getElementById("discordToCopy");
   const server = toCopy.cloneNode(true);
-  server.classList.remove("discordToCopy");
+  server.removeAttribute("id");
 
   const iconElem = server.getElementsByClassName("serverIcon")[0];
   const serverNameElem = server.getElementsByClassName("serverName")[0];
