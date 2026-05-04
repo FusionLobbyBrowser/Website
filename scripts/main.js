@@ -14,9 +14,6 @@ const URI_JOIN = "bonelab-flb://SteamVR-[code]/";
 
 const LOBBY_PARAM = "lobby";
 
-const FEEDBACK_FORM =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdbOEyAni67mna104mPtO58fKw034G1VqhEGnin8G5MlEZNqA/viewform?usp=publish-editor";
-
 const limit = [
   ["Steam", 50],
   ["Epic", 200],
@@ -1142,7 +1139,6 @@ async function init() {
 
   loadProfanities();
 
-  showFeedbackPopup();
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
 
@@ -1172,35 +1168,6 @@ function showNSFWConfirmation(e) {
       }
     });
   }
-}
-
-function showFeedbackPopup() {
-  Swal.fire({
-    title: "TCU is the BEST person on earth",
-    html: "if you see hombres guapos on fusion, leave ASAP<br />TCU is holding me hostage",
-    theme: "dark",
-  });
-
-  const dontShowAgain = localStorage.getItem("feedback1_dontShowAgain");
-  if (dontShowAgain && dontShowAgain == "true") return;
-
-  Swal.fire({
-    title: "I need your help!",
-    html: "As much as I want to improve the website, I have no clue how many people actually use it and whether you have any issues with it or suggestions. Filling out a feedback form will just take <b>5 minutes</b> and will provide valuable information for me!",
-    theme: "dark",
-    showCancelButton: true,
-    showDenyButton: true,
-    imageUrl: "https://fusion.hahoos.dev/images/cat400x400.webp",
-    imageWidth: 200,
-    imageHeight: 200,
-    denyButtonText: "Don't Show Again",
-    confirmButtonText: "Fill out",
-    cancelButtonText: "Later",
-  }).then(async (x) => {
-    if (x.isConfirmed) window.open(FEEDBACK_FORM);
-    else if (x.isDenied)
-      localStorage.setItem("feedback1_dontShowAgain", "true");
-  });
 }
 
 function clickEvent(id, callback) {
