@@ -308,7 +308,7 @@ label {
 /* Discord rich element */
 
 .discord {
-  width: 95%;
+  width: 98%;
   display: flex;
   background-color: rgb(30, 30, 30);
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
@@ -338,6 +338,27 @@ label {
   white-space: nowrap;
 }
 
+.discordJoin {
+  text-align: center;
+  height: 60%;
+}
+
+.discordJoin > button {
+  height: 100%;
+  text-align: center;
+}
+
+.memberCount {
+  width: 16%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+/* End of Discord Rich Element */
+
 .plrCount {
   display: inline-block;
   margin-left: 0.1em;
@@ -358,29 +379,6 @@ label {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-
-.discordJoin {
-  flex-grow: 1;
-  text-align: center;
-}
-
-.memberCount {
-  width: 14%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 0.25em;
-}
-
-.memberCount > img {
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
-    contrast(103%);
-  height: 1em;
-  flex-shrink: 0;
-}
-
-/* End of Discord Rich Element */
 
 .headerText {
   margin-top: 0.1em;
@@ -484,7 +482,7 @@ label {
   box-shadow: 10px 5px 5px rgb(10, 10, 10);
   border-radius: 10px;
 
-  width: 54em;
+  width: 60em;
   margin-bottom: 3em;
 }
 

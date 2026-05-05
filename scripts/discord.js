@@ -76,7 +76,7 @@ function createServerElem(obj, code) {
   }
   const num = obj.profile.member_count ?? -1;
   memberCountElem.innerHTML = DOMPurify.sanitize(
-    `<img src="images/people.svg">${formatNumber(num)}`,
+    `<i class="fa-solid fa-users textIcon"></i>${formatNumber(num)}`,
   );
   tippy(memberCountElem, {
     content: `${obj.profile.member_count} members • ${obj.profile.online_count} online`,
