@@ -425,7 +425,7 @@ async function moreInfo(lobby, thumbnail, signal) {
     setContent(
       header.getElementsByClassName("gamemode")[0],
       lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
-        ? convert(`${lobby.gamemodeTitle} (${lobby.gamemodeBarcode})`)
+        ? convert(lobby.gamemodeTitle)
         : "Sandbox",
     );
 
