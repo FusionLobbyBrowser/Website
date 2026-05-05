@@ -423,10 +423,11 @@ label {
   flex: 0 0 85%;
 }
 
-#filters {
+#settings {
   flex: 0 0 15%;
   background-color: rgb(20, 20, 20);
   border-radius: 20px;
+  text-align: center;
 }
 
 .lobby {
@@ -712,6 +713,11 @@ label {
 }
 .collapsable button:not(.collapsed) + div {
   display: none;
+}
+
+.collapsable > button > h2 {
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
 }
 
 #sortOrder {
