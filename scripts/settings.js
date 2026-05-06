@@ -20,7 +20,6 @@ const categories = [
     icon: "fa-solid fa-shield-halved",
   },
 ];
-const filterSelections = ["Whitelist", "Blacklist", "None"];
 const settings = [
   // General
   {
@@ -40,20 +39,32 @@ const settings = [
   },
   // Purpose
   {
+    id: "useFilters",
+    category: "Purpose",
+    type: "toggle",
+    name: "Use Purpose Filters",
+    defaultValue: false,
+  },
+  {
+    id: "isBlacklist",
+    category: "Purpose",
+    type: "toggle",
+    name: "Is Blacklist",
+    defaultValue: true,
+  },
+  {
     id: "roleplayLobbies",
     category: "Purpose",
-    type: "select",
-    values: filterSelections,
+    type: "toggle",
     name: "Roleplay Lobbies",
-    defaultValue: "None",
+    defaultValue: false,
   },
   {
     id: "russianLobbies",
     category: "Purpose",
-    type: "select",
-    values: filterSelections,
+    type: "toggle",
     name: "Russian Lobbies",
-    defaultValue: "None",
+    defaultValue: false,
   },
   // Player Count
   {
@@ -104,8 +115,8 @@ const types = [
       const input = document.createElement("input");
       input.setAttribute("type", "checkbox");
       input.setAttribute("name", setting.name);
-      input.setAttribute("id", getElemId(setting));
-      if (value == "true") input.setAttribute("checked", true);
+      input.setAttribute("id", getElemId(setting.id));
+      if (value == "true" || value == true) input.setAttribute("checked", true);
       let old = input.checked;
       input.addEventListener("change", () => {
         wrapper.dispatchEvent(
@@ -115,7 +126,7 @@ const types = [
         );
       });
       const label = document.createElement("label");
-      label.setAttribute("for", getElemId(setting));
+      label.setAttribute("for", getElemId(setting.id));
       label.textContent = setting.name;
 
       wrapper.appendChild(input);
@@ -128,11 +139,11 @@ const types = [
     callback: (setting, value) => {
       const wrapper = document.createElement("div");
       const label = document.createElement("label");
-      label.setAttribute("for", getElemId(setting));
+      label.setAttribute("for", getElemId(setting.id));
       label.textContent = setting.name;
       const select = document.createElement("select");
-      select.setAttribute("name", getElemId(setting));
-      select.setAttribute("id", getElemId(setting));
+      select.setAttribute("name", getElemId(setting.id));
+      select.setAttribute("id", getElemId(setting.id));
       setting.values.forEach((val) => {
         const option = document.createElement("option");
         if (isString(val)) setOption(option, val, val);
@@ -156,6 +167,9 @@ const types = [
     },
   },
 ];
+
+let settingsValues = [];
+let eventListeners = [];
 
 function setOption(option, id, name) {
   option.setAttribute("value", id);
@@ -184,10 +198,7 @@ function createCategory(category) {
   return wrapper;
 }
 
-if (document.readyState !== "loading") init();
-else window.addEventListener("DOMContentLoaded", init);
-
-function init() {
+export function init() {
   const settingsList = document.getElementById("settings");
 
   categories.forEach((val) => {
@@ -196,12 +207,11 @@ function init() {
   });
 
   settings.forEach((val) => {
-    const saved = localStorage.getItem(getElemId(val));
-    console.log(`${val.id} : ${saved}`);
+    const saved = localStorage.getItem(getElemId(val.id));
     let _val;
     if (saved != null && saved != undefined) _val = saved;
     else _val = val.defaultValue;
-    localStorage.setItem(getElemId(val), _val);
+    setSetting(val.id, _val);
 
     const category = settingsList
       .querySelector(
@@ -226,11 +236,13 @@ function init() {
     }
 
     wrapper.addEventListener("onsettingchanged", (v) => {
-      console.log(v);
-      localStorage.setItem(getElemId(val), v.detail.new);
+      setSetting(val.id, v.detail.new);
+      eventListeners.forEach((x) => {
+        if (x.id == val.id) x.callback(v.detail.new);
+      });
       window.dispatchEvent(
         new CustomEvent("onsettingchanged", {
-          detail: { old: v.detail.old, new: v.detail.new },
+          detail: { id: val.id, old: v.detail.old, new: v.detail.new },
         }),
       );
     });
@@ -239,8 +251,26 @@ function init() {
   });
 }
 
+export function setSetting(setting, value) {
+  localStorage.setItem(getElemId(setting), value);
+  let index = settingsValues.findIndex((x) => x.id == setting);
+  if (index != -1) settingsValues[index].value = value;
+  else settingsValues.push({ id: setting, value: value });
+  if (index != -1) console.log(settingsValues[index].value);
+}
+
+export function getSetting(setting) {
+  let index = settingsValues.findIndex((x) => x.id == setting);
+  if (index != -1) return settingsValues[index].value;
+  else return undefined;
+}
+
+export function addEventListener(id, callback) {
+  eventListeners.push({ id: id, callback: callback });
+}
+
 function getElemId(setting) {
-  return `setting_${setting.id}`;
+  return `setting_${setting}`;
 }
 
 function getCategoryText(category) {

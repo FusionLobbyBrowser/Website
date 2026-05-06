@@ -232,7 +232,11 @@ ul {
 /* Code from https://getcssscan.com/css-checkboxes-examples */
 
 .checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 0.1em;
+  margin-top: 0.25em;
 }
 
 .checkbox-wrapper input {
@@ -245,11 +249,14 @@ ul {
   height: 20px;
   margin: 0;
   position: relative;
+  margin-right: 0.35em;
   width: 30px;
 }
 
 label {
-  display: inline-block;
+  font-size: 16px;
+  line-height: 16px;
+  height: 16px;
 }
 
 .checkbox-wrapper input::before {
@@ -426,6 +433,14 @@ label {
   background-color: rgb(20, 20, 20);
   border-radius: 20px;
   text-align: center;
+
+  box-shadow: 7.5px 2.5px 2.5px rgb(10, 10, 10);
+}
+
+#settingsTitle {
+  margin-top: 0.5em;
+  margin-bottom: 0.25em;
+  font-family: "Ubuntu", sans-serif;
 }
 
 .lobby {
@@ -513,11 +528,7 @@ label {
 }
 
 .playersTitle {
-  display: inline-block;
-  font-size: 1.125rem;
-  text-align: left;
-  margin-left: 1em;
-  margin-bottom: 0.25em;
+  font-size: 1.35rem;
 }
 
 .lobbyHost {
@@ -655,6 +666,11 @@ label {
   width: 100%;
 }
 
+.plrTitle {
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
 .player {
   background-color: rgb(10, 10, 10);
   box-shadow: 10px 5px 5px rgb(5, 5, 5);
@@ -714,8 +730,8 @@ label {
 }
 
 .collapsable > button > h2 {
-  margin-bottom: 0.25em;
-  margin-top: 0.25em;
+  margin-bottom: 0em;
+  margin-top: 0em;
 }
 
 #sortOrder {

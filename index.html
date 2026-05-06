@@ -120,7 +120,8 @@
     <p class="headerText">Browse lobbies without having to open BONELAB!</p>
     <p class="hidden" id="uptime">Backend up since: N/A</p>
     <p class="hidden" id="refresh">Last Refresh: N/A</p>
-    <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i>Refresh</button>
+    <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
+        class="elemContent">Refresh</span></button>
   </header>
   <div id="moreDetails-outer" class="hidden">
     <div id="moreDetails" class="hidden">
@@ -170,11 +171,10 @@
           </div>
         </div>
       </div>
-      <div class="inline">
-        <p class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players</p>
-        <p class="plrCount">(11/15)</p>
+      <div class="plrTitle">
+        <h2 class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players <span
+            class="plrCount">(11/15)</span></h2>
       </div>
-      <p class="lobbyHost">Host: RottenCheese</p>
       <div class="players hidden">
       </div>
     </div>
@@ -190,53 +190,12 @@
     appear. This is a
     limit implemented by Steam themselves and nothing can be done about it!</p>
   <p id="javascriptRequired">This site requires JavaScript to be enabled.</p>
-  <div id="searchOptions-outer">
-    <div id="searchOptions" class="collapsable">
-      <button class="textButton" data-toggle="collapse">
-        <h2 id="searchTitle">Options</h2>
-      </button>
-      <div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="autoRefresh" name="Auto Refresh" />
-          <label for="autoRefresh">Auto Refresh</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
-          <label for="showFullLobbies">Show Full
-            Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
-          <label for="showFullLobbies">Show 1 Player Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
-          <label for="showFullLobbies">Show Roleplay Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showRussianLobbies" name="Show Russian Lobbies" checked />
-          <label for="showFullLobbies">Show Russian Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="filterProfanities" name="Filter Profanities" checked />
-          <label for="filterProfanities">Filter Profanities</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showNSFW" name="Show NSFW" />
-          <label for="showNSFW">Show NSFW</label>
-        </div>
-        <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
-        <select name="sortOrder" id="sortOrder">
-          <option value="descending">Descending (most -> least players)</option>
-          <option value="ascending">Ascending (least -> most players)</option>
-        </select>
-      </div>
-    </div>
-  </div>
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
   <div id="mainContent" role="main">
-    <div id="settings"></div>
+    <div id="settings">
+      <h1 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h1>
+    </div>
     <div id="lobbies"></div>
   </div>
 </body>

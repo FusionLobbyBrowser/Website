@@ -1,6 +1,12 @@
 import { Converter } from "./unityRichText.js";
 import Barcodes from "./defaultBarcodes.js";
 import Discord from "./discord.js";
+import {
+  init as settingsInit,
+  setSetting,
+  getSetting,
+  addEventListener,
+} from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist?service=[service]`;
@@ -65,7 +71,7 @@ async function fetchAndCreateLobbies() {
     try {
       refreshBtn.classList.remove("blocked");
       refreshBtn.classList.add("inProgress");
-      refreshBtn.textContent = "Refresh";
+      setContent(refreshBtn, "Refresh");
       refreshBtn.blocked = true;
 
       const lobbies = document.getElementById("lobbies");
@@ -116,7 +122,7 @@ async function fetchAndCreateLobbies() {
         }
       }
     } finally {
-      refreshBtn.textContent = "Refresh";
+      setContent(refreshBtn, "Refresh");
       refreshBtn.classList.remove("inProgress");
       refreshBtn.blocked = false;
       if (refresh.hasAttribute("date"))
@@ -148,12 +154,11 @@ async function createLobbies(signal) {
   let lobbyCount = hideLobbies(false);
   let allowed = getAllowedIDs(lobbyList);
 
-  const sorting = document.getElementById("sortOrder").value;
   lobbyList.sort(
     (first, second) =>
       parseInt(second.playerCount) - parseInt(first.playerCount),
   );
-  if (sorting != "descending") lobbyList.reverse();
+  if (getSetting("sortOrder") != "Descending") lobbyList.reverse();
 
   let players = 0;
   lobbyList.forEach((val) => {
@@ -190,16 +195,16 @@ async function refreshButton(date) {
   if (seconds >= refreshInterval) {
     button.disabled = false;
     button.classList.remove("blocked");
-    button.textContent = "Refresh";
+    setContent(button, "Refresh");
     if (!refreshing) autoRefresh();
   } else {
     button.disabled = true;
     if (button.classList.contains("inProgress")) {
       button.classList.remove("blocked");
-      button.textContent = "Refresh";
+      setContent(button, "Refresh");
     } else {
       button.classList.add("blocked");
-      button.textContent = `Refresh (${refreshInterval - seconds})`;
+      setContent(button, `Refresh (${refreshInterval - seconds})`);
     }
   }
 }
@@ -208,7 +213,7 @@ async function autoRefresh() {
   if (
     !document.hidden &&
     document.hasFocus() &&
-    document.getElementById("autoRefresh").checked &&
+    isToggleChecked("autoRefresh") &&
     fullyLoaded &&
     !refreshing &&
     Date.now() - lastRefresh > 1500
@@ -518,9 +523,6 @@ async function moreInfo(lobby, thumbnail, signal) {
       plrCount.classList.add("fullLobby");
     else plrCount.classList.add("availableLobby");
 
-    const host = lobbyInfo.getElementsByClassName("lobbyHost")[0];
-    host.innerHTML = `Host: ${convert(lobby.lobbyHostName)}`;
-
     const playersList = lobbyInfo.getElementsByClassName("players")[0];
     playersList.replaceChildren();
     const players = lobby.playerList.players;
@@ -585,6 +587,14 @@ async function moreInfo(lobby, thumbnail, signal) {
       const permsElem = playerElem.getElementsByClassName("permissions")[0];
       permsElem.classList.add(perms.class);
       permsElem.textContent = perms.text;
+      if (player.platformID == lobby.lobbyID) {
+        const crown = document.createElement("i");
+        crown.classList.add("fa-solid");
+        crown.classList.add("fa-crown");
+        crown.classList.add("textIcon");
+        permsElem.insertBefore(crown, permsElem.firstChild);
+      }
+
       let avatar =
         player.avatarTitle && player.avatarTitle != ""
           ? convertToHTML(player.avatarTitle)
@@ -628,7 +638,7 @@ async function moreInfo(lobby, thumbnail, signal) {
 }
 
 function censorModTitle(elem, modId, title, nsfw, usesIcon = true) {
-  if (nsfw && !document.getElementById("showNSFW").checked) {
+  if (nsfw && isToggleChecked("censorNSFW")) {
     if (usesIcon) setContent(elem, "[NSFW]");
     else elem.textContent = "[NSFW]";
     elem.classList.add("filterNSFW");
@@ -661,7 +671,7 @@ function convert(text) {
   return DOMPurify.sanitize(convertToHTML(censorWords(text)));
 }
 function censorWords(text) {
-  if (!document.getElementById("filterProfanities").checked) return text;
+  if (!isToggleChecked("censorProfanities")) return text;
 
   if (text == null || text == "") return text;
 
@@ -818,10 +828,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       alt: alt,
       nsfw: false,
     };
-  } else if (
-    thumbnail.nsfw == true &&
-    !document.getElementById("showNSFW").checked
-  ) {
+  } else if (thumbnail.nsfw == true && isToggleChecked("censorNSFW")) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
@@ -942,43 +949,61 @@ function timeAgo(input) {
 }
 
 function filterLobbies(lobbies) {
-  if (!document.getElementById("showFullLobbies").checked)
+  if (isToggleChecked("hideFullLobbies"))
     lobbies = lobbies.filter((i) => i.playerCount != i.maxPlayers);
 
-  if (!document.getElementById("showOnePlayerLobbies").checked)
+  if (isToggleChecked("hideEmptyLobbies"))
     lobbies = lobbies.filter((i) => i.playerCount > 1);
 
-  if (!document.getElementById("showRPLobbies").checked)
-    lobbies = filterByName(lobbies, ["hood", "rp", "war", "roleplay"]);
+  const isBlacklist = isToggleChecked("isBlacklist");
 
-  if (!document.getElementById("showRussianLobbies").checked)
-    lobbies = filterByName(lobbies, [
-      "russian",
-      "rus",
-      "russ",
-      "russi",
-      "russkie",
-      "ru",
-    ]);
+  if (isToggleChecked("useFilters")) {
+    lobbies = filterByName(
+      lobbies,
+      ["hood", "rp", "war", "roleplay"],
+      isToggleChecked("roleplayLobbies"),
+      isBlacklist,
+    );
+
+    const russian = filterByName(
+      lobbies,
+      ["russian", "rus", "russ", "russi", "russkie", "ru"],
+      isToggleChecked("russianLobbies"),
+      isBlacklist,
+    );
+
+    if (!isBlacklist) lobbies.concat(russian);
+    else lobbies = russian;
+  }
 
   return lobbies;
 }
 
-function filterByName(lobbies, array) {
+function isToggleChecked(id) {
+  return getSetting(id) == true || getSetting(id) == "true";
+}
+
+// TODO: fix this bullshit logic breaking everything
+function filterByName(lobbies, array, isToggled, isBlacklist) {
   lobbies = lobbies.filter((i) => {
-    if (!i || !i.lobbyName || i.lobbyName == "") return true;
-    const iName = Converter.removeRichText(i.lobbyName);
-    const words = iName.split(" ");
     let found = false;
-    for (const s of array) {
-      for (const w of words) {
-        if (removeSymbols(w).toLowerCase() == removeSymbols(s).toLowerCase()) {
-          found = true;
-          break;
+    if (!i || !i.lobbyName || i.lobbyName == "") {
+      found = false;
+    } else {
+      const iName = Converter.removeRichText(i.lobbyName);
+      const words = iName.split(" ");
+      for (const s of array) {
+        for (const w of words) {
+          if (
+            removeSymbols(w).toLowerCase() == removeSymbols(s).toLowerCase()
+          ) {
+            found = true;
+            break;
+          }
         }
       }
     }
-    return !found;
+    return (isToggled !== isBlacklist) === found;
   });
 
   return lobbies;
@@ -1038,13 +1063,10 @@ async function loadProfanities() {
   }
 }
 
-function filterEvent(elem, redo = false) {
-  if (!elem) return;
+function filterEvent(id, redo = false) {
+  if (!id) return;
 
-  const element = document.getElementById(elem);
-  if (!element) return;
-
-  element.addEventListener("change", async () => {
+  addEventListener(id, async (val) => {
     if (redo) {
       console.log("[Filters] Creating lobbies");
       if (fullyLoaded && !refreshing) {
@@ -1091,6 +1113,8 @@ async function init() {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
+  settingsInit();
+
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
     const num = Number(params.get(LOBBY_PARAM));
@@ -1105,15 +1129,17 @@ async function init() {
   collapsableMenus();
 
   // Do not require lobby list to be created again
-  filterEvent("showFullLobbies", false);
-  filterEvent("showOnePlayerLobbies", false);
-  filterEvent("showRussianLobbies", false);
-  filterEvent("showRPLobbies", false);
+  filterEvent("hideFullLobbies", false);
+  filterEvent("hideEmptyLobbies", false);
+  filterEvent("isBlacklist", false);
+  filterEvent("useFilters", false);
+  filterEvent("russianLobbies", false);
+  filterEvent("roleplayLobbies", false);
 
   // Require the lobby list to be created again
-  filterEvent("showNSFW", true);
+  filterEvent("censorNSFW", true);
   filterEvent("sortOrder", true);
-  filterEvent("filterProfanities", true);
+  filterEvent("censorProfanities", true);
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("closeMoreInfo", () => hideShow(true));
@@ -1121,9 +1147,6 @@ async function init() {
   clickEvent("steamServer", () => updateService("Steam"));
   clickEvent("epicServer", () => updateService("Epic"));
 
-  document
-    .getElementById("showNSFW")
-    .addEventListener("click", showNSFWConfirmation);
   const connectBtn = document.querySelector(
     "#moreDetails > .header-outer > .header > .infoControls > .connect",
   );
@@ -1145,6 +1168,7 @@ async function init() {
   fetchAndCreateLobbies();
 }
 
+/*
 function showNSFWConfirmation(e) {
   if (document.getElementById("showNSFW").checked) {
     e.preventDefault();
@@ -1169,6 +1193,7 @@ function showNSFWConfirmation(e) {
     });
   }
 }
+*/
 
 function clickEvent(id, callback) {
   document.getElementById(id).addEventListener("click", callback);
