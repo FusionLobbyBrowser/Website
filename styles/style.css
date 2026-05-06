@@ -430,9 +430,13 @@ label {
 
 #settings {
   flex: 0 0 15%;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
   background-color: rgb(20, 20, 20);
   border-radius: 20px;
   text-align: center;
+  height: 100vh;
 
   box-shadow: 7.5px 2.5px 2.5px rgb(10, 10, 10);
 }
@@ -475,7 +479,7 @@ label {
   height: 2em;
 }
 
-.lobby[filteredout="true"]:not([loading]) {
+.lobby[filteredout="true"] {
   display: none;
   visibility: hidden;
 }
@@ -764,7 +768,19 @@ label {
   top: 2%;
   right: 3.5%;
   margin-top: 0;
-  margin-bottom: 0.55em;
+  width: auto;
+  padding: 0.3em 0.3em 0.3em 0.3em;
+
+  background-color: rgba(21, 21, 21, 0.7);
+  border-radius: 5px;
+}
+
+.platformIcon {
+  position: absolute;
+  text-align: center;
+  top: 2%;
+  left: 3.5%;
+  margin-top: 0;
   width: auto;
   padding: 0.3em 0.3em 0.3em 0.3em;
 

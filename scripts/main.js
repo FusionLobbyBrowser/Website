@@ -3,13 +3,12 @@ import Barcodes from "./defaultBarcodes.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
-  setSetting,
   getSetting,
   addEventListener,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
-const LOBBY_LIST = `${HOST}lobbylist?service=[service]`;
+const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode="[barcode]"`;
 
 const PROFANITY_LIST =
@@ -52,9 +51,6 @@ const permissions = [
   [1, "operator"],
   [2, "owner"],
 ];
-
-let service = "Steam";
-let serviceAtFetch = "Steam";
 
 async function fetchAndCreateLobbies() {
   refreshing = true;
@@ -99,13 +95,8 @@ async function fetchAndCreateLobbies() {
         let date = refresh.getAttribute("date");
         let numDate = -1;
         if (date) numDate = Number(date) / 1000;
-        if (
-          serviceAtFetch != service ||
-          numDate == -1 ||
-          numDate != json.date
-        ) {
+        if (numDate == -1 || numDate != json.date) {
           setURLParams();
-          serviceAtFetch = structuredClone(service);
           error.classList.add("hidden");
 
           timeFromResponse(refresh, json.date);
@@ -238,7 +229,12 @@ async function createLobby(lobby, signal, hidden) {
   let lobbyElem = copy.cloneNode(true);
   lobbyElem.removeAttribute("id");
 
-  lobbyElem.setAttribute("filteredOut", hidden);
+  lobbyElem.setAttribute("filteredout", hidden);
+  lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
+  const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
+  icon.classList.add("fa-brands");
+  if (lobby.lobbyPlatform == "Steam") icon.classList.add("fa-steam");
+  else icon.classList.add("fa-meta");
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
@@ -414,6 +410,12 @@ async function moreInfo(lobby, thumbnail, signal) {
         ? lobby.lobbyName
         : `${lobby.lobbyHostName}'s Lobby`,
     );
+    lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
+
+    setContent(
+      header.getElementsByClassName("uptime")[0],
+      timePassed(Number(lobby.lobbyUptime)),
+    );
 
     setContent(
       header.getElementsByClassName("version")[0],
@@ -556,7 +558,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       );
       const name = getName(player);
       const nameElem = playerElem.getElementsByClassName("name")[0];
-      if (service != "Steam") {
+      if (lobby.lobbyPlatform != "Steam") {
         nameElem.innerHTML = convert(name.name);
       } else {
         const link = document.createElement("a");
@@ -738,7 +740,6 @@ function setURLParams() {
   if (moreInfoView != -1) {
     url.searchParams.set(LOBBY_PARAM, moreInfoView);
   } else url.searchParams.delete(LOBBY_PARAM);
-  if (service) url.searchParams.set("service", service);
   if (url.searchParams.size <= 0)
     url.searchParams.forEach((_, key) => url.searchParams.delete(key));
 
@@ -879,6 +880,7 @@ function setPlayerCount(players, lobbies) {
   document.getElementsByClassName("lobbyCount")[0].textContent =
     `${lobbies} lobbies`;
 
+  /*
   const highLobby = document.getElementById("lobbyLimit");
   const limitNum = new Map(limit).get(service);
   if (limitNum && lobbies >= limitNum) {
@@ -887,6 +889,7 @@ function setPlayerCount(players, lobbies) {
       .replace("[limit]", limitNum);
     highLobby.classList.remove("hidden");
   } else highLobby.classList.add("hidden");
+   */
 }
 
 function convertToHTML(text) {
@@ -896,7 +899,7 @@ function convertToHTML(text) {
 
 async function getJSON() {
   try {
-    const response = await fetch(LOBBY_LIST.replace("[service]", service));
+    const response = await fetch(LOBBY_LIST);
     if (!response.ok) return { error: await response.text() };
 
     return {
@@ -922,30 +925,41 @@ async function requestJoin(code) {
   }
 }
 
-// https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
-// To be fair I could have done it myself, but I'm not really familiar with the language
-// EDIT: I was fucking lazy and i just thought there was a method in Date that does it automatically, but well there is none.
+const timeRanges = {
+  years: { min: 3600 * 24 * 365, symbol: "y" },
+  months: { min: 3600 * 24 * 30, symbol: "m" },
+  weeks: { min: 3600 * 24 * 7, symbol: "w" },
+  days: { min: 3600 * 24, symbol: "d" },
+  hours: { min: 3600, symbol: "h" },
+  minutes: { min: 60, symbol: "min" },
+  seconds: { min: 1, symbol: "s" },
+};
+
 function timeAgo(input) {
   const date = input instanceof Date ? input : new Date(input);
   const formatter = new Intl.RelativeTimeFormat("en");
-  const ranges = {
-    years: 3600 * 24 * 365,
-    months: 3600 * 24 * 30,
-    weeks: 3600 * 24 * 7,
-    days: 3600 * 24,
-    hours: 3600,
-    minutes: 60,
-    seconds: 1,
-  };
   const secondsElapsed = (date.getTime() - Date.now()) / 1000;
-  for (let key in ranges) {
-    if (ranges[key] < Math.abs(secondsElapsed)) {
-      const delta = secondsElapsed / ranges[key];
+  for (let key in timeRanges) {
+    if (timeRanges[key].min < Math.abs(secondsElapsed)) {
+      const delta = secondsElapsed / timeRanges[key].min;
       return formatter.format(Math.round(delta), key);
     }
   }
   // Handle times less than 1 second ago
   return formatter.format(-2, "seconds").replace("2", "0");
+}
+
+function timePassed(input) {
+  const date = input instanceof Date ? input : new Date(input);
+  let time = Date.now() / 1000 - date;
+  for (let key in timeRanges) {
+    if (timeRanges[key].min < Math.abs(time)) {
+      const val = time / timeRanges[key].min;
+      time = time % timeRanges[key].min;
+      return `${Math.round(val)}${timeRanges[key].symbol}`;
+    }
+  }
+  return "0s";
 }
 
 function filterLobbies(lobbies) {
@@ -954,6 +968,12 @@ function filterLobbies(lobbies) {
 
   if (isToggleChecked("hideEmptyLobbies"))
     lobbies = lobbies.filter((i) => i.playerCount > 1);
+
+  if (!isToggleChecked("steamPlatform"))
+    lobbies = lobbies.filter((i) => i.lobbyPlatform != "Steam");
+
+  if (!isToggleChecked("epicPlatform"))
+    lobbies = lobbies.filter((i) => i.lobbyPlatform != "Epic");
 
   lobbies = filterByGroup(lobbies);
 
@@ -1022,12 +1042,11 @@ function hideLobbies(changeElem = true) {
   if (!allLobbies) return;
 
   let list = getAllowedIDs(allLobbies);
-  console.log(list);
 
   var lobbies = document.getElementById("lobbies").children;
   if (changeElem) {
     for (const i of lobbies) {
-      i.setAttribute("filteredout", !list.includes(i.getAttribute("lobbyid")));
+      i.setAttribute("filteredout", !list.includes(i.getAttribute("lobbyId")));
     }
   }
   return list.length;
@@ -1093,20 +1112,6 @@ document.getElementById("javascriptRequired").classList.add("hidden");
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
-function updateService(setTo = "Steam", fetchLobbies = true) {
-  if (setTo == "Steam" && service != "Steam") {
-    service = setTo;
-    document.getElementById("steamServer").classList.add("activeServer");
-    document.getElementById("epicServer").classList.remove("activeServer");
-    if (fetchLobbies) fetchAndCreateLobbies();
-  } else if (setTo == "Epic" && service != "Epic") {
-    service = setTo;
-    document.getElementById("steamServer").classList.remove("activeServer");
-    document.getElementById("epicServer").classList.add("activeServer");
-    if (fetchLobbies) fetchAndCreateLobbies();
-  }
-}
-
 async function init() {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
@@ -1119,19 +1124,18 @@ async function init() {
     if (num) moreInfoView = num;
   }
 
-  if (params.has("service")) {
-    const name = params.get("service");
-    if (name == "Steam" || name == "Epic") updateService(name, false);
-  }
-
   collapsableMenus();
 
   // Do not require lobby list to be created again
   filterEvent("hideFullLobbies", false);
   filterEvent("hideEmptyLobbies", false);
+
   filterEvent("otherLobbies", false);
   filterEvent("russianLobbies", false);
   filterEvent("roleplayLobbies", false);
+
+  filterEvent("steamPlatform", false);
+  filterEvent("epicPlatform", false);
 
   // Require the lobby list to be created again
   filterEvent("censorNSFW", true);
@@ -1140,9 +1144,6 @@ async function init() {
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("closeMoreInfo", () => hideShow(true));
-
-  clickEvent("steamServer", () => updateService("Steam"));
-  clickEvent("epicServer", () => updateService("Epic"));
 
   const connectBtn = document.querySelector(
     "#moreDetails > .header-outer > .header > .infoControls > .connect",
@@ -1202,6 +1203,14 @@ async function updateTime() {
   while (true) {
     timeAgoElem(refresh);
     timeAgoElem(uptime);
+
+    const moreInfo = document.getElementById("moreDetails");
+    if (moreInfo.hasAttribute("uptime")) {
+      setContent(
+        moreInfo.getElementsByClassName("uptime")[0],
+        timePassed(Number(moreInfo.getAttribute("uptime"))),
+      );
+    }
 
     await refreshButton(new Date(Number(refresh.getAttribute("date"))));
 

@@ -89,6 +89,7 @@
 
 <body>
   <div class="lobby" id="lobbyToCopy">
+    <i class="platformIcon"></i>
     <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
     <p class="info lobbyName">HAHOOS's Lobby!</p>
     <p class="info lobbyHostName"><i class="fa-solid fa-user textIcon"></i><span class="elemContent">RottenCheese</span>
@@ -96,7 +97,7 @@
     <p class="info levelTitle"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">7/11</span></p>
     <p class="info gamemodeTitle"><i class="fa-solid fa-puzzle-piece textIcon"></i><span class="elemContent">Avatar
         Infection</span></p>
-    <p class="info lobbyPlayerCount">(0/10)</p>
+    <p class="lobbyPlayerCount">(0/10)</p>
     <button class="connect inline"><i class="fa-solid fa-link textIcon"></i>Join</button>
     <button class="moreInfo inline"><i class="fa-solid fa-info textIcon"></i>Info</button>
   </div>
@@ -129,6 +130,8 @@
         <div class="header">
           <h2 class="lobbyTitle">HAHOOS's Lobby!</h2>
           <div class="inline badges">
+            <p class="infoBadge uptime"><i class="fa-solid fa-clock textIcon"></i><span class="elemContent">1h</span>
+            </p>
             <p class="infoBadge version"><i class="fa-solid fa-code-branch textIcon"></i><span
                 class="elemContent">v0.0.0</span></p>
             <p class="infoBadge level"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">test
@@ -182,10 +185,6 @@
   <h2 class="lobbyHeader hidden" align="center">Lobbies (10)</h2>
   <p class="lobbyInfo hidden">There are currently <span class="playerCount">-1 players</span> playing on <span
       class="lobbyCount">-1 lobbies</span></p>
-  <div class="inline serverSelection">
-    <button id="steamServer" class="activeServer">Steam</button>
-    <button id="epicServer">Epic Games</button>
-  </div>
   <p id="lobbyLimit" class="hidden">Steam has a limit of 50 lobbies, due to the high number of lobbies some may not
     appear. This is a
     limit implemented by Steam themselves and nothing can be done about it!</p>

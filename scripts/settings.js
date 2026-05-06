@@ -12,6 +12,10 @@ const categories = [
     icon: "fa-solid fa-book",
   },
   {
+    name: "Platforms",
+    icon: "fa-solid fa-computer",
+  },
+  {
     name: "Players",
     icon: "fa-solid fa-users",
   },
@@ -37,7 +41,7 @@ const settings = [
     name: "Sort Order",
     defaultValue: "Descending",
   },
-  // Purpose
+  // Groups
   {
     id: "roleplayLobbies",
     category: "Groups",
@@ -57,6 +61,21 @@ const settings = [
     category: "Groups",
     type: "toggle",
     name: "Other",
+    defaultValue: true,
+  },
+  // Platforms
+  {
+    id: "steamPlatform",
+    category: "Platforms",
+    type: "toggle",
+    name: "Steam",
+    defaultValue: true,
+  },
+  {
+    id: "epicPlatform",
+    category: "Platforms",
+    type: "toggle",
+    name: "Epic Games",
     defaultValue: true,
   },
   // Player Count
@@ -249,7 +268,6 @@ export function setSetting(setting, value) {
   let index = settingsValues.findIndex((x) => x.id == setting);
   if (index != -1) settingsValues[index].value = value;
   else settingsValues.push({ id: setting, value: value });
-  if (index != -1) console.log(settingsValues[index].value);
 }
 
 export function getSetting(setting) {
