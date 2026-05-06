@@ -955,26 +955,7 @@ function filterLobbies(lobbies) {
   if (isToggleChecked("hideEmptyLobbies"))
     lobbies = lobbies.filter((i) => i.playerCount > 1);
 
-  const isBlacklist = isToggleChecked("isBlacklist");
-
-  if (isToggleChecked("useFilters")) {
-    lobbies = filterByName(
-      lobbies,
-      ["hood", "rp", "war", "roleplay"],
-      isToggleChecked("roleplayLobbies"),
-      isBlacklist,
-    );
-
-    const russian = filterByName(
-      lobbies,
-      ["russian", "rus", "russ", "russi", "russkie", "ru"],
-      isToggleChecked("russianLobbies"),
-      isBlacklist,
-    );
-
-    if (!isBlacklist) lobbies.concat(russian);
-    else lobbies = russian;
-  }
+  lobbies = filterByGroup(lobbies);
 
   return lobbies;
 }
@@ -983,30 +964,47 @@ function isToggleChecked(id) {
   return getSetting(id) == true || getSetting(id) == "true";
 }
 
-// TODO: fix this bullshit logic breaking everything
-function filterByName(lobbies, array, isToggled, isBlacklist) {
+function filterByGroup(lobbies) {
   lobbies = lobbies.filter((i) => {
-    let found = false;
-    if (!i || !i.lobbyName || i.lobbyName == "") {
-      found = false;
-    } else {
-      const iName = Converter.removeRichText(i.lobbyName);
-      const words = iName.split(" ");
-      for (const s of array) {
-        for (const w of words) {
-          if (
-            removeSymbols(w).toLowerCase() == removeSymbols(s).toLowerCase()
-          ) {
-            found = true;
-            break;
-          }
-        }
+    let info = {
+      russian: false,
+      roleplay: false,
+      other: true,
+    };
+    if (i && i.lobbyName && i.lobbyName != "") {
+      let any = false;
+      if (isGroup(i, ["hood", "rp", "war", "roleplay"])) {
+        any = true;
+        info.roleplay = true;
       }
+      if (isGroup(i, ["russian", "rus", "russ", "russi", "russkie", "ru"])) {
+        any = true;
+        info.russian = true;
+      }
+      if (any) info.other = false;
     }
-    return (isToggled !== isBlacklist) === found;
+    if (!isToggleChecked("russianLobbies") && info.russian) return false;
+    else if (!isToggleChecked("roleplayLobbies") && info.roleplay) return false;
+    else if (!isToggleChecked("otherLobbies") && info.other) return false;
+    else return true;
   });
 
   return lobbies;
+}
+
+function isGroup(lobby, array) {
+  if (!lobby || !lobby.lobbyName || lobby.lobbyName == "") return false;
+
+  const iName = Converter.removeRichText(lobby.lobbyName);
+  const words = iName.split(" ");
+  for (const s of array) {
+    for (const w of words) {
+      if (removeSymbols(w).toLowerCase() == removeSymbols(s).toLowerCase())
+        return true;
+    }
+  }
+
+  return false;
 }
 
 function removeSymbols(text) {
@@ -1131,8 +1129,7 @@ async function init() {
   // Do not require lobby list to be created again
   filterEvent("hideFullLobbies", false);
   filterEvent("hideEmptyLobbies", false);
-  filterEvent("isBlacklist", false);
-  filterEvent("useFilters", false);
+  filterEvent("otherLobbies", false);
   filterEvent("russianLobbies", false);
   filterEvent("roleplayLobbies", false);
 

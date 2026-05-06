@@ -8,7 +8,7 @@ const categories = [
     icon: "fa-solid fa-house",
   },
   {
-    name: "Purpose",
+    name: "Groups",
     icon: "fa-solid fa-book",
   },
   {
@@ -39,32 +39,25 @@ const settings = [
   },
   // Purpose
   {
-    id: "useFilters",
-    category: "Purpose",
+    id: "roleplayLobbies",
+    category: "Groups",
     type: "toggle",
-    name: "Use Purpose Filters",
-    defaultValue: false,
-  },
-  {
-    id: "isBlacklist",
-    category: "Purpose",
-    type: "toggle",
-    name: "Is Blacklist",
+    name: "Roleplay",
     defaultValue: true,
   },
   {
-    id: "roleplayLobbies",
-    category: "Purpose",
+    id: "russianLobbies",
+    category: "Groups",
     type: "toggle",
-    name: "Roleplay Lobbies",
-    defaultValue: false,
+    name: "Russian",
+    defaultValue: true,
   },
   {
-    id: "russianLobbies",
-    category: "Purpose",
+    id: "otherLobbies",
+    category: "Groups",
     type: "toggle",
-    name: "Russian Lobbies",
-    defaultValue: false,
+    name: "Other",
+    defaultValue: true,
   },
   // Player Count
   {
