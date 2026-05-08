@@ -232,9 +232,13 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.setAttribute("filteredout", hidden);
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
-  icon.classList.add("fa-brands");
-  if (lobby.lobbyPlatform == "Steam") icon.classList.add("fa-steam");
-  else icon.classList.add("fa-meta");
+  if (lobby.lobbyPlatform == "Steam") {
+    icon.classList.add("fa-brands");
+    icon.classList.add("fa-steam");
+  } else {
+    icon.classList.add("fa-custom");
+    icon.classList.add("fa-epicgames");
+  }
   const thumb = await setThumbnail(
     lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
     lobby.levelModID,
@@ -1145,6 +1149,8 @@ async function init() {
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("closeMoreInfo", () => hideShow(true));
 
+  //window.addEventListener("resize", windowResized, true);
+
   const connectBtn = document.querySelector(
     "#moreDetails > .header-outer > .header > .infoControls > .connect",
   );
@@ -1164,6 +1170,17 @@ async function init() {
   fullyLoaded = true;
 
   fetchAndCreateLobbies();
+}
+
+function windowResized() {
+  const lobbies = document.getElementById("lobbies");
+  lobbies.childNodes.forEach((x) => {
+    const lobbyName = x.getElementsByClassName("lobbyName")[0];
+    const gamemode = x.getElementsByClassName("gamemode")[0];
+    if (lobbyName.getBoundingClientRect().height <= 20)
+      gamemode.classList.add("oneLine");
+    else gamemode.classList.remove("oneLine");
+  });
 }
 
 /*
