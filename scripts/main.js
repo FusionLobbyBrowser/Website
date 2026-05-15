@@ -14,14 +14,19 @@ const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode="[barcode]"`;
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
 
-const HTTP_JOIN = "http://localhost:25712/join?code=[code]&layer=SteamVR";
-const URI_JOIN = "bonelab-flb://SteamVR-[code]/";
+const HTTP_JOIN = "http://localhost:25712/join?code=[code]&layer=[layer]";
+const URI_JOIN = "bonelab-flb://[layer]-[code]/";
 
 const LOBBY_PARAM = "lobby";
 
 const limit = [
   ["Steam", 50],
   ["Epic", 200],
+];
+
+const layers = [
+  ["Steam", "SteamVR"],
+  ["Epic", "Epic Online Services"],
 ];
 
 let allLobbies;
@@ -303,7 +308,7 @@ async function createLobby(lobby, signal, hidden) {
   connectBtn.onclick = async () => {
     setButton(connectBtn, false);
     try {
-      await requestJoin(lobby.lobbyCode);
+      await requestJoin(lobby.lobbyCode, lobby.lobbyPlatform);
     } finally {
       setButton(connectBtn, true);
     }
@@ -323,13 +328,15 @@ async function createLobby(lobby, signal, hidden) {
 
   lobbies.appendChild(lobbyElem);
 
-  if (lobbyName.getBoundingClientRect().height <= 20)
-    gamemode.classList.add("oneLine");
-
   const ellipsisElems = [lobbyName, gamemode, levelTitle, hostName];
   ellipsisElems.forEach((val) => {
     if (isEllipsisActive(val)) createToolTip(val, val.innerHTML);
   });
+
+  console.log(lobbyName.getBoundingClientRect().height);
+  // TODO: fix this sometimes applying when lobby name has two lines
+  if (lobbyName.getBoundingClientRect().height <= 20)
+    gamemode.classList.add("oneLine");
 
   const time = (Date.now() - date) / 1000;
   console.log(
@@ -444,7 +451,7 @@ async function moreInfo(lobby, thumbnail, signal) {
     connectBtn.onclick = async () => {
       setButton(connectBtn, false);
       try {
-        await requestJoin(lobby.lobbyCode);
+        await requestJoin(lobby.lobbyCode, lobby.lobbyPlatform);
       } finally {
         setButton(connectBtn, true);
       }
@@ -919,13 +926,36 @@ async function getJSON() {
   }
 }
 
-async function requestJoin(code) {
+async function requestJoin(code, platform) {
+  const mapped = new Map(layers);
+  const layer = mapped.get(platform);
+  if (!layer) {
+    console.error("An unmapped layer found, cannot join");
+    return;
+  }
+
   try {
-    const response = await fetch(HTTP_JOIN.replace("[code]", code));
-    if (!response.ok) window.location.replace(URI_JOIN.replace("[code]", code));
+    const response = await fetch(
+      HTTP_JOIN.replace("[code]", code).replace(
+        "[layer]",
+        layer.replace(" ", "*"),
+      ),
+    );
+    if (!response.ok)
+      window.location.replace(
+        URI_JOIN.replace("[code]", code).replace(
+          "[layer]",
+          layer.replace(" ", "*"),
+        ),
+      );
   } catch (ex) {
     console.error(ex);
-    window.location.replace(URI_JOIN.replace("[code]", code));
+    window.location.replace(
+      URI_JOIN.replace("[code]", code).replace(
+        "[layer]",
+        layer.replace(" ", "*"),
+      ),
+    );
   }
 }
 
@@ -935,7 +965,7 @@ const timeRanges = {
   weeks: { min: 3600 * 24 * 7, symbol: "w" },
   days: { min: 3600 * 24, symbol: "d" },
   hours: { min: 3600, symbol: "h" },
-  minutes: { min: 60, symbol: "min" },
+  minutes: { min: 60, symbol: " min" },
   seconds: { min: 1, symbol: "s" },
 };
 
@@ -997,11 +1027,23 @@ function filterByGroup(lobbies) {
     };
     if (i && i.lobbyName && i.lobbyName != "") {
       let any = false;
-      if (isGroup(i, ["hood", "rp", "war", "roleplay"])) {
+      if (
+        isGroup(i, ["hood", "shooting", "shooter", "rp", "war", "roleplay"])
+      ) {
         any = true;
         info.roleplay = true;
       }
-      if (isGroup(i, ["russian", "rus", "russ", "russi", "russkie", "ru"])) {
+      if (
+        isGroup(i, [
+          "russian",
+          "russia",
+          "rus",
+          "russ",
+          "russi",
+          "russkie",
+          "ru",
+        ])
+      ) {
         any = true;
         info.russian = true;
       }
