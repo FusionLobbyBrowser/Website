@@ -1,9 +1,6 @@
 name: Deploy Site
 
 on:
-  push:
-    branches: ["ui-redesign"]
-
   workflow_dispatch:
 
 permissions:
