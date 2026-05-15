@@ -31,7 +31,7 @@ const layers = [
 
 let allLobbies;
 
-let moreInfoView = -1;
+let infoView = -1;
 
 let refreshInterval = 10;
 
@@ -41,14 +41,14 @@ let lastRefresh = Date.now();
 let fullyLoaded = false;
 
 let lobbiesSignal;
-let moreInfoSignal;
+let infoSignal;
 
 let profanities = [];
 let thumbnailCache = new Map();
 
 const cacheExpireTime = 15 * 60;
 
-let showingMoreInfo = false;
+let showingInfo = false;
 
 const permissions = [
   [-1, "guest"],
@@ -142,7 +142,7 @@ async function fetchAndCreateLobbies() {
 }
 
 async function createLobbies(signal) {
-  let moreInfoUpdated = false;
+  let infoUpdated = false;
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
   const lobbyList = structuredClone(allLobbies);
@@ -180,9 +180,9 @@ async function createLobbies(signal) {
   for (const lobby of lobbyList) {
     if (signal?.aborted == true) return;
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
-      moreInfoUpdated = true;
+      infoUpdated = true;
   }
-  if (moreInfoUpdated == false) hideShow(true);
+  if (infoUpdated == false) hideShow(true);
 }
 
 async function refreshButton(date) {
@@ -227,7 +227,7 @@ async function createLobby(lobby, signal, hidden) {
     return false;
   }
   console.log(` > Creating lobby %c${lobby.lobbyID}`, "color: #0f0");
-  let moreInfoUpdated = false;
+  let infoUpdated = false;
   const lobbies = document.getElementById("lobbies");
 
   const copy = document.getElementById("lobbyToCopy");
@@ -252,9 +252,9 @@ async function createLobby(lobby, signal, hidden) {
     false,
   );
 
-  if (moreInfoView != -1 && moreInfoView == lobby.lobbyID) {
-    moreInfoUpdated = true;
-    if (signal?.aborted != true) moreInfo(lobby, thumb, signal);
+  if (infoView != -1 && infoView == lobby.lobbyID) {
+    infoUpdated = true;
+    if (signal?.aborted != true) displayInfo(lobby, thumb, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
@@ -294,16 +294,9 @@ async function createLobby(lobby, signal, hidden) {
     connectBtn.classList.remove("blocked");
     connectBtn.disabled = false;
   }
-  tippy(connectBtn, {
-    content:
-      'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
-    allowHTML: true,
-    appendTo: "parent",
-    interactive: true,
-    animation: "scale",
-  });
+  joinInfo(connectBtn);
 
-  const moreInfoBtn = lobbyElem.getElementsByClassName("moreInfo")[0];
+  const infoBtn = lobbyElem.getElementsByClassName("infoButton")[0];
 
   connectBtn.onclick = async () => {
     setButton(connectBtn, false);
@@ -314,17 +307,17 @@ async function createLobby(lobby, signal, hidden) {
     }
   };
 
-  moreInfoBtn.onclick = async () => {
-    moreInfoView = lobby.lobbyID;
+  infoBtn.onclick = async () => {
+    infoView = lobby.lobbyID;
 
-    setAllLobbiesMoreInfo(false);
+    setAllLobbiesinfo(false);
     try {
-      await moreInfo(lobby, thumb, signal);
+      await displayInfo(lobby, thumb, signal);
     } finally {
-      setAllLobbiesMoreInfo(true);
+      setAllLobbiesinfo(true);
     }
   };
-  if (showingMoreInfo) setButton(moreInfoBtn, false);
+  if (showingInfo) setButton(infoBtn, false);
 
   lobbies.appendChild(lobbyElem);
 
@@ -344,7 +337,7 @@ async function createLobby(lobby, signal, hidden) {
     "color: #0f0",
     "color: #0ff",
   );
-  return moreInfoUpdated;
+  return infoUpdated;
 }
 
 function isEllipsisActive(e) {
@@ -383,10 +376,10 @@ function setButton(btn, enabled) {
   else btn.classList.add("inProgress");
 }
 
-function setAllLobbiesMoreInfo(enabled) {
+function setAllLobbiesinfo(enabled) {
   const lobbies = document.getElementById("lobbies");
   for (const lobby of lobbies.children)
-    setButton(lobby.getElementsByClassName("moreInfo")[0], enabled);
+    setButton(lobby.getElementsByClassName("info")[0], enabled);
 }
 
 const permsList = [
@@ -398,9 +391,9 @@ const permsList = [
   ["devTools", "Dev Tools"],
 ];
 
-async function moreInfo(lobby, thumbnail, signal) {
-  if (moreInfoSignal) moreInfoSignal.abort();
-  showingMoreInfo = true;
+async function displayInfo(lobby, thumbnail, signal) {
+  if (infoSignal) infoSignal.abort();
+  showingInfo = true;
   try {
     const start = Date.now();
     console.log(
@@ -409,14 +402,14 @@ async function moreInfo(lobby, thumbnail, signal) {
     );
 
     var controller = new AbortController();
-    moreInfoSignal = controller;
-    moreInfoView = lobby.lobbyID;
+    infoSignal = controller;
+    infoView = lobby.lobbyID;
 
     hideShow(false);
 
-    const lobbyInfo = document.getElementById("moreDetails");
+    const lobbyInfo = document.getElementById("info");
     const header = lobbyInfo.getElementsByClassName("header")[0];
-    header.getElementsByClassName("lobbyTitle")[0].innerHTML = convert(
+    document.getElementById("info-title").innerHTML = convert(
       lobby.lobbyName != ""
         ? lobby.lobbyName
         : `${lobby.lobbyHostName}'s Lobby`,
@@ -447,7 +440,7 @@ async function moreInfo(lobby, thumbnail, signal) {
         : "Sandbox",
     );
 
-    const connectBtn = header.getElementsByClassName("connect")[0];
+    const connectBtn = document.getElementById("info-connect");
     connectBtn.onclick = async () => {
       setButton(connectBtn, false);
       try {
@@ -463,7 +456,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       connectBtn.classList.remove("blocked");
       connectBtn.disabled = false;
     }
-    const content = lobbyInfo.getElementsByClassName("content")[0];
+    const content = document.getElementById("info-content");
     const right = content.getElementsByClassName("right-content")[0];
     const left = content.getElementsByClassName("left-content")[0];
     const thumb = left.getElementsByClassName("thumbnail")[0];
@@ -536,7 +529,7 @@ async function moreInfo(lobby, thumbnail, signal) {
       plrCount.classList.add("fullLobby");
     else plrCount.classList.add("availableLobby");
 
-    const playersList = lobbyInfo.getElementsByClassName("players")[0];
+    const playersList = document.getElementById("info-players");
     playersList.replaceChildren();
     const players = lobby.playerList.players;
     players.sort((first, second) => {
@@ -645,8 +638,8 @@ async function moreInfo(lobby, thumbnail, signal) {
       "color: #0ff",
     );
   } finally {
-    showingMoreInfo = false;
-    setAllLobbiesMoreInfo(true);
+    showingInfo = false;
+    setAllLobbiesinfo(true);
   }
 }
 
@@ -720,11 +713,11 @@ function setContent(elem, content) {
 
 function hideShow(hide, removeView = true) {
   const elements = [
-    "#moreDetails",
-    "#moreDetails-outer",
-    ".content",
+    "#info",
+    "#info-outer",
+    "#info-content",
     ".playersTitle",
-    ".players",
+    "#info-players",
   ];
   elements.forEach((match) => {
     const elem = document.querySelector(match);
@@ -735,21 +728,21 @@ function hideShow(hide, removeView = true) {
   });
 
   const header = document.getElementsByTagName("header")[0];
-  if (!hide) header.classList.add("header-moreInfoOpened");
-  else header.classList.remove("header-moreInfoOpened");
+  if (!hide) header.classList.add("header-infoOpened");
+  else header.classList.remove("header-infoOpened");
 
-  const lobbyInfo = document.getElementById("moreDetails");
+  const lobbyInfo = document.getElementById("info");
   if (hide) {
     lobbyInfo.removeAttribute("lobbyId");
-    if (removeView) moreInfoView = -1;
+    if (removeView) infoView = -1;
   }
   setURLParams();
 }
 
 function setURLParams() {
   const url = new URL(window.location.href);
-  if (moreInfoView != -1) {
-    url.searchParams.set(LOBBY_PARAM, moreInfoView);
+  if (infoView != -1) {
+    url.searchParams.set(LOBBY_PARAM, infoView);
   } else url.searchParams.delete(LOBBY_PARAM);
   if (url.searchParams.size <= 0)
     url.searchParams.forEach((_, key) => url.searchParams.delete(key));
@@ -1167,7 +1160,7 @@ async function init() {
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
     const num = Number(params.get(LOBBY_PARAM));
-    if (num) moreInfoView = num;
+    if (num) infoView = num;
   }
 
   collapsableMenus();
@@ -1189,21 +1182,9 @@ async function init() {
   filterEvent("censorProfanities", true);
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
-  clickEvent("closeMoreInfo", () => hideShow(true));
+  clickEvent("info-close", () => hideShow(true));
+  joinInfo(document.getElementById("info-connect"));
 
-  //window.addEventListener("resize", windowResized, true);
-
-  const connectBtn = document.querySelector(
-    "#moreDetails > .header-outer > .header > .infoControls > .connect",
-  );
-  tippy(connectBtn, {
-    content:
-      'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
-    allowHTML: true,
-    appendTo: "parent",
-    interactive: true,
-    animation: "scale",
-  });
   updateTime();
 
   loadProfanities();
@@ -1214,43 +1195,16 @@ async function init() {
   fetchAndCreateLobbies();
 }
 
-function windowResized() {
-  const lobbies = document.getElementById("lobbies");
-  lobbies.childNodes.forEach((x) => {
-    const lobbyName = x.getElementsByClassName("lobbyName")[0];
-    const gamemode = x.getElementsByClassName("gamemode")[0];
-    if (lobbyName.getBoundingClientRect().height <= 20)
-      gamemode.classList.add("oneLine");
-    else gamemode.classList.remove("oneLine");
+function joinInfo(btn) {
+  tippy(btn, {
+    content:
+      'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
+    allowHTML: true,
+    appendTo: "parent",
+    interactive: true,
+    animation: "scale",
   });
 }
-
-/*
-function showNSFWConfirmation(e) {
-  if (document.getElementById("showNSFW").checked) {
-    e.preventDefault();
-    Swal.fire({
-      title: "Are you sure?",
-      toast: true,
-      text: "This will display text & images on levels and avatars intended to be shown only to people over the age of 18 if any are present.",
-      icon: "warning",
-      theme: "dark",
-      showCancelButton: true,
-    }).then(async (x) => {
-      if (x.isConfirmed) {
-        document.getElementById("showNSFW").checked = true;
-        console.log("[Filters] Creating lobbies");
-        if (fullyLoaded && !refreshing) {
-          if (lobbiesSignal) lobbiesSignal.abort();
-          const controller = new AbortController();
-          lobbiesSignal = controller;
-          await createLobbies(controller?.signal);
-        }
-      }
-    });
-  }
-}
-*/
 
 function clickEvent(id, callback) {
   document.getElementById(id).addEventListener("click", callback);
@@ -1263,11 +1217,11 @@ async function updateTime() {
     timeAgoElem(refresh);
     timeAgoElem(uptime);
 
-    const moreInfo = document.getElementById("moreDetails");
-    if (moreInfo.hasAttribute("uptime")) {
+    const info = document.getElementById("info");
+    if (info.hasAttribute("uptime")) {
       setContent(
-        moreInfo.getElementsByClassName("uptime")[0],
-        timePassed(Number(moreInfo.getAttribute("uptime"))),
+        info.getElementsByClassName("uptime")[0],
+        timePassed(Number(info.getAttribute("uptime"))),
       );
     }
 

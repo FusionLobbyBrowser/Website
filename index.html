@@ -102,7 +102,7 @@
         Infection</span></p>
     <p class="lobbyPlayerCount">(0/10)</p>
     <button class="connect inline"><i class="fa-solid fa-link textIcon"></i>Join</button>
-    <button class="moreInfo inline"><i class="fa-solid fa-info textIcon"></i>Info</button>
+    <button class="infoButton inline"><i class="fa-solid fa-info textIcon"></i>Info</button>
   </div>
   <div class="player" id="playerToCopy">
     <img class="avatarThumbnail" src="images/default/Jay.webp" loading="lazy" alt="Template thumbnail">
@@ -127,11 +127,11 @@
     <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
         class="elemContent">Refresh</span></button>
   </header>
-  <div id="moreDetails-outer" class="hidden">
-    <div id="moreDetails" class="hidden">
+  <div id="info-outer" class="hidden">
+    <div id="info" class="hidden">
       <div class="header-outer">
-        <div class="header">
-          <h2 class="lobbyTitle">HAHOOS's Lobby!</h2>
+        <div id="info-header" class="header">
+          <h2 id="info-title">HAHOOS's Lobby!</h2>
           <div class="inline badges">
             <p class="infoBadge uptime"><i class="fa-solid fa-clock textIcon"></i><span class="elemContent">1h</span>
             </p>
@@ -143,12 +143,12 @@
                 class="elemContent">Sandbox</span></p>
           </div>
           <div class="inline infoControls">
-            <button class="connect"><i class="fa-solid fa-link textIcon"></i>Join!</button>
-            <button id="closeMoreInfo"><i class="fa-solid fa-xmark textIcon"></i>Close</button>
+            <button id="info-connect" class="connect"><i class="fa-solid fa-link textIcon"></i>Join!</button>
+            <button id="info-close"><i class="fa-solid fa-xmark textIcon"></i>Close</button>
           </div>
         </div>
       </div>
-      <div class="content hidden">
+      <div id="info-content" class="content hidden">
         <div class="left-content side">
           <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
         </div>
@@ -162,26 +162,20 @@
             nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
             vel class
             aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-          <div class="collapsable">
+          <div id="info-permissions" class="collapsable">
             <button class="textButton permissionsCollapsable" data-toggle="collapse">
               <p class="detail permissionsTitle"><i class="fa-solid fa-gavel textIcon"></i>Permissions</p>
             </button>
             <div>
-              <div class="inline permissionsLevels">
-
-              </div>
-              <div class="inline permissionsList">
-
-              </div>
+              <div class="inline permissionsLevels"></div>
+              <div class="inline permissionsList"></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="plrTitle">
-        <h2 class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players <span
-            class="plrCount">(11/15)</span></h2>
-      </div>
-      <div class="players hidden">
+      <h2 class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players <span
+          class="plrCount">(11/15)</span></h2>
+      <div id="info-players" class="hidden">
       </div>
     </div>
   </div>
@@ -195,6 +189,7 @@
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
   <div id="mainContent" role="main">
+    <!-- TODO: Make settings a pop up on mobile -->
     <div id="settings">
       <h1 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h1>
     </div>
