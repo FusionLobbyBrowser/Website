@@ -310,11 +310,11 @@ async function createLobby(lobby, signal, hidden) {
   infoBtn.onclick = async () => {
     infoView = lobby.lobbyID;
 
-    setAllLobbiesinfo(false);
+    enableInfoButton(false);
     try {
       await displayInfo(lobby, thumb, signal);
     } finally {
-      setAllLobbiesinfo(true);
+      enableInfoButton(true);
     }
   };
   if (showingInfo) setButton(infoBtn, false);
@@ -376,10 +376,11 @@ function setButton(btn, enabled) {
   else btn.classList.add("inProgress");
 }
 
-function setAllLobbiesinfo(enabled) {
+function enableInfoButton(enabled) {
   const lobbies = document.getElementById("lobbies");
-  for (const lobby of lobbies.children)
-    setButton(lobby.getElementsByClassName("info")[0], enabled);
+  for (const lobby of lobbies.children) {
+    setButton(lobby.getElementsByClassName("infoButton")[0], enabled);
+  }
 }
 
 const permsList = [
@@ -639,7 +640,7 @@ async function displayInfo(lobby, thumbnail, signal) {
     );
   } finally {
     showingInfo = false;
-    setAllLobbiesinfo(true);
+    enableInfoButton(true);
   }
 }
 
