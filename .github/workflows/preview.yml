@@ -2,7 +2,7 @@ name: Deploy Site
 
 on:
   push:
-    branches: ["ui-rework"]
+    branches: ["ui-redesign"]
 
   workflow_dispatch:
 
