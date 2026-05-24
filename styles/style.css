@@ -226,14 +226,6 @@ a > .textIcon {
   gap: 1em;
 }
 
-.navigationItem {
-  color: white;
-}
-
-.navigationItem:hover {
-  color: rgb(200, 200, 200);
-}
-
 .support {
   color: #f72f35;
 }
