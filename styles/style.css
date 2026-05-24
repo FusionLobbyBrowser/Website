@@ -929,5 +929,10 @@ button:hover {
 }
 
 .fi {
-  border-radius: 25%;
+  border-radius: 50%;
+}
+
+.fis {
+  padding-left: 2px;
+  padding-right: 2px;
 }
