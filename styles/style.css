@@ -215,6 +215,33 @@ ul {
   margin-right: 0.15em;
 }
 
+a > .textIcon {
+  margin-right: 0em;
+}
+
+#navigationBar {
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.navigationItem {
+  color: white;
+}
+
+.navigationItem:hover {
+  color: rgb(200, 200, 200);
+}
+
+.support {
+  color: #f72f35;
+}
+
+.support:hover {
+  color: #d4151c;
+}
+
 .lobbyHostName {
   margin-top: 0.5em;
   margin-bottom: 0.65em;
