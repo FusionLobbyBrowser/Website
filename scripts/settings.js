@@ -1,36 +1,44 @@
+import { Converter } from "./unityRichText.js";
+
 // Is this overkill? probably
 
 // To get value changed event, listen for event "onsettingchanged" on window
 
-const categories = [
+let categories = [
   {
     name: "General",
     icon: "fa-solid fa-house",
+    expanded: true,
   },
   {
     name: "Groups",
     icon: "fa-solid fa-book",
+    expanded: true,
   },
   {
     name: "Platforms",
     icon: "fa-solid fa-computer",
+    expanded: true,
   },
   {
     name: "Players",
     icon: "fa-solid fa-users",
+    expanded: true,
   },
   {
     name: "Filtering",
     icon: "fa-solid fa-shield-halved",
+    expanded: true,
   },
 ];
-const settings = [
+let settings = [
   // General
   {
     id: "autoRefresh",
     category: "General",
     type: "toggle",
     name: "Auto Refresh",
+    icon: "fa-solid fa-arrows-rotate fa-spin",
     defaultValue: false,
   },
   {
@@ -38,6 +46,7 @@ const settings = [
     category: "General",
     type: "select",
     values: ["Ascending", "Descending"],
+    icon: "fa-solid fa-arrow-down-short-wide",
     name: "Sort Order",
     defaultValue: "Descending",
   },
@@ -47,6 +56,12 @@ const settings = [
     category: "Groups",
     type: "toggle",
     name: "Roleplay",
+    icon: "fa-solid fa-briefcase",
+
+    lobbyFilter: true,
+    filterValue: false,
+    filterWords: ["hood", "shooting", "shooter", "rp", "war", "roleplay"],
+
     defaultValue: true,
   },
   {
@@ -54,6 +69,33 @@ const settings = [
     category: "Groups",
     type: "toggle",
     name: "Russian",
+    icon: "fi fis fi-ru",
+
+    lobbyFilter: true,
+    filterValue: false,
+    filterWords: ["russian", "russia", "rus", "russ", "russi", "russkie", "ru"],
+
+    defaultValue: true,
+  },
+  {
+    id: "horrorLobbies",
+    category: "Groups",
+    type: "toggle",
+    name: "Horror",
+    icon: "fa-solid fa-ghost",
+
+    lobbyFilter: true,
+    filterValue: false,
+    filterWords: [
+      "horror",
+      "monster",
+      "survive",
+      "killer",
+      "hide and seek",
+      "hide & seek",
+      "hide n seek",
+    ],
+
     defaultValue: true,
   },
   {
@@ -61,6 +103,20 @@ const settings = [
     category: "Groups",
     type: "toggle",
     name: "Other",
+    icon: "fa-solid fa-plus",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      for (const x of settings) {
+        if (x.category != "Groups") continue;
+
+        if (!x.filterWords) continue;
+        if (isGroup(lobby, x.filterWords)) return false;
+      }
+      return true;
+    },
+
     defaultValue: true,
   },
   // Platforms
@@ -69,6 +125,14 @@ const settings = [
     category: "Platforms",
     type: "toggle",
     name: "Steam",
+    icon: "fa-brands fa-steam",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return lobby.lobbyPlatform == "Steam";
+    },
+
     defaultValue: true,
   },
   {
@@ -76,6 +140,14 @@ const settings = [
     category: "Platforms",
     type: "toggle",
     name: "Epic Games",
+    icon: "fa-custom fa-epicgames",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return lobby.lobbyPlatform == "Epic";
+    },
+
     defaultValue: true,
   },
   // Player Count
@@ -89,17 +161,33 @@ const settings = [
     defaultValue: [1, 100],
   },
   {
-    id: "hideFullLobbies",
+    id: "fullLobbies",
     category: "Players",
     type: "toggle",
-    name: "Hide Full Lobbies",
+    icon: "fa-solid fa-users-viewfinder",
+    name: "Full Lobbies",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return lobby.playerCount == lobby.maxPlayers;
+    },
+
     defaultValue: true,
   },
   {
-    id: "hideEmptyLobbies",
+    id: "emptyLobbies",
     category: "Players",
     type: "toggle",
-    name: "Hide Empty Lobbies",
+    icon: "fa-solid fa-users-slash",
+    name: "Empty Lobbies",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return lobby.playerCount <= 1;
+    },
+
     defaultValue: true,
   },
   // Filtering
@@ -108,6 +196,7 @@ const settings = [
     category: "Filtering",
     type: "toggle",
     name: "Censor NSFW",
+    icon: "fa-solid fa-lock",
     defaultValue: true,
   },
   {
@@ -115,10 +204,11 @@ const settings = [
     category: "Filtering",
     type: "toggle",
     name: "Censor Profanities",
+    icon: "fa-solid fa-hand-middle-finger",
     defaultValue: true,
   },
 ];
-const types = [
+let types = [
   {
     type: "toggle",
     callback: (setting, value) => {
@@ -139,12 +229,17 @@ const types = [
       });
       const label = document.createElement("label");
       label.setAttribute("for", getElemId(setting.id));
-      label.textContent = setting.name;
+      fillLabel(setting, label);
 
       wrapper.appendChild(input);
       wrapper.appendChild(label);
       return wrapper;
     },
+    overrideCached: (value) => {
+      if (value == "true" || value == true) return true;
+      else return false;
+    },
+    setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
   },
   {
     type: "select",
@@ -152,7 +247,7 @@ const types = [
       const wrapper = document.createElement("div");
       const label = document.createElement("label");
       label.setAttribute("for", getElemId(setting.id));
-      label.textContent = setting.name;
+      fillLabel(setting, label);
       const select = document.createElement("select");
       select.setAttribute("name", getElemId(setting.id));
       select.setAttribute("id", getElemId(setting.id));
@@ -173,10 +268,11 @@ const types = [
         );
       });
 
-      wrapper.appendChild(label);
       wrapper.appendChild(select);
+      wrapper.appendChild(label);
       return wrapper;
     },
+    setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
   },
 ];
 
@@ -192,12 +288,53 @@ function isString(val) {
   return typeof val === "string" || val instanceof String;
 }
 
+function fillLabel(setting, elem) {
+  if (setting.icon) {
+    const icon = document.createElement("i");
+    icon.setAttribute("class", `textIcon ${setting.icon}`);
+    const content = document.createElement("span");
+    content.classList.add("elemContent");
+    content.textContent = setting.name;
+    elem.appendChild(icon);
+    elem.appendChild(content);
+  } else {
+    elem.textContent = setting.name;
+  }
+}
+
+function isGroup(lobby, array) {
+  if (!lobby || !lobby.lobbyName || lobby.lobbyName == "") return false;
+
+  const iName = Converter.removeRichText(lobby.lobbyName);
+  const words = removeSymbols(iName).split(" ");
+  for (const s of array) {
+    if (!s) return;
+
+    if (!s.includes(" ")) {
+      for (const w of words) {
+        if (w.toLowerCase() == removeSymbols(s).toLowerCase()) return true;
+      }
+    } else {
+      if (removeSymbols(iName).toLowerCase().trim().includes(s.toLowerCase()))
+        return true;
+    }
+  }
+
+  return false;
+}
+
+function removeSymbols(text) {
+  return text.replace(/[^a-zA-Z0-9]/gm, " ");
+}
+
 function createCategory(category) {
   const wrapper = document.createElement("div");
   wrapper.classList.add("collapsable");
+  wrapper.classList.add("settingsCategory");
   wrapper.setAttribute("id", getCategoryId(category));
   const button = document.createElement("button");
   button.classList.add("textButton");
+  if (category.expanded) button.classList.add("collapsed");
   button.setAttribute("data-toggle", "collapse");
   const title = document.createElement("h2");
   title.innerHTML = getCategoryText(category);
@@ -210,6 +347,19 @@ function createCategory(category) {
   return wrapper;
 }
 
+function setContent(elem, content) {
+  const contents = elem.getElementsByClassName("elemContent");
+  if (contents && contents.length > 0) {
+    const span = contents[0];
+    if (span) {
+      span.textContent = content;
+      return;
+    }
+  }
+
+  elem.textContent = content;
+}
+
 export function init() {
   const settingsList = document.getElementById("settings");
 
@@ -218,11 +368,19 @@ export function init() {
     settingsList.appendChild(cat);
   });
 
-  settings.forEach((val) => {
+  for (const val of settings) {
+    const type = types.find((t) => t.type == val.type);
+    if (type == null) {
+      console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
+      continue;
+    }
+
     const saved = localStorage.getItem(getElemId(val.id));
     let _val;
-    if (saved != null && saved != undefined) _val = saved;
-    else _val = val.defaultValue;
+    if (saved != null && saved != undefined) {
+      if (!type.overrideCached) _val = saved;
+      else _val = type.overrideCached(saved);
+    } else _val = val.defaultValue;
     setSetting(val.id, _val);
 
     const category = settingsList
@@ -232,20 +390,16 @@ export function init() {
       ?.getElementsByTagName("div")[0];
     if (category == null) {
       console.warn(`Setting '${val.id}' has unknown category: ${val.category}`);
-      return;
-    }
-
-    const type = types.find((t) => t.type == val.type);
-    if (type == null) {
-      console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
-      return;
+      continue;
     }
 
     const wrapper = type.callback(val, _val);
     if (wrapper == null) {
       console.warn(`Empty wrapper for setting '${val.id}'`);
-      return;
+      continue;
     }
+
+    val.elem = wrapper;
 
     wrapper.addEventListener("onsettingchanged", (v) => {
       setSetting(val.id, v.detail.new);
@@ -260,7 +414,7 @@ export function init() {
     });
 
     category.appendChild(wrapper);
-  });
+  }
 }
 
 export function setSetting(setting, value) {
@@ -270,10 +424,52 @@ export function setSetting(setting, value) {
   else settingsValues.push({ id: setting, value: value });
 }
 
-export function getSetting(setting) {
+export function getSettingValue(setting) {
   let index = settingsValues.findIndex((x) => x.id == setting);
   if (index != -1) return settingsValues[index].value;
   else return undefined;
+}
+
+export function getSetting(setting) {
+  let index = settings.findIndex((x) => x.id == setting);
+  if (index != -1) return settings[index];
+  else return undefined;
+}
+
+export function setSettingsTitle(setting, title) {
+  let index = settings.findIndex((x) => x.id == setting);
+  if (index != -1) {
+    const val = settings[index];
+    const type = types.find((t) => t.type == val.type);
+    if (type && type.setTitle) type.setTitle(val.elem, title);
+  }
+}
+
+export function filterWithSettings(lobbies) {
+  const constValue = structuredClone(lobbies);
+  for (const setting of settings) {
+    if (!setting || !setting.lobbyFilter) continue;
+
+    let count = 0;
+
+    if (!setting.filterWords && !setting.lobbyValidator) continue;
+
+    constValue.forEach((element) => {
+      if (settingValidator(setting, element)) count++;
+    });
+
+    if (setting.filterValue == getSettingValue(setting.id))
+      lobbies = lobbies.filter((i) => !settingValidator(setting, i));
+
+    setSettingsTitle(setting.id, `${setting.name} [${count}]`);
+  }
+  return lobbies;
+}
+
+function settingValidator(setting, i) {
+  if (setting.filterWords) return isGroup(i, setting.filterWords);
+  else if (setting.lobbyValidator) return setting.lobbyValidator(i);
+  else return null;
 }
 
 export function addEventListener(id, callback) {

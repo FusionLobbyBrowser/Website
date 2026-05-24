@@ -250,7 +250,6 @@ ul {
 .checkbox-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
   margin-bottom: 0.1em;
   margin-top: 0.25em;
 }
@@ -448,7 +447,6 @@ label {
   top: 0;
   background-color: rgb(20, 20, 20);
   border-radius: 20px;
-  text-align: center;
   min-height: 50em;
   max-height: 100vh;
 
@@ -459,6 +457,11 @@ label {
   margin-top: 0.5em;
   margin-bottom: 0.25em;
   font-family: "Ubuntu", sans-serif;
+  padding-left: 0.3em;
+}
+
+.settingsCategory {
+  padding-left: 0.3em;
 }
 
 .lobby {
@@ -468,7 +471,6 @@ label {
   text-align: center;
   padding-bottom: 0.35em;
   border-radius: 15px;
-  min-height: 20.173em;
   min-width: 13em;
   max-width: 30em;
   text-overflow: ellipsis;
@@ -897,4 +899,8 @@ button:hover {
 
 .permissionsCollapsable {
   padding-bottom: 0;
+}
+
+.fi {
+  border-radius: 25%;
 }

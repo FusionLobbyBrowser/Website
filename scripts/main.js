@@ -3,8 +3,9 @@ import Barcodes from "./defaultBarcodes.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
-  getSetting,
+  getSettingValue,
   addEventListener,
+  filterWithSettings,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
@@ -72,7 +73,7 @@ async function fetchAndCreateLobbies() {
     try {
       refreshBtn.classList.remove("blocked");
       refreshBtn.classList.add("inProgress");
-      setContent(refreshBtn, "Refresh");
+      refreshBtn.getElementsByClassName("textIcon")[0].classList.add("fa-spin");
       refreshBtn.blocked = true;
 
       const lobbies = document.getElementById("lobbies");
@@ -118,9 +119,13 @@ async function fetchAndCreateLobbies() {
         }
       }
     } finally {
+      refreshing = false;
       setContent(refreshBtn, "Refresh");
       refreshBtn.classList.remove("inProgress");
       refreshBtn.blocked = false;
+      refreshBtn
+        .getElementsByClassName("textIcon")[0]
+        .classList.remove("fa-spin");
       if (refresh.hasAttribute("date"))
         await refreshButton(new Date(Number(refresh.getAttribute("date"))));
     }
@@ -143,6 +148,7 @@ async function fetchAndCreateLobbies() {
 
 async function createLobbies(signal) {
   let infoUpdated = false;
+  const refreshBtn = document.getElementById("refreshButton");
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
   const lobbyList = structuredClone(allLobbies);
@@ -154,7 +160,7 @@ async function createLobbies(signal) {
     (first, second) =>
       parseInt(second.playerCount) - parseInt(first.playerCount),
   );
-  if (getSetting("sortOrder") != "Descending") lobbyList.reverse();
+  if (getSettingValue("sortOrder") != "Descending") lobbyList.reverse();
 
   let players = 0;
   lobbyList.forEach((val) => {
@@ -177,8 +183,10 @@ async function createLobbies(signal) {
     "lobbies",
   );
 
-  for (const lobby of lobbyList) {
+  for (let i = 0; i < lobbyList.length; i++) {
     if (signal?.aborted == true) return;
+    const lobby = lobbyList[i];
+    setContent(refreshBtn, `Loading (${i + 1} of ${lobbyList.length})`);
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }
@@ -186,6 +194,8 @@ async function createLobbies(signal) {
 }
 
 async function refreshButton(date) {
+  if (refreshing) return;
+
   const seconds = Math.round((Date.now() - date) / 1000);
   const button = document.getElementById("refreshButton");
   if (seconds >= refreshInterval) {
@@ -298,14 +308,7 @@ async function createLobby(lobby, signal, hidden) {
 
   const infoBtn = lobbyElem.getElementsByClassName("infoButton")[0];
 
-  connectBtn.onclick = async () => {
-    setButton(connectBtn, false);
-    try {
-      await requestJoin(lobby.lobbyCode, lobby.lobbyPlatform);
-    } finally {
-      setButton(connectBtn, true);
-    }
-  };
+  connectBtn.onclick = async () => await onConnect(connectBtn, lobby);
 
   infoBtn.onclick = async () => {
     infoView = lobby.lobbyID;
@@ -326,10 +329,12 @@ async function createLobby(lobby, signal, hidden) {
     if (isEllipsisActive(val)) createToolTip(val, val.innerHTML);
   });
 
-  console.log(lobbyName.getBoundingClientRect().height);
+  const textHeight = Number(
+    window.getComputedStyle(lobbyName).height.replace("px", ""),
+  );
+  console.log(textHeight);
   // TODO: fix this sometimes applying when lobby name has two lines
-  if (lobbyName.getBoundingClientRect().height <= 20)
-    gamemode.classList.add("oneLine");
+  if (textHeight <= 20) gamemode.classList.add("oneLine");
 
   const time = (Date.now() - date) / 1000;
   console.log(
@@ -442,14 +447,7 @@ async function displayInfo(lobby, thumbnail, signal) {
     );
 
     const connectBtn = document.getElementById("info-connect");
-    connectBtn.onclick = async () => {
-      setButton(connectBtn, false);
-      try {
-        await requestJoin(lobby.lobbyCode, lobby.lobbyPlatform);
-      } finally {
-        setButton(connectBtn, true);
-      }
-    };
+    connectBtn.onclick = async () => await onConnect(connectBtn, lobby);
     if (lobby.playerCount >= lobby.maxPlayers) {
       connectBtn.classList.add("blocked");
       connectBtn.disabled = true;
@@ -871,6 +869,17 @@ function setLobbyCount(count, max) {
   }
 }
 
+async function onConnect(elem, lobby) {
+  setButton(elem, false);
+  elem.getElementsByClassName("textIcon")[0].classList.add("fa-bounce");
+  try {
+    await requestJoin(lobby.lobbyCode, lobby.lobbyPlatform);
+  } finally {
+    setButton(elem, true);
+    elem.getElementsByClassName("textIcon")[0].classList.remove("fa-bounce");
+  }
+}
+
 function setPlayerCount(players, lobbies) {
   const format =
     "[service] has a limit of [limit] lobbies, due to the high number of lobbies some may not appear. This is a limit implemented by Steam themselves and nothing can be done about it!";
@@ -990,90 +999,13 @@ function timePassed(input) {
   return "0s";
 }
 
-function filterLobbies(lobbies) {
-  if (isToggleChecked("hideFullLobbies"))
-    lobbies = lobbies.filter((i) => i.playerCount != i.maxPlayers);
-
-  if (isToggleChecked("hideEmptyLobbies"))
-    lobbies = lobbies.filter((i) => i.playerCount > 1);
-
-  if (!isToggleChecked("steamPlatform"))
-    lobbies = lobbies.filter((i) => i.lobbyPlatform != "Steam");
-
-  if (!isToggleChecked("epicPlatform"))
-    lobbies = lobbies.filter((i) => i.lobbyPlatform != "Epic");
-
-  lobbies = filterByGroup(lobbies);
-
-  return lobbies;
-}
-
 function isToggleChecked(id) {
-  return getSetting(id) == true || getSetting(id) == "true";
-}
-
-function filterByGroup(lobbies) {
-  lobbies = lobbies.filter((i) => {
-    let info = {
-      russian: false,
-      roleplay: false,
-      other: true,
-    };
-    if (i && i.lobbyName && i.lobbyName != "") {
-      let any = false;
-      if (
-        isGroup(i, ["hood", "shooting", "shooter", "rp", "war", "roleplay"])
-      ) {
-        any = true;
-        info.roleplay = true;
-      }
-      if (
-        isGroup(i, [
-          "russian",
-          "russia",
-          "rus",
-          "russ",
-          "russi",
-          "russkie",
-          "ru",
-        ])
-      ) {
-        any = true;
-        info.russian = true;
-      }
-      if (any) info.other = false;
-    }
-    if (!isToggleChecked("russianLobbies") && info.russian) return false;
-    else if (!isToggleChecked("roleplayLobbies") && info.roleplay) return false;
-    else if (!isToggleChecked("otherLobbies") && info.other) return false;
-    else return true;
-  });
-
-  return lobbies;
-}
-
-function isGroup(lobby, array) {
-  if (!lobby || !lobby.lobbyName || lobby.lobbyName == "") return false;
-
-  const iName = Converter.removeRichText(lobby.lobbyName);
-  const words = iName.split(" ");
-  for (const s of array) {
-    for (const w of words) {
-      if (removeSymbols(w).toLowerCase() == removeSymbols(s).toLowerCase())
-        return true;
-    }
-  }
-
-  return false;
-}
-
-function removeSymbols(text) {
-  return text.replace(/[^a-zA-Z0-9]/gm, "");
+  return getSettingValue(id) == true || getSettingValue(id) == "true";
 }
 
 function getAllowedIDs(lobbies) {
   let list = [];
-  var filtered = filterLobbies(structuredClone(lobbies));
+  var filtered = filterWithSettings(structuredClone(lobbies));
   filtered.forEach((x) => list.push(x.lobbyID));
   return list;
 }
@@ -1157,7 +1089,6 @@ async function init() {
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   settingsInit();
-
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
     const num = Number(params.get(LOBBY_PARAM));
@@ -1167,10 +1098,11 @@ async function init() {
   collapsableMenus();
 
   // Do not require lobby list to be created again
-  filterEvent("hideFullLobbies", false);
-  filterEvent("hideEmptyLobbies", false);
+  filterEvent("fullLobbies", false);
+  filterEvent("emptyLobbies", false);
 
   filterEvent("otherLobbies", false);
+  filterEvent("horrorLobbies", false);
   filterEvent("russianLobbies", false);
   filterEvent("roleplayLobbies", false);
 
