@@ -15,8 +15,8 @@ const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode="[barcode]"`;
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
 
-const HTTP_JOIN = "http://localhost:25712/join?code=[code]&layer=[layer]";
-const URI_JOIN = "bonelab-flb://[layer]-[code]/";
+const URI_JOIN = "flb-bridge://join/[data]";
+const JOIN_DATA = "[layer] || [code]";
 
 const LOBBY_PARAM = "lobby";
 
@@ -244,7 +244,7 @@ async function createLobby(lobby, signal, hidden) {
   let lobbyElem = copy.cloneNode(true);
   lobbyElem.removeAttribute("id");
 
-  lobbyElem.setAttribute("filteredout", hidden);
+  lobbyElem.setAttribute("filteredout", false);
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
   if (lobby.lobbyPlatform == "Steam") {
@@ -329,12 +329,13 @@ async function createLobby(lobby, signal, hidden) {
     if (isEllipsisActive(val)) createToolTip(val, val.innerHTML);
   });
 
-  const textHeight = Number(
-    window.getComputedStyle(lobbyName).height.replace("px", ""),
-  );
-  console.log(textHeight);
+  const textWidth = Number(lobbyName.getBoundingClientRect().width);
+  console.log(textWidth);
   // TODO: fix this sometimes applying when lobby name has two lines
-  if (textHeight <= 20) gamemode.classList.add("oneLine");
+  if (getTextWidth(lobbyName.textContent, getCanvasFont(lobbyName)) < textWidth)
+    gamemode.classList.add("oneLine");
+
+  lobbyElem.setAttribute("filteredout", hidden);
 
   const time = (Date.now() - date) / 1000;
   console.log(
@@ -343,6 +344,29 @@ async function createLobby(lobby, signal, hidden) {
     "color: #0ff",
   );
   return infoUpdated;
+}
+
+function getTextWidth(text, font) {
+  // re-use canvas object for better performance
+  const canvas =
+    getTextWidth.canvas ||
+    (getTextWidth.canvas = document.createElement("canvas"));
+  const context = canvas.getContext("2d");
+  context.font = font;
+  const metrics = context.measureText(text);
+  return metrics.width;
+}
+
+function getCssStyle(element, prop) {
+  return window.getComputedStyle(element, null).getPropertyValue(prop);
+}
+
+function getCanvasFont(el = document.body) {
+  const fontWeight = getCssStyle(el, "font-weight") || "normal";
+  const fontSize = getCssStyle(el, "font-size") || "16px";
+  const fontFamily = getCssStyle(el, "font-family") || "Times New Roman";
+
+  return `${fontWeight} ${fontSize} ${fontFamily}`;
 }
 
 function isEllipsisActive(e) {
@@ -938,27 +962,17 @@ async function requestJoin(code, platform) {
   }
 
   try {
-    const response = await fetch(
-      HTTP_JOIN.replace("[code]", code).replace(
-        "[layer]",
-        layer.replace(" ", "*"),
-      ),
+    let encoded = btoa(
+      JOIN_DATA.replace("[code]", code).replace("[layer]", layer),
     );
-    if (!response.ok)
-      window.location.replace(
-        URI_JOIN.replace("[code]", code).replace(
-          "[layer]",
-          layer.replace(" ", "*"),
-        ),
-      );
+
+    encoded = encoded
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/\=+$/, "");
+    window.location.replace(URI_JOIN.replace("[data]", encoded));
   } catch (ex) {
     console.error(ex);
-    window.location.replace(
-      URI_JOIN.replace("[code]", code).replace(
-        "[layer]",
-        layer.replace(" ", "*"),
-      ),
-    );
   }
 }
 
