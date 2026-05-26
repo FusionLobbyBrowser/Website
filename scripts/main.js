@@ -179,10 +179,13 @@ function filterBadges() {
     }
   }
   if (!any) {
+    list.classList.add("noFilters");
     const title = document.createElement("h4");
     title.id = "noFiltersText";
     title.textContent = "No filters applied!";
     list.appendChild(title);
+  } else {
+    list.classList.remove("noFilters");
   }
 }
 
