@@ -161,7 +161,7 @@ export let settings = [
       return lobby.lobbyPlatform == "Epic";
     },
 
-    defaultValue: true,
+    defaultValue: false,
   },
   // Player Count
   {
@@ -186,7 +186,7 @@ export let settings = [
       return lobby.playerCount == lobby.maxPlayers;
     },
 
-    defaultValue: true,
+    defaultValue: false,
   },
   {
     id: "emptyLobbies",
