@@ -186,6 +186,22 @@ function filterBadges() {
   }
 }
 
+function adjustLobbyHeight(lobby, height) {
+  const gamemode = lobby.getElementsByClassName("gamemodeTitle")[0];
+  const lineHeight = 1.25 * 16;
+
+  if (height <= lineHeight) gamemode.classList.add("oneLine");
+  else gamemode.classList.remove("oneLine");
+}
+
+const lobbyObserver = new ResizeObserver((entries) => {
+  for (const x of entries) {
+    if (x.contentRect) {
+      adjustLobbyHeight(x.target.parentElement, x.contentRect.height);
+    }
+  }
+});
+
 async function createLobbies(signal) {
   let infoUpdated = false;
   const refreshBtn = document.getElementById("refreshButton");
@@ -230,6 +246,7 @@ async function createLobbies(signal) {
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }
+
   if (infoUpdated == false) hideShow(true);
 }
 
@@ -284,7 +301,7 @@ async function createLobby(lobby, signal, hidden) {
   let lobbyElem = copy.cloneNode(true);
   lobbyElem.removeAttribute("id");
 
-  lobbyElem.setAttribute("filteredout", false);
+  lobbyElem.setAttribute("filteredout", hidden);
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
   if (lobby.lobbyPlatform == "Steam") {
@@ -308,6 +325,9 @@ async function createLobby(lobby, signal, hidden) {
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
+  lobbyObserver.observe(lobbyName, {
+    box: "device-pixel-content-box",
+  });
   lobbyName.innerHTML = convert(
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
   );
@@ -368,14 +388,6 @@ async function createLobby(lobby, signal, hidden) {
   ellipsisElems.forEach((val) => {
     if (isEllipsisActive(val)) createToolTip(val, val.innerHTML);
   });
-
-  const textWidth = Number(lobbyName.getBoundingClientRect().width);
-  console.log(textWidth);
-  // TODO: fix this sometimes applying when lobby name has two lines
-  if (getTextWidth(lobbyName.textContent, getCanvasFont(lobbyName)) < textWidth)
-    gamemode.classList.add("oneLine");
-
-  lobbyElem.setAttribute("filteredout", hidden);
 
   const time = (Date.now() - date) / 1000;
   console.log(
