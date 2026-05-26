@@ -6,6 +6,7 @@ import {
   getSettingValue,
   addEventListener,
   filterWithSettings,
+  settings,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
@@ -108,6 +109,8 @@ async function fetchAndCreateLobbies() {
           timeFromResponse(refresh, json.date);
           timeFromResponse(uptime, res.uptime);
 
+          filterBadges();
+
           if (json.lobbies != null) {
             let lobbies = json.lobbies;
 
@@ -143,6 +146,43 @@ async function fetchAndCreateLobbies() {
     refreshing = false;
     const time = (Date.now() - start) / 1000;
     console.log(`Creating lobbies took %c${time.toFixed(4)}s`, "color: #FF0");
+  }
+}
+
+function filterBadges() {
+  const list = document.getElementById("appliedFilters");
+  list.replaceChildren();
+  let any = false;
+  for (const x of settings) {
+    const val = getSettingValue(x.id);
+    if (val == null || val == undefined || !x.lobbyFilter) continue;
+    console.log(x.id);
+    if (x.filterValue == val) {
+      any = true;
+      const badge = document.createElement("p");
+      badge.classList.add("infoBadge");
+      const content = document.createElement("span");
+      content.classList.add("elemContent");
+      if (!x.icon) {
+        content.textContent = x.name;
+      } else {
+        const settingIcon = document.createElement("i");
+        settingIcon.setAttribute("class", `textIcon ${x.icon}`);
+        const settingContent = document.createElement("span");
+        settingContent.classList.add("elemContent");
+        settingContent.textContent = x.name;
+        content.appendChild(settingIcon);
+        content.appendChild(settingContent);
+      }
+      badge.appendChild(content);
+      list.appendChild(badge);
+    }
+  }
+  if (!any) {
+    const title = document.createElement("h4");
+    title.id = "noFiltersText";
+    title.textContent = "No filters applied!";
+    list.appendChild(title);
   }
 }
 
@@ -908,16 +948,6 @@ function setPlayerCount(players, lobbies) {
   const format =
     "[service] has a limit of [limit] lobbies, due to the high number of lobbies some may not appear. This is a limit implemented by Steam themselves and nothing can be done about it!";
 
-  if (players == -1 || lobbies == -1) {
-    document.getElementsByClassName("lobbyInfo")[0].classList.add("hidden");
-    return;
-  }
-  document.getElementsByClassName("lobbyInfo")[0].classList.remove("hidden");
-  document.getElementsByClassName("playerCount")[0].textContent =
-    `${players} players`;
-  document.getElementsByClassName("lobbyCount")[0].textContent =
-    `${lobbies} lobbies`;
-
   /*
   const highLobby = document.getElementById("lobbyLimit");
   const limitNum = new Map(limit).get(service);
@@ -1070,6 +1100,7 @@ function filterEvent(id, redo = false) {
   if (!id) return;
 
   addEventListener(id, async (val) => {
+    filterBadges();
     if (redo) {
       console.log("[Filters] Creating lobbies");
       if (fullyLoaded && !refreshing) {
@@ -1116,6 +1147,7 @@ async function init() {
   filterEvent("emptyLobbies", false);
 
   filterEvent("otherLobbies", false);
+  filterEvent("hoodLobbies", false);
   filterEvent("horrorLobbies", false);
   filterEvent("russianLobbies", false);
   filterEvent("roleplayLobbies", false);

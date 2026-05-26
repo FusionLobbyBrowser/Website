@@ -31,7 +31,7 @@ let categories = [
     expanded: true,
   },
 ];
-let settings = [
+export let settings = [
   // General
   {
     id: "autoRefresh",
@@ -61,6 +61,19 @@ let settings = [
     lobbyFilter: true,
     filterValue: false,
     filterWords: ["hood", "shooting", "shooter", "rp", "war", "roleplay"],
+
+    defaultValue: true,
+  },
+  {
+    id: "hoodLobbies",
+    category: "Groups",
+    type: "toggle",
+    name: "Hood RP",
+    icon: "fa-solid fa-person-rifle",
+
+    lobbyFilter: true,
+    filterValue: false,
+    filterWords: ["hood", "hoodrp"],
 
     defaultValue: true,
   },

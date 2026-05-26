@@ -16,16 +16,23 @@ header {
   padding-bottom: 0.5em;
 }
 
-h1 {
-  font-size: 2rem;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Outfit", serif;
   font-weight: 400;
+}
+
+h1 {
+  font-size: 2rem;
   margin-bottom: 0.135em;
 }
 
 h2 {
   font-size: 1.25rem;
-  font-family: "Outfit", serif;
   font-weight: 400;
 }
 
@@ -207,12 +214,35 @@ ul {
   margin-bottom: 0;
 }
 
+#appliedFilters {
+  gap: 0.5em;
+  margin-top: 0.75em;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+#appliedFilters > .infoBadge {
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  background-color: rgba(220, 20, 60, 0.5);
+}
+
+#noFiltersText {
+  margin: 0;
+  color: gray;
+}
+
 .oneLine {
   padding-bottom: 1.25rem;
 }
 
 .textIcon {
   margin-right: 0.15em;
+}
+
+.filterIcon {
+  margin-right: 0.35em;
+  color: red;
 }
 
 a > .textIcon {
@@ -619,10 +649,6 @@ label {
   background-color: rgba(0, 56, 61, 0.7);
   padding: 6px 6px 6px 6px;
   transition: 0.5s;
-}
-
-.infoBadge {
-  background-color: rgba(0, 36, 40, 0.7);
 }
 
 .badges {
