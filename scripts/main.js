@@ -7,6 +7,9 @@ import {
   addEventListener,
   filterWithSettings,
   settings,
+  addCategory,
+  addSetting,
+  getSetting,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/";
@@ -57,6 +60,42 @@ const permissions = [
   [0, "default"],
   [1, "operator"],
   [2, "owner"],
+];
+
+const gamemodes = [
+  {
+    barcode: "",
+    icon: "/images/gamemodes/Sandbox.png",
+  },
+  {
+    barcode: "Lakatrazz.Deathmatch",
+    icon: "/images/gamemodes/Deathmatch.svg",
+  },
+  {
+    barcode: "Lakatrazz.Team Deathmatch",
+    icon: "/images/gamemodes/TeamDeathmatch.svg",
+  },
+  {
+    barcode: "Lakatrazz.Smash Bones",
+    icon: "/images/gamemodes/SmashBones.svg",
+  },
+  {
+    barcode: "Lakatrazz.Juggernaut",
+    icon: "/images/gamemodes/Juggernaut.png",
+  },
+  {
+    barcode: "Lakatrazz.Hide And Seek",
+    icon: "/images/gamemodes/HideAndSeek.png",
+  },
+  {
+    barcode: "Lakatrazz.Entangled",
+    icon: "/images/gamemodes/Entangled.png",
+  },
+  {
+    barcode: "HAHOOS.Avatar Infection",
+    icon: "/images/gamemodes/AvatarInfection.png",
+    link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
+  },
 ];
 
 async function fetchAndCreateLobbies() {
@@ -231,9 +270,37 @@ async function createLobbies(signal) {
   if (getSettingValue("sortOrder") != "Descending") lobbyList.reverse();
 
   let players = 0;
+  addCategory({
+    name: "Gamemode",
+    icon: "fa-solid fa-puzzle-piece",
+    expanded: true,
+  });
+  const _gamemodes = [];
   lobbyList.forEach((val) => {
     if (!val) return;
 
+    const gamemode = val.gamemodeBarcode;
+    const g = gamemodes.find((x) => x.barcode == val.gamemodeBarcode);
+    if (!_gamemodes.includes(gamemode)) {
+      addSetting({
+        id: `gamemode_${gamemode}`,
+        category: "Gamemode",
+        type: "toggle",
+        name: val.gamemodeTitle
+          ? Converter.removeRichText(val.gamemodeTitle)
+          : "Sandbox",
+        icon: g.icon ? `img:${g.icon}` : "fas fa-puzzle-piece",
+
+        lobbyFilter: true,
+        filterValue: false,
+        lobbyValidator: (lobby) => {
+          return lobby.gamemodeBarcode == gamemode;
+        },
+
+        defaultValue: true,
+      });
+      _gamemodes.push(gamemode);
+    }
     players += Number(val.playerCount);
   });
 
@@ -357,6 +424,20 @@ async function createLobby(lobby, signal, hidden) {
   censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, thumb.nsfw);
 
   const gamemode = lobbyElem.getElementsByClassName("gamemodeTitle")[0];
+  const g = gamemodes.find((x) => x.barcode == lobby.gamemodeBarcode);
+  const gIcon = gamemode.getElementsByClassName("textIcon")[0];
+  if (g) {
+    gIcon.classList.add("hidden");
+    const img = document.createElement("img");
+    img.classList.add("gamemodeIcon");
+    img.src = g.icon;
+    gamemode.insertBefore(img, gamemode.firstChild);
+  } else {
+    gIcon.setAttribute("class", "fas fa-puzzle-piece textIcon");
+    gamemode.childNodes.forEach((x) => {
+      if (x.nodeName == "IMG") x.remove();
+    });
+  }
   setContent(
     gamemode,
     lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
@@ -1111,6 +1192,19 @@ function filterEvent(id, redo = false) {
   });
 }
 
+function settingsEvent() {
+  window.addEventListener("onsettingchanged", async (ev) => {
+    if (ev.detail && ev.detail.id) {
+      const setting = getSetting(ev.detail.id);
+      if (!setting) return;
+      if (setting.lobbyFilter) {
+        filterBadges();
+        await updateFilters();
+      }
+    }
+  });
+}
+
 function collapsableMenus() {
   const menus = document.querySelectorAll('[data-toggle="collapse"]');
   for (const menu of menus) {
@@ -1140,9 +1234,7 @@ async function init() {
 
   // Do not require lobby list to be created again
 
-  settings.forEach((x) => {
-    if (x && x.lobbyFilter) filterEvent(x.id, false);
-  });
+  settingsEvent();
 
   // Require the lobby list to be created again
   filterEvent("censorNSFW", true);

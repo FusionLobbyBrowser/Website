@@ -214,6 +214,26 @@ ul {
   margin-bottom: 0;
 }
 
+.gamemodeTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.02em;
+}
+
+.textIcon.hidden {
+  width: 0;
+  height: 0;
+}
+
+.gamemodeIcon {
+  filter: brightness(0) invert(1);
+
+  margin: 0;
+  padding: 0;
+  height: 1rem;
+}
+
 #appliedFilters {
   gap: 0.5em;
   text-align: center;

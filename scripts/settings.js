@@ -60,7 +60,15 @@ export let settings = [
 
     lobbyFilter: true,
     filterValue: false,
-    filterWords: ["hood", "shooting", "shooter", "rp", "war", "roleplay"],
+    filterWords: [
+      "hood",
+      "hoodrp",
+      "shooting",
+      "shooter",
+      "rp",
+      "war",
+      "roleplay",
+    ],
 
     defaultValue: true,
   },
@@ -303,12 +311,20 @@ function isString(val) {
 
 function fillLabel(setting, elem) {
   if (setting.icon) {
-    const icon = document.createElement("i");
-    icon.setAttribute("class", `textIcon ${setting.icon}`);
+    if (setting.icon.startsWith("img:")) {
+      const img = document.createElement("img");
+      img.classList.add("gamemodeIcon");
+      img.src = setting.icon.replace("img:", "");
+      elem.appendChild(img);
+    } else {
+      const icon = document.createElement("i");
+      icon.setAttribute("class", `textIcon ${setting.icon}`);
+      elem.appendChild(icon);
+    }
+
     const content = document.createElement("span");
     content.classList.add("elemContent");
     content.textContent = setting.name;
-    elem.appendChild(icon);
     elem.appendChild(content);
   } else {
     elem.textContent = setting.name;
@@ -374,7 +390,8 @@ function setContent(elem, content) {
 }
 
 export function init() {
-  const settingsList = document.getElementById("settings");
+  const settingsList = document.getElementById("settingsList");
+  settingsList.replaceChildren();
 
   categories.forEach((val) => {
     const cat = createCategory(val);
@@ -456,6 +473,30 @@ export function setSettingsTitle(setting, title) {
     const type = types.find((t) => t.type == val.type);
     if (type && type.setTitle) type.setTitle(val.elem, title);
   }
+}
+
+export function addCategory(category) {
+  if (!category || categories.find((x) => x.name == category.name)) return;
+  categories.push(category);
+  init();
+}
+
+export function removeCategory(categoryName) {
+  if (!categoryName || !categories.find((x) => x.name == categoryName)) return;
+  categories = categories.filter((x) => x.name != categoryName);
+  init();
+}
+
+export function addSetting(setting) {
+  if (!setting || settings.find((x) => x.id == setting.id)) return;
+  settings.push(setting);
+  init();
+}
+
+export function removeSetting(settingId) {
+  if (!settingId || !settings.find((x) => x.id == settingId)) return;
+  settings = settings.filter((x) => x.id != settingId);
+  init();
 }
 
 export function filterWithSettings(lobbies) {
