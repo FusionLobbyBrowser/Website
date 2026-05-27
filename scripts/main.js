@@ -156,7 +156,6 @@ function filterBadges() {
   for (const x of settings) {
     const val = getSettingValue(x.id);
     if (val == null || val == undefined || !x.lobbyFilter) continue;
-    console.log(x.id);
     if (x.filterValue == val) {
       any = true;
       const badge = document.createElement("p");
@@ -189,18 +188,28 @@ function filterBadges() {
   }
 }
 
-function adjustLobbyHeight(lobby, height) {
+function adjustLobby(lobby, height) {
+  const lobbyName = lobby.getElementsByClassName("lobbyName")[0];
+  const levelTitle = lobby.getElementsByClassName("levelTitle")[0];
+  const hostName = lobby.getElementsByClassName("lobbyHostName")[0];
   const gamemode = lobby.getElementsByClassName("gamemodeTitle")[0];
   const lineHeight = 1.25 * 16;
 
   if (height <= lineHeight) gamemode.classList.add("oneLine");
   else gamemode.classList.remove("oneLine");
+
+  const ellipsisElems = [lobbyName, gamemode, levelTitle, hostName];
+  ellipsisElems.forEach((val) => {
+    if (isEllipsisActive(val)) {
+      createToolTip(val, val.innerHTML);
+    } else if (val._tippy) val._tippy.destroy();
+  });
 }
 
 const lobbyObserver = new ResizeObserver((entries) => {
   for (const x of entries) {
     if (x.contentRect) {
-      adjustLobbyHeight(x.target.parentElement, x.contentRect.height);
+      adjustLobby(x.target.parentElement, x.contentRect.height);
     }
   }
 });
@@ -387,11 +396,6 @@ async function createLobby(lobby, signal, hidden) {
 
   lobbies.appendChild(lobbyElem);
 
-  const ellipsisElems = [lobbyName, gamemode, levelTitle, hostName];
-  ellipsisElems.forEach((val) => {
-    if (isEllipsisActive(val)) createToolTip(val, val.innerHTML);
-  });
-
   const time = (Date.now() - date) / 1000;
   console.log(
     ` > Created lobby %c${lobby.lobbyID}%c (${time.toFixed(4)}s)`,
@@ -401,31 +405,8 @@ async function createLobby(lobby, signal, hidden) {
   return infoUpdated;
 }
 
-function getTextWidth(text, font) {
-  // re-use canvas object for better performance
-  const canvas =
-    getTextWidth.canvas ||
-    (getTextWidth.canvas = document.createElement("canvas"));
-  const context = canvas.getContext("2d");
-  context.font = font;
-  const metrics = context.measureText(text);
-  return metrics.width;
-}
-
-function getCssStyle(element, prop) {
-  return window.getComputedStyle(element, null).getPropertyValue(prop);
-}
-
-function getCanvasFont(el = document.body) {
-  const fontWeight = getCssStyle(el, "font-weight") || "normal";
-  const fontSize = getCssStyle(el, "font-size") || "16px";
-  const fontFamily = getCssStyle(el, "font-family") || "Times New Roman";
-
-  return `${fontWeight} ${fontSize} ${fontFamily}`;
-}
-
 function isEllipsisActive(e) {
-  return e.offsetWidth < e.scrollWidth;
+  return e.clientHeight < e.scrollHeight;
 }
 
 function createToolTip(e, content) {
@@ -1158,17 +1139,10 @@ async function init() {
   collapsableMenus();
 
   // Do not require lobby list to be created again
-  filterEvent("fullLobbies", false);
-  filterEvent("emptyLobbies", false);
 
-  filterEvent("otherLobbies", false);
-  filterEvent("hoodLobbies", false);
-  filterEvent("horrorLobbies", false);
-  filterEvent("russianLobbies", false);
-  filterEvent("roleplayLobbies", false);
-
-  filterEvent("steamPlatform", false);
-  filterEvent("epicPlatform", false);
+  settings.forEach((x) => {
+    if (x && x.lobbyFilter) filterEvent(x.id, false);
+  });
 
   // Require the lobby list to be created again
   filterEvent("censorNSFW", true);
