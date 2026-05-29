@@ -562,6 +562,27 @@ label {
   transition: 0.75s;
 }
 
+.tippy-box[data-theme~="website"] {
+  background-color: rgb(30, 30, 30);
+}
+
+.tippy-box[data-theme~="website"][data-placement^="top"]
+  > .tippy-arrow::before {
+  border-top-color: rgb(30, 30, 30);
+}
+.tippy-box[data-theme~="website"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: rgb(30, 30, 30);
+}
+.tippy-box[data-theme~="website"][data-placement^="left"]
+  > .tippy-arrow::before {
+  border-left-color: rgb(30, 30, 30);
+}
+.tippy-box[data-theme~="website"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: rgb(30, 30, 30);
+}
+
 @keyframes fadein {
   from {
     opacity: 0;

@@ -60,33 +60,34 @@ function createServerElem(obj, code) {
   );
   serverNameElem.textContent = obj.guild.name;
   if (obj.guild.description && obj.guild.description != "") {
-    tippy(serverNameElem, {
-      content: `${obj.guild.name} • ${obj.guild.description}`,
-      placement: "bottom",
-      appendTo: "parent",
-      animation: "scale",
-    });
+    createTooltip(
+      serverNameElem,
+      `${obj.guild.name} • ${obj.guild.description}`,
+    );
   } else {
-    tippy(serverNameElem, {
-      content: `${obj.guild.name}`,
-      placement: "bottom",
-      appendTo: "parent",
-      animation: "scale",
-    });
+    createTooltip(serverNameElem, obj.guild.name);
   }
   const num = obj.profile.member_count ?? -1;
   memberCountElem.innerHTML = DOMPurify.sanitize(
     `<i class="fa-solid fa-users textIcon"></i>${formatNumber(num)}`,
   );
-  tippy(memberCountElem, {
-    content: `${obj.profile.member_count} members • ${obj.profile.online_count} online`,
-    placement: "bottom",
-    appendTo: "parent",
-    animation: "scale",
-  });
+  createTooltip(
+    memberCountElem,
+    `${obj.profile.member_count} members • ${obj.profile.online_count} online`,
+  );
   joinElem.setAttribute("href", `https://discord.gg/${code}`);
 
   return server;
+}
+
+function createTooltip(elem, content) {
+  tippy(elem, {
+    content: content,
+    placement: "bottom",
+    appendTo: "parent",
+    animation: "scale",
+    theme: "website",
+  });
 }
 
 export default async function elem(text) {

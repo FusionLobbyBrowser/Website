@@ -493,7 +493,9 @@ function createToolTip(e, content) {
     content: content,
     animation: "scale",
     appendTo: "parent",
+    interactive: true,
     allowHTML: true,
+    theme: "website",
   });
 }
 
@@ -722,16 +724,11 @@ async function displayInfo(lobby, thumbnail, signal) {
         nameElem.textContent = "";
         nameElem.appendChild(link);
       }
-      if (player.description && player.description != "") {
-        tippy(nameElem, {
-          content: convert(player.description),
-          animation: "scale",
-          appendTo: "parent",
-          allowHTML: true,
-        });
-      }
+      if (player.description && player.description != "")
+        createToolTip(nameElem, convert(player.description));
+
       const username = playerElem.getElementsByClassName("username")[0];
-      if (name.hasNickname) {
+      if (name.hasNickName) {
         username.classList.remove("hidden");
         username.innerHTML = convert(player.username);
       } else {
@@ -1263,14 +1260,10 @@ async function init() {
 }
 
 function joinInfo(btn) {
-  tippy(btn, {
-    content:
-      'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
-    allowHTML: true,
-    appendTo: "parent",
-    interactive: true,
-    animation: "scale",
-  });
+  createToolTip(
+    btn,
+    'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
+  );
 }
 
 function clickEvent(id, callback) {
