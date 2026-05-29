@@ -26,6 +26,11 @@ let categories = [
     expanded: true,
   },
   {
+    name: "Gamemodes",
+    icon: "fa-solid fa-puzzle-piece",
+    expanded: true,
+  },
+  {
     name: "Filtering",
     icon: "fa-solid fa-shield-halved",
     expanded: true,
@@ -247,6 +252,7 @@ let types = [
             detail: { old: old, new: input.checked },
           }),
         );
+        old = input.checked;
       });
       const label = document.createElement("label");
       label.setAttribute("for", getElemId(setting.id));
@@ -287,6 +293,7 @@ let types = [
             detail: { old: old, new: select.value },
           }),
         );
+        old = select.value;
       });
 
       wrapper.appendChild(select);
@@ -309,18 +316,22 @@ function isString(val) {
   return typeof val === "string" || val instanceof String;
 }
 
+export function getIconElem(icon) {
+  if (icon.startsWith("img:")) {
+    const img = document.createElement("span");
+    img.classList.add("gamemodeIcon");
+    img.style.backgroundImage = `url(${icon.substring(4, icon.length)})`;
+    return img;
+  } else {
+    const _icon = document.createElement("i");
+    _icon.setAttribute("class", `textIcon ${icon}`);
+    return _icon;
+  }
+}
+
 function fillLabel(setting, elem) {
   if (setting.icon) {
-    if (setting.icon.startsWith("img:")) {
-      const img = document.createElement("img");
-      img.classList.add("gamemodeIcon");
-      img.src = setting.icon.replace("img:", "");
-      elem.appendChild(img);
-    } else {
-      const icon = document.createElement("i");
-      icon.setAttribute("class", `textIcon ${setting.icon}`);
-      elem.appendChild(icon);
-    }
+    elem.appendChild(getIconElem(setting.icon));
 
     const content = document.createElement("span");
     content.classList.add("elemContent");
@@ -470,6 +481,7 @@ export function setSettingsTitle(setting, title) {
   let index = settings.findIndex((x) => x.id == setting);
   if (index != -1) {
     const val = settings[index];
+    settings[index].name = title;
     const type = types.find((t) => t.type == val.type);
     if (type && type.setTitle) type.setTitle(val.elem, title);
   }
@@ -515,7 +527,8 @@ export function filterWithSettings(lobbies) {
     if (setting.filterValue == getSettingValue(setting.id))
       lobbies = lobbies.filter((i) => !settingValidator(setting, i));
 
-    setSettingsTitle(setting.id, `${setting.name} [${count}]`);
+    if (!setting.baseName) setting.baseName = setting.name;
+    setSettingsTitle(setting.id, `${setting.baseName} [${count}]`);
   }
   return lobbies;
 }

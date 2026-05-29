@@ -7,7 +7,7 @@ import {
   addEventListener,
   filterWithSettings,
   settings,
-  addCategory,
+  getIconElem,
   addSetting,
   getSetting,
 } from "./settings.js";
@@ -65,35 +65,35 @@ const permissions = [
 const gamemodes = [
   {
     barcode: "",
-    icon: "/images/gamemodes/Sandbox.png",
+    icon: "img:/images/gamemodes/Sandbox.png",
   },
   {
     barcode: "Lakatrazz.Deathmatch",
-    icon: "/images/gamemodes/Deathmatch.svg",
+    icon: "img:/images/gamemodes/Deathmatch.svg",
   },
   {
     barcode: "Lakatrazz.Team Deathmatch",
-    icon: "/images/gamemodes/TeamDeathmatch.svg",
+    icon: "img:/images/gamemodes/TeamDeathmatch.svg",
   },
   {
     barcode: "Lakatrazz.Smash Bones",
-    icon: "/images/gamemodes/SmashBones.svg",
+    icon: "img:/images/gamemodes/SmashBones.svg",
   },
   {
     barcode: "Lakatrazz.Juggernaut",
-    icon: "/images/gamemodes/Juggernaut.png",
+    icon: "img:/images/gamemodes/Juggernaut.png",
   },
   {
     barcode: "Lakatrazz.Hide And Seek",
-    icon: "/images/gamemodes/HideAndSeek.png",
+    icon: "img:/images/gamemodes/HideAndSeek.png",
   },
   {
     barcode: "Lakatrazz.Entangled",
-    icon: "/images/gamemodes/Entangled.png",
+    icon: "img:/images/gamemodes/Entangled.png",
   },
   {
     barcode: "HAHOOS.Avatar Infection",
-    icon: "/images/gamemodes/AvatarInfection.png",
+    icon: "img:/images/gamemodes/AvatarInfection.png",
     link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
   },
 ];
@@ -148,13 +148,42 @@ async function fetchAndCreateLobbies() {
           timeFromResponse(refresh, json.date);
           timeFromResponse(uptime, res.uptime);
 
-          filterBadges();
-
           if (json.lobbies != null) {
             let lobbies = json.lobbies;
 
             allLobbies = structuredClone(lobbies);
+
+            let _gamemodes = [];
+            lobbies.forEach((val) => {
+              if (!val) return;
+
+              const gamemode = val.gamemodeBarcode;
+              const g = gamemodes.find((x) => x.barcode == val.gamemodeBarcode);
+              if (!_gamemodes.includes(gamemode)) {
+                addSetting({
+                  id: `gamemode_${gamemode}`,
+                  category: "Gamemodes",
+                  type: "toggle",
+                  name: val.gamemodeTitle
+                    ? Converter.removeRichText(val.gamemodeTitle)
+                    : "Sandbox",
+                  icon: g.icon ? g.icon : "fas fa-puzzle-piece",
+
+                  lobbyFilter: true,
+                  filterValue: false,
+                  lobbyValidator: (lobby) => {
+                    return lobby.gamemodeBarcode == gamemode;
+                  },
+
+                  defaultValue: true,
+                });
+                _gamemodes.push(gamemode);
+              }
+            });
+
+            filterBadges();
             await createLobbies(controller?.signal);
+            filterBadges();
           } else {
             hideShow(true);
           }
@@ -204,8 +233,7 @@ function filterBadges() {
       if (!x.icon) {
         content.textContent = x.name;
       } else {
-        const settingIcon = document.createElement("i");
-        settingIcon.setAttribute("class", `textIcon ${x.icon}`);
+        const settingIcon = getIconElem(x.icon);
         const settingContent = document.createElement("span");
         settingContent.classList.add("elemContent");
         settingContent.textContent = x.name;
@@ -270,37 +298,7 @@ async function createLobbies(signal) {
   if (getSettingValue("sortOrder") != "Descending") lobbyList.reverse();
 
   let players = 0;
-  addCategory({
-    name: "Gamemode",
-    icon: "fa-solid fa-puzzle-piece",
-    expanded: true,
-  });
-  const _gamemodes = [];
   lobbyList.forEach((val) => {
-    if (!val) return;
-
-    const gamemode = val.gamemodeBarcode;
-    const g = gamemodes.find((x) => x.barcode == val.gamemodeBarcode);
-    if (!_gamemodes.includes(gamemode)) {
-      addSetting({
-        id: `gamemode_${gamemode}`,
-        category: "Gamemode",
-        type: "toggle",
-        name: val.gamemodeTitle
-          ? Converter.removeRichText(val.gamemodeTitle)
-          : "Sandbox",
-        icon: g.icon ? `img:${g.icon}` : "fas fa-puzzle-piece",
-
-        lobbyFilter: true,
-        filterValue: false,
-        lobbyValidator: (lobby) => {
-          return lobby.gamemodeBarcode == gamemode;
-        },
-
-        defaultValue: true,
-      });
-      _gamemodes.push(gamemode);
-    }
     players += Number(val.playerCount);
   });
 
@@ -427,16 +425,11 @@ async function createLobby(lobby, signal, hidden) {
   const g = gamemodes.find((x) => x.barcode == lobby.gamemodeBarcode);
   const gIcon = gamemode.getElementsByClassName("textIcon")[0];
   if (g) {
-    gIcon.classList.add("hidden");
-    const img = document.createElement("img");
-    img.classList.add("gamemodeIcon");
-    img.src = g.icon;
-    gamemode.insertBefore(img, gamemode.firstChild);
+    const iconElem = getIconElem(g.icon);
+    gIcon.remove();
+    gamemode.insertBefore(iconElem, gamemode.firstChild);
   } else {
     gIcon.setAttribute("class", "fas fa-puzzle-piece textIcon");
-    gamemode.childNodes.forEach((x) => {
-      if (x.nodeName == "IMG") x.remove();
-    });
   }
   setContent(
     gamemode,
@@ -580,8 +573,18 @@ async function displayInfo(lobby, thumbnail, signal) {
       thumbnail.nsfw,
     );
 
+    const gamemode = header.getElementsByClassName("gamemode")[0];
+
+    const icon =
+      gamemode.getElementsByTagName("i") ??
+      gamemode.getElementsByTagName("span");
+    if (icon) icon.item(0).remove();
+    const g = gamemodes.find((x) => x.barcode == lobby.gamemodeBarcode);
+    const iconElem = getIconElem(g && g.icon ? g.icon : "fas fa-puzzle-piece");
+    gamemode.insertBefore(iconElem, gamemode.firstChild);
+
     setContent(
-      header.getElementsByClassName("gamemode")[0],
+      gamemode,
       lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
         ? convert(lobby.gamemodeTitle)
         : "Sandbox",
@@ -618,7 +621,7 @@ async function displayInfo(lobby, thumbnail, signal) {
     permissionLevels.replaceChildren();
     permissionList.replaceChildren();
     const perms = new Map(permissions);
-    perms.forEach((val, key, m) => {
+    perms.forEach((val) => {
       const item = document.createElement("p");
       item.classList.add(`permission-${val}`);
       item.classList.add("permissionLevel");
@@ -638,7 +641,7 @@ async function displayInfo(lobby, thumbnail, signal) {
           String(val).charAt(0).toUpperCase() + String(val).slice(1);
       }
       const item = document.createElement("p");
-      const level = perms.get(lobby[val]);
+      const level = perms.get(lobby[entryName]);
       item.classList.add(`permission-${level}`);
       item.classList.add("permissionItem");
       item.textContent = displayName;
@@ -1002,9 +1005,8 @@ function modRedirect(id, name) {
 function setLobbyCount(count, max) {
   const elem = document.getElementsByClassName("lobbyHeader")[0];
   if (count == -1) {
-    elem.classList.add("hidden");
+    elem.textContent("Lobbies (None)");
   } else {
-    elem.classList.remove("hidden");
     if (count == max) elem.textContent = `Lobbies (${count})`;
     else elem.textContent = `Lobbies (${count}/${max})`;
   }
