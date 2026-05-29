@@ -459,7 +459,8 @@ export function init() {
 }
 
 export function setSetting(setting, value) {
-  localStorage.setItem(getElemId(setting), value);
+  if (setting.saveToStorage != false)
+    localStorage.setItem(getElemId(setting), value);
   let index = settingsValues.findIndex((x) => x.id == setting);
   if (index != -1) settingsValues[index].value = value;
   else settingsValues.push({ id: setting, value: value });

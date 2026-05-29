@@ -96,6 +96,11 @@ const gamemodes = [
     icon: "img:/images/gamemodes/AvatarInfection.png",
     link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
   },
+  {
+    barcode: "Mash.Bone Strike",
+    icon: "img:/images/gamemodes/BoneStrike.png",
+    link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
+  },
 ];
 
 async function fetchAndCreateLobbies() {
