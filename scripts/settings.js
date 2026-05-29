@@ -318,7 +318,7 @@ function isString(val) {
 
 export function getIconElem(icon) {
   if (icon.startsWith("img:")) {
-    const img = document.createElement("span");
+    const img = document.createElement("i");
     img.classList.add("gamemodeIcon");
     img.style.backgroundImage = `url(${icon.substring(4, icon.length)})`;
     return img;

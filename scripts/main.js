@@ -582,10 +582,8 @@ async function displayInfo(lobby, thumbnail, signal) {
 
     const gamemode = header.getElementsByClassName("gamemode")[0];
 
-    const icon =
-      gamemode.getElementsByTagName("i") ??
-      gamemode.getElementsByTagName("span");
-    if (icon) icon.item(0).remove();
+    const icon = gamemode.getElementsByTagName("i");
+    if (icon && icon.length > 0) icon.item(0).remove();
     const g = gamemodes.find((x) => x.barcode == lobby.gamemodeBarcode);
     const iconElem = getIconElem(g && g.icon ? g.icon : "fas fa-puzzle-piece");
     gamemode.insertBefore(iconElem, gamemode.firstChild);
