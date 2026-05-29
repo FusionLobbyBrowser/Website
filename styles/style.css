@@ -68,6 +68,14 @@ span {
   background-color: #606060;
 }
 
+.profile {
+  width: 85%;
+  margin-bottom: 1em;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 a {
   text-decoration: none;
   color: #5eb3ff;
@@ -664,14 +672,14 @@ label {
 }
 
 #info-players {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1em;
-  gap: 1.5em;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  box-sizing: border-box;
+  flex-grow: 1;
+  margin-top: 0.25em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  grid-auto-rows: min-content;
+  gap: 1em;
+  padding: 0 2em 2em 2em;
 }
 
 #lobbyLimit {
@@ -786,7 +794,7 @@ label {
 
 .player {
   background-color: rgb(10, 10, 10);
-  box-shadow: 10px 5px 5px rgb(5, 5, 5);
+  box-shadow: 10px 5px 5px rgb(0, 0, 0);
   width: 9em;
   text-align: center;
   border-radius: 15px;
@@ -803,13 +811,38 @@ label {
   box-shadow: 10px 10px 10px rgb(10, 10, 10);
 }
 
-.avatarTitle,
 .name,
 .username,
 .permissions {
-  width: 95%;
+  width: 90%;
+  text-align: center;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatarTitle {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-height: 1rem;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.oneLineAvatar {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .name {

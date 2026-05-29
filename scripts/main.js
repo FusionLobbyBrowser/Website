@@ -278,11 +278,34 @@ function adjustLobby(lobby, height) {
   });
 }
 
+function adjustPlayer(player, height) {
+  const name = player.getElementsByClassName("name")[0];
+  const permissions = player.getElementsByClassName("permissions")[0];
+  const avatarTitle = player.getElementsByClassName("avatarTitle")[0];
+  const lineHeight = 1 * 16;
+
+  if (height <= lineHeight) avatarTitle.classList.add("oneLineAvatar");
+  else avatarTitle.classList.remove("oneLineAvatar");
+
+  const ellipsisElems = [name, permissions, avatarTitle];
+  ellipsisElems.forEach((val) => {
+    if (isEllipsisActive(val)) {
+      createToolTip(val, val.innerHTML);
+    } else if (val._tippy) val._tippy.destroy();
+  });
+}
+
 const lobbyObserver = new ResizeObserver((entries) => {
   for (const x of entries) {
-    if (x.contentRect) {
+    if (x.contentRect)
       adjustLobby(x.target.parentElement, x.contentRect.height);
-    }
+  }
+});
+
+const playerObserver = new ResizeObserver((entries) => {
+  for (const x of entries) {
+    if (x.contentRect)
+      adjustPlayer(x.target.parentElement, x.contentRect.height);
   }
 });
 
@@ -724,14 +747,6 @@ async function displayInfo(lobby, thumbnail, signal) {
       }
       if (player.description && player.description != "")
         createToolTip(nameElem, convert(player.description));
-
-      const username = playerElem.getElementsByClassName("username")[0];
-      if (name.hasNickName) {
-        username.classList.remove("hidden");
-        username.innerHTML = convert(player.username);
-      } else {
-        username.classList.add("hidden");
-      }
       const perms = colorPermission(player.permissionLevel);
       const permsElem = playerElem.getElementsByClassName("permissions")[0];
       permsElem.classList.add(perms.class);
@@ -748,13 +763,10 @@ async function displayInfo(lobby, thumbnail, signal) {
         player.avatarTitle && player.avatarTitle != ""
           ? convertToHTML(player.avatarTitle)
           : "N/A";
+      const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
+      playerObserver.observe(avatarTitle);
 
-      censorModTitle(
-        playerElem.getElementsByClassName("avatarTitle")[0],
-        player.avatarModID,
-        avatar,
-        thumb.nsfw,
-      );
+      censorModTitle(avatarTitle, player.avatarModID, avatar, thumb.nsfw);
       playerElem.setAttribute("playerId", player.platformID);
       if (signal?.aborted == true || controller?.signal?.aborted == true)
         return;
