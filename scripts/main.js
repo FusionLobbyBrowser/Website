@@ -15,6 +15,7 @@ import {
 const HOST = "https://fusionapi.hahoos.dev/";
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode="[barcode]"`;
+const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
 
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
@@ -210,7 +211,8 @@ async function fetchAndCreateLobbies() {
     error.textContent =
       "Failed to create lobbies, check the console for more information";
     error.classList.remove("hidden");
-    console.error("Failed to create lobbies: " + ex);
+    console.error("Failed to create lobbies");
+    console.error(ex);
 
     const lobbies = document.getElementById("lobbies");
     lobbies.replaceChildren();
@@ -282,7 +284,7 @@ function adjustPlayer(player, height) {
   const name = player.getElementsByClassName("name")[0];
   const permissions = player.getElementsByClassName("permissions")[0];
   const avatarTitle = player.getElementsByClassName("avatarTitle")[0];
-  const lineHeight = 1 * 16;
+  const lineHeight = 1.25 * 16;
 
   if (height <= lineHeight) avatarTitle.classList.add("oneLineAvatar");
   else avatarTitle.classList.remove("oneLineAvatar");
@@ -750,18 +752,31 @@ async function displayInfo(lobby, thumbnail, signal) {
       const perms = colorPermission(player.permissionLevel);
       const permsElem = playerElem.getElementsByClassName("permissions")[0];
       permsElem.classList.add(perms.class);
-      permsElem.textContent = perms.text;
+      setContent(permsElem, perms.text);
       if (player.platformID == lobby.lobbyID) {
-        const crown = document.createElement("i");
-        crown.classList.add("fa-solid");
-        crown.classList.add("fa-crown");
-        crown.classList.add("textIcon");
-        permsElem.insertBefore(crown, permsElem.firstChild);
+        const icon = permsElem.getElementsByClassName("textIcon")[0];
+        icon.setAttribute("class", "fas fa-crown textIcon");
       }
+
+      playerElem
+        .getElementsByClassName("profile")[0]
+        .addEventListener("click", async () => {
+          const html = await createPlayerView(
+            player,
+            thumb,
+            lobby.lobbyPlatform,
+          );
+          Swal.fire({
+            title: "",
+            html: html,
+            theme: "dark",
+            width: "30em",
+          });
+        });
 
       let avatar =
         player.avatarTitle && player.avatarTitle != ""
-          ? convertToHTML(player.avatarTitle)
+          ? convert(player.avatarTitle)
           : "N/A";
       const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
       playerObserver.observe(avatarTitle);
@@ -796,6 +811,76 @@ async function displayInfo(lobby, thumbnail, signal) {
     showingInfo = false;
     enableInfoButton(true);
   }
+}
+
+async function createPlayerView(player, thumbnail, platform) {
+  const toCopy = document.getElementById("playerViewToCopy");
+  const view = toCopy.cloneNode(true);
+  view.removeAttribute("id");
+  const name = getName(player);
+  const thumb = view.getElementsByClassName("viewThumbnail")[0];
+  thumb.src = thumbnail.thumbnail;
+  thumb.alt = thumbnail.alt;
+  view.getElementsByClassName("playerDisplayName")[0].innerHTML = convert(
+    name.name,
+  );
+  view.getElementsByClassName("playerUsername")[0].innerHTML = convert(
+    player.username ?? "N/A",
+  );
+
+  let avatar =
+    player.avatarTitle && player.avatarTitle != ""
+      ? convert(player.avatarTitle)
+      : "N/A";
+  censorModTitle(
+    view.getElementsByClassName("playerAvatar")[0],
+    player.avatarModID,
+    avatar,
+    thumbnail.nsfw,
+  );
+  view.getElementsByClassName("playerId")[0].textContent =
+    `(${player.platformID})`;
+  view.getElementsByClassName("playerDescription")[0].innerHTML = convert(
+    (player.description != ""
+      ? player.description
+      : "No description provided"
+    ).replace("\n", "<br>"),
+  );
+  if (platform == "Steam") {
+    const req = await getSteamProfile(player.platformID);
+    if (req && !req.error) {
+      view
+        .getElementsByClassName("steamAvatar")[0]
+        .setAttribute("src", req.avatarFullUrl);
+      view
+        .getElementsByClassName("statusIndicator")[0]
+        .setAttribute("class", `statusIndicator status${req.userStatus}`);
+      const username = view.getElementsByClassName("steamUsername")[0];
+      username.href = req.profileUrl;
+      setContent(username, convert(req.nickname));
+      if (req.countryCode)
+        username
+          .getElementsByClassName("textIcon")[0]
+          .setAttribute("class", `fi fi-${req.countryCode.toLowerCase()}`);
+      else
+        username.getElementsByClassName("textIcon")[0].classList.add("hidden");
+      if (req.accountCreatedDate) {
+        const date = new Date(req.accountCreatedDate);
+        var yyyy = date.getFullYear();
+        var mm = date.getMonth() + 1;
+        var dd = date.getDate();
+        view.getElementsByClassName("createDate")[0].textContent =
+          `Created on: ${dd}-${mm}-${yyyy}`;
+      }
+    }
+  } else {
+    view.getElementsByClassName("steamProfile")[0].classList.add("hidden");
+    view.getElementsByClassName("steamDetail")[0].classList.add("hidden");
+  }
+
+  const html = view.outerHTML;
+  view.remove();
+  return html;
 }
 
 function censorModTitle(elem, modId, title, nsfw, usesIcon = true) {
@@ -1054,6 +1139,21 @@ function setPlayerCount(players, lobbies) {
 function convertToHTML(text) {
   const converter = new Converter();
   return converter.unity2html(text);
+}
+
+async function getSteamProfile(id) {
+  try {
+    const response = await fetch(STEAM_PROFILE.replace("[id]", id));
+    if (!response.ok) return { error: await response.text() };
+
+    return await response.json();
+  } catch (ex) {
+    console.error(ex);
+    return {
+      error:
+        "Failed to get lobbies due to the request failing, check console for more details",
+    };
+  }
 }
 
 async function getJSON() {
