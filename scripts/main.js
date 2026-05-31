@@ -12,9 +12,9 @@ import {
   getSetting,
 } from "./settings.js";
 
-const HOST = "https://fusionapi.hahoos.dev/";
+const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
 const LOBBY_LIST = `${HOST}lobbylist`;
-const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode="[barcode]"`;
+const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode=[barcode]`;
 const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
 
 const PROFANITY_LIST =
@@ -864,13 +864,15 @@ async function createPlayerView(player, thumbnail, platform) {
           .setAttribute("class", `fi fi-${req.countryCode.toLowerCase()}`);
       else
         username.getElementsByClassName("textIcon")[0].classList.add("hidden");
-      if (req.accountCreatedDate) {
+      if (req.accountCreatedDate && req.profileVisibility == 3) {
         const date = new Date(req.accountCreatedDate);
         var yyyy = date.getFullYear();
         var mm = date.getMonth() + 1;
         var dd = date.getDate();
         view.getElementsByClassName("createDate")[0].textContent =
           `Created on: ${dd}-${mm}-${yyyy}`;
+      } else {
+        view.getElementsByClassName("createDate")[0].classList.add("hidden");
       }
     }
   } else {

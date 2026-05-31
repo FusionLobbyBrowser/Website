@@ -119,6 +119,8 @@ export let settings = [
       "killer",
       "hide and seek",
       "hide & seek",
+      "hideseek",
+      "hideandseek",
       "hide n seek",
     ],
 

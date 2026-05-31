@@ -104,7 +104,7 @@ a:hover {
   height: 0.65rem;
 }
 
-.usernameContainer {
+.linkContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -182,9 +182,11 @@ ul {
   color: #a8a8a8;
   font-size: 0.75rem;
   margin-top: 0.25rem;
+  margin-bottom: 0;
 }
 
 #refreshButton {
+  margin-top: 0.75rem;
   min-width: 7em;
 }
 
