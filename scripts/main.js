@@ -66,31 +66,31 @@ const permissions = [
 const gamemodes = [
   {
     barcode: "",
-    icon: "img:/images/gamemodes/Sandbox.png",
+    icon: "img:./images/gamemodes/Sandbox.png",
   },
   {
     barcode: "Lakatrazz.Deathmatch",
-    icon: "img:/images/gamemodes/Deathmatch.svg",
+    icon: "img:./images/gamemodes/Deathmatch.svg",
   },
   {
     barcode: "Lakatrazz.Team Deathmatch",
-    icon: "img:/images/gamemodes/TeamDeathmatch.svg",
+    icon: "img:./images/gamemodes/TeamDeathmatch.svg",
   },
   {
     barcode: "Lakatrazz.Smash Bones",
-    icon: "img:/images/gamemodes/SmashBones.svg",
+    icon: "img:./images/gamemodes/SmashBones.svg",
   },
   {
     barcode: "Lakatrazz.Juggernaut",
-    icon: "img:/images/gamemodes/Juggernaut.png",
+    icon: "img:./images/gamemodes/Juggernaut.png",
   },
   {
     barcode: "Lakatrazz.Hide And Seek",
-    icon: "img:/images/gamemodes/HideAndSeek.png",
+    icon: "img:./images/gamemodes/HideAndSeek.png",
   },
   {
     barcode: "Lakatrazz.Entangled",
-    icon: "img:/images/gamemodes/Entangled.png",
+    icon: "img:./images/gamemodes/Entangled.png",
   },
   {
     barcode: "HAHOOS.Avatar Infection",
