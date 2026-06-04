@@ -1,4 +1,5 @@
 import { Converter } from "./unityRichText.js";
+import Barcodes from "./defaultBarcodes.js";
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.mjs";
 
 // Is this overkill? probably
@@ -24,6 +25,11 @@ let categories = [
   {
     name: "Players",
     icon: "fa-solid fa-users",
+    expanded: true,
+  },
+  {
+    name: "Level",
+    icon: "fa-solid fa-map",
     expanded: true,
   },
   {
@@ -202,7 +208,38 @@ export let settings = [
 
     defaultValue: false,
   },
-  // Player Count
+  // Levels
+  {
+    id: "vanillaLevels",
+    category: "Level",
+    type: "toggle",
+    name: "Vanilla",
+    icon: "fas fa-map-location-dot",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return Barcodes.find((x) => x.barcode == lobby.levelBarcode);
+    },
+
+    defaultValue: true,
+  },
+  {
+    id: "moddedLevels",
+    category: "Level",
+    type: "toggle",
+    name: "Modded",
+    icon: "fas fa-wrench",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return !Barcodes.find((x) => x.barcode == lobby.levelBarcode);
+    },
+
+    defaultValue: true,
+  },
+  // Players
   {
     id: "playerCount",
     category: "Players",

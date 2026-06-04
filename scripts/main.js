@@ -135,6 +135,7 @@ async function fetchAndCreateLobbies() {
       const lobbies = document.getElementById("lobbies");
       const res = await getJSON();
       const json = res.res ?? res;
+      // TODO: replace text thingy with pop up
       const error = document.getElementsByClassName("error")[0];
       if (json.error != null) {
         lobbies.replaceChildren();
