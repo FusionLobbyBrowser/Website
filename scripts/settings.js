@@ -184,6 +184,19 @@ export let settings = [
     defaultValue: true,
   },
   {
+    id: "backroomsLobbies",
+    category: "Groups",
+    type: "toggle",
+    name: "Backrooms",
+    icon: "fa-solid fa-biohazard",
+
+    lobbyFilter: true,
+    filterValue: false,
+    filterWords: ["backrooms"],
+
+    defaultValue: true,
+  },
+  {
     id: "otherLobbies",
     category: "Groups",
     type: "toggle",

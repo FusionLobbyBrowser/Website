@@ -503,9 +503,7 @@ async function createLobby(lobby, signal, hidden) {
   lobbyObserver.observe(lobbyName, {
     box: "device-pixel-content-box",
   });
-  lobbyName.innerHTML = convert(
-    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`,
-  );
+  lobbyName.innerHTML = convert(getLobbyName(lobby, false));
 
   const player = lobby.playerList.players.find(
     (val) => val.platformID == lobby.lobbyID,
@@ -548,6 +546,20 @@ async function createLobby(lobby, signal, hidden) {
     connectBtn.classList.remove("blocked");
     connectBtn.disabled = false;
   }
+
+  let tooltip = "";
+  const players = structuredClone(lobby.playerList.players);
+  players.sort((first, second) => {
+    if (second.platformID == lobby.lobbyID) return 100;
+
+    if (first.platformID == lobby.lobbyID) return -100;
+
+    return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
+  });
+  for (const p of players) tooltip += `${getName(p).name.trim()}<br />`;
+
+  createToolTip(playerCount, tooltip);
+
   joinInfo(connectBtn);
 
   const infoBtn = lobbyElem.getElementsByClassName("infoButton")[0];
@@ -650,9 +662,7 @@ async function displayInfo(lobby, thumbnail, signal) {
     const lobbyInfo = document.getElementById("info");
     const header = lobbyInfo.getElementsByClassName("header")[0];
     document.getElementById("info-title").innerHTML = convert(
-      lobby.lobbyName != ""
-        ? lobby.lobbyName
-        : `${lobby.lobbyHostName}'s Lobby`,
+      getLobbyName(lobby, false),
     );
     lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
 
