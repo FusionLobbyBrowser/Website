@@ -1083,7 +1083,7 @@ button:hover {
   select {
     margin-top: 0.1em;
     margin-bottom: 0.1em;
-    border: 1px solid #dddddd;
+    border: 2px solid #dddddd;
     background: rgb(35, 35, 35);
     padding: 10px;
     transition: 0.4s;
@@ -1108,7 +1108,7 @@ button:hover {
     justify-content: flex-start;
     gap: 10px;
 
-    border: 1px solid #dddddd;
+    border: 2px solid #dddddd;
     color: white;
     background: rgb(35, 35, 35);
     padding: 10px;
