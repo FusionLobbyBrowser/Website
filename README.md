@@ -1,8 +1,18 @@
-# FLB | Website
+<div align="center">
+<img align="center" src="./images/favicon/web-app-manifest-512x512.png" width="128px" height="128px" />
+<h1 align="center"> FLB | Website</h1>
+
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite?ref=badge_small">![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite.svg?type=small)</a>
+<a href="https://github.com/FusionLobbyBrowser/Website/actions/workflows/preview.yml">![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/FusionLobbyBrowser/Website/preview.yml?style=flat-square)
+</a>
+
+</div>
 
 This is a website that allows for browsing lobbies provided by [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion/), a multiplayer mod for the game [BONELAB](https://store.steampowered.com/app/1592190/BONELAB/). The purpose of the website is to allow players to check what lobbies are up before even launching BONELAB, basically allowing to make sure if it's even worth launching BONELAB in case you want to play LabFusion.
 
 The website features a join button, which thanks to a [MelonLoader Mod](https://github.com/FusionLobbyBrowser/Mod), allows to launch the game & immiediately join the lobby or do that while the game is already running!
+
+Thanks to [@Checkerb0ard](https://github.com/Checkerb0ard) for helping with adding support for Epic Games Network Layer!
 
 ## Discord Servers
 
