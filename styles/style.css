@@ -235,6 +235,7 @@ ul {
   -webkit-line-clamp: 2;
   line-clamp: 2;
   line-height: 1.25rem;
+  min-height: 1.25rem;
   -webkit-box-orient: vertical;
   margin-bottom: 0;
 }
@@ -669,6 +670,7 @@ label {
 
 #info-title {
   font-size: 1.75rem;
+  min-height: 1.75rem;
   text-align: center;
 
   padding-bottom: 0;
