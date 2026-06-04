@@ -80,15 +80,15 @@ const gamemodes = [
   },
   {
     barcode: "Lakatrazz.Deathmatch",
-    icon: "img:./images/gamemodes/Deathmatch.svg",
+    icon: "img:./images/gamemodes/Deathmatch.png",
   },
   {
     barcode: "Lakatrazz.Team Deathmatch",
-    icon: "img:./images/gamemodes/TeamDeathmatch.svg",
+    icon: "img:./images/gamemodes/TeamDeathmatch.png",
   },
   {
     barcode: "Lakatrazz.Smash Bones",
-    icon: "img:./images/gamemodes/SmashBones.svg",
+    icon: "img:./images/gamemodes/SmashBones.png",
   },
   {
     barcode: "Lakatrazz.Juggernaut",
