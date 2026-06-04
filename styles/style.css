@@ -1101,12 +1101,35 @@ button:hover {
   }
 
   select:hover,
-  select:focus {
+  select:open {
     background: rgb(55, 55, 55);
   }
 
   ::picker(select) {
     border: none;
+  }
+
+  ::picker(select) {
+    opacity: 0;
+    transition: all 0.25s allow-discrete;
+  }
+
+  :open::picker(select) {
+    opacity: 1;
+  }
+
+  @starting-style {
+    :open::picker(select) {
+      opacity: 0;
+    }
+  }
+
+  select::picker-icon {
+    transition: 0.25s rotate;
+  }
+
+  select:open::picker-icon {
+    rotate: 180deg;
   }
 
   option {
