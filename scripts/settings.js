@@ -69,12 +69,40 @@ export let settings = [
     saveToStorage: false,
   },
   {
+    id: "sort",
+    category: "General",
+    type: "select",
+    values: [
+      {
+        name: "Alphabetical",
+        icon: "fas fa-arrow-down-a-z",
+      },
+      {
+        name: "Players",
+        icon: "fas fa-people-group",
+      },
+      {
+        name: "Uptime",
+        icon: "fas fa-clock",
+      },
+    ],
+    name: "",
+    defaultValue: "Players",
+  },
+  {
     id: "sortOrder",
     category: "General",
     type: "select",
-    values: ["Ascending", "Descending"],
-    icon: "fa-solid fa-arrow-down-short-wide",
-    name: "Sort Order",
+    values: [
+      {
+        name: "Ascending",
+        icon: "fas fa-arrow-up",
+      },
+      {
+        name: "Descending",
+        icon: "fas fa-arrow-down",
+      },
+    ],
     defaultValue: "Descending",
   },
   {
@@ -348,7 +376,7 @@ let types = [
       setting.values.forEach((val) => {
         const option = document.createElement("option");
         if (isString(val)) setOption(option, val, val);
-        else setOption(option, val.id, val.name);
+        else setOption(option, val.id, val.name, val.icon);
 
         select.appendChild(option);
       });
@@ -402,9 +430,18 @@ let types = [
 let settingsValues = [];
 let eventListeners = [];
 
-function setOption(option, id, name) {
-  option.setAttribute("value", id);
-  option.textContent = name;
+function setOption(option, id, name, icon) {
+  option.setAttribute("value", id ?? name);
+  if (icon) {
+    option.appendChild(getIconElem(icon));
+
+    const content = document.createElement("span");
+    content.classList.add("elemContent");
+    content.textContent = name;
+    option.appendChild(content);
+  } else {
+    option.textContent = name;
+  }
 }
 
 function isString(val) {

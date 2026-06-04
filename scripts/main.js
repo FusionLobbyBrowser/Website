@@ -328,6 +328,49 @@ const playerObserver = new ResizeObserver((entries) => {
   }
 });
 
+// Sort Order
+// 1 - Descending
+// 2 - Ascending
+
+const sorting = [
+  {
+    name: "Alphabetical",
+    callback: (lobbies, order) => {
+      lobbies.sort(
+        (a, b) =>
+          (order == 2 ? 1 : -1) *
+          getLobbyName(a)
+            .toLowerCase()
+            .localeCompare(getLobbyName(b).toLowerCase()),
+      );
+    },
+  },
+  {
+    name: "Players",
+    callback: (lobbies, order) => {
+      lobbies.sort((a, b) => parseInt(b.playerCount) - parseInt(a.playerCount));
+      if (order == 2) lobbies.reverse();
+    },
+  },
+  {
+    name: "Uptime",
+    callback: (lobbies, order) => {
+      lobbies.sort((a, b) => parseInt(a.lobbyUptime) - parseInt(b.lobbyUptime));
+      if (order == 2) lobbies.reverse();
+    },
+  },
+];
+
+function getLobbyName(lobby, stripRichText = true) {
+  const name =
+    lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`;
+  if (stripRichText) {
+    return Converter.removeRichText(name);
+  } else {
+    return name;
+  }
+}
+
 async function createLobbies(signal) {
   let infoUpdated = false;
   const refreshBtn = document.getElementById("refreshButton");
@@ -338,11 +381,19 @@ async function createLobbies(signal) {
   let lobbyCount = hideLobbies(false);
   let allowed = getAllowedIDs(lobbyList);
 
-  lobbyList.sort(
-    (first, second) =>
-      parseInt(second.playerCount) - parseInt(first.playerCount),
-  );
-  if (getSettingValue("sortOrder") != "Descending") lobbyList.reverse();
+  const sort = getSettingValue("sort");
+  let sorted = false;
+  if (sort) {
+    const s = sorting.find((x) => x.name == sort);
+    if (s) {
+      s.callback(
+        lobbyList,
+        getSettingValue("sortOrder") != "Descending" ? 2 : 1,
+      );
+      sorted = true;
+    }
+  }
+  if (!sorted) sorting.find((x) => x.name == "Players").callback(lobbyList, 2);
 
   let players = 0;
   lobbyList.forEach((val) => {
@@ -1377,6 +1428,7 @@ async function init() {
 
   // Require the lobby list to be created again
   filterEvent("censorNSFW", true);
+  filterEvent("sort", true);
   filterEvent("sortOrder", true);
   filterEvent("censorProfanities", true);
 

@@ -256,6 +256,8 @@ ul {
 
   width: 1.333333em;
   line-height: 1em;
+
+  margin-right: 0.15em;
 }
 
 .lobbyHeader {
@@ -665,7 +667,7 @@ label {
 }
 
 .lobby:hover {
-  box-shadow: 10px 10px 10px rgb(10, 10, 10);
+  box-shadow: 10px 10px 10px rgb(0, 0, 0);
 }
 
 #info-title {
@@ -1072,9 +1074,10 @@ button:hover {
 
 @supports (appearance: base-select) {
   .selectWrapper {
-    display: flex;
+    display: inline-flex;
+    width: 46%;
     align-items: center;
-    gap: 0.35em;
+    gap: 2%;
   }
 
   select,
@@ -1088,6 +1091,7 @@ button:hover {
     border: 2px solid #dddddd;
     background: rgb(35, 35, 35);
     padding: 10px;
+    width: 100%;
     transition: 0.4s;
   }
 
@@ -1152,7 +1156,7 @@ button:hover {
   align-items: center;
   background-color: rgb(35, 35, 35);
   height: 2.5rem;
-  width: 75%;
+  width: 90%;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   border-radius: 15px;
