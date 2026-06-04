@@ -86,7 +86,6 @@ export let settings = [
         icon: "fas fa-clock",
       },
     ],
-    name: "",
     defaultValue: "Players",
   },
   {
@@ -507,7 +506,9 @@ function createCategory(category) {
   const button = document.createElement("button");
   button.classList.add("textButton");
   if (category.expanded) button.classList.add("collapsed");
-  button.setAttribute("data-toggle", "collapse");
+  button.addEventListener("click", () => {
+    button.classList.toggle("collapsed");
+  });
   const title = document.createElement("h2");
   title.innerHTML = getCategoryText(category);
   const div = document.createElement("div");

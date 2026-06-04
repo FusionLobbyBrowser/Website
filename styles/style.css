@@ -890,15 +890,13 @@ label {
   color: rgb(200, 200, 200);
 }
 
-.collapsable button.collapsed h2:after,
-.collapsable button.collapsed p:after {
+.collapsable > button.collapsed > :first-child:after {
   content: " ▾";
 }
-.collapsable button:not(.collapsed) h2:after,
-.collapsable button:not(.collapsed) p:after {
+.collapsable > button:not(.collapsed) > :first-child:after {
   content: " ▴";
 }
-.collapsable button:not(.collapsed) + div {
+.collapsable > button:not(.collapsed) + div {
   display: none;
 }
 
