@@ -49,17 +49,18 @@ export let settings = [
     filterValue: (s, val) => val && val.length > 0,
     lobbyFilter: true,
     lobbyValidator: (lobby, val) => {
-      const fuse = new Fuse(
-        [Converter.removeRichText(lobby.lobbyName.toLowerCase())],
-        {
-          threshold: 0.35,
-        },
-      );
+      const name =
+        lobby.lobbyName != ""
+          ? lobby.lobbyName
+          : `${lobby.lobbyHostName}'s Lobby`;
+      const fuse = new Fuse([Converter.removeRichText(name.toLowerCase())], {
+        threshold: 0.35,
+      });
       const res = fuse.search(val);
       return !res || res.length < 1;
     },
     setFilterName: false,
-    shouldSave: false,
+    saveToStorage: false,
   },
   {
     id: "sortOrder",
@@ -516,7 +517,7 @@ export function init() {
 }
 
 export function setSetting(setting, value) {
-  if (setting.saveToStorage != false)
+  if (getSetting(setting)?.saveToStorage != false)
     localStorage.setItem(getElemId(setting), value);
   let index = settingsValues.findIndex((x) => x.id == setting);
   if (index != -1) settingsValues[index].value = value;
