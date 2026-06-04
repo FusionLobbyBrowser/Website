@@ -113,7 +113,9 @@ a:hover {
 p,
 button,
 label,
-a {
+a,
+option,
+input {
   font-family: "Ubuntu", serif;
   font-weight: 400;
   font-style: normal;
@@ -1064,6 +1066,108 @@ button:hover {
   padding-right: 2px;
 }
 
+/* Select */
+
+@supports (appearance: base-select) {
+  .selectWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+  }
+
+  select,
+  ::picker(select) {
+    appearance: base-select;
+  }
+
+  select {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    border: 1px solid #dddddd;
+    background: rgb(35, 35, 35);
+    padding: 10px;
+    transition: 0.4s;
+  }
+
+  select,
+  selectedcontent {
+    font-size: 0.85rem;
+  }
+
+  select:hover,
+  select:focus {
+    background: rgb(55, 55, 55);
+  }
+
+  ::picker(select) {
+    border: none;
+  }
+
+  option {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+
+    border: 1px solid #dddddd;
+    color: white;
+    background: rgb(35, 35, 35);
+    padding: 10px;
+    transition: 0.4s;
+  }
+
+  option:hover {
+    background: rgb(55, 55, 55);
+  }
+
+  option:first-of-type {
+    border-radius: 8px 8px 0 0;
+  }
+
+  option:last-of-type {
+    border-radius: 0 0 8px 8px;
+  }
+
+  ::picker(select) {
+    border-radius: 8px;
+  }
+
+  option:not(option:last-of-type) {
+    border-bottom: none;
+  }
+
+  option::checkmark {
+    font-family: "Font Awesome 7 Free";
+    font-weight: 900;
+    content: "\f00c";
+    --fa-style: 900;
+  }
+}
+
+/* Search */
+
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  background-color: rgb(35, 35, 35);
+  height: 2.5rem;
+  width: 75%;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 15px;
+  border: 2px solid #ffffff;
+}
+
+.searchWrapper > i {
+  width: 2.5rem;
+}
+
+.searchWrapper > input {
+  background: none;
+  color: white;
+  border: none;
+  outline: none;
+}
+
 /* Steam Profile */
 
 .steamProfile {
@@ -1080,30 +1184,37 @@ button:hover {
   height: 3.5em;
 }
 
-.status1 {
-  background-color: greenyellow;
-}
-
-.status2 {
-  background-color: red;
-}
-
+/* Offline */
 .status0 {
   background-color: gray;
 }
 
+/* Online */
+.status1 {
+  background-color: greenyellow;
+}
+
+/* Busy */
+.status2 {
+  background-color: red;
+}
+
+/* Away */
 .status3 {
   background-color: orange;
 }
 
+/* Snooze / AFK */
 .status4 {
   background-color: cyan;
 }
 
+/* Unknown */
 .status5 {
   background-color: gray;
 }
 
+/* In Game */
 .status6 {
   background-color: green;
 }

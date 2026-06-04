@@ -63,6 +63,16 @@ const permissions = [
   [2, "owner"],
 ];
 
+const statuses = [
+  [0, "Offline"],
+  [1, "Online"],
+  [2, "Busy"],
+  [3, "Away"],
+  [4, "Snooze / AFK"],
+  [5, "Unknown"],
+  [6, "In Game"],
+];
+
 const gamemodes = [
   {
     barcode: "",
@@ -231,19 +241,25 @@ function filterBadges() {
   for (const x of settings) {
     const val = getSettingValue(x.id);
     if (val == null || val == undefined || !x.lobbyFilter) continue;
-    if (x.filterValue == val) {
+
+    let filter = false;
+    if (typeof x.filterValue == "function") filter = x.filterValue(x, val);
+    else filter = x.filterValue == val;
+
+    if (filter) {
       any = true;
       const badge = document.createElement("p");
       badge.classList.add("infoBadge");
       const content = document.createElement("span");
       content.classList.add("elemContent");
+      const text = x.type != "search" ? x.name : val;
       if (!x.icon) {
-        content.textContent = x.name;
+        content.textContent = text;
       } else {
         const settingIcon = getIconElem(x.icon);
         const settingContent = document.createElement("span");
         settingContent.classList.add("elemContent");
-        settingContent.textContent = x.name;
+        settingContent.textContent = text;
         content.appendChild(settingIcon);
         content.appendChild(settingContent);
       }
@@ -510,7 +526,7 @@ async function createLobby(lobby, signal, hidden) {
 }
 
 function isEllipsisActive(e) {
-  return e.clientHeight < e.scrollHeight;
+  return e.clientHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
 }
 
 function createToolTip(e, content) {
@@ -735,18 +751,7 @@ async function displayInfo(lobby, thumbnail, signal) {
       );
       const name = getName(player);
       const nameElem = playerElem.getElementsByClassName("name")[0];
-      if (lobby.lobbyPlatform != "Steam") {
-        nameElem.innerHTML = convert(name.name);
-      } else {
-        const link = document.createElement("a");
-        link.href = `http://steamcommunity.com/profiles/${player.platformID}`;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.classList.add("textButton");
-        link.innerHTML = convert(name.name);
-        nameElem.textContent = "";
-        nameElem.appendChild(link);
-      }
+      nameElem.innerHTML = convert(name.name);
       if (player.description && player.description != "")
         createToolTip(nameElem, convert(player.description));
       const perms = colorPermission(player.permissionLevel);
@@ -769,8 +774,20 @@ async function displayInfo(lobby, thumbnail, signal) {
           Swal.fire({
             title: "",
             html: html,
+            showCloseButton: true,
+            showDenyButton: true,
+            focusConfirm: false,
+            confirmButtonText: '<i class="fas fa-x"></i> Close',
+            denyButtonText: `
+    <i class="fas fa-flag"></i> Report
+  `,
             theme: "dark",
             width: "30em",
+          }).then((x) => {
+            if (x.isDenied)
+              window.open(
+                `https://docs.google.com/forms/d/e/1FAIpQLScGK73O2jhOQOXtfHFahOrMZeuVfjYlKbdDPupaifjLGG_QMA/viewform?entry.1722663242=${Converter.removeRichText(player.username)}&entry.1219785058=${player.platformID}`,
+              );
           });
         });
 
@@ -849,12 +866,18 @@ async function createPlayerView(player, thumbnail, platform) {
   if (platform == "Steam") {
     const req = await getSteamProfile(player.platformID);
     if (req && !req.error) {
-      view
-        .getElementsByClassName("steamAvatar")[0]
-        .setAttribute("src", req.avatarFullUrl);
-      view
-        .getElementsByClassName("statusIndicator")[0]
-        .setAttribute("class", `statusIndicator status${req.userStatus}`);
+      const avatar = view.getElementsByClassName("steamAvatar")[0];
+      avatar.setAttribute("src", req.avatarFullUrl);
+      const indicator = view.getElementsByClassName("statusIndicator")[0];
+      indicator.setAttribute(
+        "class",
+        `statusIndicator status${req.userStatus}`,
+      );
+      const numToStatus = new Map(statuses);
+      const status = numToStatus.get(req.userStatus);
+      if (status) {
+        indicator.setAttribute("data-tippy-content", status);
+      }
       const username = view.getElementsByClassName("steamUsername")[0];
       username.href = req.profileUrl;
       setContent(username, convert(req.nickname));
@@ -1051,7 +1074,6 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
 
 async function setThumbnail(elem, modId, title, barcode, isAvatar) {
   var thumbnail = await getThumbnail(modId, title, barcode, isAvatar);
-  elem.removeAttribute("loading");
   if (thumbnail.error != null) {
     if (thumbnail.status == 404) {
       const alt = Converter.removeRichText(

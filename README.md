@@ -57,6 +57,8 @@ Website is licensed under the MIT License. See [LICENSE](https://github.com/Fusi
 
 * [flag-icons](https://github.com/lipis/flag-icons) is licensed under the MIT License. See [LICENSE](https://github.com/lipis/flag-icons/blob/main/LICENSE) for the full License.
 
+* [Fuse.js](https://github.com/krisk/fuse) is licensed under the Apache License 2.0. See [LICENSE](https://github.com/krisk/Fuse/blob/main/LICENSE) for the full License.
+
 * [Fusion-Lists](https://github.com/Lakatrazz/Fusion-Lists) (`profanityList.json`) is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/Fusion-Lists/blob/main/LICENSE) for the full License.
 
 * [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) (Icons) is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.

@@ -1,4 +1,5 @@
 import { Converter } from "./unityRichText.js";
+import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.mjs";
 
 // Is this overkill? probably
 
@@ -39,12 +40,26 @@ let categories = [
 export let settings = [
   // General
   {
-    id: "autoRefresh",
+    id: "searchField",
     category: "General",
-    type: "toggle",
-    name: "Auto Refresh",
-    icon: "fa-solid fa-arrows-rotate fa-spin",
-    defaultValue: false,
+    type: "search",
+    name: "Search",
+    icon: "fa-solid fa-magnifying-glass",
+    defaultValue: "",
+    filterValue: (s, val) => val && val.length > 0,
+    lobbyFilter: true,
+    lobbyValidator: (lobby, val) => {
+      const fuse = new Fuse(
+        [Converter.removeRichText(lobby.lobbyName.toLowerCase())],
+        {
+          threshold: 0.35,
+        },
+      );
+      const res = fuse.search(val);
+      return !res || res.length < 1;
+    },
+    setFilterName: false,
+    shouldSave: false,
   },
   {
     id: "sortOrder",
@@ -54,6 +69,14 @@ export let settings = [
     icon: "fa-solid fa-arrow-down-short-wide",
     name: "Sort Order",
     defaultValue: "Descending",
+  },
+  {
+    id: "autoRefresh",
+    category: "General",
+    type: "toggle",
+    name: "Auto Refresh",
+    icon: "fa-solid fa-arrows-rotate fa-spin",
+    defaultValue: false,
   },
   // Groups
   {
@@ -274,12 +297,16 @@ let types = [
     type: "select",
     callback: (setting, value) => {
       const wrapper = document.createElement("div");
+      wrapper.classList.add("selectWrapper");
       const label = document.createElement("label");
       label.setAttribute("for", getElemId(setting.id));
       fillLabel(setting, label);
       const select = document.createElement("select");
       select.setAttribute("name", getElemId(setting.id));
       select.setAttribute("id", getElemId(setting.id));
+      const btn = document.createElement("button");
+      btn.appendChild(document.createElement("selectedcontent"));
+      select.appendChild(btn);
       setting.values.forEach((val) => {
         const option = document.createElement("option");
         if (isString(val)) setOption(option, val, val);
@@ -300,6 +327,34 @@ let types = [
 
       wrapper.appendChild(select);
       wrapper.appendChild(label);
+      return wrapper;
+    },
+    setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
+  },
+  {
+    type: "search",
+    callback: (setting, value) => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("searchWrapper");
+      const icon = document.createElement("i");
+      icon.setAttribute("class", setting.icon);
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = setting.name;
+      input.id = getElemId(setting.id);
+      input.value = value;
+      let old = input.value;
+      input.addEventListener("change", () => {
+        wrapper.dispatchEvent(
+          new CustomEvent("onsettingchanged", {
+            detail: { old: old, new: input.value },
+          }),
+        );
+        old = input.value;
+      });
+
+      wrapper.appendChild(icon);
+      wrapper.appendChild(input);
       return wrapper;
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
@@ -523,22 +578,32 @@ export function filterWithSettings(lobbies) {
 
     if (!setting.filterWords && !setting.lobbyValidator) continue;
 
-    constValue.forEach((element) => {
-      if (settingValidator(setting, element)) count++;
-    });
+    if (setting.setFilterName != false) {
+      constValue.forEach((element) => {
+        if (settingValidator(setting, element)) count++;
+      });
+    }
 
-    if (setting.filterValue == getSettingValue(setting.id))
-      lobbies = lobbies.filter((i) => !settingValidator(setting, i));
+    let filter = false;
+
+    const val = getSettingValue(setting.id);
+    if (typeof setting.filterValue == "function")
+      filter = setting.filterValue(setting, val);
+    else filter = setting.filterValue == val;
+
+    if (filter) lobbies = lobbies.filter((i) => !settingValidator(setting, i));
 
     if (!setting.baseName) setting.baseName = setting.name;
-    setSettingsTitle(setting.id, `${setting.baseName} [${count}]`);
+    if (setting.setFilterName != false)
+      setSettingsTitle(setting.id, `${setting.baseName} [${count}]`);
   }
   return lobbies;
 }
 
 function settingValidator(setting, i) {
   if (setting.filterWords) return isGroup(i, setting.filterWords);
-  else if (setting.lobbyValidator) return setting.lobbyValidator(i);
+  else if (setting.lobbyValidator)
+    return setting.lobbyValidator(i, getSettingValue(setting.id));
   else return null;
 }
 
