@@ -269,7 +269,7 @@ ul {
 }
 
 #appliedFilters {
-  gap: 0.5em;
+  gap: 0.25em;
   text-align: center;
   margin-bottom: 1em;
 }
@@ -355,7 +355,12 @@ a > .textIcon {
   text-align: center;
 }
 
-/* Code from https://getcssscan.com/css-checkboxes-examples */
+/* 
+
+  Code from https://getcssscan.com/css-checkboxes-examples 
+  TODO: replace with an original one to be consistent with the other elements
+
+*/
 
 .checkbox-wrapper {
   display: flex;
@@ -379,9 +384,9 @@ a > .textIcon {
 }
 
 label {
-  font-size: 16px;
-  line-height: 16px;
-  height: 16px;
+  font-size: 1rem;
+  line-height: 1rem;
+  height: 1rem;
 }
 
 .checkbox-wrapper input::before {
@@ -550,15 +555,77 @@ label {
   gap: 1em;
 }
 
-#settings {
-  flex: 0 0 13.75%;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
+#popupBackground {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+@media (min-width: 850px) {
+  #settings {
+    flex: 0 0 22em;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  #settingsButton,
+  #settingsClose {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@media (max-width: 850px) {
+  #settings {
+    position: fixed;
+    width: 90vw;
+    left: 5vw;
+    right: 5vw;
+    height: 80vh;
+    top: 10vh;
+    bottom: 10vh;
+    z-index: 2;
+  }
+
+  #settingsClose {
+    position: absolute;
+    right: 1em;
+    top: 0.5em;
+    font-size: 2rem;
+  }
+
+  #settings:not(.open) {
+    visibility: hidden;
+    display: none;
+  }
+
+  #lobbies {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+  }
+
+  #info-outer {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+  }
+}
+
+#settings {
+  overflow-y: auto;
+  white-space: nowrap;
+
   background-color: rgb(20, 20, 20);
   border-radius: 20px;
-  min-height: 50em;
-  max-height: 100vh;
+
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  scrollbar-color: rgb(32, 77, 197) rgba(0, 0, 0, 0);
 
   box-shadow: 7.5px 2.5px 2.5px rgb(10, 10, 10);
 }
@@ -570,6 +637,7 @@ label {
   padding-left: 0.3em;
 }
 
+/* TODO: make padding consistent with settingsTitle */
 .settingsCategory {
   padding-left: 0.3em;
 }
@@ -649,7 +717,8 @@ label {
   border-radius: 10px;
 
   width: 60em;
-  margin-bottom: 3em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 #searchOptions > li {
@@ -720,6 +789,7 @@ label {
 
 .detail-info {
   font-size: 0.9rem;
+
   width: 95%;
   padding-top: 0;
   margin-top: 0;
@@ -728,14 +798,20 @@ label {
 }
 
 .infoBadge {
-  display: inline;
   border-radius: 10px;
   background-color: rgba(0, 56, 61, 0.7);
   padding: 6px 6px 6px 6px;
   transition: 0.5s;
+  margin: 0;
 }
 
 .badges {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5em;
+
   margin-top: 0.75em;
   margin-bottom: 0.75em;
 }
@@ -817,7 +893,7 @@ label {
 .player {
   background-color: rgb(10, 10, 10);
   box-shadow: 10px 5px 5px rgb(0, 0, 0);
-  width: 9em;
+  min-width: 9em;
   text-align: center;
   border-radius: 15px;
 
@@ -1033,22 +1109,22 @@ button:hover {
 }
 
 .permissionLevel {
-  font-size: 9px;
+  font-size: 0.563rem;
   display: inline;
   margin-right: 0.5em;
   margin-bottom: 0.5em;
 }
 
 .permissionItem {
-  font-size: 14px;
+  font-size: 0.875rem;
   display: inline;
-  margin-right: 0.5em;
-  margin-bottom: 0.1em;
-  flex: 1 0 30%;
+  flex: 1 0 33.3%;
   text-align: center;
 }
 
 .permissionsList {
+  width: 100%;
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1071,11 +1147,19 @@ button:hover {
 /* Select */
 
 @supports (appearance: base-select) {
-  .selectWrapper {
-    display: inline-flex;
-    width: 46%;
-    align-items: center;
-    gap: 2%;
+  @media (max-width: 600px) {
+    .selectWrapper {
+      width: 90%;
+    }
+  }
+
+  @media (min-width: 600px) {
+    .selectWrapper {
+      display: inline-flex;
+      width: 46%;
+      align-items: center;
+      gap: 2%;
+    }
   }
 
   select,
@@ -1096,6 +1180,9 @@ button:hover {
   select,
   selectedcontent {
     font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   select:hover,
@@ -1180,15 +1267,18 @@ button:hover {
   width: 90%;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+  gap: 0.5em;
   border-radius: 15px;
   border: 2px solid #ffffff;
 }
 
 .searchWrapper > i {
-  width: 2.5rem;
+  margin-left: 15px;
+  max-width: 10%;
 }
 
 .searchWrapper > input {
+  flex-grow: 1;
   background: none;
   color: white;
   border: none;

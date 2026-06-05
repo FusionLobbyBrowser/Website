@@ -1,6 +1,6 @@
 import { Converter } from "./unityRichText.js";
 import Barcodes from "./defaultBarcodes.js";
-import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.mjs";
+import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
 // Is this overkill? probably
 

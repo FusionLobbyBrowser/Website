@@ -114,6 +114,39 @@ const gamemodes = [
   },
 ];
 
+const permsList = [
+  {
+    entry: "teleportation",
+    name: "Teleportation",
+    icon: "fas fa-person-falling",
+  },
+  {
+    entry: "banning",
+    name: "Banning",
+    icon: "fas fa-ban",
+  },
+  {
+    entry: "kicking",
+    name: "Kicking",
+    icon: "fas fa-gavel",
+  },
+  {
+    entry: "customAvatars",
+    name: "Custom Avatars",
+    icon: "fas fa-shirt",
+  },
+  {
+    entry: "constrainer",
+    name: "Constrainer",
+    icon: "fas fa-link",
+  },
+  {
+    entry: "devTools",
+    name: "Developer Tools",
+    icon: "fas fa-code",
+  },
+];
+
 async function fetchAndCreateLobbies() {
   refreshing = true;
   console.log("Fetching lobbies");
@@ -336,13 +369,12 @@ const sorting = [
   {
     name: "Alphabetical",
     callback: (lobbies, order) => {
-      lobbies.sort(
-        (a, b) =>
-          (order == 2 ? 1 : -1) *
-          getLobbyName(a)
-            .toLowerCase()
-            .localeCompare(getLobbyName(b).toLowerCase()),
+      lobbies.sort((a, b) =>
+        getLobbyName(a)
+          .toLowerCase()
+          .localeCompare(getLobbyName(b).toLowerCase()),
       );
+      if (order == 2) lobbies.reverse();
     },
   },
   {
@@ -364,11 +396,8 @@ const sorting = [
 function getLobbyName(lobby, stripRichText = true) {
   const name =
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`;
-  if (stripRichText) {
-    return Converter.removeRichText(name);
-  } else {
-    return name;
-  }
+  if (stripRichText) return Converter.removeRichText(name);
+  else return name;
 }
 
 async function createLobbies(signal) {
@@ -396,9 +425,7 @@ async function createLobbies(signal) {
   if (!sorted) sorting.find((x) => x.name == "Players").callback(lobbyList, 2);
 
   let players = 0;
-  lobbyList.forEach((val) => {
-    players += Number(val.playerCount);
-  });
+  lobbyList.forEach((val) => (players += Number(val.playerCount)));
 
   setLobbyCount(lobbyCount, lobbyCountMax);
   setPlayerCount(players, allLobbies.length);
@@ -634,15 +661,6 @@ function enableInfoButton(enabled) {
   }
 }
 
-const permsList = [
-  "teleportation",
-  "banning",
-  "kicking",
-  ["customAvatars", "Custom Avatars"],
-  "constrainer",
-  ["devTools", "Dev Tools"],
-];
-
 async function displayInfo(lobby, thumbnail, signal) {
   if (infoSignal) infoSignal.abort();
   showingInfo = true;
@@ -738,21 +756,23 @@ async function displayInfo(lobby, thumbnail, signal) {
     });
 
     permsList.forEach((val) => {
-      let entryName;
-      let displayName;
-      if (Array.isArray(val)) {
-        entryName = val[0];
-        displayName = val[1];
-      } else {
-        entryName = val;
-        displayName =
-          String(val).charAt(0).toUpperCase() + String(val).slice(1);
-      }
+      let displayName =
+        val.name ??
+        String(val.entry).charAt(0).toUpperCase() + String(val.entry).slice(1);
       const item = document.createElement("p");
-      const level = perms.get(lobby[entryName]);
+      const level = perms.get(lobby[val.entry]);
       item.classList.add(`permission-${level}`);
       item.classList.add("permissionItem");
-      item.textContent = displayName;
+      if (val.icon) {
+        const icon = getIconElem(val.icon);
+        item.appendChild(icon);
+        const cont = document.createElement("span");
+        cont.classList.add("elemContent");
+        cont.textContent = displayName;
+        item.appendChild(cont);
+      } else {
+        item.textContent = displayName;
+      }
       permissionList.appendChild(item);
     });
 
@@ -840,9 +860,7 @@ async function displayInfo(lobby, thumbnail, signal) {
             showDenyButton: true,
             focusConfirm: false,
             confirmButtonText: '<i class="fas fa-x"></i> Close',
-            denyButtonText: `
-    <i class="fas fa-flag"></i> Report
-  `,
+            denyButtonText: '<i class="fas fa-flag"></i> Report',
             theme: "dark",
             width: "30em",
           }).then((x) => {
@@ -1444,6 +1462,8 @@ async function init() {
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("info-close", () => hideShow(true));
+  clickEvent("settingsButton", openSettings);
+  clickEvent("settingsClose", closeSettings);
   joinInfo(document.getElementById("info-connect"));
 
   updateTime();
@@ -1461,6 +1481,16 @@ function joinInfo(btn) {
     btn,
     'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> installed and have launched the game at least once since installation',
   );
+}
+
+function openSettings() {
+  document.getElementById("popupBackground").classList.remove("hidden");
+  document.getElementById("settings").classList.add("open");
+}
+
+function closeSettings() {
+  document.getElementById("popupBackground").classList.add("hidden");
+  document.getElementById("settings").classList.remove("open");
 }
 
 function clickEvent(id, callback) {

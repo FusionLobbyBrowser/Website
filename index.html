@@ -147,13 +147,15 @@
     <p id="refresh">Last Refresh: N/A</p>
     <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
         class="elemContent">Refresh</span></button>
+    <button id="settingsButton"><i class="fa-solid fa-gear textIcon"></i><span
+        class="elemContent">Settings</span></button>
   </header>
   <div id="info-outer" class="hidden">
     <div id="info" class="hidden">
       <div class="header-outer">
         <div id="info-header" class="header">
           <h2 id="info-title">HAHOOS's Lobby!</h2>
-          <div class="inline badges">
+          <div class="badges">
             <p class="infoBadge uptime"><i class="fa-solid fa-clock textIcon"></i><span class="elemContent">1h</span>
             </p>
             <p class="infoBadge version"><i class="fa-solid fa-code-branch textIcon"></i><span
@@ -183,14 +185,10 @@
             nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
             vel class
             aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-          <div id="info-permissions" class="collapsable">
-            <button class="textButton permissionsCollapsable" data-toggle="collapse">
-              <p class="detail permissionsTitle"><i class="fa-solid fa-gavel textIcon"></i>Permissions</p>
-            </button>
-            <div>
-              <div class="inline permissionsLevels"></div>
-              <div class="inline permissionsList"></div>
-            </div>
+          <p class="detail permissionsTitle"><i class="fa-solid fa-gavel textIcon"></i>Permissions</p>
+          <div>
+            <div class="inline permissionsLevels"></div>
+            <div class="inline permissionsList"></div>
           </div>
         </div>
       </div>
@@ -240,7 +238,7 @@
     </div>
   </div>
   <h2 class="lobbyHeader">Lobbies (10)</h2>
-  <div id="appliedFilters">
+  <div id="appliedFilters" class="badges">
     <h4 id="noFiltersText">No filters applied!</h4>
   </div>
   <p id="lobbyLimit" class="hidden">Steam has a limit of 50 lobbies, due to the high number of lobbies some may not
@@ -249,10 +247,11 @@
   <p id="javascriptRequired">This site requires JavaScript to be enabled.</p>
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
+  <div id="popupBackground" class="hidden"></div>
   <div id="mainContent" role="main">
-    <!-- TODO: Make settings a pop up on mobile -->
     <div id="settings">
       <h1 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h1>
+      <button id="settingsClose" class="textButton"><i class="fas fa-x"></i></button>
       <div id="settingsList">
 
       </div>
