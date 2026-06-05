@@ -122,6 +122,11 @@ input {
   font-size: 1rem;
 }
 
+.tippy-content,
+.tippy-box {
+  font-family: "Ubuntu", serif;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
