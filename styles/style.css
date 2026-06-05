@@ -378,9 +378,9 @@ a > .textIcon {
 }
 
 label {
-  font-size: 1rem;
-  line-height: 1rem;
-  height: 1rem;
+  font-size: 70%;
+  line-height: 100%;
+  height: 100%;
 }
 
 .checkbox-wrapper input,
@@ -398,7 +398,7 @@ label {
 }
 
 .checkbox-wrapper input:checked {
-  background-color: #6e79d6;
+  background-color: rgb(32, 77, 197);
 }
 
 .checkbox-wrapper input::after {
@@ -429,7 +429,7 @@ label {
 }
 
 .checkbox-wrapper input:checked:hover {
-  background-color: #535db3;
+  background-color: rgb(0, 45, 255);
 }
 
 /* End of code from https://getcssscan.com/css-checkboxes-examples */
