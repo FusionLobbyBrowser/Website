@@ -1153,6 +1153,9 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
 }
 
 async function setThumbnail(elem, modId, title, barcode, isAvatar) {
+  elem.removeAttribute("loading");
+  elem.setAttribute("fetchpriority", "high");
+
   var thumbnail = await getThumbnail(modId, title, barcode, isAvatar);
   if (thumbnail.error != null) {
     if (thumbnail.status == 404) {

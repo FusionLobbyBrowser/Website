@@ -70,6 +70,7 @@ export let settings = [
   },
   {
     id: "sort",
+    name: "Sort Mode",
     category: "General",
     type: "select",
     values: [
@@ -90,6 +91,7 @@ export let settings = [
   },
   {
     id: "sortOrder",
+    name: "Sort Order",
     category: "General",
     type: "select",
     values: [
@@ -376,11 +378,9 @@ let types = [
     callback: (setting, value) => {
       const wrapper = document.createElement("div");
       wrapper.classList.add("selectWrapper");
-      const label = document.createElement("label");
-      label.setAttribute("for", getElemId(setting.id));
-      fillLabel(setting, label);
       const select = document.createElement("select");
       select.setAttribute("name", getElemId(setting.id));
+      select.setAttribute("aria-label", setting.name);
       select.setAttribute("id", getElemId(setting.id));
       const btn = document.createElement("button");
       btn.appendChild(document.createElement("selectedcontent"));
@@ -404,7 +404,6 @@ let types = [
       });
 
       wrapper.appendChild(select);
-      wrapper.appendChild(label);
       return wrapper;
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
