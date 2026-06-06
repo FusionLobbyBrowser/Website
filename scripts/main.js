@@ -527,9 +527,7 @@ async function createLobby(lobby, signal, hidden) {
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
-  lobbyObserver.observe(lobbyName, {
-    box: "device-pixel-content-box",
-  });
+  lobbyObserver.observe(lobbyName);
   lobbyName.innerHTML = convert(getLobbyName(lobby, false));
 
   const player = lobby.playerList.players.find(
