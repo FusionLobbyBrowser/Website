@@ -662,16 +662,7 @@ export function filterWithSettings(lobbies) {
   for (const setting of settings) {
     if (!setting || !setting.lobbyFilter) continue;
 
-    let count = 0;
-
     if (!setting.filterWords && !setting.lobbyValidator) continue;
-
-    if (setting.setFilterName != false) {
-      constValue.forEach((element) => {
-        if (settingValidator(setting, element)) count++;
-      });
-    }
-
     let filter = false;
 
     const val = getSettingValue(setting.id);
@@ -680,11 +671,34 @@ export function filterWithSettings(lobbies) {
     else filter = setting.filterValue == val;
 
     if (filter) lobbies = lobbies.filter((i) => !settingValidator(setting, i));
+  }
+
+  for (const setting of settings) {
+    if (!setting || !setting.lobbyFilter) continue;
+
+    let total = 0;
+    let curr = 0;
+
+    if (!setting.filterWords && !setting.lobbyValidator) continue;
+
+    if (setting.setFilterName != false) {
+      constValue.forEach((element) => {
+        if (settingValidator(setting, element)) total++;
+      });
+
+      lobbies.forEach((element) => {
+        if (settingValidator(setting, element)) curr++;
+      });
+    }
 
     if (!setting.baseName) setting.baseName = setting.name;
     if (setting.setFilterName != false)
-      setSettingsTitle(setting.id, `${setting.baseName} [${count}]`);
+      setSettingsTitle(
+        setting.id,
+        `${setting.baseName} [${total == curr ? total : `${curr}/${total}`}]`,
+      );
   }
+
   return lobbies;
 }
 
