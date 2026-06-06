@@ -3,7 +3,8 @@
 <h1 align="center"> FLB | Website</h1>
 
 <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite?ref=badge_small">![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite.svg?type=small)</a>
-<a href="https://github.com/FusionLobbyBrowser/Website/actions/workflows/preview.yml">![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/FusionLobbyBrowser/Website/preview.yml?style=flat-square)
+<a href="https://github.com/FusionLobbyBrowser/Website/actions/workflows/preview.yml">![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/FusionLobbyBrowser/Website/preview.yml)
+<a href="https://wakatime.com/badge/user/3f1abe39-bb76-4588-b099-fd5a9acc9375/project/0148368a-b630-40cc-8e37-c4f380714e66"><img src="https://wakatime.com/badge/user/3f1abe39-bb76-4588-b099-fd5a9acc9375/project/0148368a-b630-40cc-8e37-c4f380714e66.svg" alt="wakatime"></a>
 </a>
 
 </div>
