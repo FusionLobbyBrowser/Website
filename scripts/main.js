@@ -147,6 +147,38 @@ const permsList = [
   },
 ];
 
+// Sort Order
+// 1 - Descending
+// 2 - Ascending
+
+const sorting = [
+  {
+    name: "Alphabetical",
+    callback: (lobbies, order) => {
+      lobbies.sort((a, b) =>
+        getLobbyName(a)
+          .toLowerCase()
+          .localeCompare(getLobbyName(b).toLowerCase()),
+      );
+      if (order == 2) lobbies.reverse();
+    },
+  },
+  {
+    name: "Players",
+    callback: (lobbies, order) => {
+      lobbies.sort((a, b) => parseInt(b.playerCount) - parseInt(a.playerCount));
+      if (order == 2) lobbies.reverse();
+    },
+  },
+  {
+    name: "Uptime",
+    callback: (lobbies, order) => {
+      lobbies.sort((a, b) => parseInt(a.lobbyUptime) - parseInt(b.lobbyUptime));
+      if (order == 2) lobbies.reverse();
+    },
+  },
+];
+
 async function fetchAndCreateLobbies() {
   refreshing = true;
   console.log("Fetching lobbies");
@@ -361,38 +393,6 @@ const playerObserver = new ResizeObserver((entries) => {
   }
 });
 
-// Sort Order
-// 1 - Descending
-// 2 - Ascending
-
-const sorting = [
-  {
-    name: "Alphabetical",
-    callback: (lobbies, order) => {
-      lobbies.sort((a, b) =>
-        getLobbyName(a)
-          .toLowerCase()
-          .localeCompare(getLobbyName(b).toLowerCase()),
-      );
-      if (order == 2) lobbies.reverse();
-    },
-  },
-  {
-    name: "Players",
-    callback: (lobbies, order) => {
-      lobbies.sort((a, b) => parseInt(b.playerCount) - parseInt(a.playerCount));
-      if (order == 2) lobbies.reverse();
-    },
-  },
-  {
-    name: "Uptime",
-    callback: (lobbies, order) => {
-      lobbies.sort((a, b) => parseInt(a.lobbyUptime) - parseInt(b.lobbyUptime));
-      if (order == 2) lobbies.reverse();
-    },
-  },
-];
-
 function getLobbyName(lobby, stripRichText = true) {
   const name =
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`;
@@ -441,6 +441,8 @@ async function createLobbies(signal) {
     "lobbies",
   );
 
+  const shouldUpdate = infoView != -1;
+
   for (let i = 0; i < lobbyList.length; i++) {
     if (signal?.aborted == true) return;
     const lobby = lobbyList[i];
@@ -449,7 +451,7 @@ async function createLobbies(signal) {
       infoUpdated = true;
   }
 
-  if (infoUpdated == false) hideShow(true);
+  if (infoUpdated == false && shouldUpdate) hideShow(true);
 }
 
 async function refreshButton(date) {
@@ -513,13 +515,22 @@ async function createLobby(lobby, signal, hidden) {
     icon.classList.add("fa-custom");
     icon.classList.add("fa-epicgames");
   }
-  const thumb = await setThumbnail(
-    lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
-    lobby.levelModID,
-    lobby.levelTitle,
-    lobby.levelBarcode,
-    false,
-  );
+  const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
+  const setThumb = async () => {
+    return await setThumbnail(
+      lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
+      lobby.levelModID,
+      lobby.levelTitle,
+      lobby.levelBarcode,
+      false,
+    );
+  };
+  const thumb = hidden ? setThumb() : await setThumb();
+  if (hidden) {
+    thumb.then((x) =>
+      censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw),
+    );
+  }
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
@@ -539,8 +550,8 @@ async function createLobby(lobby, signal, hidden) {
 
   const hostName = lobbyElem.getElementsByClassName("lobbyHostName")[0];
   setContent(hostName, name);
-  const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
-  censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, thumb.nsfw);
+  if (!hidden)
+    censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, thumb.nsfw);
 
   const gamemode = lobbyElem.getElementsByClassName("gamemodeTitle")[0];
   const g = gamemodes.find((x) => x.barcode == lobby.gamemodeBarcode);
@@ -659,7 +670,7 @@ function enableInfoButton(enabled) {
   }
 }
 
-async function displayInfo(lobby, thumbnail, signal) {
+async function displayInfo(lobby, signal) {
   if (infoSignal) infoSignal.abort();
   showingInfo = true;
   try {
@@ -674,6 +685,19 @@ async function displayInfo(lobby, thumbnail, signal) {
     infoView = lobby.lobbyID;
 
     hideShow(false);
+
+    const content = document.getElementById("info-content");
+    const right = content.getElementsByClassName("right-content")[0];
+    const left = content.getElementsByClassName("left-content")[0];
+    const thumb = left.getElementsByClassName("thumbnail")[0];
+    const description = right.getElementsByClassName("lobbyDescription")[0];
+    const thumbnail = await setThumbnail(
+      thumb,
+      lobby.levelModID,
+      lobby.levelTitle,
+      lobby.levelBarcode,
+      false,
+    );
 
     const lobbyInfo = document.getElementById("info");
     const header = lobbyInfo.getElementsByClassName("header")[0];
@@ -723,13 +747,7 @@ async function displayInfo(lobby, thumbnail, signal) {
       connectBtn.classList.remove("blocked");
       connectBtn.disabled = false;
     }
-    const content = document.getElementById("info-content");
-    const right = content.getElementsByClassName("right-content")[0];
-    const left = content.getElementsByClassName("left-content")[0];
-    const thumb = left.getElementsByClassName("thumbnail")[0];
-    const description = right.getElementsByClassName("lobbyDescription")[0];
-    thumb.setAttribute("src", thumbnail.thumbnail);
-    thumb.setAttribute("alt", thumbnail.alt);
+
     description.innerHTML = convert(
       (lobby.lobbyDescription != ""
         ? lobby.lobbyDescription
