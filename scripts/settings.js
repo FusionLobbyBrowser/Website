@@ -43,6 +43,18 @@ let categories = [
     expanded: true,
   },
 ];
+
+const RP_LEVELS = [
+  "T0x1c.HoodCorner.Level.GmHoodCornerDay",
+  "T0x1c.HoodCorner.Level.GmHoodCornerNight",
+  "T0x1c.RPSouthside.Level.RPSouthside",
+  "jiggy.gmnightlight.Level.gmdaylight",
+  "jiggy.gmnightlight.Level.gmnightlight",
+  "Cheezy.HoodCorner.Level.GmHoodCorner",
+  "SoldierThree57.rpdowntowntiny.Level.rpdowntowntinynight",
+  "SoldierThree57.rpdowntowntiny.Level.rpdowntowntinyday",
+];
+
 export let settings = [
   // General
   {
@@ -133,6 +145,7 @@ export let settings = [
       "war",
       "roleplay",
     ],
+    filterLevels: RP_LEVELS,
 
     defaultValue: true,
   },
@@ -146,6 +159,7 @@ export let settings = [
     lobbyFilter: true,
     filterValue: false,
     filterWords: ["hood", "hoodrp"],
+    filterLevels: RP_LEVELS,
 
     defaultValue: true,
   },
@@ -194,7 +208,11 @@ export let settings = [
 
     lobbyFilter: true,
     filterValue: false,
-    filterWords: ["backrooms"],
+    filterWords: ["backrooms", "backroom"],
+    filterLevels: [
+      "0gravity.BackroomsEntropy.Level.BackroomsEntropy",
+      "HombresGuapos.TheBackroomsA24.Level.TheBackroomsA24",
+    ],
 
     defaultValue: true,
   },
@@ -670,7 +688,7 @@ export function filterWithSettings(lobbies) {
       filter = setting.filterValue(setting, val);
     else filter = setting.filterValue == val;
 
-    if (filter) lobbies = lobbies.filter((i) => !settingValidator(setting, i));
+    if (filter) lobbies = lobbies.filter((i) => !isLobbyValid(setting, i));
   }
 
   for (const setting of settings) {
@@ -683,11 +701,11 @@ export function filterWithSettings(lobbies) {
 
     if (setting.setFilterName != false) {
       constValue.forEach((element) => {
-        if (settingValidator(setting, element)) total++;
+        if (isLobbyValid(setting, element)) total++;
       });
 
       lobbies.forEach((element) => {
-        if (settingValidator(setting, element)) curr++;
+        if (isLobbyValid(setting, element)) curr++;
       });
     }
 
@@ -702,11 +720,23 @@ export function filterWithSettings(lobbies) {
   return lobbies;
 }
 
-function settingValidator(setting, i) {
-  if (setting.filterWords) return isGroup(i, setting.filterWords);
-  else if (setting.lobbyValidator)
-    return setting.lobbyValidator(i, getSettingValue(setting.id));
-  else return null;
+// This is in reverse
+export function isLobbyValid(setting, i) {
+  if (isString(setting)) setting = getSetting(setting);
+  if (!setting) return true;
+  let valid = true;
+
+  if (setting.filterWords && isGroup(i, setting.filterWords)) valid = false;
+  if (
+    setting.lobbyValidator &&
+    setting.lobbyValidator(i, getSettingValue(setting.id))
+  )
+    valid = false;
+
+  if (setting.filterLevels && setting.filterLevels.includes(i.levelBarcode))
+    valid = false;
+
+  return !valid;
 }
 
 export function addEventListener(id, callback) {
