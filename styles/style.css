@@ -437,18 +437,40 @@ label {
   background-color: rgb(0, 45, 255);
 }
 
-/* End of code from https://getcssscan.com/css-checkboxes-examples */
-
 /* Discord rich element */
 
+@media (max-width: 600px) {
+  .discord {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .discordElem {
+    width: 85%;
+  }
+}
+
+@media (min-width: 600px) {
+  .discord {
+    width: 98%;
+    align-items: center;
+    height: 3.5em;
+    border-radius: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
 .discord {
-  width: 98%;
   display: flex;
-  background-color: rgb(30, 30, 30);
-  box-shadow: 10px 5px 5px rgb(10, 10, 10);
+  background-color: rgb(10, 10, 10);
+  box-shadow: 10px 5px 5px rgb(0, 0, 0);
   color: white;
-  align-items: center;
-  height: 3.5em;
   border-radius: 5px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -463,31 +485,85 @@ label {
   margin-left: 2%;
 }
 
+@media (max-width: 600px) {
+  .serverIcon {
+    margin-top: 0.5em;
+    width: 25%;
+  }
+}
+
+@media (min-width: 600px) {
+  .serverName,
+  .memberCount,
+  .serverIcon {
+    display: inline-block;
+    padding-right: 2%;
+  }
+}
+
+@media (max-width: 600px) {
+  .serverName,
+  .memberCount,
+  .serverIcon,
+  .serverDescription {
+    margin-bottom: 0.25em;
+  }
+}
+
 .serverName,
 .memberCount,
-.serverIcon {
-  display: inline-block;
+.serverIcon,
+.serverDescription {
   font-size: 1rem;
-  padding-right: 2%;
   white-space: nowrap;
+  text-align: center;
 }
 
-.discordJoin {
-  text-align: center;
-  height: 60%;
+.serverName {
+  width: 90%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.discordJoin > button {
-  height: 100%;
-  text-align: center;
+.discordJoinBtn {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .discordJoin {
+    margin-top: 1em;
+    width: 85%;
+    margin-bottom: 1em;
+  }
+
+  .discordJoinBtn {
+    font-size: 1.25rem;
+  }
+
+  .memberCount {
+    margin-top: 0.15em;
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 600px) {
+  .memberCount {
+    width: 16%;
+  }
+
+  .serverName {
+    width: 50%;
+  }
+
+  .serverDescription {
+    display: none;
+    visibility: hidden;
+  }
 }
 
 .memberCount {
-  width: 16%;
   text-overflow: ellipsis;
   overflow: hidden;
-  display: flex;
-  align-items: center;
   gap: 0.25em;
 }
 
@@ -506,12 +582,6 @@ label {
 
 .availableLobby {
   color: chartreuse;
-}
-
-.serverName {
-  width: 50%;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 
 .headerText {

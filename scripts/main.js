@@ -56,6 +56,8 @@ const cacheExpireTime = 15 * 60;
 
 let showingInfo = false;
 
+const converter = new Converter();
+
 const permissions = [
   [-1, "guest"],
   [0, "default"],
@@ -249,7 +251,7 @@ async function fetchAndCreateLobbies() {
                   name: val.gamemodeTitle
                     ? Converter.removeRichText(val.gamemodeTitle)
                     : "Sandbox",
-                  icon: g.icon ? g.icon : "fas fa-puzzle-piece",
+                  icon: g?.icon ? g.icon : "fas fa-puzzle-piece",
 
                   lobbyFilter: true,
                   filterValue: false,
@@ -850,8 +852,6 @@ async function displayInfo(lobby, signal) {
       const name = getName(player);
       const nameElem = playerElem.getElementsByClassName("name")[0];
       nameElem.innerHTML = convert(name.name);
-      if (player.description && player.description != "")
-        createToolTip(nameElem, convert(player.description));
       const perms = colorPermission(player.permissionLevel);
       const permsElem = playerElem.getElementsByClassName("permissions")[0];
       permsElem.classList.add(perms.class);
@@ -1035,7 +1035,7 @@ function colorPermission(perm) {
 }
 
 function convert(text) {
-  return DOMPurify.sanitize(convertToHTML(censorWords(text)));
+  return DOMPurify.sanitize(converter.unity2html(censorWords(text)));
 }
 function censorWords(text) {
   if (!isToggleChecked("censorProfanities")) return text;
@@ -1257,11 +1257,6 @@ function setPlayerCount(players, lobbies) {
     highLobby.classList.remove("hidden");
   } else highLobby.classList.add("hidden");
    */
-}
-
-function convertToHTML(text) {
-  const converter = new Converter();
-  return converter.unity2html(text);
 }
 
 async function getSteamProfile(id) {

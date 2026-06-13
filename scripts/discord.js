@@ -50,6 +50,8 @@ function createServerElem(obj, code) {
 
   const iconElem = server.getElementsByClassName("serverIcon")[0];
   const serverNameElem = server.getElementsByClassName("serverName")[0];
+  const serverDescriptionElem =
+    server.getElementsByClassName("serverDescription")[0];
   const memberCountElem = server.getElementsByClassName("memberCount")[0];
   const joinElem = server.getElementsByClassName("discordJoin")[0];
 
@@ -64,8 +66,12 @@ function createServerElem(obj, code) {
       serverNameElem,
       `${obj.guild.name} • ${obj.guild.description}`,
     );
+    serverDescriptionElem.innerHTML = DOMPurify.sanitize(
+      new Converter().unity2html(obj.guild.description),
+    );
   } else {
     createTooltip(serverNameElem, obj.guild.name);
+    serverDescriptionElem.textContent = "No description provided";
   }
   const num = obj.profile.member_count ?? -1;
   memberCountElem.innerHTML = DOMPurify.sanitize(
