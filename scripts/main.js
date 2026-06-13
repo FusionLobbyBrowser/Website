@@ -251,7 +251,7 @@ async function fetchAndCreateLobbies() {
                   name: val.gamemodeTitle
                     ? Converter.removeRichText(val.gamemodeTitle)
                     : "Sandbox",
-                  icon: g?.icon ? g.icon : "fas fa-puzzle-piece",
+                  icon: g && g.icon ? g.icon : "fas fa-puzzle-piece",
 
                   lobbyFilter: true,
                   filterValue: false,
@@ -1359,6 +1359,7 @@ function isToggleChecked(id) {
 function getAllowedIDs(lobbies) {
   let list = [];
   var filtered = filterWithSettings(structuredClone(lobbies));
+  filterBadges();
   filtered.forEach((x) => list.push(x.lobbyID));
   return list;
 }
@@ -1384,6 +1385,7 @@ async function updateFilters() {
 
   let lobbies = hideLobbies();
   setLobbyCount(lobbies, lobbyCountMax);
+  filterBadges();
 }
 
 async function loadProfanities() {
