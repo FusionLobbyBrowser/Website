@@ -21,7 +21,6 @@ const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
 
 const URI_JOIN = "flb-bridge://join/[data]";
-const JOIN_DATA = "[layer] || [code]";
 
 const LOBBY_PARAM = "lobby";
 
@@ -1301,9 +1300,7 @@ async function requestJoin(code, platform) {
   }
 
   try {
-    let encoded = btoa(
-      JOIN_DATA.replace("[code]", code).replace("[layer]", layer),
-    );
+    let encoded = btoa(JSON.stringify({ code: code, layer: layer }));
 
     encoded = encoded
       .replace(/\+/g, "-")
