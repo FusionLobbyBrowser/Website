@@ -26,8 +26,6 @@ const decReg = new RegExp("[1-9]{1}[0-9]*");
 const fontsize4unity2html = {
   pattern: new RegExp("<size=([^>]*)>(.*?)</size>"),
   replace: (match, p1, p2) => {
-    if (!p1.match(decReg)) throw new Error(`error font size : ${match}`);
-
     return p2;
   },
 };
