@@ -36,6 +36,10 @@ let categories = [
     name: "Gamemodes",
     icon: "fa-solid fa-puzzle-piece",
     expanded: true,
+
+    sort: true,
+    sortMode: "filterTotalCount",
+    sortOrder: 2,
   },
   {
     name: "Filtering",
@@ -456,6 +460,51 @@ let types = [
   },
 ];
 
+// Sort Order
+// 1 - Descending
+// 2 - Ascending
+
+const categorySorts = [
+  {
+    name: "alphabetical",
+    callback: (_settings, order) => {
+      _settings.sort((a, b) =>
+        (settings[a].baseName ?? settings[a].name)
+          .toLowerCase()
+          .localeCompare(
+            (settings[b].baseName ?? settings[b].name).toLowerCase(),
+          ),
+      );
+      if (order == 2) _settings.reverse();
+      return _settings;
+    },
+  },
+  {
+    name: "filterTotalCount",
+    callback: (_settings, order) => {
+      _settings.sort(
+        (a, b) =>
+          parseInt(settings[b].totalCount ?? 0) -
+          parseInt(settings[a].totalCount ?? 0),
+      );
+      if (order == 2) _settings.reverse();
+      return _settings;
+    },
+  },
+  {
+    name: "filterCurrentCount",
+    callback: (_settings, order) => {
+      _settings.sort(
+        (a, b) =>
+          parseInt(settings[b].currCount ?? 0) -
+          parseInt(settings[a].currCount ?? 0),
+      );
+      if (order == 2) _settings.reverse();
+      return _settings;
+    },
+  },
+];
+
 let settingsValues = [];
 let eventListeners = [];
 
@@ -570,55 +619,69 @@ export function init() {
   categories.forEach((val) => {
     const cat = createCategory(val);
     settingsList.appendChild(cat);
-  });
 
-  for (const val of settings) {
-    const type = types.find((t) => t.type == val.type);
-    if (type == null) {
-      console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
-      continue;
-    }
-
-    const saved = localStorage.getItem(getElemId(val.id));
-    let _val;
-    if (saved != null && saved != undefined) {
-      if (!type.overrideCached) _val = saved;
-      else _val = type.overrideCached(saved);
-    } else _val = val.defaultValue;
-    setSetting(val.id, _val);
-
-    const category = settingsList
-      .querySelector(
-        `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
-      )
-      ?.getElementsByTagName("div")[0];
-    if (category == null) {
-      console.warn(`Setting '${val.id}' has unknown category: ${val.category}`);
-      continue;
-    }
-
-    const wrapper = type.callback(val, _val);
-    if (wrapper == null) {
-      console.warn(`Empty wrapper for setting '${val.id}'`);
-      continue;
-    }
-
-    val.elem = wrapper;
-
-    wrapper.addEventListener("onsettingchanged", (v) => {
-      setSetting(val.id, v.detail.new);
-      eventListeners.forEach((x) => {
-        if (x.id == val.id) x.callback(v.detail.new);
-      });
-      window.dispatchEvent(
-        new CustomEvent("onsettingchanged", {
-          detail: { id: val.id, old: v.detail.old, new: v.detail.new },
-        }),
-      );
+    let index = [];
+    settings.forEach((x, i) => {
+      if (x.category == val.name) index.push(i);
     });
+    if (val.sort && val.sortMode) {
+      const order = categorySorts.find(
+        (x) => x.name.toLowerCase() == val.sortMode.toLowerCase(),
+      );
+      if (order) index = order.callback(index, val.sortOrder);
+    }
 
-    category.appendChild(wrapper);
-  }
+    for (const i of index) {
+      const val = settings[i];
+      const type = types.find((t) => t.type == val.type);
+      if (type == null) {
+        console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
+        continue;
+      }
+
+      const saved = localStorage.getItem(getElemId(val.id));
+      let _val;
+      if (saved != null && saved != undefined) {
+        if (!type.overrideCached) _val = saved;
+        else _val = type.overrideCached(saved);
+      } else _val = val.defaultValue;
+      setSetting(val.id, _val);
+
+      const category = settingsList
+        .querySelector(
+          `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
+        )
+        ?.getElementsByTagName("div")[0];
+      if (category == null) {
+        console.warn(
+          `Setting '${val.id}' has unknown category: ${val.category}`,
+        );
+        continue;
+      }
+
+      const wrapper = type.callback(val, _val);
+      if (wrapper == null) {
+        console.warn(`Empty wrapper for setting '${val.id}'`);
+        continue;
+      }
+
+      val.elem = wrapper;
+
+      wrapper.addEventListener("onsettingchanged", (v) => {
+        setSetting(val.id, v.detail.new);
+        eventListeners.forEach((x) => {
+          if (x.id == val.id) x.callback(v.detail.new);
+        });
+        window.dispatchEvent(
+          new CustomEvent("onsettingchanged", {
+            detail: { id: val.id, old: v.detail.old, new: v.detail.new },
+          }),
+        );
+      });
+
+      category.appendChild(wrapper);
+    }
+  });
 }
 
 export function setSetting(setting, value) {
@@ -645,6 +708,7 @@ export function setSettingsTitle(setting, title) {
   let index = settings.findIndex((x) => x.id == setting);
   if (index != -1) {
     const val = settings[index];
+    if (!val.elem) return;
     settings[index].name = title;
     const type = types.find((t) => t.type == val.type);
     if (type && type.setTitle) type.setTitle(val.elem, title);
@@ -708,6 +772,9 @@ export function filterWithSettings(lobbies) {
         if (isLobbyValid(setting, element)) curr++;
       });
     }
+
+    setting.totalCount = total;
+    setting.currCount = curr;
 
     if (!setting.baseName) setting.baseName = setting.name;
     if (setting.setFilterName != false)
