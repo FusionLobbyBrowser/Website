@@ -190,11 +190,9 @@ async function fetchAndCreateLobbies() {
     lobbiesSignal = controller;
     const refreshBtn = document.getElementById("refreshButton");
     const refresh = document.getElementById("refresh");
-    const uptime = document.getElementById("uptime");
     const highLobby = document.getElementById("lobbyLimit");
     try {
-      refreshBtn.classList.remove("blocked");
-      refreshBtn.classList.add("inProgress");
+      refreshBtn.classList.add("blocked");
       refreshBtn.getElementsByClassName("textIcon")[0].classList.add("fa-spin");
       refreshBtn.blocked = true;
 
@@ -212,7 +210,6 @@ async function fetchAndCreateLobbies() {
         error.classList.remove("hidden");
 
         setTimeElem(refresh, null);
-        setTimeElem(uptime, null);
 
         highLobby.classList.add("hidden");
 
@@ -229,7 +226,6 @@ async function fetchAndCreateLobbies() {
           error.classList.add("hidden");
 
           timeFromResponse(refresh, json.date);
-          timeFromResponse(uptime, res.uptime);
 
           if (json.lobbies != null) {
             let lobbies = json.lobbies;
@@ -275,7 +271,7 @@ async function fetchAndCreateLobbies() {
     } finally {
       refreshing = false;
       setContent(refreshBtn, "Refresh");
-      refreshBtn.classList.remove("inProgress");
+      refreshBtn.classList.remove("blocked");
       refreshBtn.blocked = false;
       refreshBtn
         .getElementsByClassName("textIcon")[0]
@@ -704,12 +700,6 @@ async function displayInfo(lobby, signal) {
     const header = lobbyInfo.getElementsByClassName("header")[0];
     document.getElementById("info-title").innerHTML = convert(
       getLobbyName(lobby, false),
-    );
-    lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
-
-    setContent(
-      header.getElementsByClassName("uptime")[0],
-      timePassed(Number(lobby.lobbyUptime)),
     );
 
     setContent(
@@ -1512,10 +1502,8 @@ function clickEvent(id, callback) {
 
 async function updateTime() {
   const refresh = document.getElementById("refresh");
-  const uptime = document.getElementById("uptime");
   while (true) {
     timeAgoElem(refresh);
-    timeAgoElem(uptime);
 
     const info = document.getElementById("info");
     if (info.hasAttribute("uptime")) {

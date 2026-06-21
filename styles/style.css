@@ -1,9 +1,39 @@
 body {
+  --flb-primary-input-background-color: rgb(32, 77, 197);
+  --flb-primary-input-hover-background-color: rgb(0, 45, 255);
+  --flb-primary-input-color: var(--flb-paragraph-color);
+  --flb-blocked-input-background-color: #9f1e1e;
+  --flb-blocked-input-background-hover-color: #8b0000;
+  --flb-blocked-input-color: var(--flb-paragraph-color);
+  --flb-setting-input-hover-background-color: rgb(50, 50, 50);
+
+  --flb-primary-background-color: rgb(30, 30, 30);
+  --flb-primary-box-shadow-color: rgb(20, 20, 20);
+
+  --flb-secondary-background-color: rgb(20, 20, 20);
+  --flb-secondary-box-shadow-color: rgb(10, 10, 10);
+
+  --flb-tertiary-background-color: rgb(10, 10, 10);
+  --flb-tertiary-box-shadow-color: rgb(0, 0, 0);
+
+  --flb-border-color: #dddddd;
+
+  --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+
+  --flb-heading-font: "Outfit";
+  --flb-paragraph-font: "Ubuntu";
+
+  --flb-heading-color: white;
+  --flb-paragraph-color: white;
+  --flb-error-color: #f4320b;
+  --flb-success-color: chartreuse;
+  --flb-link-color: #5eb3ff;
+  --flb-link-hover-color: #8fcdff;
+  --flb-invisible-link-hover-color: #b4b6b8;
+
   height: 100%;
-
-  background-color: rgb(30, 30, 30);
-
-  color: white;
+  background-color: var(--flb-primary-background-color);
+  color: var(--flb-paragraph-color);
 }
 
 .header-moreInfoOpened {
@@ -22,8 +52,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Outfit", serif;
+  font-family: var(--flb-heading-font);
   font-weight: 400;
+  color: var(--flb-heading-color);
 }
 
 h1 {
@@ -47,7 +78,7 @@ span {
 }
 
 .blocked {
-  background-color: #9f1e1e;
+  background-color: var(--flb-blocked-input-background-color);
 }
 
 .filterNSFW {
@@ -56,16 +87,7 @@ span {
 
 .blocked:hover {
   cursor: default;
-  background-color: #8b0000;
-}
-
-.inProgress {
-  background-color: gray;
-}
-
-.inProgress:hover {
-  cursor: default;
-  background-color: #606060;
+  background-color: var(--flb-blocked-input-background-hover-color);
 }
 
 .profile {
@@ -78,25 +100,25 @@ span {
 
 a {
   text-decoration: none;
-  color: #5eb3ff;
+  color: var(--flb-link-color);
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
 
 a:hover {
-  color: #8fcdff;
+  color: var(--flb-link-hover-color);
 }
 
 .levelRedirect {
   font-size: inherit;
   text-decoration: none;
-  color: white;
+  color: var(--flb-paragraph-color);
   -webkit-transition: 0.7s;
   transition: 0.7s;
 }
 
 .levelRedirect:hover {
-  color: #b4b6b8;
+  color: var(--flb-invisible-link-hover-color);
 }
 
 .linkIcon {
@@ -124,15 +146,18 @@ label,
 a,
 option,
 input {
-  font-family: "Ubuntu", serif;
+  font-family: var(--flb-paragraph-font);
   font-weight: 400;
   font-style: normal;
   font-size: 1rem;
 }
 
 .tippy-content,
-.tippy-box {
-  font-family: "Ubuntu", serif;
+.tippy-box,
+p,
+label {
+  font-family: var(--flb-paragraph-font);
+  color: var(--flb-paragraph-color);
 }
 
 ul {
@@ -205,21 +230,15 @@ ul {
 }
 
 #refresh {
-  color: #a8a8a8;
   font-size: 0.75rem;
-  margin-top: 0.25rem;
+  margin-top: 0.1rem;
   margin-bottom: 0;
+  text-align: center;
 }
 
 #refreshButton {
   margin-top: 0.75rem;
   min-width: 7em;
-}
-
-#uptime {
-  color: #a8a8a8;
-  font-size: 0.75rem;
-  margin-bottom: 0;
 }
 
 #notFound {
@@ -314,7 +333,11 @@ ul {
 #appliedFilters > .infoBadge {
   margin-left: 0.25em;
   margin-right: 0.25em;
-  background-color: rgba(220, 20, 60, 0.5);
+  background-color: color-mix(
+    in srgb,
+    var(--flb-blocked-input-background-color),
+    transparent 20%
+  );
 }
 
 #noFiltersText {
@@ -328,11 +351,6 @@ ul {
 
 .textIcon {
   margin-right: 0.15em;
-}
-
-.filterIcon {
-  margin-right: 0.35em;
-  color: red;
 }
 
 a > .textIcon {
@@ -384,7 +402,7 @@ a > .textIcon {
 }
 
 #javascriptRequired {
-  color: red;
+  color: var(--flb-error-color);
   text-align: center;
 }
 
@@ -440,13 +458,13 @@ label {
 }
 
 .checkbox-wrapper input:checked {
-  background-color: rgb(32, 77, 197);
+  background-color: var(--flb-primary-input-background-color);
 }
 
 .checkbox-wrapper input::after {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
-  color: white;
+  color: var(--flb-paragraph-color);
   width: 100%;
   display: block;
   text-align: center;
@@ -470,7 +488,7 @@ label {
 }
 
 .checkbox-wrapper input:checked:hover {
-  background-color: rgb(0, 45, 255);
+  background-color: var(--flb-primary-input-hover-background-color);
 }
 
 /* Discord rich element */
@@ -515,10 +533,10 @@ label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background-color: rgb(10, 10, 10);
+  background-color: var(--flb-tertiary-background-color);
   -webkit-box-shadow: 10px 5px 5px rgb(0, 0, 0);
   box-shadow: 10px 5px 5px rgb(0, 0, 0);
-  color: white;
+  color: var(--flb-paragraph-color);
   border-radius: 5px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -625,11 +643,11 @@ label {
 }
 
 .fullLobby {
-  color: red;
+  color: var(--flb-error-color);
 }
 
 .availableLobby {
-  color: chartreuse;
+  color: var(--flb-success-color);
 }
 
 .headerText {
@@ -640,30 +658,9 @@ label {
 }
 
 .error {
-  color: #f4320b;
+  color: var(--flb-error-color);
   font-size: 0.938rem;
   text-align: center;
-}
-
-.closeInfo {
-  text-decoration: none;
-  color: white;
-  -webkit-transition: 0.7s;
-  transition: 0.7s;
-  text-align: center;
-  margin-top: 0;
-}
-
-.closeInfo:hover {
-  color: #fa5f55;
-}
-
-#closeMoreInfo {
-  background-color: #ff0000;
-}
-
-#closeMoreInfo:hover {
-  background-color: #dd0000;
 }
 
 #mainContent {
@@ -739,16 +736,16 @@ label {
   overflow-y: auto;
   white-space: nowrap;
 
-  background-color: rgb(20, 20, 20);
+  background-color: var(--flb-secondary-background-color);
   border-radius: 20px;
 
   scrollbar-width: thin;
   scroll-behavior: smooth;
-  scrollbar-color: rgb(32, 77, 197) rgba(0, 0, 0, 0);
+  scrollbar-color: var(--flb-primary-input-background-color) rgba(0, 0, 0, 0);
 
-  -webkit-box-shadow: 7.5px 2.5px 2.5px rgb(10, 10, 10);
+  -webkit-box-shadow: 7.5px 2.5px 2.5px var(--flb-secondary-box-shadow-color);
 
-  box-shadow: 7.5px 2.5px 2.5px rgb(10, 10, 10);
+  box-shadow: 7.5px 2.5px 2.5px var(--flb-secondary-box-shadow-color);
 }
 
 #settingsTitle {
@@ -766,9 +763,9 @@ label {
 
 .lobby {
   position: relative;
-  background-color: rgba(20, 20, 20);
-  -webkit-box-shadow: 10px 5px 5px rgb(10, 10, 10);
-  box-shadow: 10px 5px 5px rgb(10, 10, 10);
+  background-color: var(--flb-secondary-background-color);
+  -webkit-box-shadow: 10px 5px 5px var(--flb-secondary-box-shadow-color);
+  box-shadow: 10px 5px 5px var(--flb-secondary-box-shadow-color);
   text-align: center;
   padding-bottom: 0.35em;
   border-radius: 15px;
@@ -785,24 +782,24 @@ label {
 }
 
 .tippy-box[data-theme~="website"] {
-  background-color: rgb(30, 30, 30);
+  background-color: var(--flb-primary-background-color);
 }
 
 .tippy-box[data-theme~="website"][data-placement^="top"]
   > .tippy-arrow::before {
-  border-top-color: rgb(30, 30, 30);
+  border-top-color: var(--flb-primary-background-color);
 }
 .tippy-box[data-theme~="website"][data-placement^="bottom"]
   > .tippy-arrow::before {
-  border-bottom-color: rgb(30, 30, 30);
+  border-bottom-color: var(--flb-primary-background-color);
 }
 .tippy-box[data-theme~="website"][data-placement^="left"]
   > .tippy-arrow::before {
-  border-left-color: rgb(30, 30, 30);
+  border-left-color: var(--flb-primary-background-color);
 }
 .tippy-box[data-theme~="website"][data-placement^="right"]
   > .tippy-arrow::before {
-  border-right-color: rgb(30, 30, 30);
+  border-right-color: var(--flb-primary-background-color);
 }
 
 @-webkit-keyframes fadein {
@@ -835,11 +832,6 @@ label {
   visibility: hidden;
 }
 
-.lobbySkeleton {
-  -webkit-box-shadow: 10px 5px 5px rgb(10, 10, 10);
-  box-shadow: 10px 5px 5px rgb(10, 10, 10);
-}
-
 #info-outer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -858,9 +850,9 @@ label {
 }
 
 #info {
-  background-color: rgb(20, 20, 20);
-  -webkit-box-shadow: 10px 5px 5px rgb(10, 10, 10);
-  box-shadow: 10px 5px 5px rgb(10, 10, 10);
+  background-color: var(--flb-secondary-background-color);
+  -webkit-box-shadow: 10px 5px 5px var(--flb-secondary-box-shadow-color);
+  box-shadow: 10px 5px 5px var(--flb-secondary-box-shadow-color);
   border-radius: 10px;
 
   width: 60em;
@@ -883,8 +875,8 @@ label {
 }
 
 .lobby:hover {
-  -webkit-box-shadow: 10px 10px 10px rgb(0, 0, 0);
-  box-shadow: 10px 10px 10px rgb(0, 0, 0);
+  -webkit-box-shadow: 10px 10px 10px var(--flb-secondary-box-shadow-color);
+  box-shadow: 10px 10px 10px var(--flb-secondary-box-shadow-color);
 }
 
 #info-title {
@@ -899,15 +891,6 @@ label {
 
 .playersTitle {
   font-size: 1.35rem;
-}
-
-.lobbyHost {
-  color: rgb(100, 100, 100);
-  font-size: 0.781rem;
-
-  text-align: left;
-  margin-left: 1.5em;
-  margin-top: 0;
 }
 
 #info-players {
@@ -928,7 +911,7 @@ label {
 
 #lobbyLimit {
   text-align: center;
-  color: red;
+  color: var(--flb-error-color);
 
   margin-top: 0.5em;
   padding-top: 0;
@@ -952,7 +935,7 @@ label {
 
 .infoBadge {
   border-radius: 10px;
-  background-color: rgba(0, 56, 61, 0.7);
+  background-color: var(--flb-info-badge-color);
   padding: 6px 6px 6px 6px;
   -webkit-transition: 0.5s;
   transition: 0.5s;
@@ -982,14 +965,6 @@ label {
   margin-top: 0.15em;
   margin-bottom: 0.75em;
   text-align: center;
-}
-
-.playerCount {
-  color: cyan;
-}
-
-.lobbyCount {
-  color: yellow;
 }
 
 .lobbyHeader {
@@ -1066,9 +1041,9 @@ label {
 }
 
 .player {
-  background-color: rgb(10, 10, 10);
-  -webkit-box-shadow: 10px 5px 5px rgb(0, 0, 0);
-  box-shadow: 10px 5px 5px rgb(0, 0, 0);
+  background-color: var(--flb-tertiary-background-color);
+  -webkit-box-shadow: 10px 5px 5px var(--flb-tertiary-box-shadow-color);
+  box-shadow: 10px 5px 5px var(--flb-tertiary-box-shadow-color);
   min-width: 9em;
   text-align: center;
   border-radius: 15px;
@@ -1084,8 +1059,8 @@ label {
 }
 
 .player:hover {
-  -webkit-box-shadow: 10px 10px 10px rgb(10, 10, 10);
-  box-shadow: 10px 10px 10px rgb(10, 10, 10);
+  -webkit-box-shadow: 10px 10px 10px var(--flb-secondary-box-shadow-color);
+  box-shadow: 10px 10px 10px var(--flb-secondary-box-shadow-color);
 }
 
 .playerId {
@@ -1158,16 +1133,7 @@ label {
   margin-bottom: 1.75em;
 }
 
-.username {
-  word-wrap: break-word;
-  color: grey;
-  font-size: 0.75rem;
-  margin-top: 0.25em;
-  margin-bottom: 0;
-}
-
 .permissions {
-  color: white;
   font-size: 0.688rem;
   margin-top: 0.25em;
   margin-bottom: 0;
@@ -1188,7 +1154,11 @@ label {
   width: auto;
   padding: 0.3em 0.3em 0.3em 0.3em;
 
-  background-color: rgba(21, 21, 21, 0.7);
+  background-color: color-mix(
+    in srgb,
+    var(--flb-secondary-background-color),
+    transparent 30%
+  );
   border-radius: 5px;
 }
 
@@ -1201,17 +1171,21 @@ label {
   width: auto;
   padding: 0.3em 0.3em 0.3em 0.3em;
 
-  background-color: rgba(21, 21, 21, 0.7);
+  background-color: color-mix(
+    in srgb,
+    var(--flb-secondary-background-color),
+    transparent 30%
+  );
   border-radius: 5px;
 }
 
 button {
   border: none;
   text-decoration: none;
-  background-color: rgb(32, 77, 197);
+  background-color: var(--flb-primary-input-background-color);
   padding: 5px 15px 5px 15px;
   border-radius: 6px;
-  color: white;
+  color: var(--flb-primary-input-color);
 
   -webkit-transition: 0.65s;
 
@@ -1220,16 +1194,7 @@ button {
 
 button:hover {
   cursor: pointer;
-  background-color: rgb(0, 45, 255);
-}
-
-.activeServer {
-  background-color: rgb(0, 175, 255);
-}
-
-.activeServer:hover {
-  background-color: rgb(0, 140, 200);
-  cursor: auto;
+  background-color: var(--flb-primary-input-hover-background-color);
 }
 
 .textButton {
@@ -1238,13 +1203,13 @@ button:hover {
   background-color: transparent;
   -webkit-transition: 0.65s;
   transition: 0.65s;
-  color: white;
+  color: var(--flb-paragraph-color);
   padding-left: 0;
   padding-right: 0;
 }
 
 .textButton:hover {
-  color: grey;
+  color: var(--flb-invisible-link-hover-color);
   background-color: transparent;
 }
 
@@ -1374,8 +1339,8 @@ button:hover {
   select {
     margin-top: 0.1em;
     margin-bottom: 0.1em;
-    border: 2px solid #dddddd;
-    background: rgb(35, 35, 35);
+    border: 2px solid var(--flb-border-color);
+    background: var(--flb-secondary-background-color);
     padding: 10px;
     width: 100%;
     -webkit-transition: 0.4s;
@@ -1392,7 +1357,7 @@ button:hover {
 
   select:hover,
   select:open {
-    background: rgb(55, 55, 55);
+    background: var(--flb-setting-input-hover-background-color);
   }
 
   ::picker(select) {
@@ -1433,16 +1398,16 @@ button:hover {
     justify-content: flex-start;
     gap: 10px;
 
-    border: 2px solid #dddddd;
-    color: white;
-    background: rgb(35, 35, 35);
+    border: 2px solid var(--flb-border-color);
+    color: var(--flb-paragraph-color);
+    background: var(--flb-secondary-background-color);
     padding: 10px;
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
 
   option:hover {
-    background: rgb(55, 55, 55);
+    background: var(--flb-setting-input-hover-background-color);
   }
 
   option:first-of-type {
@@ -1481,14 +1446,14 @@ button:hover {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  background-color: rgb(35, 35, 35);
+  background-color: var(--flb-primary-background-color);
   height: 2.5rem;
   width: 90%;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   gap: 0.5em;
   border-radius: 15px;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--flb-border-color);
 }
 
 .searchWrapper > i {
@@ -1504,7 +1469,7 @@ button:hover {
   -ms-flex-positive: 1;
   flex-grow: 1;
   background: none;
-  color: white;
+  color: var(--flb-paragraph-color);
   border: none;
   outline: none;
 }
