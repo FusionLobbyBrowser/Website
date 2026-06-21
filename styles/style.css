@@ -279,12 +279,8 @@ ul {
   margin-bottom: 1em;
 }
 
-#appliedFilters:not(.noFilters) {
+#appliedFilters {
   margin-top: 0.75em;
-}
-
-.noFilters {
-  margin-top: 0.1em;
 }
 
 #appliedFilters > .infoBadge {
@@ -294,7 +290,7 @@ ul {
 }
 
 #noFiltersText {
-  margin: 0;
+  margin: 6px 6px 6px 6px;
   color: gray;
 }
 

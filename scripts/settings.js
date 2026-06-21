@@ -394,6 +394,15 @@ let types = [
       else return false;
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
+    setValue: (elem, val) => {
+      const input = elem?.getElementsByTagName("input");
+      if (input && input.length > 0) {
+        let _val;
+        if (val == "true" || val == true) _val = true;
+        else _val = false;
+        input[0].checked = _val;
+      }
+    },
   },
   {
     type: "select",
@@ -429,6 +438,10 @@ let types = [
       return wrapper;
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
+    setValue: (elem, val) => {
+      const input = elem?.getElementsByTagName("select");
+      if (input && input.length > 0) input[0].value = val;
+    },
   },
   {
     type: "search",
@@ -457,6 +470,10 @@ let types = [
       return wrapper;
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
+    setValue: (elem, val) => {
+      const input = elem?.getElementsByTagName("input");
+      if (input && input.length > 0) input[0].value = val;
+    },
   },
 ];
 
@@ -667,29 +684,39 @@ export function init() {
 
       val.elem = wrapper;
 
-      wrapper.addEventListener("onsettingchanged", (v) => {
-        setSetting(val.id, v.detail.new);
-        eventListeners.forEach((x) => {
-          if (x.id == val.id) x.callback(v.detail.new);
-        });
-        window.dispatchEvent(
-          new CustomEvent("onsettingchanged", {
-            detail: { id: val.id, old: v.detail.old, new: v.detail.new },
-          }),
-        );
-      });
+      wrapper.addEventListener("onsettingchanged", (v) =>
+        setSetting(val.id, v.detail.new, v.detail.old),
+      );
 
       category.appendChild(wrapper);
     }
   });
 }
 
-export function setSetting(setting, value) {
-  if (getSetting(setting)?.saveToStorage != false)
-    localStorage.setItem(getElemId(setting), value);
+export function setSetting(setting, value, old = null) {
   let index = settingsValues.findIndex((x) => x.id == setting);
-  if (index != -1) settingsValues[index].value = value;
-  else settingsValues.push({ id: setting, value: value });
+  if (index == -1 || settingsValues[index].value != value) {
+    const s = getSetting(setting);
+    if (!s) return;
+
+    if (getSetting(setting).saveToStorage != false)
+      localStorage.setItem(getElemId(setting), value);
+    if (index != -1) settingsValues[index].value = value;
+    else settingsValues.push({ id: setting, value: value });
+
+    eventListeners.forEach((x) => {
+      if (x.id == setting) x.callback(value);
+    });
+
+    const type = types.find((t) => t.type == s.type);
+    if (type && type.setValue) type.setValue(s.elem, value);
+
+    window.dispatchEvent(
+      new CustomEvent("onsettingchanged", {
+        detail: { id: setting, old: old, new: value },
+      }),
+    );
+  }
 }
 
 export function getSettingValue(setting) {
