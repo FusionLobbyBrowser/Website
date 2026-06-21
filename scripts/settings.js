@@ -1,5 +1,5 @@
 import { Converter } from "./unityRichText.js";
-import Barcodes from "./defaultBarcodes.js";
+import { barcodes } from "./const.js";
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
 // Is this overkill? probably
@@ -39,7 +39,7 @@ let categories = [
 
     sort: true,
     sortMode: "filterTotalCount",
-    sortOrder: 2,
+    sortOrder: 1,
   },
   {
     name: "Filtering",
@@ -283,7 +283,7 @@ export let settings = [
     lobbyFilter: true,
     filterValue: false,
     lobbyValidator: (lobby) => {
-      return Barcodes.find((x) => x.barcode == lobby.levelBarcode);
+      return barcodes.find((x) => x.barcode == lobby.levelBarcode);
     },
 
     defaultValue: true,
@@ -298,7 +298,7 @@ export let settings = [
     lobbyFilter: true,
     filterValue: false,
     lobbyValidator: (lobby) => {
-      return !Barcodes.find((x) => x.barcode == lobby.levelBarcode);
+      return !barcodes.find((x) => x.barcode == lobby.levelBarcode);
     },
 
     defaultValue: true,

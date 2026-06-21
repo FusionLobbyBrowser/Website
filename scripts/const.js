@@ -1,6 +1,6 @@
 // Name is the name of the file in the /images/default folder
 
-const mappedBarcodes = [
+export const barcodes = [
   // Avatars
   {
     barcode: "fa534c5a83ee4ec6bd641fec424c4142.Avatar.Heavy",
@@ -205,4 +205,103 @@ const mappedBarcodes = [
   },
 ];
 
-export default mappedBarcodes;
+export const limit = [
+  ["Steam", 50],
+  ["Epic", 200],
+];
+
+export const layers = [
+  ["Steam", "SteamVR"],
+  ["Epic", "Epic Online Services"],
+];
+
+export const permissions = [
+  [-1, "guest"],
+  [0, "default"],
+  [1, "operator"],
+  [2, "owner"],
+];
+
+export const statuses = [
+  [0, "Offline"],
+  [1, "Online"],
+  [2, "Busy"],
+  [3, "Away"],
+  [4, "Snooze / AFK"],
+  [5, "Unknown"],
+  [6, "In Game"],
+];
+
+export const gamemodes = [
+  {
+    barcode: "",
+    icon: "img:./images/gamemodes/Sandbox.png",
+  },
+  {
+    barcode: "Lakatrazz.Deathmatch",
+    icon: "img:./images/gamemodes/Deathmatch.png",
+  },
+  {
+    barcode: "Lakatrazz.Team Deathmatch",
+    icon: "img:./images/gamemodes/TeamDeathmatch.png",
+  },
+  {
+    barcode: "Lakatrazz.Smash Bones",
+    icon: "img:./images/gamemodes/SmashBones.png",
+  },
+  {
+    barcode: "Lakatrazz.Juggernaut",
+    icon: "img:./images/gamemodes/Juggernaut.png",
+  },
+  {
+    barcode: "Lakatrazz.Hide And Seek",
+    icon: "img:./images/gamemodes/HideAndSeek.png",
+  },
+  {
+    barcode: "Lakatrazz.Entangled",
+    icon: "img:./images/gamemodes/Entangled.png",
+  },
+  {
+    barcode: "HAHOOS.Avatar Infection",
+    icon: "img:./images/gamemodes/AvatarInfection.png",
+    link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
+  },
+  {
+    barcode: "Mash.Bone Strike",
+    icon: "img:./images/gamemodes/BoneStrike.png",
+    link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
+  },
+];
+
+export const permsList = [
+  {
+    entry: "teleportation",
+    name: "Teleportation",
+    icon: "fas fa-person-falling",
+  },
+  {
+    entry: "banning",
+    name: "Banning",
+    icon: "fas fa-ban",
+  },
+  {
+    entry: "kicking",
+    name: "Kicking",
+    icon: "fas fa-gavel",
+  },
+  {
+    entry: "customAvatars",
+    name: "Custom Avatars",
+    icon: "fas fa-shirt",
+  },
+  {
+    entry: "constrainer",
+    name: "Constrainer",
+    icon: "fas fa-link",
+  },
+  {
+    entry: "devTools",
+    name: "Developer Tools",
+    icon: "fas fa-code",
+  },
+];

@@ -1,5 +1,12 @@
 import { Converter } from "./unityRichText.js";
-import Barcodes from "./defaultBarcodes.js";
+import {
+  barcodes,
+  layers,
+  permissions,
+  permsList,
+  gamemodes,
+  statuses,
+} from "./const.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
@@ -24,16 +31,6 @@ const URI_JOIN = "flb-bridge://join/[data]";
 
 const LOBBY_PARAM = "lobby";
 
-const limit = [
-  ["Steam", 50],
-  ["Epic", 200],
-];
-
-const layers = [
-  ["Steam", "SteamVR"],
-  ["Epic", "Epic Online Services"],
-];
-
 let allLobbies;
 
 let infoView = -1;
@@ -56,97 +53,6 @@ const cacheExpireTime = 15 * 60;
 let showingInfo = false;
 
 const converter = new Converter();
-
-const permissions = [
-  [-1, "guest"],
-  [0, "default"],
-  [1, "operator"],
-  [2, "owner"],
-];
-
-const statuses = [
-  [0, "Offline"],
-  [1, "Online"],
-  [2, "Busy"],
-  [3, "Away"],
-  [4, "Snooze / AFK"],
-  [5, "Unknown"],
-  [6, "In Game"],
-];
-
-const gamemodes = [
-  {
-    barcode: "",
-    icon: "img:./images/gamemodes/Sandbox.png",
-  },
-  {
-    barcode: "Lakatrazz.Deathmatch",
-    icon: "img:./images/gamemodes/Deathmatch.png",
-  },
-  {
-    barcode: "Lakatrazz.Team Deathmatch",
-    icon: "img:./images/gamemodes/TeamDeathmatch.png",
-  },
-  {
-    barcode: "Lakatrazz.Smash Bones",
-    icon: "img:./images/gamemodes/SmashBones.png",
-  },
-  {
-    barcode: "Lakatrazz.Juggernaut",
-    icon: "img:./images/gamemodes/Juggernaut.png",
-  },
-  {
-    barcode: "Lakatrazz.Hide And Seek",
-    icon: "img:./images/gamemodes/HideAndSeek.png",
-  },
-  {
-    barcode: "Lakatrazz.Entangled",
-    icon: "img:./images/gamemodes/Entangled.png",
-  },
-  {
-    barcode: "HAHOOS.Avatar Infection",
-    icon: "img:./images/gamemodes/AvatarInfection.png",
-    link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
-  },
-  {
-    barcode: "Mash.Bone Strike",
-    icon: "img:./images/gamemodes/BoneStrike.png",
-    link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
-  },
-];
-
-const permsList = [
-  {
-    entry: "teleportation",
-    name: "Teleportation",
-    icon: "fas fa-person-falling",
-  },
-  {
-    entry: "banning",
-    name: "Banning",
-    icon: "fas fa-ban",
-  },
-  {
-    entry: "kicking",
-    name: "Kicking",
-    icon: "fas fa-gavel",
-  },
-  {
-    entry: "customAvatars",
-    name: "Custom Avatars",
-    icon: "fas fa-shirt",
-  },
-  {
-    entry: "constrainer",
-    name: "Constrainer",
-    icon: "fas fa-link",
-  },
-  {
-    entry: "devTools",
-    name: "Developer Tools",
-    icon: "fas fa-code",
-  },
-];
 
 // Sort Order
 // 1 - Descending
@@ -1102,7 +1008,7 @@ function setURLParams() {
 
 async function getThumbnail(modId, title, barcode, isAvatar) {
   if (modId == -1 || modId == 0 || modId == null) {
-    const value = Barcodes.find(
+    const value = barcodes.find(
       (x) =>
         x.barcode == barcode ||
         barcode?.startsWith(x.name) == true ||
