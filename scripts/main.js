@@ -1351,6 +1351,8 @@ async function init() {
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   settingsInit();
+  adjustTheme();
+  addEventListener("theme", adjustTheme);
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
     const num = Number(params.get(LOBBY_PARAM));
@@ -1404,6 +1406,18 @@ function closeSettings() {
 
 function clickEvent(id, callback) {
   document.getElementById(id).addEventListener("click", callback);
+}
+
+function adjustTheme() {
+  const darkMode =
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+  const isDarkMode = darkMode && darkMode.matches;
+
+  const val = getSettingValue("theme");
+  let v;
+  if (!val) v = isDarkMode ? "dark" : "light";
+  else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
+  document.getElementsByTagName("html")[0].setAttribute("theme", v);
 }
 
 async function updateTime() {

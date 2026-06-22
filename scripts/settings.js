@@ -123,6 +123,30 @@ export let settings = [
     defaultValue: "Descending",
   },
   {
+    id: "theme",
+    name: "Theme",
+    category: "General",
+    type: "select",
+    values: [
+      {
+        name: "System Preference",
+        id: "systemPreference",
+        icon: "fas fa-computer",
+      },
+      {
+        name: "Dark",
+        id: "dark",
+        icon: "fas fa-moon",
+      },
+      {
+        name: "Light",
+        id: "light",
+        icon: "fas fa-sun",
+      },
+    ],
+    defaultValue: "systemPreference",
+  },
+  {
     id: "autoRefresh",
     category: "General",
     type: "toggle",
@@ -661,7 +685,10 @@ export function init() {
       if (saved != null && saved != undefined) {
         if (!type.overrideCached) _val = saved;
         else _val = type.overrideCached(saved);
-      } else _val = val.defaultValue;
+      } else {
+        if (typeof val.defaultValue == "function") _val = val.defaultValue();
+        else _val = val.defaultValue;
+      }
       setSetting(val.id, _val);
 
       const category = settingsList

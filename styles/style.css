@@ -1,11 +1,20 @@
 body {
+  height: 100%;
+  background-color: var(--flb-primary-background-color);
+  color: var(--flb-paragraph-color);
+}
+
+:root[theme="dark"] {
+  color-scheme: dark;
   --flb-primary-input-background-color: rgb(32, 77, 197);
   --flb-primary-input-hover-background-color: rgb(0, 45, 255);
   --flb-primary-input-color: var(--flb-paragraph-color);
   --flb-blocked-input-background-color: #9f1e1e;
   --flb-blocked-input-background-hover-color: #8b0000;
   --flb-blocked-input-color: var(--flb-paragraph-color);
+
   --flb-setting-input-hover-background-color: rgb(50, 50, 50);
+  --flb-checkmark-color: white;
 
   --flb-primary-background-color: rgb(30, 30, 30);
   --flb-primary-box-shadow-color: rgb(20, 20, 20);
@@ -19,21 +28,58 @@ body {
   --flb-border-color: #dddddd;
 
   --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+  --flb-info-badge-text-color: white;
 
   --flb-heading-font: "Outfit";
   --flb-paragraph-font: "Ubuntu";
 
   --flb-heading-color: white;
   --flb-paragraph-color: white;
+  --flb-icon-filter: brightness(0) invert(1);
   --flb-error-color: #f4320b;
   --flb-success-color: chartreuse;
   --flb-link-color: #5eb3ff;
   --flb-link-hover-color: #8fcdff;
   --flb-invisible-link-hover-color: #b4b6b8;
+}
 
-  height: 100%;
-  background-color: var(--flb-primary-background-color);
-  color: var(--flb-paragraph-color);
+:root[theme="light"] {
+  color-scheme: light;
+  --flb-primary-input-background-color: rgb(32, 77, 197);
+  --flb-primary-input-hover-background-color: rgb(0, 45, 255);
+  --flb-primary-input-color: white;
+  --flb-blocked-input-background-color: #9f1e1e;
+  --flb-blocked-input-background-hover-color: #8b0000;
+  --flb-blocked-input-color: white;
+
+  --flb-setting-input-hover-background-color: rgb(230, 230, 230);
+  --flb-checkmark-color: white;
+
+  --flb-primary-background-color: rgb(255, 255, 255);
+  --flb-primary-box-shadow-color: rgb(235, 235, 235);
+
+  --flb-secondary-background-color: rgb(245, 245, 245);
+  --flb-secondary-box-shadow-color: rgb(215, 215, 215);
+
+  --flb-tertiary-background-color: rgb(215, 215, 215);
+  --flb-tertiary-box-shadow-color: rgb(185, 185, 185);
+
+  --flb-border-color: #c9c9c9;
+
+  --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+  --flb-info-badge-text-color: white;
+
+  --flb-heading-font: "Outfit";
+  --flb-paragraph-font: "Ubuntu";
+
+  --flb-heading-color: black;
+  --flb-paragraph-color: black;
+  --flb-icon-filter: brightness(0);
+  --flb-error-color: #f4320b;
+  --flb-success-color: chartreuse;
+  --flb-link-color: #3fa5ff;
+  --flb-link-hover-color: #77c2ff;
+  --flb-invisible-link-hover-color: #c5c5c5;
 }
 
 .header-moreInfoOpened {
@@ -112,7 +158,7 @@ a:hover {
 .levelRedirect {
   font-size: inherit;
   text-decoration: none;
-  color: var(--flb-paragraph-color);
+  color: inherit;
   -webkit-transition: 0.7s;
   transition: 0.7s;
 }
@@ -297,8 +343,8 @@ ul {
 }
 
 .gamemodeIcon {
-  -webkit-filter: brightness(0) invert(1);
-  filter: brightness(0) invert(1);
+  -webkit-filter: var(--flb-icon-filter);
+  filter: var(--flb-icon-filter);
   position: relative;
   display: inline-block;
 
@@ -423,8 +469,8 @@ a > .textIcon {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: rgb(35, 35, 35);
-  border: 2px solid #dddddd;
+  background: var(--flb-secondary-background-color);
+  border: 2px solid var(--flb-border-color);
   border-radius: 5px;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -452,7 +498,7 @@ label {
 }
 
 .checkbox-wrapper input:hover {
-  background: rgb(55, 55, 55);
+  background: var(--flb-setting-input-hover-background-color);
   -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
@@ -464,7 +510,7 @@ label {
 .checkbox-wrapper input::after {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
-  color: var(--flb-paragraph-color);
+  color: var(--flb-checkmark-color, var(--flb-paragraph-color));
   width: 100%;
   display: block;
   text-align: center;
@@ -534,8 +580,8 @@ label {
   display: -ms-flexbox;
   display: flex;
   background-color: var(--flb-tertiary-background-color);
-  -webkit-box-shadow: 10px 5px 5px rgb(0, 0, 0);
-  box-shadow: 10px 5px 5px rgb(0, 0, 0);
+  -webkit-box-shadow: 10px 5px 5px var(--flb-tertiary-box-shadow-color);
+  box-shadow: 10px 5px 5px var(--flb-tertiary-box-shadow-color);
   color: var(--flb-paragraph-color);
   border-radius: 5px;
   text-overflow: ellipsis;
@@ -936,6 +982,7 @@ label {
 .infoBadge {
   border-radius: 10px;
   background-color: var(--flb-info-badge-color);
+  color: var(--flb-info-badge-text-color);
   padding: 6px 6px 6px 6px;
   -webkit-transition: 0.5s;
   transition: 0.5s;
@@ -1310,22 +1357,24 @@ button:hover {
   (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
     (appearance: base-select)
 ) {
-  @media (max-width: 600px) {
-    .selectWrapper {
-      width: 90%;
-    }
+  .selectWrapper {
+    width: 95%;
   }
 
   @media (min-width: 600px) {
-    .selectWrapper {
+    .selectWrapper:has(#setting_sort) {
+      margin-right: 2%;
+    }
+
+    .selectWrapper:has(#setting_sortOrder),
+    .selectWrapper:has(#setting_sort) {
       display: -webkit-inline-box;
       display: -ms-inline-flexbox;
       display: inline-flex;
-      width: 46%;
       -webkit-box-align: center;
       -ms-flex-align: center;
       align-items: center;
-      gap: 2%;
+      width: calc((95% - 2%) / 2);
     }
   }
 
@@ -1338,17 +1387,18 @@ button:hover {
 
   select {
     margin-top: 0.1em;
-    margin-bottom: 0.1em;
+    margin-bottom: 0.5em;
     border: 2px solid var(--flb-border-color);
-    background: var(--flb-secondary-background-color);
-    padding: 10px;
+    background: var(--flb-primary-background-color);
     width: 100%;
+    padding: 10px;
     -webkit-transition: 0.4s;
     transition: 0.4s;
   }
 
   select,
   selectedcontent {
+    color: var(--flb-paragraph-color);
     font-size: 0.85rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1448,7 +1498,7 @@ button:hover {
   justify-content: center;
   background-color: var(--flb-primary-background-color);
   height: 2.5rem;
-  width: 90%;
+  width: 95%;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   gap: 0.5em;
