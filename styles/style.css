@@ -452,91 +452,6 @@ a > .textIcon {
   text-align: center;
 }
 
-.checkbox-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  margin-bottom: 0.1em;
-  margin-top: 0.25em;
-}
-
-.checkbox-wrapper input {
-  position: relative;
-  display: inline-block;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: var(--flb-secondary-background-color);
-  border: 2px solid var(--flb-border-color);
-  border-radius: 5px;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  height: 30px;
-  margin: 0;
-  position: relative;
-  margin-right: 0.35em;
-  width: 30px;
-}
-
-label {
-  font-size: 70%;
-  line-height: 100%;
-  height: 100%;
-}
-
-.checkbox-wrapper input,
-.checkbox-wrapper input::after {
-  -webkit-transition: all 100ms ease-out;
-  transition: all 100ms ease-out;
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-  cursor: default;
-}
-
-.checkbox-wrapper input:hover {
-  background: var(--flb-setting-input-hover-background-color);
-  -webkit-transition-duration: 0s;
-  transition-duration: 0s;
-}
-
-.checkbox-wrapper input:checked {
-  background-color: var(--flb-primary-input-background-color);
-}
-
-.checkbox-wrapper input::after {
-  opacity: 0;
-  background-color: rgba(0, 0, 0, 0);
-  color: var(--flb-checkmark-color, var(--flb-paragraph-color));
-  width: 100%;
-  display: block;
-  text-align: center;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  position: absolute;
-  font-family: "Font Awesome 7 Free";
-  font-weight: 900;
-  content: "\f00c";
-  --fa-style: 900;
-}
-
-.checkbox-wrapper input:checked::after {
-  opacity: 1;
-}
-
-.checkbox-wrapper :focus:not(.focus-visible) {
-  outline: 0;
-}
-
-.checkbox-wrapper input:checked:hover {
-  background-color: var(--flb-primary-input-hover-background-color);
-}
-
 /* Discord rich element */
 
 @media (max-width: 600px) {
@@ -1522,6 +1437,93 @@ button:hover {
   color: var(--flb-paragraph-color);
   border: none;
   outline: none;
+}
+
+/* Checkbox */
+
+.checkbox-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 0.1em;
+  margin-top: 0.25em;
+}
+
+.checkbox-wrapper input {
+  position: relative;
+  display: inline-block;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: var(--flb-secondary-background-color);
+  border: 2px solid var(--flb-border-color);
+  border-radius: 5px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 30px;
+  margin: 0;
+  position: relative;
+  margin-right: 0.35em;
+  width: 30px;
+}
+
+label {
+  font-size: 70%;
+  line-height: 100%;
+  height: 100%;
+}
+
+.checkbox-wrapper input,
+.checkbox-wrapper input::after {
+  -webkit-transition: all 100ms ease-out;
+  transition: all 100ms ease-out;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  cursor: default;
+}
+
+.checkbox-wrapper input:hover {
+  background: var(--flb-setting-input-hover-background-color);
+  -webkit-transition-duration: 0s;
+  transition-duration: 0s;
+}
+
+.checkbox-wrapper input:checked {
+  background-color: var(--flb-primary-input-background-color);
+}
+
+.checkbox-wrapper input::after {
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--flb-checkmark-color, var(--flb-paragraph-color));
+  width: 100%;
+  display: block;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  font-family: "Font Awesome 7 Free";
+  font-weight: 900;
+  content: "\f00c";
+  --fa-style: 900;
+}
+
+.checkbox-wrapper input:checked::after {
+  opacity: 1;
+}
+
+.checkbox-wrapper :focus:not(.focus-visible) {
+  outline: 0;
+}
+
+.checkbox-wrapper input:checked:hover {
+  background-color: var(--flb-primary-input-hover-background-color);
 }
 
 /* Steam Profile */
