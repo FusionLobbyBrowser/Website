@@ -1066,6 +1066,13 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
 async function setThumbnail(elem, modId, title, barcode, isAvatar) {
   elem.removeAttribute("loading");
   elem.setAttribute("fetchpriority", "high");
+  elem.addEventListener("error", function () {
+    const alt = Converter.removeRichText(
+      `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
+    );
+    elem.setAttribute("src", "images/errorThumbnail.webp");
+    elem.setAttribute("alt", alt);
+  });
 
   var thumbnail = await getThumbnail(modId, title, barcode, isAvatar);
   if (thumbnail.error != null) {
