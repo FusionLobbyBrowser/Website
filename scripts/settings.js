@@ -332,10 +332,26 @@ export let settings = [
     id: "playerCount",
     category: "Players",
     type: "range",
-    minValue: 1,
-    maxValue: 100,
     name: "Player Count",
-    defaultValue: [1, 100],
+    icon: "fa-solid fa-people-arrows",
+
+    filterValue: (s, val) =>
+      val &&
+      val.min &&
+      val.max &&
+      !(val.min == s.minValue && val.max == s.maxValue),
+    lobbyFilter: true,
+    setFilterName: false,
+    lobbyValidator: (lobby, val) => {
+      return lobby.playerCount < val.min || lobby.playerCount > val.max;
+    },
+
+    minValue: 1,
+    maxValue: 20,
+    step: 1,
+
+    defaultValue: { min: 1, max: 20 },
+    storeAsJSON: true,
   },
   {
     id: "fullLobbies",
@@ -351,21 +367,6 @@ export let settings = [
     },
 
     defaultValue: false,
-  },
-  {
-    id: "emptyLobbies",
-    category: "Players",
-    type: "toggle",
-    icon: "fa-solid fa-users-slash",
-    name: "Empty Lobbies",
-
-    lobbyFilter: true,
-    filterValue: false,
-    lobbyValidator: (lobby) => {
-      return lobby.playerCount <= 1;
-    },
-
-    defaultValue: true,
   },
   // Filtering
   {
@@ -496,6 +497,87 @@ let types = [
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
     setValue: (elem, val) => {
       const input = elem?.getElementsByTagName("input");
+      if (input && input.length > 0) input[0].value = val;
+    },
+  },
+  {
+    type: "range",
+    callback: (setting, value) => {
+      console.log(value);
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("rangeWrapper");
+
+      const label = document.createElement("label");
+      label.setAttribute("for", getElemId(setting.id));
+      fillLabel(setting, label);
+      wrapper.appendChild(label);
+
+      const container = document.createElement("div");
+      container.classList.add("rangeInputs");
+      wrapper.appendChild(container);
+
+      const sliderBackground = document.createElement("div");
+      sliderBackground.classList.add("sliderBackground");
+      container.appendChild(sliderBackground);
+
+      const sliderDiv = document.createElement("div");
+      sliderDiv.classList.add("rangeSlider");
+      sliderBackground.appendChild(sliderDiv);
+
+      let min;
+      let max;
+
+      function sliderCallback() {
+        if (!setting.baseName) setting.baseName = setting.name;
+        const minVal = parseInt(min.value);
+        const maxVal = parseInt(max.value);
+        setSettingsTitle(
+          setting.id,
+          `${setting.baseName} [${minVal} - ${maxVal}]`,
+        );
+        sliderDiv.style.left = `${(minVal / min.max) * 100}%`;
+        sliderDiv.style.right = `${100 - (maxVal / max.max) * 100}%`;
+      }
+
+      function createSlider(_class, val) {
+        const slider = document.createElement("input");
+        slider.type = "range";
+        slider.classList.add(_class);
+        slider.min = setting.minValue ?? 0;
+        slider.max = setting.maxValue ?? 10;
+        slider.step = setting.step ?? 1;
+        slider.value = value[val];
+
+        let old = value;
+
+        slider.addEventListener("input", () => {
+          sliderCallback();
+          wrapper.dispatchEvent(
+            new CustomEvent("onsettingchanged", {
+              detail: {
+                old: old,
+                new: { min: parseInt(min.value), max: parseInt(max.value) },
+              },
+            }),
+          );
+          old = { min: parseInt(min.value), max: parseInt(max.value) };
+        });
+        return slider;
+      }
+
+      min = createSlider("minRange", "min");
+      max = createSlider("maxRange", "max");
+
+      container.appendChild(min);
+      container.appendChild(max);
+
+      sliderCallback();
+
+      return wrapper;
+    },
+    setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
+    setValue: (elem, val) => {
+      const input = elem?.getElementsByTagName("select");
       if (input && input.length > 0) input[0].value = val;
     },
   },
@@ -683,13 +765,17 @@ export function init() {
       const saved = localStorage.getItem(getElemId(val.id));
       let _val;
       if (saved != null && saved != undefined) {
-        if (!type.overrideCached) _val = saved;
+        if (!type.overrideCached)
+          _val = val.storeAsJSON ? JSON.parse(saved) : saved;
         else _val = type.overrideCached(saved);
       } else {
         if (typeof val.defaultValue == "function") _val = val.defaultValue();
         else _val = val.defaultValue;
       }
-      setSetting(val.id, _val);
+      if (!val.initialValueSet) {
+        setSetting(val.id, _val);
+        val.initialValueSet = true;
+      }
 
       const category = settingsList
         .querySelector(
@@ -726,8 +812,11 @@ export function setSetting(setting, value, old = null) {
     const s = getSetting(setting);
     if (!s) return;
 
-    if (getSetting(setting).saveToStorage != false)
-      localStorage.setItem(getElemId(setting), value);
+    if (s.saveToStorage != false)
+      localStorage.setItem(
+        getElemId(setting),
+        s.storeAsJSON ? JSON.stringify(value) : value,
+      );
     if (index != -1) settingsValues[index].value = value;
     else settingsValues.push({ id: setting, value: value });
 

@@ -4,6 +4,90 @@ body {
   color: var(--flb-paragraph-color);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([theme]) {
+    color-scheme: dark;
+    --flb-primary-input-background-color: rgb(32, 77, 197);
+    --flb-primary-input-hover-background-color: rgb(0, 45, 255);
+    --flb-primary-input-color: var(--flb-paragraph-color);
+    --flb-blocked-input-background-color: #9f1e1e;
+    --flb-blocked-input-background-hover-color: #8b0000;
+    --flb-blocked-input-color: var(--flb-paragraph-color);
+
+    --flb-setting-input-hover-background-color: rgb(50, 50, 50);
+    --flb-checkmark-color: white;
+
+    --flb-primary-background-color: rgb(30, 30, 30);
+    --flb-primary-box-shadow-color: rgb(20, 20, 20);
+
+    --flb-secondary-background-color: rgb(20, 20, 20);
+    --flb-secondary-box-shadow-color: rgb(10, 10, 10);
+
+    --flb-tertiary-background-color: rgb(10, 10, 10);
+    --flb-tertiary-box-shadow-color: rgb(0, 0, 0);
+
+    --flb-border-color: #dddddd;
+
+    --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+    --flb-info-badge-icon-filter: brightness(0) invert(1);
+    --flb-info-badge-text-color: white;
+
+    --flb-heading-font: "Outfit";
+    --flb-paragraph-font: "Ubuntu";
+
+    --flb-heading-color: white;
+    --flb-paragraph-color: white;
+    --flb-icon-filter: brightness(0) invert(1);
+    --flb-error-color: #f4320b;
+    --flb-success-color: chartreuse;
+    --flb-link-color: #5eb3ff;
+    --flb-link-hover-color: #8fcdff;
+    --flb-invisible-link-hover-color: #b4b6b8;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([theme]) {
+    color-scheme: light;
+    --flb-primary-input-background-color: rgb(32, 77, 197);
+    --flb-primary-input-hover-background-color: rgb(0, 45, 255);
+    --flb-primary-input-color: white;
+    --flb-blocked-input-background-color: #9f1e1e;
+    --flb-blocked-input-background-hover-color: #8b0000;
+    --flb-blocked-input-color: white;
+
+    --flb-setting-input-hover-background-color: rgb(230, 230, 230);
+    --flb-checkmark-color: white;
+
+    --flb-primary-background-color: rgb(255, 255, 255);
+    --flb-primary-box-shadow-color: rgb(235, 235, 235);
+
+    --flb-secondary-background-color: rgb(245, 245, 245);
+    --flb-secondary-box-shadow-color: rgb(215, 215, 215);
+
+    --flb-tertiary-background-color: rgb(215, 215, 215);
+    --flb-tertiary-box-shadow-color: rgb(185, 185, 185);
+
+    --flb-border-color: #c9c9c9;
+
+    --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+    --flb-info-badge-icon-filter: brightness(0) invert(1);
+    --flb-info-badge-text-color: white;
+
+    --flb-heading-font: "Outfit";
+    --flb-paragraph-font: "Ubuntu";
+
+    --flb-heading-color: black;
+    --flb-paragraph-color: black;
+    --flb-icon-filter: brightness(0);
+    --flb-error-color: #f4320b;
+    --flb-success-color: chartreuse;
+    --flb-link-color: #3fa5ff;
+    --flb-link-hover-color: #77c2ff;
+    --flb-invisible-link-hover-color: #c5c5c5;
+  }
+}
+
 :root[theme="dark"] {
   color-scheme: dark;
   --flb-primary-input-background-color: rgb(32, 77, 197);
@@ -28,6 +112,7 @@ body {
   --flb-border-color: #dddddd;
 
   --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+  --flb-info-badge-icon-filter: brightness(0) invert(1);
   --flb-info-badge-text-color: white;
 
   --flb-heading-font: "Outfit";
@@ -67,6 +152,7 @@ body {
   --flb-border-color: #c9c9c9;
 
   --flb-info-badge-color: rgba(0, 56, 61, 0.7);
+  --flb-info-badge-icon-filter: brightness(0) invert(1);
   --flb-info-badge-text-color: white;
 
   --flb-heading-font: "Outfit";
@@ -340,6 +426,11 @@ ul {
 .textIcon.hidden {
   width: 0;
   height: 0;
+}
+
+.infoBadge > .gamemodeIcon {
+  -webkit-filter: var(--flb-info-badge-icon-filter, var(--flb-icon-filter));
+  filter: var(--flb-info-badge-icon-filter, var(--flb-icon-filter));
 }
 
 .gamemodeIcon {
@@ -1524,6 +1615,59 @@ label {
 
 .checkbox-wrapper input:checked:hover {
   background-color: var(--flb-primary-input-hover-background-color);
+}
+
+/* Range */
+
+.rangeWrapper {
+  width: 95%;
+  margin-bottom: 0.5em;
+}
+
+.sliderBackground {
+  width: 96%;
+  left: 2%;
+  height: 0.5em;
+  margin-top: 0.35em;
+  position: relative;
+  background: var(--flb-secondary-background-color);
+  border: 2px solid var(--flb-border-color);
+  border-radius: 5px;
+}
+
+.sliderBackground .rangeSlider {
+  height: 100%;
+  left: 25%;
+  right: 15%;
+  position: absolute;
+  border-radius: 5px;
+  background: var(--flb-primary-input-background-color);
+}
+
+.rangeInputs {
+  position: relative;
+  height: 1em;
+}
+
+.rangeInputs > input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: none;
+  top: -25%;
+  pointer-events: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+/* Styles for the range thumb in WebKit browsers */
+input[type="range"]::-webkit-slider-thumb {
+  height: 1.5em;
+  width: 1.5em;
+  border-radius: 70%;
+  background: var(--flb-border-color);
+  pointer-events: auto;
+  -webkit-appearance: none;
 }
 
 /* Steam Profile */

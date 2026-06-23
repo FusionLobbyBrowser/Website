@@ -1349,6 +1349,7 @@ function collapsableMenus() {
 }
 
 document.getElementById("javascriptRequired").classList.add("hidden");
+adjustTheme();
 
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
@@ -1420,7 +1421,7 @@ function adjustTheme() {
     window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
   const isDarkMode = darkMode && darkMode.matches;
 
-  const val = getSettingValue("theme");
+  const val = getSettingValue("theme") || localStorage.getItem("setting_theme");
   let v;
   if (!val) v = isDarkMode ? "dark" : "light";
   else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
