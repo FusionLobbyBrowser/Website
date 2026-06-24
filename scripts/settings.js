@@ -89,6 +89,7 @@ export let settings = [
     name: "Sort Mode",
     category: "General",
     type: "select",
+    displayLabel: false,
     values: [
       {
         name: "Alphabetical",
@@ -110,6 +111,7 @@ export let settings = [
     name: "Sort Order",
     category: "General",
     type: "select",
+    displayLabel: false,
     values: [
       {
         name: "Ascending",
@@ -127,6 +129,7 @@ export let settings = [
     name: "Theme",
     category: "General",
     type: "select",
+    icon: "fas fa-fill-drip",
     values: [
       {
         name: "System Preference",
@@ -411,7 +414,7 @@ let types = [
       fillLabel(setting, label);
 
       wrapper.appendChild(input);
-      wrapper.appendChild(label);
+      if (setting.displayLabel != false) wrapper.appendChild(label);
       return wrapper;
     },
     overrideCached: (value) => {
@@ -434,13 +437,25 @@ let types = [
     callback: (setting, value) => {
       const wrapper = document.createElement("div");
       wrapper.classList.add("selectWrapper");
+      const label = document.createElement("label");
+      label.setAttribute("for", getElemId(setting.id));
+      label.classList.add("selectLabel");
+      fillLabel(setting, label);
+      if (setting.displayLabel != false) {
+        wrapper.appendChild(label);
+        const br = document.createElement("br");
+        wrapper.appendChild(br);
+      }
+
       const select = document.createElement("select");
       select.setAttribute("name", getElemId(setting.id));
       select.setAttribute("aria-label", setting.name);
       select.setAttribute("id", getElemId(setting.id));
+
       const btn = document.createElement("button");
       btn.appendChild(document.createElement("selectedcontent"));
       select.appendChild(btn);
+
       setting.values.forEach((val) => {
         const option = document.createElement("option");
         if (isString(val)) setOption(option, val, val);
@@ -473,13 +488,16 @@ let types = [
     callback: (setting, value) => {
       const wrapper = document.createElement("div");
       wrapper.classList.add("searchWrapper");
+
       const icon = document.createElement("i");
       icon.setAttribute("class", setting.icon);
+
       const input = document.createElement("input");
       input.type = "text";
       input.placeholder = setting.name;
       input.id = getElemId(setting.id);
       input.value = value;
+
       let old = input.value;
       input.addEventListener("change", () => {
         wrapper.dispatchEvent(
@@ -510,7 +528,7 @@ let types = [
       const label = document.createElement("label");
       label.setAttribute("for", getElemId(setting.id));
       fillLabel(setting, label);
-      wrapper.appendChild(label);
+      if (setting.displayLabel != false) wrapper.appendChild(label);
 
       const container = document.createElement("div");
       container.classList.add("rangeInputs");
@@ -531,12 +549,14 @@ let types = [
         if (!setting.baseName) setting.baseName = setting.name;
         const minVal = parseInt(min.value);
         const maxVal = parseInt(max.value);
-        setSettingsTitle(
-          setting.id,
-          `${setting.baseName} [${minVal} - ${maxVal}]`,
-        );
-        sliderDiv.style.left = `${(minVal / min.max) * 100}%`;
-        sliderDiv.style.right = `${100 - (maxVal / max.max) * 100}%`;
+        const n = `${setting.baseName} [${minVal} - ${maxVal}]`;
+        setting.name = n;
+        setSettingsTitle(setting.id, n);
+
+        const left = (minVal / min.max) * 100;
+        const right = 100 - (maxVal / max.max) * 100;
+        sliderDiv.style.left = `calc(${left}% + 2px)`;
+        sliderDiv.style.right = `${right}%`;
       }
 
       function createSlider(_class, val) {

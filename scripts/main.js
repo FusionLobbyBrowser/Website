@@ -105,15 +105,23 @@ async function fetchAndCreateLobbies() {
       const lobbies = document.getElementById("lobbies");
       const res = await getJSON();
       const json = res.res ?? res;
-      // TODO: replace text thingy with pop up
-      const error = document.getElementsByClassName("error")[0];
       if (json.error != null) {
         lobbies.replaceChildren();
         if (!(await isServerOnline()))
-          error.textContent = "Server is offline, try again later.";
-        else error.textContent = json.error;
-
-        error.classList.remove("hidden");
+          lobbyNotice(
+            "Request Error",
+            "Failed to fetch lobbies, because the server is currently offline. Try again later!",
+            "fas fa-xmark",
+            "--flb-error-color",
+          );
+        else
+          lobbyNotice(
+            "Request Error",
+            "Failed to fetch lobbies, server responded with the following error: " +
+              json.error,
+            "fas fa-xmark",
+            "--flb-error-color",
+          );
 
         setTimeElem(refresh, null);
 
@@ -129,7 +137,6 @@ async function fetchAndCreateLobbies() {
         if (date) numDate = Number(date) / 1000;
         if (numDate == -1 || numDate != json.date) {
           setURLParams();
-          error.classList.add("hidden");
 
           timeFromResponse(refresh, json.date);
 
@@ -186,15 +193,16 @@ async function fetchAndCreateLobbies() {
         await refreshButton(new Date(Number(refresh.getAttribute("date"))));
     }
   } catch (ex) {
-    const error = document.getElementsByClassName("error")[0];
-    error.textContent =
-      "Failed to create lobbies, check the console for more information";
-    error.classList.remove("hidden");
+    lobbyNotice(
+      "Error",
+      "An unexpected error has occurred while fetching/creating lobbies, if the error persits, contact the developer (check FAQ page for contact)! Exception: " +
+        ex,
+      "fas fa-xmark",
+      "--flb-error-color",
+    );
     console.error("Failed to create lobbies");
     console.error(ex);
 
-    const lobbies = document.getElementById("lobbies");
-    lobbies.replaceChildren();
     hideShow(true);
   } finally {
     refreshing = false;
@@ -333,9 +341,22 @@ async function createLobbies(signal) {
   setLobbyCount(lobbyCount, lobbyCountMax);
   setPlayerCount(players, allLobbies.length);
 
-  if (lobbyList.length == 0)
-    document.getElementById("notFound").classList.remove("hidden");
-  else document.getElementById("notFound").classList.add("hidden");
+  if (lobbyList.length == 0) {
+    lobbyNotice(
+      "No Lobbies Found",
+      "There are currently no lobbies available!",
+      "fas fa-face-frown",
+      "--flb-gray-color",
+    );
+  } else if (allowed.length == 0) {
+    lobbyNotice(
+      "All Lobbies Filtered Out",
+      "Seems like you set the wrong filters!",
+      "fas fa-face-frown",
+      "--flb-gray-color",
+      false,
+    );
+  }
 
   console.log(
     `Creating %c${lobbyList.length}%c %s`,
@@ -475,7 +496,7 @@ async function createLobby(lobby, signal, hidden) {
 
   const playerCount = lobbyElem.getElementsByClassName("lobbyPlayerCount")[0];
   const connectBtn = lobbyElem.getElementsByClassName("connect")[0];
-  playerCount.textContent = `(${lobby.playerCount}/${lobby.maxPlayers})`;
+  setContent(playerCount, `(${lobby.playerCount}/${lobby.maxPlayers})`);
   if (lobby.playerCount >= lobby.maxPlayers) {
     playerCount.classList.add("fullLobby");
     connectBtn.classList.add("blocked");
@@ -497,7 +518,7 @@ async function createLobby(lobby, signal, hidden) {
   });
   for (const p of players) tooltip += `${getName(p).name.trim()}<br />`;
 
-  createToolTip(playerCount, tooltip);
+  createToolTip(playerCount, tooltip, "bottom");
 
   joinInfo(connectBtn);
 
@@ -532,12 +553,13 @@ function isEllipsisActive(e) {
   return e.clientHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
 }
 
-function createToolTip(e, content) {
+function createToolTip(e, content, placement = "top") {
   tippy(e, {
     content: content,
     animation: "scale",
     appendTo: "parent",
     interactive: true,
+    placement: placement,
     allowHTML: true,
     theme: "website",
   });
@@ -569,7 +591,8 @@ function setButton(btn, enabled) {
 function enableInfoButton(enabled) {
   const lobbies = document.getElementById("lobbies");
   for (const lobby of lobbies.children) {
-    setButton(lobby.getElementsByClassName("infoButton")[0], enabled);
+    const btns = lobby.getElementsByClassName("infoButton");
+    if (btns && btns.length > 0) setButton(btns[0], enabled);
   }
 }
 
@@ -907,6 +930,35 @@ function censorModTitle(elem, modId, title, nsfw, usesIcon = true) {
   } else if (usesIcon) {
     setContent(elem, modRedirect(modId, title));
   } else elem.innerHTML = modRedirect(modId, title);
+}
+
+function lobbyNotice(
+  title,
+  description,
+  icon = "fas fa-xmark",
+  colorVariable = "--flb-gray-color",
+  removeLobbies = true,
+) {
+  const lobbies = document.getElementById("lobbies");
+  const notices = lobbies.getElementsByClassName("lobbyNotice");
+  if (removeLobbies) lobbies.replaceChildren();
+  if (notices && notices.length > 0) {
+    for (const n of notices) n.remove();
+  }
+  const toCopy = document.getElementById("lobbyNoticeToCopy");
+  const notice = toCopy.cloneNode(true);
+  notice.removeAttribute("id");
+  const _icon = notice.getElementsByClassName("noticeIcon")[0];
+  const _title = notice.getElementsByClassName("noticeTitle")[0];
+  const _description = notice.getElementsByClassName("noticeDescription")[0];
+  const classes = icon.split(" ");
+  classes.forEach((x) => _icon.classList.add(x));
+  _title.textContent = title;
+  _description.textContent = description;
+  notice.style.color = window
+    .getComputedStyle(toCopy)
+    .getPropertyValue(colorVariable);
+  lobbies.appendChild(notice);
 }
 
 async function isServerOnline() {
@@ -1274,6 +1326,19 @@ function hideLobbies(changeElem = true) {
     for (const i of lobbies) {
       i.setAttribute("filteredout", !list.includes(i.getAttribute("lobbyId")));
     }
+  }
+  const notice = document
+    .getElementById("lobbies")
+    .getElementsByClassName("lobbyNotice");
+  if (list.length > 0 && notice.length > 0) notice[0].remove();
+  else if (list.length == 0 && notice.length == 0) {
+    lobbyNotice(
+      "All Lobbies Filtered Out",
+      "Seems like you set the wrong filters!",
+      "fas fa-face-frown",
+      "--flb-gray-color",
+      false,
+    );
   }
   return list.length;
 }

@@ -94,6 +94,11 @@
 </head>
 
 <body>
+  <div class="lobbyNotice" id="lobbyNoticeToCopy">
+    <i class="noticeIcon textIcon fas fa-xmark"></i>
+    <h2 class="noticeTitle">Error!</h2>
+    <p class="noticeDescription">Failed to load lobbies!</p>
+  </div>
   <div class="lobby" id="lobbyToCopy">
     <i class="platformIcon"></i>
     <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
@@ -103,7 +108,7 @@
     <p class="info levelTitle"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">7/11</span></p>
     <p class="info gamemodeTitle"><i class="fa-solid fa-puzzle-piece textIcon"></i><span class="elemContent">Avatar
         Infection</span></p>
-    <p class="lobbyPlayerCount">(0/10)</p>
+    <p class="lobbyPlayerCount"><span class="elemContent">(0/10)</span><i class="fas fa-caret-down"></i></p>
     <button class="connect"><i class="fa-solid fa-play textIcon"></i>Join</button>
     <button class="infoButton"><i class="fa-solid fa-info textIcon"></i>Info</button>
   </div>
@@ -268,7 +273,9 @@
       </div>
     </div>
     <!-- TODO: add a text when no lobbies are available -->
-    <div id="lobbies"></div>
+    <div id="lobbies">
+
+    </div>
   </div>
 </body>
 

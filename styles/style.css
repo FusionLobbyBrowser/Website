@@ -40,6 +40,9 @@ body {
     --flb-icon-filter: brightness(0) invert(1);
     --flb-error-color: #f4320b;
     --flb-success-color: chartreuse;
+    --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+    --flb-support-color: #f78d97;
+    --flb-support-hover-color: #f7b5bb;
     --flb-link-color: #5eb3ff;
     --flb-link-hover-color: #8fcdff;
     --flb-invisible-link-hover-color: #b4b6b8;
@@ -82,6 +85,9 @@ body {
     --flb-icon-filter: brightness(0);
     --flb-error-color: #f4320b;
     --flb-success-color: chartreuse;
+    --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+    --flb-support-color: #f78d97;
+    --flb-support-hover-color: #f7b5bb;
     --flb-link-color: #3fa5ff;
     --flb-link-hover-color: #77c2ff;
     --flb-invisible-link-hover-color: #c5c5c5;
@@ -123,6 +129,9 @@ body {
   --flb-icon-filter: brightness(0) invert(1);
   --flb-error-color: #f4320b;
   --flb-success-color: chartreuse;
+  --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+  --flb-support-color: #f78d97;
+  --flb-support-hover-color: #f7b5bb;
   --flb-link-color: #5eb3ff;
   --flb-link-hover-color: #8fcdff;
   --flb-invisible-link-hover-color: #b4b6b8;
@@ -163,6 +172,9 @@ body {
   --flb-icon-filter: brightness(0);
   --flb-error-color: #f4320b;
   --flb-success-color: chartreuse;
+  --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+  --flb-support-color: #f78d97;
+  --flb-support-hover-color: #f7b5bb;
   --flb-link-color: #3fa5ff;
   --flb-link-hover-color: #77c2ff;
   --flb-invisible-link-hover-color: #c5c5c5;
@@ -255,7 +267,7 @@ a:hover {
 
 .linkIcon {
   margin-left: 0.2rem;
-  color: gray;
+  color: var(--flb-gray-color);
   font-size: 0.65rem;
   height: 0.65rem;
 }
@@ -347,6 +359,35 @@ ul {
   grid-auto-rows: -webkit-min-content;
   grid-auto-rows: min-content;
   gap: 1em;
+}
+
+#lobbies:has(.lobbyNotice) {
+  display: flex;
+  justify-content: center;
+}
+
+.lobbyNotice {
+  text-align: center;
+  width: 100%;
+}
+
+.noticeIcon {
+  font-size: 2.5rem;
+  margin-bottom: 0.1em;
+}
+
+.noticeTitle {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+.noticeDescription {
+  margin-top: 0;
+}
+
+.noticeTitle,
+.noticeDescription {
+  color: inherit;
 }
 
 @media (min-width: 768px) {
@@ -479,7 +520,7 @@ ul {
 
 #noFiltersText {
   margin: 6px 6px 6px 6px;
-  color: gray;
+  color: var(--flb-gray-color);
 }
 
 .oneLine {
@@ -506,11 +547,11 @@ a > .textIcon {
 }
 
 .support {
-  color: #f78d97;
+  color: var(--flb-support-color);
 }
 
 .support:hover {
-  color: #f7b5bb;
+  color: var(--flb-support-hover-color);
 }
 
 .lobbyHostName {
@@ -824,7 +865,7 @@ a > .textIcon {
   min-width: 13em;
   max-width: 30em;
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow: visible;
 
   -webkit-animation: 1s linear fadein;
 
@@ -921,6 +962,7 @@ a > .textIcon {
 #playerToCopy,
 #discordToCopy,
 #playerViewToCopy,
+#lobbyNoticeToCopy,
 .hidden {
   display: none;
   visibility: hidden;
@@ -1117,7 +1159,7 @@ a > .textIcon {
 }
 
 .playerId {
-  color: gray;
+  color: var(--flb-gray-color);
 }
 
 .name,
@@ -1168,10 +1210,18 @@ a > .textIcon {
 }
 
 .collapsable > button.collapsed > :first-child:after {
-  content: " ▾";
+  font-family: "Font Awesome 7 Free";
+  font-weight: 900;
+  content: "\f0d7";
+  --fa-style: 900;
+  margin-left: 0.25em;
 }
 .collapsable > button:not(.collapsed) > :first-child:after {
-  content: " ▴";
+  font-family: "Font Awesome 7 Free";
+  font-weight: 900;
+  content: "\f0d8";
+  --fa-style: 900;
+  margin-left: 0.25em;
 }
 .collapsable > button:not(.collapsed) + div {
   display: none;
@@ -1364,6 +1414,7 @@ button:hover {
     (appearance: base-select)
 ) {
   .selectWrapper {
+    display: block;
     width: 95%;
   }
 
@@ -1487,6 +1538,10 @@ button:hover {
     font-weight: 900;
     content: "\f00c";
     --fa-style: 900;
+  }
+
+  .selectLabel {
+    margin-bottom: 0.25em;
   }
 }
 
@@ -1620,13 +1675,16 @@ label {
 /* Range */
 
 .rangeWrapper {
-  width: 95%;
+  width: 100%;
   margin-bottom: 0.5em;
 }
 
 .sliderBackground {
-  width: 96%;
-  left: 2%;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  box-sizing: border-box;
   height: 0.5em;
   margin-top: 0.35em;
   position: relative;
@@ -1636,6 +1694,8 @@ label {
 }
 
 .sliderBackground .rangeSlider {
+  padding: 0;
+  margin: 0;
   height: 100%;
   left: 25%;
   right: 15%;
@@ -1646,15 +1706,21 @@ label {
 
 .rangeInputs {
   position: relative;
+  width: 92%;
+  height: 0.5em;
+  margin-left: 0.375em;
   height: 1em;
 }
 
 .rangeInputs > input {
+  padding: 0;
   position: absolute;
   width: 100%;
-  height: 100%;
+  left: -2px;
+  top: -0%;
+  box-sizing: border-box;
+  height: 0.5em;
   background: none;
-  top: -25%;
   pointer-events: none;
   cursor: pointer;
   appearance: none;
@@ -1664,6 +1730,7 @@ label {
 input[type="range"]::-webkit-slider-thumb {
   height: 1.5em;
   width: 1.5em;
+
   border-radius: 70%;
   background: var(--flb-border-color);
   pointer-events: auto;
@@ -1754,7 +1821,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .createDate {
-  color: gray;
+  color: var(--flb-gray-color);
   font-size: 0.65rem;
   margin: 0;
 }
