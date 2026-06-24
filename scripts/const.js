@@ -273,7 +273,7 @@ export const gamemodes = [
   },
   {
     barcode: "JonLandonMods.TroubleInFordTown",
-    icon: "fa-solid fa-redhat",
+    icon: "fa-brands fa-redhat",
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/TroubleInFordTown",
   },
   {
