@@ -271,6 +271,16 @@ export const gamemodes = [
     icon: "img:./images/gamemodes/BoneStrike.png",
     link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
   },
+  {
+    barcode: "JonLandonMods.TroubleInFordTown",
+    icon: "fa-solid fa-redhat",
+    link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/TroubleInFordTown",
+  },
+  {
+    barcode: "JonLandonMods.FordRoyale",
+    icon: "fa-solid fa-person-military-rifle",
+    link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/FordRoyale/",
+  },
 ];
 
 export const permsList = [
