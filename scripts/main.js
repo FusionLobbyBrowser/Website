@@ -772,7 +772,7 @@ async function displayInfo(lobby, signal) {
             focusConfirm: false,
             confirmButtonText: '<i class="fas fa-x"></i> Close',
             denyButtonText: '<i class="fas fa-flag"></i> Report',
-            theme: "dark",
+            theme: adjustTheme(),
             width: "30em",
           }).then((x) => {
             if (x.isDenied)
@@ -1426,6 +1426,7 @@ function adjustTheme() {
   if (!val) v = isDarkMode ? "dark" : "light";
   else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
   document.getElementsByTagName("html")[0].setAttribute("theme", v);
+  return v;
 }
 
 async function updateTime() {
