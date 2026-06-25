@@ -553,9 +553,12 @@ let types = [
         setting.name = n;
         setSettingsTitle(setting.id, n);
 
-        const left = (minVal / min.max) * 100;
-        const right = 100 - (maxVal / max.max) * 100;
-        sliderDiv.style.left = `calc(${left}% + 2px)`;
+        const left =
+          ((minVal - setting.minValue) / (min.max - setting.minValue)) * 100;
+        const right =
+          100 -
+          ((maxVal - setting.minValue) / (max.max - setting.minValue)) * 100;
+        sliderDiv.style.left = `calc(${left}%)`;
         sliderDiv.style.right = `${right}%`;
       }
 
