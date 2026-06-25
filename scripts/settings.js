@@ -558,7 +558,7 @@ let types = [
         const right =
           100 -
           ((maxVal - setting.minValue) / (max.max - setting.minValue)) * 100;
-        sliderDiv.style.left = `calc(${left}%)`;
+        sliderDiv.style.left = `${left}%`;
         sliderDiv.style.right = `${right}%`;
       }
 

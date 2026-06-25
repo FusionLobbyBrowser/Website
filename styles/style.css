@@ -68,8 +68,8 @@ body {
     --flb-secondary-background-color: rgb(245, 245, 245);
     --flb-secondary-box-shadow-color: rgb(215, 215, 215);
 
-    --flb-tertiary-background-color: rgb(215, 215, 215);
-    --flb-tertiary-box-shadow-color: rgb(185, 185, 185);
+    --flb-tertiary-background-color: rgb(235, 235, 235);
+    --flb-tertiary-box-shadow-color: rgb(205, 205, 205);
 
     --flb-border-color: #c9c9c9;
 
@@ -155,8 +155,8 @@ body {
   --flb-secondary-background-color: rgb(245, 245, 245);
   --flb-secondary-box-shadow-color: rgb(215, 215, 215);
 
-  --flb-tertiary-background-color: rgb(215, 215, 215);
-  --flb-tertiary-box-shadow-color: rgb(185, 185, 185);
+  --flb-tertiary-background-color: rgb(235, 235, 235);
+  --flb-tertiary-box-shadow-color: rgb(205, 205, 205);
 
   --flb-border-color: #c9c9c9;
 
@@ -362,7 +362,11 @@ ul {
 }
 
 #lobbies:has(.lobbyNotice) {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -1410,8 +1414,12 @@ button:hover {
 /* Select */
 
 @supports (
-  (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
-    (appearance: base-select)
+  (
+    (
+      (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
+        (appearance: base-select)
+    )
+  )
 ) {
   .selectWrapper {
     display: block;
@@ -1684,6 +1692,7 @@ label {
   margin-left: 0;
   margin-right: 0;
   width: 100%;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   height: 0.5em;
   margin-top: 0.35em;
@@ -1718,11 +1727,14 @@ label {
   width: 100%;
   left: -2px;
   top: -0%;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   height: 0.5em;
   background: none;
   pointer-events: none;
   cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
 }
 
