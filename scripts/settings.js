@@ -788,9 +788,17 @@ export function init() {
       const saved = localStorage.getItem(getElemId(val.id));
       let _val;
       if (saved != null && saved != undefined) {
-        if (!type.overrideCached)
-          _val = val.storeAsJSON ? JSON.parse(saved) : saved;
-        else _val = type.overrideCached(saved);
+        try {
+          if (!type.overrideCached)
+            _val = val.storeAsJSON ? JSON.parse(saved) : saved;
+          else _val = type.overrideCached(saved);
+        } catch (ex) {
+          console.error(
+            "Failed to load value from storage, fallback to default (the stored one will be overwritten!)",
+          );
+          console.error(ex);
+          _val = val.defaultValue;
+        }
       } else {
         if (typeof val.defaultValue == "function") _val = val.defaultValue();
         else _val = val.defaultValue;
