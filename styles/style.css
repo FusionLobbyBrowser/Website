@@ -374,6 +374,16 @@ ul {
   text-align: center;
   width: 100%;
 }
+@media (min-width: 1200px) {
+  #lobbies:has(.lobbyNotice) {
+    -ms-flex: 0 0 calc(100% - (22em * 2) - 1em);
+    flex: 0 0 calc(100% - (22em * 2) - 1em); /* Safari */
+  }
+
+  .lobbyNotice {
+    width: 65%;
+  }
+}
 
 .noticeIcon {
   font-size: 2.5rem;
