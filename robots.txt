@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+User-agent: *
+Disallow: /404
+
 Sitemap: https://fusion.hahoos.dev/sitemap.xml
