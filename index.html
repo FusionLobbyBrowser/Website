@@ -64,27 +64,10 @@
 
   <!-- [ External ] -->
 
-  <style>
-    phantom-ui[loading] * {
-      -webkit-text-fill-color: transparent !important;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    phantom-ui[loading] img,
-    phantom-ui[loading] svg,
-    phantom-ui[loading] video,
-    phantom-ui[loading] canvas,
-    phantom-ui[loading] button,
-    phantom-ui[loading] [role="button"] {
-      opacity: 0 !important;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/css/flag-icons.min.css"
+    crossOrigin="anonymous">
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer crossOrigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@aejkatappaja/phantom-ui/dist/phantom-ui.cdn.js"
-    crossOrigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11/dist/umd/popper.min.js"></script>
 
@@ -94,167 +77,204 @@
   <!-- [ Internal ] -->
 
   <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/defaultBarcodes.js" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/const.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
-  <script src="scripts/lobbies.js" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/settings.js" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/main.js" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/oneko.js" data-cat="images/oneko.gif" type="module" crossOrigin="anonymous"></script>
 
   <link rel="stylesheet" href="styles/fonts.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="styles/style.css" crossOrigin="anonymous" />
+
+  <link rel="stylesheet" href="fa/css/fontawesome.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/brands.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/regular.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/solid.css" crossOrigin="anonymous" />
 </head>
 
 <body>
-  <div class="lobby lobbyToCopy">
+  <div class="lobbyNotice" id="lobbyNoticeToCopy">
+    <i class="noticeIcon textIcon fas fa-xmark"></i>
+    <h2 class="noticeTitle">Error!</h2>
+    <p class="noticeDescription">Failed to load lobbies!</p>
+  </div>
+  <div class="lobby" id="lobbyToCopy">
+    <i class="platformIcon"></i>
     <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
-    <p class="info lobbyName" data-shimmer-no-children>HAHOOS's Lobby!</p>
-    <p class="info lobbyHostName" data-shimmer-no-children>HAHOOS</p>
-    <p class="info levelTitle" data-shimmer-no-children>7/11</p>
-    <p class="info gamemodeTitle" data-shimmer-no-children>Avatar Infection</p>
-    <p class="info lobbyPlayerCount" data-shimmer-no-children>(0/10)</p>
-    <button class="connect inline">Join!</button>
-    <button class="moreInfo inline">More Info</button>
+    <p class="info lobbyName">HAHOOS's Lobby!</p>
+    <p class="info lobbyHostName"><i class="fa-solid fa-user textIcon"></i><span class="elemContent">RottenCheese</span>
+    </p>
+    <p class="info levelTitle"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">7/11</span></p>
+    <p class="info gamemodeTitle"><i class="fa-solid fa-puzzle-piece textIcon"></i><span class="elemContent">Avatar
+        Infection</span></p>
+    <p class="lobbyPlayerCount"><span class="elemContent">(0/10)</span><i class="fas fa-caret-down"></i></p>
+    <button class="connect"><i class="fa-solid fa-play textIcon"></i>Join</button>
+    <button class="infoButton"><i class="fa-solid fa-info textIcon"></i>Info</button>
   </div>
-  <div class="player playerToCopy">
+  <div class="player" id="playerToCopy">
     <img class="avatarThumbnail" src="images/default/Jay.webp" loading="lazy" alt="Template thumbnail">
-    <p class="name" data-shimmer-no-children>RottenCheese</p>
-    <p class="username" data-shimmer-no-children>Test</p>
-    <p class="permissions" data-shimmer-no-children>OWNER</p>
-    <p class="avatarTitle" data-shimmer-no-children>Fancy Ford</p>
+    <p class="name">RottenCheese</p>
+    <p class="permissions"><i class="fa-solid fa-shield-halved textIcon"></i><span class="elemContent">GUEST</span></p>
+    <p class="avatarTitle">Fancy Ford</p>
+    <button class="profile"><i class="fa-solid fa-circle-user textIcon"></i>Profile</button>
   </div>
-  <div class="discord discordToCopy">
+  <div class="discord" id="discordToCopy">
     <img class="serverIcon" src="images/default/Jay.webp" loading="lazy" alt="Template icon">
-    <p class="inline serverName">RottenCheese's Server</p>
-    <p class="inline memberCount">569 members</p>
-    <a class="discordJoin inline" href="#" target="_blank" rel="noopener noreferrer">
-      <button class="discordJoinBtn">Join!</button>
+    <p class="serverName">RottenCheese's Server</p>
+    <p class="memberCount">569 members</p>
+    <p class="serverDescription">No description provided</p>
+    <a class="discordJoin" href="#" target="_blank" rel="noopener noreferrer">
+      <button class="discordJoinBtn"><i class="fa-brands fa-discord textIcon"></i>Join</button>
     </a>
   </div>
   <header>
     <h1>Fusion Lobby Browser</h1>
-    <p class="headerText">Browse Fusion Lobbies without having to open BONELAB.</p>
-    <p class="headerText">If you like my work, consider supporting me on <a href="https://ko-fi.com/hahoos"
-        target="_blank" rel="noopener noreferrer">Ko-fi!</a></p>
-    <p class="headerText">Thank you for all the feedback! For progress updates or further suggestions/questions check
-      out my <a href="https://discord.com/channels/563139253542846474/1328096592812707900/" target="_blank"
-        rel="noopener noreferrer">modding thread!</a> (<a href="https://discord.gg/bonelab" target="_blank"
-        rel="noopener noreferrer">BONELAB discord server</a>)
-    </p>
-    <p class="hidden" id="uptime">Backend up since: N/A</p>
-    <p class="hidden" id="refresh">Last Refresh: N/A</p>
-    <button id="refreshButton">Refresh</button>
+    <p class="headerText">Browse lobbies without having to open BONELAB!</p>
+    <div id="navigationBar">
+
+      <a class="navigationItem" href="/" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-home"></i>
+        <span class="elemContent">Home</span>
+      </a>
+
+      <a class="navigationItem" href="/faq" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-question"></i>
+        <span class="elemContent">FAQ</span>
+      </a>
+
+      <a class="navigationItem" href="https://flb.fider.io/" target="_blank" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-comment"></i>
+        <span class="elemContent">Feedback</span>
+      </a>
+
+      <a class="navigationItem support" href="https://ko-fi.com/hahoos" target="_blank" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-heart"></i>
+        <span class="elemContent">Support</span>
+      </a>
+
+      <a class="navigationItem" href="https://github.com/FusionLobbyBrowser/Website" target="_blank"
+        rel="noopener noreferrer">
+        <i class="textIcon fa-brands fa-github"></i>
+        <span class="elemContent">Source Code</span>
+      </a>
+    </div>
+    <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
+        class="elemContent">Refresh</span></button>
+    <button id="settingsButton"><i class="fa-solid fa-gear textIcon"></i><span
+        class="elemContent">Settings</span></button>
   </header>
-  <phantom-ui id="moreDetails-loader">
-    <div id="moreDetails-outer" class="hidden">
-      <div id="moreDetails" class="hidden">
-        <div class="header-outer">
-          <div class="header">
-            <p class="lobbyTitle" data-shimmer-no-children>HAHOOS's Lobby!</p>
-            <div class="inline infoControls">
-              <button class="connect">Join!</button>
-              <button id="closeMoreInfo">Close</button>
+  <div id="info-outer" class="hidden">
+    <div id="info" class="hidden">
+      <div class="header-outer">
+        <div id="info-header" class="header">
+          <h2 id="info-title">HAHOOS's Lobby!</h2>
+          <div class="badges">
+            <p class="infoBadge uptime"><i class="fa-solid fa-clock textIcon"></i><span class="elemContent">1h</span>
+            </p>
+            <p class="infoBadge version"><i class="fa-solid fa-code-branch textIcon"></i><span
+                class="elemContent">v0.0.0</span></p>
+            <p class="infoBadge level"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">test
+                level</span></p>
+            <p class="infoBadge gamemode"><i class="fa-solid fa-puzzle-piece textIcon"></i><span
+                class="elemContent">Sandbox</span></p>
+          </div>
+          <div class="inline infoControls">
+            <button id="info-connect" class="connect"><i class="fa-solid fa-play textIcon"></i>Join!</button>
+            <button id="info-close"><i class="fa-solid fa-xmark textIcon"></i>Close</button>
+          </div>
+        </div>
+      </div>
+      <div id="info-content" class="content hidden">
+        <div class="left-content side">
+          <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+        </div>
+        <div class="right-content side">
+          <p class="detail"><i class="fa-solid fa-book textIcon"></i>Description</p>
+          <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur
+            adipiscing elit. Quisque
+            faucibus ex sapien vitae pellentesque sem placerat. In
+            id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+            fringilla lacus
+            nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+            vel class
+            aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p class="detail permissionsTitle"><i class="fa-solid fa-gavel textIcon"></i>Permissions</p>
+          <div>
+            <div class="inline permissionsLevels"></div>
+            <div class="inline permissionsList"></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players <span
+          class="plrCount">(11/15)</span></h2>
+      <div id="info-players" class="hidden">
+      </div>
+    </div>
+  </div>
+  <div id="playerViewToCopy" class="playerView">
+    <div>
+      <img class="viewThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+      <div class="viewContent">
+        <p class="detail"><i class="fa-solid fa-circle-user textIcon"></i>Display Name</p>
+        <p class="detail-info playerDisplayName">RottenCheese</p>
+        <p class="detail"><i class="fa-solid fa-id-badge textIcon"></i>Username</p>
+        <p class="detail-info"><span class="playerUsername">HAHOOS</span> <span
+            class="playerId">(76561198320980868)</span></p>
+        <p class="detail"><i class="fa-solid fa-user-pen textIcon"></i>Avatar</p>
+        <p class="detail-info playerAvatar">RottenCheese</p>
+        <p class="detail"><i class="fa-solid fa-book textIcon"></i>Description</p>
+        <p class="detail-info playerDescription">Lorem ipsum dolor sit amet consectetur
+          adipiscing elit. Quisque
+          faucibus ex sapien vitae pellentesque sem placerat. In
+          id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+          fringilla lacus
+          nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+          vel class
+          aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+        <p class="detail steamDetail"><i class="fa-brands fa-steam textIcon"></i>Steam Profile</p>
+        <div class="steamProfile">
+          <div class="avatarContainer">
+            <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+              class="steamAvatar" />
+            <div class="statusIndicator" data-tippy-content="N/A"></div>
+          </div>
+          <div>
+            <div class="linkContainer">
+              <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect steamUsername"><i
+                  class="fi fi-pl textIcon"></i> <span class="elemContent">RottenCheese</span></a>
+              <i class="linkIcon fas fa-link"></i>
             </div>
+            <p class="createDate">Created on: N/A</p>
           </div>
-        </div>
-        <div class="content hidden">
-          <div class="left-content side">
-            <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
-          </div>
-          <div class="right-content side">
-            <p class="detail">Description</p>
-            <p class="detail-info lobbyDescription" data-shimmer-no-children>Lorem ipsum dolor sit amet consectetur
-              adipiscing elit. Quisque
-              faucibus ex sapien vitae pellentesque sem placerat. In
-              id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
-              fringilla lacus
-              nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
-              vel class
-              aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-            <p class="detail">Level</p>
-            <p class="detail-info levelTitle" data-shimmer-no-children>7/11</p>
-            <p class="detail">Gamemode</p>
-            <p class="detail-info gamemode" data-shimmer-no-children>Avatar Infection (HAHOOS.AvatarInfection)</p>
-            <div class="collapsable">
-              <button class="textButton" data-toggle="collapse">
-                <p class="detail permissionsTitle">Permissions</p>
-              </button>
-              <div>
-                <div class="inline permissionsLevels">
-
-                </div>
-                <div class="inline permissionsList">
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="inline">
-          <p class="playersTitle hidden" data-shimmer-no-children>Players</p>
-          <p class="plrCount" data-shimmer-no-children>(11/15)</p>
-        </div>
-        <p class="lobbyHost" data-shimmer-no-children>Host: RottenCheese</p>
-        <div class="players hidden">
         </div>
       </div>
     </div>
-  </phantom-ui>
-  <h2 class="lobbyHeader hidden" align="center">Lobbies (10)</h2>
-  <p class="lobbyInfo hidden">There are currently <span class="playerCount">-1 players</span> playing on <span
-      class="lobbyCount">-1 lobbies</span></p>
-  <div class="inline serverSelection">
-    <button id="steamServer" class="activeServer">Steam</button>
-    <button id="epicServer">Epic Games</button>
+  </div>
+  <h2 class="lobbyHeader">Lobbies (10)</h2>
+  <p id="refresh">Last Refresh: N/A</p>
+  <div id="appliedFilters" class="badges">
+    <p id="noFiltersText">No filters applied!</p>
   </div>
   <p id="lobbyLimit" class="hidden">Steam has a limit of 50 lobbies, due to the high number of lobbies some may not
     appear. This is a
     limit implemented by Steam themselves and nothing can be done about it!</p>
   <p id="javascriptRequired">This site requires JavaScript to be enabled.</p>
-  <div id="searchOptions-outer">
-    <div id="searchOptions" class="collapsable">
-      <button class="textButton" data-toggle="collapse">
-        <h2 id="searchTitle">Options</h2>
-      </button>
-      <div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="autoRefresh" name="Auto Refresh" />
-          <label for="autoRefresh">Auto Refresh</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showFullLobbies" name="Show Full Lobbies" checked />
-          <label for="showFullLobbies">Show Full
-            Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showOnePlayerLobbies" name="Show 1 Player Lobbies" checked />
-          <label for="showFullLobbies">Show 1 Player Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showRPLobbies" name="Show Roleplay Lobbies" checked />
-          <label for="showFullLobbies">Show Roleplay Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showRussianLobbies" name="Show Russian Lobbies" checked />
-          <label for="showFullLobbies">Show Russian Lobbies</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="filterProfanities" name="Filter Profanities" checked />
-          <label for="filterProfanities">Filter Profanities</label>
-        </div>
-        <div class="checkbox-wrapper">
-          <input type="checkbox" id="showNSFW" name="Show NSFW" />
-          <label for="showNSFW">Show NSFW</label>
-        </div>
-        <label id="sortOrderLabel" for="sortOrder">Sort Order</label>
-        <select name="sortOrder" id="sortOrder">
-          <option value="descending">Descending (most -> least players)</option>
-          <option value="ascending">Ascending (least -> most players)</option>
-        </select>
-      </div>
-    </div>
-  </div>
   <p class="error hidden">Test error</p>
   <h2 id="notFound" class="hidden">No lobbies were found :(</h2>
-  <div id="lobbies" role="main"></div>
+  <div id="popupBackground" class="hidden"></div>
+  <div id="mainContent" role="main">
+    <div id="settings">
+      <h1 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h1>
+      <button id="settingsClose" class="textButton"><i class="fas fa-x"></i></button>
+      <div id="settingsList">
+
+      </div>
+    </div>
+    <div id="lobbies">
+
+    </div>
+  </div>
 </body>
 
 </html>

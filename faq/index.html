@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- General -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- SEO -->
+  <title>Fusion Lobby Browser</title>
+  <meta name="keywords" content="Fusion, LabFusion, BONELAB, BONELAB-Fusion, Boneworks, SLZ, Stress Level Zero" />
+  <meta name="description"
+    content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!" />
+
+  <link rel="canonical" href="https://fusion.hahoos.dev/" />
+  <script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "url": "https://fusion.hahoos.dev",
+    "name": "Fusion Lobby Browser",
+    "alternateName": ["FLB", "LabFusion Lobby Browser"],
+    "description": "Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!"
+  }
+  </script>
+
+  <!-- Discord Embed-->
+  <meta property="og:title" content="Fusion Lobby Browser" />
+  <meta property="og:site_name" content="Fusion Lobby Browser">
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fusion.hahoos.dev/" />
+  <meta property="og:description"
+    content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!" />
+  <meta name="theme-color" content="#6495ED">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://fusion.hahoos.dev/">
+  <meta name="twitter:title" content="Fusion Lobby Browser">
+  <meta name="twitter:description"
+    content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-144x144.png" sizes="144x144" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-64x64.png" sizes="64x64" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="FLB" />
+  <meta property="og:image" content="/images/favicon/web-app-manifest-192x192.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Scripts & Styles -->
+
+  <!-- [ External ] -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.5.0/css/flag-icons.min.css"
+    crossOrigin="anonymous">
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer crossOrigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11/dist/umd/popper.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3/dist/tippy.umd.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6.3/dist/tippy.min.css">
+
+  <!-- [ Internal ] -->
+
+  <script>
+    if (document.readyState !== "loading") init();
+    else window.addEventListener("DOMContentLoaded", init);
+
+    function init() {
+      adjustTheme();
+      const menus = document.querySelectorAll('[data-toggle="collapse"]');
+      for (const menu of menus) {
+        menu.addEventListener("click", () => {
+          menu.classList.toggle("collapsed");
+        });
+      }
+    }
+
+    function adjustTheme() {
+      const darkMode =
+        window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+      const isDarkMode = darkMode && darkMode.matches;
+
+      const val = getSettingValue("theme");
+      let v;
+      if (!val) v = isDarkMode ? "dark" : "light";
+      else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
+      document.getElementsByTagName("html")[0].setAttribute("theme", v);
+    }
+
+    function getSettingValue(setting) {
+      return localStorage.getItem(`setting_${setting}`);
+    }
+
+  </script>
+  <script src="../scripts/oneko.js" type="module" crossOrigin="anonymous"></script>
+
+
+  <link rel="stylesheet" href="../styles/fonts.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="../styles/style.css" crossOrigin="anonymous" />
+
+  <link rel="stylesheet" href="../fa/css/fontawesome.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="../fa/css/brands.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="../fa/css/regular.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="../fa/css/solid.css" crossOrigin="anonymous" />
+</head>
+
+<body>
+  <header>
+    <h1>Fusion Lobby Browser</h1>
+    <p class="headerText">Browse lobbies without having to open BONELAB!</p>
+    <div id="navigationBar">
+
+      <a class="navigationItem" href="/" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-home"></i>
+        <span class="elemContent">Home</span>
+      </a>
+
+      <a class="navigationItem" href="/faq" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-question"></i>
+        <span class="elemContent">FAQ</span>
+      </a>
+
+      <a class="navigationItem" href="https://flb.fider.io/" target="_blank" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-comment"></i>
+        <span class="elemContent">Feedback</span>
+      </a>
+
+      <a class="navigationItem support" href="https://ko-fi.com/hahoos" target="_blank" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-heart"></i>
+        <span class="elemContent">Support</span>
+      </a>
+
+      <a class="navigationItem" href="https://github.com/FusionLobbyBrowser/Website" target="_blank"
+        rel="noopener noreferrer">
+        <i class="textIcon fa-brands fa-github"></i>
+        <span class="elemContent">Source Code</span>
+      </a>
+    </div>
+  </header>
+  <div id="content">
+    <div id="faqHeader">
+      <h1 id="faqTitle"><i class="fas fa-question"></i>FAQ<i class="fas fa-question"></i></h1>
+      <p id="faqDescription">Have an issue? Check out the most frequently asked questions!<br>In case of any additional
+        questions, dm me on
+        Discord @hahoos, ask on my modding thread on the BONELAB discord server or create a github issue!</p>
+    </div>
+    <div id="questions">
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> What is this website, Fusion Lobby Browser?</h2>
+        </button>
+        <div>
+          <p>Fusion Lobby Browser is a website dedicated to help BONELAB players. BONELAB does not have official
+            multiplayer support, though a mod exists that adds support for it. The website's purpose is to allow players
+            to quickly view the current lobbies in LabFusion (the multiplayer mod), while providing many features to
+            make the browsing experience.
+          </p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> Why are the thumbnails on my unlisted avatar/level not displayed?</h2>
+        </button>
+        <div>
+          <p>The backend does not have access to any information regarding unlisted/private mods to which it not has
+            been granted access to. If you'd like for your avatar/level to have the thumbnail displayed, send me on
+            Discord (@hahoos) a link to the preview or (if thats even possible to do) add
+            <code>FusionLobbyBrowser</code> to have preview access
+          </p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> Why can't I find the website on Google?</h2>
+        </button>
+        <div>
+          <p>Google disabled the website from being indexed, what that means is that it simply won't display it on their
+            search engine. It's an issue that will need to be looked into, though Google has not provided any specific
+            reason, rather a general one which implies that they do not deem the website to be worthy of being
+            displayed.</p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> How do I quickly view the player list on a lobby?</h2>
+        </button>
+        <div>
+          <p>You can do that by hovering your mouse over (or on Mobile, pressing) the player count on a lobby, which
+            should display you a list of players there!</p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> How do I quickly check the mod where an avatar/level is from?</h2>
+        </button>
+        <div>
+          <p>It's quite simple, simply press the text where the name of the avatar/level is. Though note that sometimes
+            a Mod ID is not associated with them, meaning that you cannot check</p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> How do I contact you?</h2>
+        </button>
+        <div>
+          <p>In the case that you need to contact me for various reasons, you can either e-mail me at <a
+              href="mailto:hahoos@hahoos.dev">hahoos@hahoos.dev</a> or DM me on Discord @hahoos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

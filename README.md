@@ -1,8 +1,19 @@
-# FLB | Website
+<div align="center">
+<img align="center" src="./images/favicon/web-app-manifest-512x512.png" width="128px" height="128px" />
+<h1 align="center"> FLB | Website</h1>
 
-This is a website that allows for browsing lobbies provided by [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion/), a multiplayer mod for the game [BONELAB](https://store.steampowered.com/app/1592190/BONELAB/). The purpose of the website is to allow players to check what lobbies are up before even launching BONELAB, basically allowing to make sure if it's even worth launching BONELAB in case you want to play LabFusion. 
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite?ref=badge_small">![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite.svg?type=small)</a>
+<a href="https://github.com/FusionLobbyBrowser/Website/actions/workflows/preview.yml">![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/FusionLobbyBrowser/Website/preview.yml)
+<a href="https://wakatime.com/badge/user/3f1abe39-bb76-4588-b099-fd5a9acc9375/project/0148368a-b630-40cc-8e37-c4f380714e66"><img src="https://wakatime.com/badge/user/3f1abe39-bb76-4588-b099-fd5a9acc9375/project/0148368a-b630-40cc-8e37-c4f380714e66.svg" alt="wakatime"></a>
+</a>
+
+</div>
+
+This is a website that allows for browsing lobbies provided by [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion/), a multiplayer mod for the game [BONELAB](https://store.steampowered.com/app/1592190/BONELAB/). The purpose of the website is to allow players to check what lobbies are up before even launching BONELAB, basically allowing to make sure if it's even worth launching BONELAB in case you want to play LabFusion.
 
 The website features a join button, which thanks to a [MelonLoader Mod](https://github.com/FusionLobbyBrowser/Mod), allows to launch the game & immiediately join the lobby or do that while the game is already running!
+
+Thanks to [@Checkerb0ard](https://github.com/Checkerb0ard) for helping with adding support for Epic Games Network Layer!
 
 ## Discord Servers
 
@@ -22,40 +33,30 @@ For it to be displayed, you need to actually "link" a discord server. This can b
 > [!NOTE]
 > In links, you can use commas (`,`) instead of dots. LabFusion added a link filter and does not display links, this can be used to bypass it. Though even if LabFusion filters the links, it is still visible and processed on the website.
 
-## FAQ
-
-### Q: How do I view a player's description / about me / bio
-
-**A:** Depending on what device you are using, you can see that by doing the following: 
-  - On PC, hovering the mouse over the player's name, if an about me is found it will be displayed
-  - On Mobile, press the players name and it will display the same like on the PC.
-
-### Q: Why does the website not appear on Google Search Engine?
-
-**A:** The website is deemed basically not worthy by Google, though they did not give a clear reason as to why, but rather a general `Crawled - not indexed`. It's an issue that still needs to be fixed. For the time being use a search engine like Bing.
-
 ## Licenses
 
 Website is licensed under the MIT License. See [LICENSE](https://github.com/FusionLobbyBrowser/Website/blob/main/LICENSE) for the full License.
 
-Third-party Libraries used as Source Code:
+**Third-party Libraries used as Source Code:**
 
-- [DOMPurify](https://github.com/cure53/DOMPurify) is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/cure53/DOMPurify/blob/main/LICENSE) for the full License.
+* [DOMPurify](https://github.com/cure53/DOMPurify) is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/cure53/DOMPurify/blob/main/LICENSE) for the full License.
 
-- [unity-rich-text-converter](https://github.com/AWaterColorPen/unity-rich-text-converter) is licensed under the MIT License. See [LICENSE](https://github.com/AWaterColorPen/unity-rich-text-converter/blob/master/LICENSE) for the full License.
+* [unity-rich-text-converter](https://github.com/AWaterColorPen/unity-rich-text-converter) is licensed under the MIT License. See [LICENSE](https://github.com/AWaterColorPen/unity-rich-text-converter/blob/master/LICENSE) for the full License.
 
-Third-party Libraries imported when opened:
+* [oneko.js](https://github.com/adryd325/oneko.js/) is licensed under the MIT License. See [LICENSE](https://github.com/adryd325/oneko.js/blob/main/LICENSE) for the full License.
 
-- [tippyjs](https://github.com/atomiks/tippyjs) is licensed under the MIT License. See [LICENSE](https://github.com/atomiks/tippyjs/blob/master/LICENSE) for the full License.
+* [Font-Awesome](https://github.com/fortawesome/font-awesome) is licensed under the SIL OFL 1.1 and MIT License. See [LICENSE](https://github.com/fortawesome/font-awesome/blob/7.x/LICENSE.txt) for the full License.
 
-- [sweetalert2](https://github.com/sweetalert2/sweetalert2) is licensed under the MIT License. See [LICENSE](https://github.com/sweetalert2/sweetalert2/blob/main/LICENSE) for the full License.
+**Third-party Libraries/Resources imported when opened:**
 
-- [phantom-ui](https://github.com/Aejkatappaja/phantom-ui) is licensed under the MIT License. See [LICENSE](https://github.com/Aejkatappaja/phantom-ui/blob/main/LICENSE) for the full License.
+* [tippyjs](https://github.com/atomiks/tippyjs) is licensed under the MIT License. See [LICENSE](https://github.com/atomiks/tippyjs/blob/master/LICENSE) for the full License.
 
-Icons from [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) were used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
+* [sweetalert2](https://github.com/sweetalert2/sweetalert2) is licensed under the MIT License. See [LICENSE](https://github.com/sweetalert2/sweetalert2/blob/main/LICENSE) for the full License.
 
-Profanity List from [Fusion-Lists](https://github.com/Lakatrazz/Fusion-Lists) was used, which is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/Fusion-Lists/blob/main/LICENSE) for the full License.
+* [flag-icons](https://github.com/lipis/flag-icons) is licensed under the MIT License. See [LICENSE](https://github.com/lipis/flag-icons/blob/main/LICENSE) for the full License.
 
-The style for checkboxes is from [CSS Scan](https://getcssscan.com/css-checkboxes-examples)
+* [Fuse.js](https://github.com/krisk/fuse) is licensed under the Apache License 2.0. See [LICENSE](https://github.com/krisk/Fuse/blob/main/LICENSE) for the full License.
 
-The person icon for the Discord Server View is from [Font Awesome](https://fontawesome.com/icons/people-group?f=classic&s=solid)
+* [Fusion-Lists](https://github.com/Lakatrazz/Fusion-Lists) (`profanityList.json`) is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/Fusion-Lists/blob/main/LICENSE) for the full License.
+
+* [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) (Icons) is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
