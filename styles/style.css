@@ -377,6 +377,7 @@ ul {
 @media (min-width: 1200px) {
   #lobbies:has(.lobbyNotice) {
     -ms-flex: 0 0 calc(100% - (22em * 2) - 1em);
+    -webkit-box-flex: 0;
     flex: 0 0 calc(100% - (22em * 2) - 1em); /* Safari */
   }
 
@@ -1426,8 +1427,10 @@ button:hover {
 @supports (
   (
     (
-      (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
-        (appearance: base-select)
+      (
+        (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
+          (appearance: base-select)
+      )
     )
   )
 ) {
