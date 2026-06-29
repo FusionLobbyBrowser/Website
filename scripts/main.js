@@ -19,7 +19,7 @@ import {
   getSetting,
 } from "./settings.js";
 
-const HOST = "https://fusionapi.hahoos.de/"; // http://localhost:5000/
+const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode=[barcode]`;
 const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
