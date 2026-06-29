@@ -521,7 +521,6 @@ let types = [
   {
     type: "range",
     callback: (setting, value) => {
-      console.log(value);
       const wrapper = document.createElement("div");
       wrapper.classList.add("rangeWrapper");
 

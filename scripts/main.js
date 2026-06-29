@@ -19,7 +19,7 @@ import {
   getSetting,
 } from "./settings.js";
 
-const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
+const HOST = "https://fusionapi.hahoos.de/"; // http://localhost:5000/
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode=[barcode]`;
 const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
@@ -1179,7 +1179,7 @@ function modRedirect(id, name) {
 function setLobbyCount(count, max) {
   const elem = document.getElementsByClassName("lobbyHeader")[0];
   if (count == -1) {
-    elem.textContent("Lobbies (None)");
+    elem.textContent = "Lobbies (None)";
   } else {
     if (count == max) elem.textContent = `Lobbies (${count})`;
     else elem.textContent = `Lobbies (${count}/${max})`;
