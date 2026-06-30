@@ -1474,7 +1474,7 @@ async function init() {
 // i do not bear any responsibility for the possible trauma or any other issues
 // fuck you jack baker
 function fuckyoujackbaker() {
-  var audio = new Audio("fuckyou.ogg");
+  var audio = new Audio("images/fuckyou.ogg");
   audio.play();
   document
     .getElementById("fuckyouevenmorejackbaker")
@@ -1483,7 +1483,9 @@ function fuckyoujackbaker() {
 
   document.getElementsByTagName("title")[0].textContent =
     "uh oh you angered the thing!";
-  var fuckyouevenmorejackbaker = new Audio("fuckyouevenmorejackbaker.mp3");
+  var fuckyouevenmorejackbaker = new Audio(
+    "images/fuckyouevenmorejackbaker.mp3",
+  );
   fuckyouevenmorejackbaker.play();
   fuckyouevenmorejackbaker.vol;
   looped(fuckyouevenmorejackbaker);
@@ -1491,7 +1493,7 @@ function fuckyoujackbaker() {
 
 async function looped(_audio) {
   while (true) {
-    var audio = new Audio("fuckyou.ogg");
+    var audio = new Audio("images/fuckyou.ogg");
     audio.play();
     audio.volume = Math.random();
     _audio.volume = Math.random();
