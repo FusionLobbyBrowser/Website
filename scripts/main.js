@@ -1448,7 +1448,17 @@ async function init() {
   clickEvent("info-close", () => hideShow(true));
   clickEvent("settingsButton", openSettings);
   clickEvent("settingsClose", closeSettings);
+  clickEvent("fuckyoujackbaker", fuckyoujackbaker);
   joinInfo(document.getElementById("info-connect"));
+
+  const lucky = Math.round(73 / 10);
+  const getRandomNumber = (min, max) => {
+    return Math.random() * (max - min) + min;
+  };
+  // fuck you
+  const r = Math.round(getRandomNumber(1, 25));
+  if (r == lucky)
+    document.getElementById("fuckyoujackbaker").classList.remove("hidden");
 
   updateTime();
 
@@ -1458,6 +1468,36 @@ async function init() {
   fullyLoaded = true;
 
   fetchAndCreateLobbies();
+}
+
+// i was forced to do this at exactly 00:47:30 AM by an individual that goes by the name Jack Baker
+// i do not bear any responsibility for the possible trauma or any other issues
+// fuck you jack baker
+function fuckyoujackbaker() {
+  var audio = new Audio("fuckyou.ogg");
+  audio.play();
+  document
+    .getElementById("fuckyouevenmorejackbaker")
+    .classList.remove("hidden");
+  document.getElementsByClassName("istfg")[0].classList.remove("hidden");
+
+  document.getElementsByTagName("title")[0].textContent =
+    "uh oh you angered the thing!";
+  var fuckyouevenmorejackbaker = new Audio("fuckyouevenmorejackbaker.mp3");
+  fuckyouevenmorejackbaker.play();
+  fuckyouevenmorejackbaker.vol;
+  looped(fuckyouevenmorejackbaker);
+}
+
+async function looped(_audio) {
+  while (true) {
+    var audio = new Audio("fuckyou.ogg");
+    audio.play();
+    audio.volume = Math.random();
+    _audio.volume = Math.random();
+
+    await new Promise((r) => setTimeout(r, 500));
+  }
 }
 
 function joinInfo(btn) {

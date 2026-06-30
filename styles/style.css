@@ -1929,3 +1929,30 @@ input[type="range"]::-webkit-slider-thumb {
   color: var(--flb-gray-color);
   margin-top: 0em;
 }
+
+#fuckyoujackbaker {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+}
+
+#fuckyouevenmorejackbaker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.istfg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  font-size: 5rem;
+  margin-top: 50vh;
+  text-align: center;
+}
