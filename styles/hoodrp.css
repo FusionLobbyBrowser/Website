@@ -1,0 +1,38 @@
+/*
+  Custom theme for the hoodrp.com version of the site
+  This is gonna get implemented at some point, but i dont have any good ideas for now
+*/
+
+/*
+#content {
+  min-width: 60em;
+  width: 60vw;
+  top: 30vh;
+  left: 19.5vw;
+  padding-left: 1em;
+  padding-right: 1em;
+  position: absolute;
+  background-color: var(--flb-primary-background-color);
+  border-radius: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+}
+
+header {
+  background-color: var(--flb-primary-background-color);
+  width: 60vw;
+  left: 20vw;
+  position: absolute;
+  border-radius: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+}
+
+body {
+  background-image: url("/images/tuffhoodrpbackground.jpeg");
+}
+*/

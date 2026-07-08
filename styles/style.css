@@ -417,13 +417,6 @@ ul {
   }
 }
 
-#refresh {
-  font-size: 0.75rem;
-  margin-top: 0.1rem;
-  margin-bottom: 0;
-  text-align: center;
-}
-
 #refreshButton {
   margin-top: 0.75rem;
   min-width: 7em;
@@ -505,8 +498,16 @@ ul {
   margin-right: 0.15em;
 }
 
-.lobbyHeader {
+#lobbyHeader {
   text-align: center;
+}
+
+#lobbyDetails {
+  color: var(--flb-gray-color);
+  text-align: center;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  font-size: 0.8rem;
 }
 
 .gamemodeIcon:before {
@@ -1077,7 +1078,7 @@ a > .textIcon {
   text-align: center;
 }
 
-.lobbyHeader {
+.lobbyTitle {
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -1411,6 +1412,16 @@ button:hover {
 
 .permissionsCollapsable {
   padding-bottom: 0;
+}
+
+.uptime-content {
+  display: none;
+  visibility: hidden;
+}
+
+.uptime-container .uptime-content {
+  display: block;
+  visibility: visible;
 }
 
 .fi {
@@ -1869,7 +1880,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* FAQ */
 
 #questions,
-#content,
+#faqContent,
 #faqHeader {
   text-align: center;
   display: -webkit-box;

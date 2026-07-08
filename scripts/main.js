@@ -31,6 +31,8 @@ const URI_JOIN = "flb-bridge://join/[data]";
 
 const LOBBY_PARAM = "lobby";
 
+const SIMULATE_HOODRP = false;
+
 let allLobbies;
 
 let infoView = -1;
@@ -53,6 +55,9 @@ const cacheExpireTime = 15 * 60;
 let showingInfo = false;
 
 const converter = new Converter();
+
+let uptimeContainer;
+let uptimeContent;
 
 // Sort Order
 // 1 - Descending
@@ -87,6 +92,8 @@ const sorting = [
 ];
 
 async function fetchAndCreateLobbies() {
+  if (refreshing) return;
+
   refreshing = true;
   console.log("Fetching lobbies");
   const start = Date.now();
@@ -318,8 +325,7 @@ async function createLobbies(signal) {
   lobbies.replaceChildren();
   const lobbyList = structuredClone(allLobbies);
   let lobbyCountMax = lobbyList.length;
-  let lobbyCount = hideLobbies(false);
-  let allowed = getAllowedIDs(lobbyList);
+  let allowed = hideLobbies(false);
 
   const sort = getSettingValue("sort");
   let sorted = false;
@@ -336,10 +342,14 @@ async function createLobbies(signal) {
   if (!sorted) sorting.find((x) => x.name == "Players").callback(lobbyList, 2);
 
   let players = 0;
-  lobbyList.forEach((val) => (players += Number(val.playerCount)));
+  let allPlayers = 0;
+  lobbyList.forEach((val) => {
+    allPlayers += Number(val.playerCount);
+    if (allowed.includes(val.lobbyID)) players += Number(val.playerCount);
+  });
 
-  setLobbyCount(lobbyCount, lobbyCountMax);
-  setPlayerCount(players, allLobbies.length);
+  setLobbyCount(allowed.length, lobbyCountMax);
+  setPlayerCount(players, allPlayers);
 
   if (lobbyList.length == 0) {
     lobbyNotice(
@@ -439,6 +449,7 @@ async function createLobby(lobby, signal, hidden) {
     icon.classList.add("fa-custom");
     icon.classList.add("fa-epicgames");
   }
+  createToolTip(icon, `ID: ${lobby.lobbyID}`);
   const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
   const setThumb = async () => {
     return await setThumbnail(
@@ -554,7 +565,10 @@ function isEllipsisActive(e) {
 }
 
 function createToolTip(e, content, placement = "top") {
-  tippy(e, {
+  console.log(content);
+  if (e._tippy) e._tippy.setProps({ content: content });
+
+  e._tippy = tippy(e, {
     content: content,
     animation: "scale",
     appendTo: "parent",
@@ -626,6 +640,7 @@ async function displayInfo(lobby, signal) {
     );
 
     const lobbyInfo = document.getElementById("info");
+    lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
     const header = lobbyInfo.getElementsByClassName("header")[0];
     document.getElementById("info-title").innerHTML = convert(
       getLobbyName(lobby, false),
@@ -1177,7 +1192,7 @@ function modRedirect(id, name) {
 }
 
 function setLobbyCount(count, max) {
-  const elem = document.getElementsByClassName("lobbyHeader")[0];
+  const elem = document.getElementsByClassName("lobbyTitle")[0];
   if (count == -1) {
     elem.textContent = "Lobbies (None)";
   } else {
@@ -1197,9 +1212,13 @@ async function onConnect(elem, lobby) {
   }
 }
 
-function setPlayerCount(players, lobbies) {
+function setPlayerCount(filteredPlayers, allPlayers) {
   const format =
     "[service] has a limit of [limit] lobbies, due to the high number of lobbies some may not appear. This is a limit implemented by Steam themselves and nothing can be done about it!";
+
+  const playerCount = document.getElementById("playerCount");
+  if (filteredPlayers == allPlayers) playerCount.textContent = filteredPlayers;
+  else playerCount.textContent = `${filteredPlayers}/${allPlayers}`;
 
   /*
   const highLobby = document.getElementById("lobbyLimit");
@@ -1291,17 +1310,24 @@ function timeAgo(input) {
   return formatter.format(-2, "seconds").replace("2", "0");
 }
 
-function timePassed(input) {
+function timePassed(input, returnAfterFirst = true) {
   const date = input instanceof Date ? input : new Date(input);
   let time = Date.now() / 1000 - date;
+  let string;
   for (let key in timeRanges) {
     if (timeRanges[key].min < Math.abs(time)) {
       const val = time / timeRanges[key].min;
       time = time % timeRanges[key].min;
-      return `${Math.round(val)}${timeRanges[key].symbol}`;
+      const str = `${returnAfterFirst ? Math.round(val) : Math.floor(val)}${timeRanges[key].symbol}`;
+      if (returnAfterFirst) {
+        return str;
+      } else {
+        if (!string) string = str;
+        else string += ` ${str}`;
+      }
     }
   }
-  return "0s";
+  return string ?? "0s";
 }
 
 function isToggleChecked(id) {
@@ -1340,7 +1366,7 @@ function hideLobbies(changeElem = true) {
       false,
     );
   }
-  return list.length;
+  return list;
 }
 
 async function updateFilters() {
@@ -1350,6 +1376,17 @@ async function updateFilters() {
 
   let lobbies = hideLobbies();
   setLobbyCount(lobbies, lobbyCountMax);
+
+  let players = 0;
+  let allPlayers = 0;
+  allLobbies.forEach((val) => {
+    allPlayers += Number(val.playerCount);
+    if (lobbies.includes(val.lobbyID)) players += Number(val.playerCount);
+  });
+
+  setLobbyCount(lobbies.length, lobbyCountMax);
+  setPlayerCount(players, allPlayers);
+
   filterBadges();
 }
 
@@ -1432,6 +1469,13 @@ async function init() {
     if (num) infoView = num;
   }
 
+  if (
+    window.location.hostname == "hoodrp.com" ||
+    window.location.hostname == "www.hoodrp.com" ||
+    SIMULATE_HOODRP
+  )
+    activateHoodRpMode();
+
   collapsableMenus();
 
   // Do not require lobby list to be created again
@@ -1451,6 +1495,25 @@ async function init() {
   clickEvent("fuckyoujackbaker", fuckyoujackbaker);
   joinInfo(document.getElementById("info-connect"));
 
+  uptimeContainer = document.querySelector(".uptime-container");
+  uptimeContent = document.querySelector(".uptime-content");
+
+  tippy(document.getElementById("info").getElementsByClassName("uptime")[0], {
+    content: uptimeContainer,
+    animation: "scale",
+    appendTo: "parent",
+    interactive: true,
+    placement: "bottom",
+    allowHTML: true,
+    theme: "website",
+    onShow: () => {
+      uptimeContainer.appendChild(uptimeContent);
+    },
+    onHidden: () => {
+      document.getElementById("info-header").appendChild(uptimeContent);
+    },
+  });
+
   const lucky = Math.round(73 / 10);
   const getRandomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
@@ -1468,6 +1531,13 @@ async function init() {
   fullyLoaded = true;
 
   fetchAndCreateLobbies();
+}
+
+function activateHoodRpMode() {
+  let link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = "styles/hoodrp.css";
+  document.head.appendChild(link);
 }
 
 // i was forced to do this at exactly 00:47:30 AM by an individual that goes by the name Jack Baker
@@ -1542,10 +1612,13 @@ async function updateTime() {
     timeAgoElem(refresh);
 
     const info = document.getElementById("info");
-    if (info.hasAttribute("uptime")) {
-      setContent(
-        info.getElementsByClassName("uptime")[0],
-        timePassed(Number(info.getAttribute("uptime"))),
+    if (info.hasAttribute("uptime") && uptimeContent) {
+      const uptime = info.getElementsByClassName("uptime")[0];
+      const t = Number(info.getAttribute("uptime"));
+      setContent(uptime, timePassed(t));
+
+      uptimeContent.innerHTML = DOMPurify.sanitize(
+        `${timePassed(t, false)}<br>Discovered: ${new Date(t * 1000).toLocaleString()}`,
       );
     }
 
@@ -1564,8 +1637,7 @@ function timeAgoElem(elem, date = null) {
 
 function setTimeElem(elem, val) {
   if (val == null || val == undefined) val = "N/A";
-  const text = elem.textContent.split(": ")[0];
-  elem.textContent = `${text}: ${val}`;
+  elem.textContent = val;
   if (val == "N/A") {
     elem.removeAttribute("date");
     elem.classList.add("hidden");

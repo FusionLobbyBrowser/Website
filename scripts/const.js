@@ -277,9 +277,14 @@ export const gamemodes = [
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/TroubleInFordTown",
   },
   {
-    barcode: "JonLandonMods.FordRoyale",
-    icon: "fa-solid fa-person-military-rifle",
+    barcode: "JonLandonMods.Ford Royale",
+    icon: "fa-solid fa-umbrella",
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/FordRoyale/",
+  },
+  {
+    barcode: "Codex.DayZFusionSurvival",
+    icon: "fa-solid fa-suitcase-medical",
+    link: "https://thunderstore.io/c/bonelab/p/ChappieStudios/DayZFusionSurvival/",
   },
 ];
 
