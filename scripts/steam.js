@@ -30,7 +30,7 @@ async function init() {
 
 export async function getSelf() {
   try {
-    const res = await fetch(ME);
+    const res = await fetch(ME, { credentials: "include" });
     if (!res.ok) return null;
     return res.json();
   } catch (ex) {
@@ -41,7 +41,9 @@ export async function getSelf() {
 
 export async function getProfile(id) {
   try {
-    const res = await fetch(PROFILE.replace("[id]", id));
+    const res = await fetch(PROFILE.replace("[id]", id), {
+      credentials: "include",
+    });
     if (!res.ok) return null;
     return res.json();
   } catch (ex) {
@@ -52,7 +54,9 @@ export async function getProfile(id) {
 
 export async function getFriends(id) {
   try {
-    const res = await fetch(FRIENDS.replace("[id]", id));
+    const res = await fetch(FRIENDS.replace("[id]", id), {
+      credentials: "include",
+    });
     if (!res.ok) return null;
     return res.json();
   } catch (ex) {

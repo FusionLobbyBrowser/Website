@@ -7,6 +7,7 @@ import {
   gamemodes,
   statuses,
 } from "./const.js";
+import { getSelf, getFriends, getProfile } from "./steam.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
