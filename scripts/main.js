@@ -103,7 +103,6 @@ async function fetchAndCreateLobbies() {
     lobbiesSignal = controller;
     const refreshBtn = document.getElementById("refreshButton");
     const refresh = document.getElementById("refresh");
-    const highLobby = document.getElementById("lobbyLimit");
     try {
       refreshBtn.classList.add("blocked");
       refreshBtn.getElementsByClassName("textIcon")[0].classList.add("fa-spin");
@@ -131,8 +130,6 @@ async function fetchAndCreateLobbies() {
           );
 
         setTimeElem(refresh, null);
-
-        highLobby.classList.add("hidden");
 
         setLobbyCount(-1);
         setPlayerCount(-1, -1);

@@ -81,6 +81,7 @@
   <script src="scripts/const.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
+  <script src="scripts/steam.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/settings.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/main.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/oneko.js" data-cat="images/oneko.gif" type="module" crossOrigin="anonymous"></script>
@@ -160,11 +161,8 @@
               <div class="statusIndicator" data-tippy-content="N/A"></div>
             </div>
             <div>
-              <div class="linkContainer">
-                <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect steamUsername"><i
-                    class="fi fi-pl textIcon"></i> <span class="elemContent">RottenCheese</span></a>
-                <i class="linkIcon fas fa-link"></i>
-              </div>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect steamUsername"><i
+                  class="fi fi-pl textIcon"></i> <span class="elemContent">RottenCheese</span></a></i>
               <p class="createDate">Created on: N/A</p>
             </div>
           </div>
@@ -202,6 +200,21 @@
         <i class="textIcon fa-brands fa-github"></i>
         <span class="elemContent">Source Code</span>
       </a>
+
+      <div id="steamAccount">
+        <a id="steamRedirect" class="navigationItem"
+          href="https://fusionapi.hahoos.dev/steam/login?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank"
+          rel="noopener noreferrer">
+          <i class="textIcon fa-brands fa-steam"></i>
+          <span class="elemContent">Log in with Steam</span>
+        </a>
+        <div class="steamAccount hidden">
+          <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+            class="steamSmall" />
+          <button class="textButton steamName"><span class="elemContent">RottenCheese</span><i
+              class="fa-solid fa-caret-down"></i></button></i>
+        </div>
+      </div>
     </div>
     <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
         class="elemContent">Refresh</span></button>

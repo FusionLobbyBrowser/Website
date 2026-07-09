@@ -510,7 +510,8 @@ ul {
   font-size: 0.8rem;
 }
 
-.gamemodeIcon:before {
+.gamemodeIcon:before,
+.textIconElem:before {
   content: "\00a0";
 }
 
@@ -559,6 +560,7 @@ a > .textIcon {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  align-items: center;
   gap: 1em;
 }
 
@@ -1792,8 +1794,29 @@ input[type="range"]::-webkit-slider-thumb {
 .steamAvatar {
   aspect-ratio: 1/1;
   border-radius: 50%;
-  height: auto;
   height: 3.5em;
+}
+
+.steamSmall {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  height: 1.75rem;
+}
+
+.steamAccount {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.steamAccount.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+
+.steamName {
+  margin: 0 !important;
+  padding: 0;
 }
 
 /* Offline */
