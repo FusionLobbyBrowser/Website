@@ -30,7 +30,29 @@ async function init() {
 
 export async function getSelf() {
   try {
-    const res = await fetch(HOST);
+    const res = await fetch(ME);
+    if (!res.ok) return null;
+    return res.json();
+  } catch (ex) {
+    console.error(ex);
+    return null;
+  }
+}
+
+export async function getProfile(id) {
+  try {
+    const res = await fetch(PROFILE.replace("[id]", id));
+    if (!res.ok) return null;
+    return res.json();
+  } catch (ex) {
+    console.error(ex);
+    return null;
+  }
+}
+
+export async function getFriends(id) {
+  try {
+    const res = await fetch(FRIENDS.replace("[id]", id));
     if (!res.ok) return null;
     return res.json();
   } catch (ex) {
