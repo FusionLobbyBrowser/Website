@@ -37,7 +37,7 @@ export let friends = [
     steamId: 76561198248623980,
     profileVisibility: 3,
     profileState: 1,
-    nickname: "Jack Baker (Real)",
+    nickname: "Jack Baker (Real) FUCK YOU",
     lastLoggedOffDate: "2026-07-10T03:23:38",
     commentPermission: 1,
     profileUrl: "https://steamcommunity.com/id/WELCOMETOTHEFAMILYSON/",
