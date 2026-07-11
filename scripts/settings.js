@@ -1,10 +1,1243 @@
 import { Converter } from "./unityRichText.js";
 import { barcodes } from "./const.js";
+import { getSelf, getFriends, getProfile } from "./steam.js";
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
 // Is this overkill? probably
 
 // To get value changed event, listen for event "onsettingchanged" on window
+
+export let friends = [
+  {
+    steamId: 76561198150369040,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Tymon3310",
+    lastLoggedOffDate: "2026-07-01T02:05:10",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/id/Tymon3310/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/eb26b48b497d976b440bff2816464acea78091f5.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/eb26b48b497d976b440bff2816464acea78091f5_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/eb26b48b497d976b440bff2816464acea78091f5_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2014-08-17T11:59:11",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198248623980,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Jack Baker (Real)",
+    lastLoggedOffDate: "2026-07-10T03:23:38",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/id/WELCOMETOTHEFAMILYSON/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/d93ef817f7411b5248fdd91d513217da2bd0c30d.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/d93ef817f7411b5248fdd91d513217da2bd0c30d_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/d93ef817f7411b5248fdd91d513217da2bd0c30d_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2015-09-04T15:33:21",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198369615280,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "stinker",
+    lastLoggedOffDate: "2026-07-10T11:03:13",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561198369615279/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/4e0c982c67528f6ad3f7e4a3d594fb3d592a1f44.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/4e0c982c67528f6ad3f7e4a3d594fb3d592a1f44_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/4e0c982c67528f6ad3f7e4a3d594fb3d592a1f44_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2017-02-26T05:08:18",
+    countryCode: "US",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199439348690,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Niewiemcomamrobic",
+    lastLoggedOffDate: "2026-07-06T20:15:09",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199439348686/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/04f2507e4b74ac5002ea5c68a15afbda4312f1fd.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/04f2507e4b74ac5002ea5c68a15afbda4312f1fd_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/04f2507e4b74ac5002ea5c68a15afbda4312f1fd_full.jpg",
+    userStatus: 0,
+    realName: "Tymek",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2022-11-29T19:06:29",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198726944270,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "kubasgaja",
+    lastLoggedOffDate: "2026-04-04T10:29:22",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561198726944269/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2026-03-20T19:41:11",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199098347070,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Serek Wiejski",
+    lastLoggedOffDate: "2026-06-09T20:06:16",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199098347065/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/2ef86ceab53edf4604c06a1e832e241768671454.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/2ef86ceab53edf4604c06a1e832e241768671454_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/2ef86ceab53edf4604c06a1e832e241768671454_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-10-13T15:47:30",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198974481890,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Rich Hexee",
+    lastLoggedOffDate: "2026-07-10T02:53:12",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561198974481884/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/674e6d348307de31869c0e6d2b7561f17cb20d01.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/674e6d348307de31869c0e6d2b7561f17cb20d01_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/674e6d348307de31869c0e6d2b7561f17cb20d01_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791475040131",
+    accountCreatedDate: "2019-07-02T13:49:33",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198259383040,
+    profileVisibility: 3,
+    profileState: 0,
+    nickname: "dawidgon",
+    lastLoggedOffDate: "2024-11-08T15:19:05",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561198259383032/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2015-11-08T07:32:49",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199401716380,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "shizzonoo",
+    lastLoggedOffDate: "2026-06-21T20:59:27",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199401716388/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/360236e555049f204b12d3a8685a3b9b9764ebfe.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/360236e555049f204b12d3a8685a3b9b9764ebfe_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/360236e555049f204b12d3a8685a3b9b9764ebfe_full.jpg",
+    userStatus: 0,
+    realName: "xx",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2022-09-24T09:12:29",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199871004780,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Szarlota",
+    lastLoggedOffDate: "2026-07-10T12:09:27",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199871004789/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/c5f63cb7c6a7b9069d7939950236298e4e3bcd41.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/c5f63cb7c6a7b9069d7939950236298e4e3bcd41_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/c5f63cb7c6a7b9069d7939950236298e4e3bcd41_full.jpg",
+    userStatus: 1,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2025-06-28T17:46:43",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198323412800,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Filipokd",
+    lastLoggedOffDate: "2026-07-10T00:00:45",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561198323412794/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/1b86a41997c55ed1716b3d5392cb2f9542878a21.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/1b86a41997c55ed1716b3d5392cb2f9542878a21_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/1b86a41997c55ed1716b3d5392cb2f9542878a21_full.jpg",
+    userStatus: 1,
+    realName: null,
+    primaryGroupId: "103582791475152331",
+    accountCreatedDate: "2016-08-06T07:59:11",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: "STAR WARS™ Battlefront™ II",
+    playingGameId: "1237950",
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199108326600,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Billy Herrington",
+    lastLoggedOffDate: "2026-07-10T10:00:33",
+    commentPermission: 2,
+    profileUrl: "https://steamcommunity.com/profiles/76561199108326592/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/52f567e1e3fdd9269b9cf15cb183dff386deee32.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/52f567e1e3fdd9269b9cf15cb183dff386deee32_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/52f567e1e3fdd9269b9cf15cb183dff386deee32_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-11-19T17:45:19",
+    countryCode: "NE",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199059900720,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "MirrorRune",
+    lastLoggedOffDate: "2026-07-09T23:03:23",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199059900726/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/b61a4c4d94ed382e329eb3737ec8e841f903ff7a.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/b61a4c4d94ed382e329eb3737ec8e841f903ff7a_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/b61a4c4d94ed382e329eb3737ec8e841f903ff7a_full.jpg",
+    userStatus: 1,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-05-21T10:35:09",
+    countryCode: "PL",
+    stateCode: "87",
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199013544770,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Wojtmic",
+    lastLoggedOffDate: "2026-06-28T20:24:46",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199013544761/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/7ae537b6b7b7b09e68f52e76cdb8f0727f5cb270.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/7ae537b6b7b7b09e68f52e76cdb8f0727f5cb270_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/7ae537b6b7b7b09e68f52e76cdb8f0727f5cb270_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2019-12-27T13:31:16",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199070459300,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Munti",
+    lastLoggedOffDate: "2026-07-07T14:13:28",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199070459294/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/93be6882f10a7f3f4f599ba683fdedceafbf1b97.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/93be6882f10a7f3f4f599ba683fdedceafbf1b97_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/93be6882f10a7f3f4f599ba683fdedceafbf1b97_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-06-29T18:11:39",
+    countryCode: "PL",
+    stateCode: "74",
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198835076700,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "BOGYMA",
+    lastLoggedOffDate: "2026-07-10T07:47:10",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561198835076696/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/015f4da838e5cbfaefafae09a71769e99a40cac2.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/015f4da838e5cbfaefafae09a71769e99a40cac2_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/015f4da838e5cbfaefafae09a71769e99a40cac2_full.jpg",
+    userStatus: 3,
+    realName: null,
+    primaryGroupId: "103582791436076995",
+    accountCreatedDate: "2018-05-09T22:30:57",
+    countryCode: "US",
+    stateCode: "TX",
+    cityCode: 3620,
+    playingGameName: "Risk of Rain 2",
+    playingGameId: "632360",
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198749507380,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Leetify",
+    lastLoggedOffDate: "2026-07-10T10:59:57",
+    commentPermission: 2,
+    profileUrl: "https://steamcommunity.com/profiles/76561198749507370/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/baa87460ec3924f72d0842d8dc361f8285649656.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/baa87460ec3924f72d0842d8dc361f8285649656_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/baa87460ec3924f72d0842d8dc361f8285649656_full.jpg",
+    userStatus: 1,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2026-01-16T23:16:44",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199204639820,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Tomasz pala",
+    lastLoggedOffDate: "2026-07-10T09:18:09",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199204639819/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/1a1a48fa47df3c3dbc8c07dcedfcf763a7eab647.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/1a1a48fa47df3c3dbc8c07dcedfcf763a7eab647_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/1a1a48fa47df3c3dbc8c07dcedfcf763a7eab647_full.jpg",
+    userStatus: 0,
+    realName: ".",
+    primaryGroupId: "103582791470026297",
+    accountCreatedDate: "2021-09-03T16:07:52",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199474177440,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "vxll..",
+    lastLoggedOffDate: "2026-07-05T22:05:09",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199474177436/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/9330e1349a7f4e1fe4b229dd2bc2978dd9f135db.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/9330e1349a7f4e1fe4b229dd2bc2978dd9f135db_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/9330e1349a7f4e1fe4b229dd2bc2978dd9f135db_full.jpg",
+    userStatus: 0,
+    realName: "val",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-01-29T15:23:45",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199475614600,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Ghost",
+    lastLoggedOffDate: "2026-07-10T09:27:51",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199475614587/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fe5553dcc2c218c8fd27026d85752b2df73e4bd8.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fe5553dcc2c218c8fd27026d85752b2df73e4bd8_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fe5553dcc2c218c8fd27026d85752b2df73e4bd8_full.jpg",
+    userStatus: 3,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-02-02T18:43:10",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199583892130,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "waligorajan9",
+    lastLoggedOffDate: "2026-05-23T11:06:14",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199583892133/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-12-16T15:38:27",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199093739680,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Beldrog",
+    lastLoggedOffDate: "2026-07-09T00:28:25",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199093739685/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/148ff422f2245ab66abfeabf3f7506861d6b703b.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/148ff422f2245ab66abfeabf3f7506861d6b703b_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/148ff422f2245ab66abfeabf3f7506861d6b703b_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-09-25T12:01:51",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198398644740,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "watarod",
+    lastLoggedOffDate: "2026-06-26T23:10:12",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561198398644740/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/36ae3c20f904481ad8a5e7af1d914cee9f081223.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/36ae3c20f904481ad8a5e7af1d914cee9f081223_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/36ae3c20f904481ad8a5e7af1d914cee9f081223_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2017-06-19T14:53:31",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199095790270,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "K0m0rniczek",
+    lastLoggedOffDate: "2026-07-10T01:34:56",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199095790264/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/ebc4587b999f2cc1250ec0500efd1507ff774509.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/ebc4587b999f2cc1250ec0500efd1507ff774509_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/ebc4587b999f2cc1250ec0500efd1507ff774509_full.jpg",
+    userStatus: 0,
+    realName: "K0m0rniczek",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-10-06T19:08:33",
+    countryCode: "UZ",
+    stateCode: "07",
+    cityCode: 46337,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198420798420,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "TCU",
+    lastLoggedOffDate: "2026-07-10T02:28:11",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/id/TotallyCreativeUsername/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/73054023da02a0a4e0aea0387d95a7ec478c85b5.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/73054023da02a0a4e0aea0387d95a7ec478c85b5_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/73054023da02a0a4e0aea0387d95a7ec478c85b5_full.jpg",
+    userStatus: 1,
+    realName: "TotallyCreativeUsername",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2017-09-10T13:00:56",
+    countryCode: "US",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199502603870,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "MrBeast",
+    lastLoggedOffDate: "2026-07-10T00:00:42",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199502603869/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/51da82a6bcadb8151c7e123c078cbb183fb364dd.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/51da82a6bcadb8151c7e123c078cbb183fb364dd_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/51da82a6bcadb8151c7e123c078cbb183fb364dd_full.jpg",
+    userStatus: 1,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-05-06T16:52:08",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199529904940,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Rico",
+    lastLoggedOffDate: "2026-07-10T11:03:22",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199529904944/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/eaa5f44e0ba137efa88c732880001f3c590459fd.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/eaa5f44e0ba137efa88c732880001f3c590459fd_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/eaa5f44e0ba137efa88c732880001f3c590459fd_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-07-25T18:59:48",
+    countryCode: "PL",
+    stateCode: "43",
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199242738660,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Kemorii",
+    lastLoggedOffDate: "2026-07-09T23:30:21",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199242738662/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/998bb31c45414f37e0f33c009ce9c1cac01ec156.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/998bb31c45414f37e0f33c009ce9c1cac01ec156_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/998bb31c45414f37e0f33c009ce9c1cac01ec156_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2022-02-09T17:16:19",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199092612180,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Rozbójnik z bagna kapucynek",
+    lastLoggedOffDate: "2026-07-08T22:56:24",
+    commentPermission: 2,
+    profileUrl: "https://steamcommunity.com/profiles/76561199092612171/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/733ff202d8f8fccfeef289c3b0079af75a46c29b.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/733ff202d8f8fccfeef289c3b0079af75a46c29b_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/733ff202d8f8fccfeef289c3b0079af75a46c29b_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-09-21T14:32:50",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199261663550,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "garebare",
+    lastLoggedOffDate: "2026-07-10T11:26:50",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199261663559/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/43d8aa1dd08475e1c6d47b8d17ea2ab2f6ed970b.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/43d8aa1dd08475e1c6d47b8d17ea2ab2f6ed970b_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/43d8aa1dd08475e1c6d47b8d17ea2ab2f6ed970b_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2022-04-04T16:00:25",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199436345100,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "MeTeOoO",
+    lastLoggedOffDate: "2026-07-07T09:51:30",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199436345101/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/1750c2a9421b3ac43234a385988d8a5fd831b0a7.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/1750c2a9421b3ac43234a385988d8a5fd831b0a7_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/1750c2a9421b3ac43234a385988d8a5fd831b0a7_full.jpg",
+    userStatus: 0,
+    realName: "Kacper Tybura",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2022-11-20T17:45:16",
+    countryCode: "PL",
+    stateCode: "43",
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198450114430,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "g l o b",
+    lastLoggedOffDate: "2026-07-09T23:59:36",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561198450114438/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/4f9cbea54fa7933c8ad0ccffff7c619d59615426.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/4f9cbea54fa7933c8ad0ccffff7c619d59615426_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/4f9cbea54fa7933c8ad0ccffff7c619d59615426_full.jpg",
+    userStatus: 1,
+    realName: "g l o b",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2017-11-28T00:36:02",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: "My Winter Car",
+    playingGameId: "4164420",
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199258146500,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Bulkazchlebem123",
+    lastLoggedOffDate: "2026-06-25T13:14:04",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199258146504/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/47f223f76ff8a523b9e5f98ca711e9fdc52665ee.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/47f223f76ff8a523b9e5f98ca711e9fdc52665ee_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/47f223f76ff8a523b9e5f98ca711e9fdc52665ee_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791433237993",
+    accountCreatedDate: "2022-03-24T20:36:07",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198979969600,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "wojtekwol44",
+    lastLoggedOffDate: "2026-07-09T22:03:02",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561198979969592/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/9abee64c1b84c0da1033b48d4bf084fd20ed1213.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/9abee64c1b84c0da1033b48d4bf084fd20ed1213_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/9abee64c1b84c0da1033b48d4bf084fd20ed1213_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2019-07-26T13:43:07",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199854325380,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Mammut",
+    lastLoggedOffDate: "2026-06-30T23:56:51",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199854325381/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/e34879eb198b1ac1fcf1de8cb15720c4ba576161.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/e34879eb198b1ac1fcf1de8cb15720c4ba576161_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/e34879eb198b1ac1fcf1de8cb15720c4ba576161_full.jpg",
+    userStatus: 0,
+    realName: "Mammut",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2025-05-10T16:58:16",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199475655380,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "pankraken10",
+    lastLoggedOffDate: "2026-07-10T08:22:40",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199475655378/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/2b34c4d4a0091f9bf36f5ba36c984897caa7f38f.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/2b34c4d4a0091f9bf36f5ba36c984897caa7f38f_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/2b34c4d4a0091f9bf36f5ba36c984897caa7f38f_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-02-02T20:35:57",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198298618130,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Lady Geist - Controller Gaming",
+    lastLoggedOffDate: "2026-07-08T14:16:15",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/id/tarekinnit/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/a12eaccdb7a5fec959c562ae12d6e8d809c3a402.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/a12eaccdb7a5fec959c562ae12d6e8d809c3a402_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/a12eaccdb7a5fec959c562ae12d6e8d809c3a402_full.jpg",
+    userStatus: 0,
+    realName: "Why do you wanna know that tho?",
+    primaryGroupId: "103582791434761767",
+    accountCreatedDate: "2016-04-07T15:16:13",
+    countryCode: "DE",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199505863920,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "janek_667",
+    lastLoggedOffDate: "2026-05-30T09:06:39",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199505863913/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/bfd0269eb568463afdd90f6184ed5cf6e4d1cbc9.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/bfd0269eb568463afdd90f6184ed5cf6e4d1cbc9_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/bfd0269eb568463afdd90f6184ed5cf6e4d1cbc9_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-05-15T08:09:52",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199019979570,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "resnek",
+    lastLoggedOffDate: "2026-07-08T03:16:09",
+    commentPermission: 1,
+    profileUrl: "https://steamcommunity.com/profiles/76561199019979566/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/5ebe3a42becf789fd76dd0efbd0ab289d1c003ae.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/5ebe3a42becf789fd76dd0efbd0ab289d1c003ae_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/5ebe3a42becf789fd76dd0efbd0ab289d1c003ae_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-01-18T16:34:03",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199814475090,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Nagi Seishiro",
+    lastLoggedOffDate: "2026-07-02T13:24:54",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199814475088/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/01da70ed6500b6b11a39ed80e7db77a0ad02f8cd.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/01da70ed6500b6b11a39ed80e7db77a0ad02f8cd_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/01da70ed6500b6b11a39ed80e7db77a0ad02f8cd_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2025-01-05T23:48:19",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561198958107260,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "Togi",
+    lastLoggedOffDate: "2026-07-09T18:12:53",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561198958107268/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2019-04-21T17:12:00",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199214981300,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "facebook",
+    lastLoggedOffDate: "2026-07-10T12:03:12",
+    commentPermission: 0,
+    profileUrl:
+      "https://steamcommunity.com/id/oklookatdislookatdismasterpiece/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/6a07289ca3263407c34d4519d662dff1f44e7758.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/6a07289ca3263407c34d4519d662dff1f44e7758_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/6a07289ca3263407c34d4519d662dff1f44e7758_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2021-10-15T13:07:33",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199228692900,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "aydan",
+    lastLoggedOffDate: "2026-07-10T03:11:08",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199228692900/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/eb9073d704926b630fd7dfbb80d71e3cbadcc09c.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/eb9073d704926b630fd7dfbb80d71e3cbadcc09c_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/eb9073d704926b630fd7dfbb80d71e3cbadcc09c_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2021-12-22T03:05:17",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199235558740,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "T3M HARNAŚ",
+    lastLoggedOffDate: "2026-07-09T21:21:44",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199235558730/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/600a54e62405d2696730eabca74233adfd9aea7e.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/600a54e62405d2696730eabca74233adfd9aea7e_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/600a54e62405d2696730eabca74233adfd9aea7e_full.jpg",
+    userStatus: 1,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2022-01-16T14:21:39",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199509384050,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "KL0CHA",
+    lastLoggedOffDate: "2026-07-09T13:47:50",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199509384055/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/9db4379c2531f5accd95570c7ac358f7169393dc.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/9db4379c2531f5accd95570c7ac358f7169393dc_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/9db4379c2531f5accd95570c7ac358f7169393dc_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2023-05-28T08:32:30",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199123796140,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "TATOOS",
+    lastLoggedOffDate: "2026-07-09T18:12:21",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/id/tatoos/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+    userStatus: 4,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-12-29T10:14:03",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199017891500,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "pan ciekawer",
+    lastLoggedOffDate: "2026-07-10T10:23:36",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/id/AdSabProHomie/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/e9cf2ca2d534f9205e9557faef94cd2e7b8b225e.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/e9cf2ca2d534f9205e9557faef94cd2e7b8b225e_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/e9cf2ca2d534f9205e9557faef94cd2e7b8b225e_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-01-12T09:15:37",
+    countryCode: "PL",
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199866805700,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "ZVX13",
+    lastLoggedOffDate: "2026-04-23T17:21:43",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/profiles/76561199866805699/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg",
+    userStatus: 0,
+    realName: null,
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2025-06-13T19:23:15",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+  {
+    steamId: 76561199042222860,
+    profileVisibility: 3,
+    profileState: 1,
+    nickname: "raccoonmanthing",
+    lastLoggedOffDate: "2026-07-03T06:09:08",
+    commentPermission: 0,
+    profileUrl: "https://steamcommunity.com/id/Raccoonmanthing/",
+    avatarUrl:
+      "https://avatars.steamstatic.com/dc213dde4fab9c74854fd7f3e06d0722fccaa3ee.jpg",
+    avatarMediumUrl:
+      "https://avatars.steamstatic.com/dc213dde4fab9c74854fd7f3e06d0722fccaa3ee_medium.jpg",
+    avatarFullUrl:
+      "https://avatars.steamstatic.com/dc213dde4fab9c74854fd7f3e06d0722fccaa3ee_full.jpg",
+    userStatus: 0,
+    realName: "grayson",
+    primaryGroupId: "103582791429521408",
+    accountCreatedDate: "2020-04-02T23:23:08",
+    countryCode: null,
+    stateCode: null,
+    cityCode: 0,
+    playingGameName: null,
+    playingGameId: null,
+    playingGameServerIP: null,
+  },
+];
+
+let friendListElem;
+let friendsCancel;
 
 let categories = [
   {
@@ -15,7 +1248,7 @@ let categories = [
   {
     name: "Groups",
     icon: "fa-solid fa-book",
-    expanded: true,
+    expanded: false,
   },
   {
     name: "Platforms",
@@ -25,17 +1258,17 @@ let categories = [
   {
     name: "Players",
     icon: "fa-solid fa-users",
-    expanded: true,
+    expanded: false,
   },
   {
     name: "Level",
     icon: "fa-solid fa-map",
-    expanded: true,
+    expanded: false,
   },
   {
     name: "Gamemodes",
     icon: "fa-solid fa-puzzle-piece",
-    expanded: true,
+    expanded: false,
 
     sort: true,
     sortMode: "filterTotalCount",
@@ -44,7 +1277,134 @@ let categories = [
   {
     name: "Filtering",
     icon: "fa-solid fa-shield-halved",
-    expanded: true,
+    expanded: false,
+  },
+  {
+    name: "Steam Friends",
+    icon: "fa-brands fa-steam",
+    expanded: false,
+    customHandler: async (container) => {
+      if (friendsCancel) friendsCancel.abort();
+      const controller = new AbortController();
+      friendsCancel = controller;
+
+      const list = container.getElementsByTagName("div")[0];
+      friendListElem = list;
+      list.classList.add("friendsContainer");
+
+      const toCopy = document.getElementById("friendToCopy");
+      const order = [6, 1, 4, 2, 3, 0, 5];
+
+      let seconds = 0;
+      function counter() {
+        seconds++;
+        if (seconds >= 30) create();
+      }
+
+      async function create(ignore = false) {
+        if (!ignore) {
+          if (document.hidden || !document.hasFocus()) return;
+        }
+        if (controller?.aborted == true) {
+          clearInterval(counter);
+          return;
+        }
+        seconds = 0;
+
+        /*
+        const self = await getSelf();
+        if (!self) {
+          notice(
+            list,
+            "Not Logged In!",
+            "You need to log in with Steam to view friends list!",
+            "fas fa-arrow-right-to-bracket",
+          );
+          return;
+        }
+        const friends = await getFriends(self.steamId);
+        if (friends == false) {
+          notice(
+            list,
+            "Friends List Not Public!",
+            "You must set your steam friends list to be public!",
+            "fas fa-xmark",
+            "--flb-error-color",
+          );
+          return;
+        } else if (!friends) {
+          notice(
+            list,
+            "Failed!",
+            "Failed to fetch friends list",
+            "fas fa-xmark",
+            "--flb-error-color",
+          );
+          return;
+        }*/
+
+        const sorted = structuredClone(friends);
+        sorted.forEach((f) => {
+          if (f.playingGameName && f.playingGameName != "") f.userStatus = 6;
+        });
+        sorted.sort(
+          (a, b) =>
+            order.findIndex((x) => x == a.userStatus) -
+            order.findIndex((x) => x == b.userStatus),
+        );
+        sorted.forEach((f) => {
+          let elem = list.querySelector(`div[steamid="${f.steamId}"]`);
+          if (!elem) elem = toCopy.cloneNode(true);
+          elem.removeAttribute("id");
+          elem.setAttribute("steamid", String(f.steamId));
+          elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
+          elem
+            .getElementsByClassName("friendAvatar")[0]
+            .setAttribute("src", f.avatarUrl);
+          elem.getElementsByClassName("friendUsername")[0].textContent =
+            f.nickname;
+          const additionalInfo = elem.getElementsByClassName(
+            "steamAdditionalInfo",
+          )[0];
+          additionalInfo.style.color = window
+            .getComputedStyle(toCopy)
+            .getPropertyValue(`--flb-status${f.userStatus}-color`);
+          switch (f.userStatus) {
+            case 0:
+              additionalInfo.textContent = "Offline";
+              break;
+            case 1:
+              additionalInfo.textContent = "Online";
+              break;
+            case 2:
+              additionalInfo.textContent = "Busy";
+              break;
+            case 3:
+              additionalInfo.textContent = "Away";
+              break;
+            case 4:
+              additionalInfo.textContent = "AFK...";
+              break;
+            case 6:
+              additionalInfo.textContent = `Playing a game${f.playingGameName && f.playingGameName != "" ? ` - ${f.playingGameName}` : ""}`;
+              break;
+            default:
+              additionalInfo.textContent = "Unknown status";
+              break;
+          }
+          list.appendChild(elem);
+        });
+        list.childNodes.forEach((x) => {
+          if (
+            !friends.find((f) => f.steamId == Number(x.getAttribute("steamid")))
+          )
+            x.remove();
+        });
+      }
+      create(true);
+
+      setInterval(counter, 30 * 1000);
+    },
   },
 ];
 
@@ -653,6 +2013,32 @@ const categorySorts = [
 let settingsValues = [];
 let eventListeners = [];
 
+function notice(
+  div,
+  title,
+  description,
+  icon = "fas fa-xmark",
+  colorVariable = "--flb-gray-color",
+) {
+  const notices = div.getElementsByClassName("notice");
+  if (notices && notices.length > 0) for (const n of notices) n.remove();
+
+  const toCopy = document.getElementById("noticeToCopy");
+  const notice = toCopy.cloneNode(true);
+  notice.removeAttribute("id");
+  const _icon = notice.getElementsByClassName("noticeIcon")[0];
+  const _title = notice.getElementsByClassName("noticeTitle")[0];
+  const _description = notice.getElementsByClassName("noticeDescription")[0];
+  const classes = icon.split(" ");
+  classes.forEach((x) => _icon.classList.add(x));
+  _title.textContent = title;
+  _description.textContent = description;
+  notice.style.color = window
+    .getComputedStyle(toCopy)
+    .getPropertyValue(colorVariable);
+  div.appendChild(notice);
+}
+
 function setOption(option, id, name, icon) {
   option.setAttribute("value", id ?? name);
   if (icon) {
@@ -764,74 +2150,77 @@ export function init() {
   categories.forEach((val) => {
     const cat = createCategory(val);
     settingsList.appendChild(cat);
-
-    let index = [];
-    settings.forEach((x, i) => {
-      if (x.category == val.name) index.push(i);
-    });
-    if (val.sort && val.sortMode) {
-      const order = categorySorts.find(
-        (x) => x.name.toLowerCase() == val.sortMode.toLowerCase(),
-      );
-      if (order) index = order.callback(index, val.sortOrder);
-    }
-
-    for (const i of index) {
-      const val = settings[i];
-      const type = types.find((t) => t.type == val.type);
-      if (type == null) {
-        console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
-        continue;
-      }
-
-      const saved = localStorage.getItem(getElemId(val.id));
-      let _val;
-      if (saved != null && saved != undefined) {
-        try {
-          if (!type.overrideCached)
-            _val = val.storeAsJSON ? JSON.parse(saved) : saved;
-          else _val = type.overrideCached(saved);
-        } catch (ex) {
-          console.error(
-            "Failed to load value from storage, fallback to default (the stored one will be overwritten!)",
-          );
-          console.error(ex);
-          _val = val.defaultValue;
-        }
-      } else {
-        if (typeof val.defaultValue == "function") _val = val.defaultValue();
-        else _val = val.defaultValue;
-      }
-      if (!val.initialValueSet) {
-        setSetting(val.id, _val);
-        val.initialValueSet = true;
-      }
-
-      const category = settingsList
-        .querySelector(
-          `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
-        )
-        ?.getElementsByTagName("div")[0];
-      if (category == null) {
-        console.warn(
-          `Setting '${val.id}' has unknown category: ${val.category}`,
+    if (!val.customHandler) {
+      let index = [];
+      settings.forEach((x, i) => {
+        if (x.category == val.name) index.push(i);
+      });
+      if (val.sort && val.sortMode) {
+        const order = categorySorts.find(
+          (x) => x.name.toLowerCase() == val.sortMode.toLowerCase(),
         );
-        continue;
+        if (order) index = order.callback(index, val.sortOrder);
       }
 
-      const wrapper = type.callback(val, _val);
-      if (wrapper == null) {
-        console.warn(`Empty wrapper for setting '${val.id}'`);
-        continue;
+      for (const i of index) {
+        const val = settings[i];
+        const type = types.find((t) => t.type == val.type);
+        if (type == null) {
+          console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
+          continue;
+        }
+
+        const saved = localStorage.getItem(getElemId(val.id));
+        let _val;
+        if (saved != null && saved != undefined) {
+          try {
+            if (!type.overrideCached)
+              _val = val.storeAsJSON ? JSON.parse(saved) : saved;
+            else _val = type.overrideCached(saved);
+          } catch (ex) {
+            console.error(
+              "Failed to load value from storage, fallback to default (the stored one will be overwritten!)",
+            );
+            console.error(ex);
+            _val = val.defaultValue;
+          }
+        } else {
+          if (typeof val.defaultValue == "function") _val = val.defaultValue();
+          else _val = val.defaultValue;
+        }
+        if (!val.initialValueSet) {
+          setSetting(val.id, _val);
+          val.initialValueSet = true;
+        }
+
+        const category = settingsList
+          .querySelector(
+            `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
+          )
+          ?.getElementsByTagName("div")[0];
+        if (category == null) {
+          console.warn(
+            `Setting '${val.id}' has unknown category: ${val.category}`,
+          );
+          continue;
+        }
+
+        const wrapper = type.callback(val, _val);
+        if (wrapper == null) {
+          console.warn(`Empty wrapper for setting '${val.id}'`);
+          continue;
+        }
+
+        val.elem = wrapper;
+
+        wrapper.addEventListener("onsettingchanged", (v) =>
+          setSetting(val.id, v.detail.new, v.detail.old),
+        );
+
+        category.appendChild(wrapper);
       }
-
-      val.elem = wrapper;
-
-      wrapper.addEventListener("onsettingchanged", (v) =>
-        setSetting(val.id, v.detail.new, v.detail.old),
-      );
-
-      category.appendChild(wrapper);
+    } else {
+      val.customHandler(cat);
     }
   });
 }

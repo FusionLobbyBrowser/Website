@@ -2,6 +2,13 @@ body {
   height: 100%;
   background-color: var(--flb-primary-background-color);
   color: var(--flb-paragraph-color);
+  --flb-status0-color: var(--flb-gray-color);
+  --flb-status1-color: cyan;
+  --flb-status2-color: red;
+  --flb-status3-color: orange;
+  --flb-status4-color: cyan;
+  --flb-status5-color: var(--flb-gray-color);
+  --flb-status6-color: lime;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -345,6 +352,16 @@ ul {
   text-align: center;
 }
 
+div:has(> .notice),
+#lobbies:has(> .notice) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 #lobbies {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -361,27 +378,19 @@ ul {
   gap: 1em;
 }
 
-#lobbies:has(.lobbyNotice) {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.lobbyNotice {
+.notice {
   text-align: center;
   width: 100%;
+  text-wrap: wrap;
 }
 @media (min-width: 1200px) {
-  #lobbies:has(.lobbyNotice) {
+  #lobbies:has(.notice) {
     -ms-flex: 0 0 calc(100% - (22em * 2) - 1em);
     -webkit-box-flex: 0;
     flex: 0 0 calc(100% - (22em * 2) - 1em); /* Safari */
   }
 
-  .lobbyNotice {
+  #lobbies > .notice {
     width: 65%;
   }
 }
@@ -980,7 +989,8 @@ a > .textIcon {
 #playerToCopy,
 #discordToCopy,
 #playerViewToCopy,
-#lobbyNoticeToCopy,
+#noticeToCopy,
+#friendToCopy,
 .hidden {
   display: none;
   visibility: hidden;
@@ -1804,8 +1814,9 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .steamAccount {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr; /* avatar | text */
+  align-items: stretch;
   gap: 0.25em;
 }
 
@@ -1821,37 +1832,37 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Offline */
 .status0 {
-  background-color: gray;
+  background-color: var(--flb-status0-color);
 }
 
 /* Online */
 .status1 {
-  background-color: greenyellow;
+  background-color: var(--flb-status1-color);
 }
 
 /* Busy */
 .status2 {
-  background-color: red;
+  background-color: var(--flb-status2-color);
 }
 
 /* Away */
 .status3 {
-  background-color: orange;
+  background-color: var(--flb-status3-color);
 }
 
 /* Snooze / AFK */
 .status4 {
-  background-color: cyan;
+  background-color: var(--flb-status4-color);
 }
 
 /* Unknown */
 .status5 {
-  background-color: gray;
+  background-color: var(--flb-status5-color);
 }
 
 /* In Game */
 .status6 {
-  background-color: green;
+  background-color: var(--flb-status6-color);
 }
 
 .viewThumbnail {
@@ -1874,20 +1885,61 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
 }
 
+.friendsContainer {
+  margin-top: 0.25em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
 .steamUsername {
   margin-top: 0;
   margin-bottom: 0.1rem;
 }
 
-.createDate {
+.steamAccount > .avatarContainer > .statusIndicator {
+  height: 0.25em;
+  width: 0.25em;
+}
+
+.infoContainer {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.friendAvatar {
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.friendUsername {
+  font-size: 0.9rem;
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 0.1rem;
+}
+
+.steamAdditionalInfo {
   color: var(--flb-gray-color);
   font-size: 0.65rem;
   margin: 0;
 }
 
 .avatarContainer {
+  align-self: stretch;
+  aspect-ratio: 1/1;
+  padding: 0;
   position: relative;
-  padding-right: 0.3em;
 }
 
 .statusIndicator {

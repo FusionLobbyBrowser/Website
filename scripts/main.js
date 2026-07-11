@@ -133,7 +133,7 @@ async function fetchAndCreateLobbies() {
         setTimeElem(refresh, null);
 
         setLobbyCount(-1);
-        setPlayerCount(-1, -1);
+        setPlayerCount(0, 0);
         hideShow(true);
       } else {
         if (json.interval) refreshInterval = Number(json.interval);
@@ -953,12 +953,12 @@ function lobbyNotice(
   removeLobbies = true,
 ) {
   const lobbies = document.getElementById("lobbies");
-  const notices = lobbies.getElementsByClassName("lobbyNotice");
+  const notices = lobbies.getElementsByClassName("notice");
   if (removeLobbies) lobbies.replaceChildren();
   if (notices && notices.length > 0) {
     for (const n of notices) n.remove();
   }
-  const toCopy = document.getElementById("lobbyNoticeToCopy");
+  const toCopy = document.getElementById("noticeToCopy");
   const notice = toCopy.cloneNode(true);
   notice.removeAttribute("id");
   const _icon = notice.getElementsByClassName("noticeIcon")[0];
@@ -1192,7 +1192,7 @@ function modRedirect(id, name) {
 function setLobbyCount(count, max) {
   const elem = document.getElementsByClassName("lobbyTitle")[0];
   if (count == -1) {
-    elem.textContent = "Lobbies (None)";
+    elem.textContent = "Lobbies (0)";
   } else {
     if (count == max) elem.textContent = `Lobbies (${count})`;
     else elem.textContent = `Lobbies (${count}/${max})`;
@@ -1636,12 +1636,7 @@ function timeAgoElem(elem, date = null) {
 function setTimeElem(elem, val) {
   if (val == null || val == undefined) val = "N/A";
   elem.textContent = val;
-  if (val == "N/A") {
-    elem.removeAttribute("date");
-    elem.classList.add("hidden");
-  } else {
-    elem.classList.remove("hidden");
-  }
+  if (val == "N/A") elem.removeAttribute("date");
 }
 
 function timeFromResponse(elem, val) {

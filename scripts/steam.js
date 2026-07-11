@@ -57,6 +57,7 @@ export async function getFriends(id) {
     const res = await fetch(FRIENDS.replace("[id]", id), {
       credentials: "include",
     });
+    if (res.status == 401) return false;
     if (!res.ok) return null;
     return res.json();
   } catch (ex) {
