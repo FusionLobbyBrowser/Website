@@ -1,5 +1,3 @@
-import JSONBig from "https://cdn.jsdelivr.net/npm/json-bigint-browser@0.2.2/+esm";
-
 const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
 const STEAM = `${HOST}steam/`;
 const ME = `${STEAM}me`;
@@ -34,7 +32,7 @@ export async function getSelf() {
   try {
     const res = await fetch(ME, { credentials: "include" });
     if (!res.ok) return null;
-    return JSONBig.parse(await res.text());
+    return await res.json();
   } catch (ex) {
     console.error(ex);
     return null;
@@ -47,7 +45,7 @@ export async function getProfile(id) {
       credentials: "include",
     });
     if (!res.ok) return null;
-    return JSONBig.parse(await res.text());
+    return await res.json();
   } catch (ex) {
     console.error(ex);
     return null;
@@ -61,7 +59,7 @@ export async function getFriends(id) {
     });
     if (res.status == 401) return false;
     if (!res.ok) return null;
-    return JSONBig.parse(await res.text());
+    return await res.json();
   } catch (ex) {
     console.error(ex);
     return null;

@@ -371,7 +371,7 @@ async function createLobbies(signal) {
   let fLobbies = structuredClone(allLobbies);
   fLobbies.forEach((x) => {
     const filtered = x.playerList.players.filter((y) =>
-      friends.some((x) => String(x.steamId) == String(y.platformID)),
+      friends.some((x) => x.steamId == String(y.platformID)),
     );
     if (filtered) {
       filtered.forEach((x) => {

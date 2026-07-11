@@ -94,7 +94,7 @@ let categories = [
           );
           return;
         }
-        friends = await getFriends(String(self.steamId));
+        friends = await getFriends(self.steamId);
         if (friends == false) {
           friends = [];
           notice(
@@ -132,7 +132,7 @@ let categories = [
           let elem = list.querySelector(`div[steamid="${f.steamId}"]`);
           if (!elem) elem = toCopy.cloneNode(true);
           elem.removeAttribute("id");
-          elem.setAttribute("steamid", String(f.steamId));
+          elem.setAttribute("steamid", f.steamId);
           elem
             .getElementsByClassName("friendAvatar")[0]
             .setAttribute("src", f.avatarUrl);
@@ -141,9 +141,7 @@ let categories = [
           const additionalInfo = elem.getElementsByClassName(
             "steamAdditionalInfo",
           )[0];
-          const inLobby = friendsLobbies.find(
-            (x) => String(x.id) == String(f.steamId),
-          );
+          const inLobby = friendsLobbies.find((x) => x.id == f.steamId);
           if (!inLobby) {
             additionalInfo.style.color = window
               .getComputedStyle(toCopy)
@@ -192,11 +190,7 @@ let categories = [
           list.appendChild(elem);
         });
         list.childNodes.forEach((x) => {
-          if (
-            !friends.find(
-              (f) => String(f.steamId) == String(x.getAttribute("steamid")),
-            )
-          )
+          if (!friends.find((f) => f.steamId == x.getAttribute("steamid")))
             x.remove();
         });
       }
