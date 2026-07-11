@@ -18,6 +18,7 @@ import {
   getIconElem,
   addSetting,
   getSetting,
+  friends,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
@@ -366,6 +367,22 @@ async function createLobbies(signal) {
     );
   }
 
+  let inLobby = [];
+  let fLobbies = structuredClone(allLobbies);
+  fLobbies.forEach((x) => {
+    const filtered = x.playerList.players.filter((y) =>
+      friends.some((x) => String(x.steamId) == String(y.platformID)),
+    );
+    if (filtered) {
+      filtered.forEach((x) => {
+        inLobby.push({
+          id: String(x.platformID),
+          lobbyName: getLobbyName(x, false),
+        });
+      });
+    }
+  });
+
   console.log(
     `Creating %c${lobbyList.length}%c %s`,
     "color: #0ff",
@@ -438,6 +455,18 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.removeAttribute("id");
 
   lobbyElem.setAttribute("filteredout", hidden);
+  if (isToggleChecked("highlightFriends")) {
+    lobbyElem.setAttribute(
+      "hasFriend",
+      String(
+        friends.some((x) =>
+          lobby.playerList.players.some(
+            (y) => String(y.platformID) == String(x.steamId),
+          ),
+        ),
+      ),
+    );
+  }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
   if (lobby.lobbyPlatform == "Steam") {
@@ -1481,6 +1510,7 @@ async function init() {
   settingsEvent();
 
   // Require the lobby list to be created again
+  filterEvent("highlightFriends", true);
   filterEvent("censorNSFW", true);
   filterEvent("sort", true);
   filterEvent("sortOrder", true);

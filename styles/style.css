@@ -901,6 +901,11 @@ a > .textIcon {
   transition: 0.75s;
 }
 
+.lobby[hasFriend="true"] {
+  -webkit-box-shadow: 10px 5px 5px var(--flb-status6-color);
+  box-shadow: 10px 5px 5px var(--flb-status6-color);
+}
+
 .tippy-box[data-theme~="website"] {
   background-color: var(--flb-primary-background-color);
 }

@@ -37,7 +37,7 @@ export let friends = [
     steamId: 76561198248623980,
     profileVisibility: 3,
     profileState: 1,
-    nickname: "Jack Baker (Real) FUCK YOU",
+    nickname: "Jack Baker (Real)",
     lastLoggedOffDate: "2026-07-10T03:23:38",
     commentPermission: 1,
     profileUrl: "https://steamcommunity.com/id/WELCOMETOTHEFAMILYSON/",
@@ -1357,7 +1357,6 @@ let categories = [
           if (!elem) elem = toCopy.cloneNode(true);
           elem.removeAttribute("id");
           elem.setAttribute("steamid", String(f.steamId));
-          elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
           elem
             .getElementsByClassName("friendAvatar")[0]
             .setAttribute("src", f.avatarUrl);
@@ -1366,32 +1365,53 @@ let categories = [
           const additionalInfo = elem.getElementsByClassName(
             "steamAdditionalInfo",
           )[0];
-          additionalInfo.style.color = window
-            .getComputedStyle(toCopy)
-            .getPropertyValue(`--flb-status${f.userStatus}-color`);
+          const inLobby = friendsLobbies.find(
+            (x) => String(x.id) == String(f.steamId),
+          );
+          if (!inLobby) {
+            additionalInfo.style.color = window
+              .getComputedStyle(toCopy)
+              .getPropertyValue(`--flb-status${f.userStatus}-color`);
+            elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
+          } else {
+            elem.setAttribute("overridenInfo", "true");
+            elem.style.order = 0;
+            additionalInfo.style.color = window
+              .getComputedStyle(toCopy)
+              .getPropertyValue(`--flb-status6-color`);
+            additionalInfo.innerHTML = `Playing in a lobby - ${inLobby.lobbyName}`;
+          }
+
+          let status;
           switch (f.userStatus) {
             case 0:
-              additionalInfo.textContent = "Offline";
+              status = "Offline";
               break;
             case 1:
-              additionalInfo.textContent = "Online";
+              status = "Online";
               break;
             case 2:
-              additionalInfo.textContent = "Busy";
+              status = "Busy";
               break;
             case 3:
-              additionalInfo.textContent = "Away";
+              status = "Away";
               break;
             case 4:
-              additionalInfo.textContent = "AFK...";
+              status = "AFK...";
               break;
             case 6:
-              additionalInfo.textContent = `Playing a game${f.playingGameName && f.playingGameName != "" ? ` - ${f.playingGameName}` : ""}`;
+              status = `Playing a game${f.playingGameName && f.playingGameName != "" ? ` - ${f.playingGameName}` : ""}`;
               break;
             default:
-              additionalInfo.textContent = "Unknown status";
+              status = "Unknown status";
               break;
           }
+
+          if (!inLobby) additionalInfo.textContent = status;
+
+          elem.setAttribute("userStatus", f.userStatus);
+          elem.setAttribute("infoText", status);
+
           list.appendChild(elem);
         });
         list.childNodes.forEach((x) => {
@@ -1516,6 +1536,14 @@ export let settings = [
     name: "Auto Refresh",
     icon: "fa-solid fa-arrows-rotate fa-spin",
     defaultValue: false,
+  },
+  {
+    id: "highlightFriends",
+    category: "General",
+    type: "toggle",
+    name: "Highlight Lobbies /w Friends",
+    icon: "fa-solid fa-star",
+    defaultValue: true,
   },
   // Groups
   {
@@ -1749,6 +1777,7 @@ export let settings = [
     defaultValue: true,
   },
 ];
+
 let types = [
   {
     type: "toggle",
@@ -2013,6 +2042,8 @@ const categorySorts = [
 let settingsValues = [];
 let eventListeners = [];
 
+let friendsLobbies = [];
+
 function notice(
   div,
   title,
@@ -2037,6 +2068,32 @@ function notice(
     .getComputedStyle(toCopy)
     .getPropertyValue(colorVariable);
   div.appendChild(notice);
+}
+
+export function setFriendsInLobby(friends) {
+  friendsLobbies = friends;
+  const order = [6, 1, 4, 2, 3, 0, 5];
+  friendListElem.childNodes.forEach((x) => {
+    const friend = friends.find((y) => y.id == x.getAttribute("steamid"));
+    const additionalInfo = elem.getElementsByClassName(
+      "steamAdditionalInfo",
+    )[0];
+    if (friend) {
+      x.style.order = 0;
+      additionalInfo.style.color = window
+        .getComputedStyle(toCopy)
+        .getPropertyValue(`--flb-status6-color`);
+      additionalInfo.innerHTML = `Playing in a lobby - ${friend.lobbyName}`;
+    } else if (x.hasAttribute("overridenInfo")) {
+      additionalInfo.style.color = window
+        .getComputedStyle(toCopy)
+        .getPropertyValue(
+          `--flb-status${Number(elem.getAttribute("userStatus"))}-color`,
+        );
+      elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
+      additionalInfo.textContent = elem.getAttribute("infoText");
+    }
+  });
 }
 
 function setOption(option, id, name, icon) {
