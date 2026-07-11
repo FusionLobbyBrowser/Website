@@ -189,7 +189,9 @@ let categories = [
         });
         list.childNodes.forEach((x) => {
           if (
-            !friends.find((f) => f.steamId == Number(x.getAttribute("steamid")))
+            !friends.find(
+              (f) => String(f.steamId) == String(x.getAttribute("steamid")),
+            )
           )
             x.remove();
         });

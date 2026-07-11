@@ -592,7 +592,6 @@ function isEllipsisActive(e) {
 }
 
 function createToolTip(e, content, placement = "top") {
-  console.log(content);
   if (e._tippy) e._tippy.setProps({ content: content });
 
   e._tippy = tippy(e, {
