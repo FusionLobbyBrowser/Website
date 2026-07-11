@@ -136,8 +136,9 @@ let categories = [
           elem
             .getElementsByClassName("friendAvatar")[0]
             .setAttribute("src", f.avatarUrl);
-          elem.getElementsByClassName("friendUsername")[0].textContent =
-            f.nickname;
+          const username = elem.getElementsByClassName("friendUsername")[0];
+          username.textContent = f.nickname;
+          username.href = f.profileUrl;
           const additionalInfo = elem.getElementsByClassName(
             "steamAdditionalInfo",
           )[0];
