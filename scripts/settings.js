@@ -1403,7 +1403,7 @@ let categories = [
       }
       create(true);
 
-      setInterval(counter, 30 * 1000);
+      setInterval(counter, 1000);
     },
   },
 ];
