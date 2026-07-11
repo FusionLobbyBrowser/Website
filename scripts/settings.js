@@ -116,6 +116,9 @@ let categories = [
           return;
         }
 
+        console.log("all checks");
+        console.log(friends);
+
         const sorted = structuredClone(friends);
         sorted.forEach((f) => {
           if (f.playingGameName && f.playingGameName != "") f.userStatus = 6;
@@ -185,6 +188,7 @@ let categories = [
           elem.setAttribute("userStatus", f.userStatus);
           elem.setAttribute("infoText", status);
 
+          console.log("append");
           list.appendChild(elem);
         });
         list.childNodes.forEach((x) => {
