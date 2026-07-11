@@ -94,7 +94,7 @@ let categories = [
           );
           return;
         }
-        friends = await getFriends(self.steamId);
+        friends = await getFriends(String(self.steamId));
         if (friends == false) {
           friends = [];
           notice(
