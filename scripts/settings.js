@@ -101,6 +101,8 @@ let categories = [
             "You need to log in with Steam to view friends list!",
             "fas fa-arrow-right-to-bracket",
           );
+          areFriendsFetched = true;
+          window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
           return;
         }
         friends = await getFriends(self.steamId);
@@ -113,6 +115,8 @@ let categories = [
             "fas fa-xmark",
             "--flb-error-color",
           );
+          areFriendsFetched = true;
+          window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
           return;
         } else if (!friends) {
           notice(
@@ -122,6 +126,8 @@ let categories = [
             "fas fa-xmark",
             "--flb-error-color",
           );
+          areFriendsFetched = true;
+          window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
           return;
         }
 
