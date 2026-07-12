@@ -61,9 +61,17 @@ let categories = [
       const controller = new AbortController();
       friendsCancel = controller;
 
+      fillCategory({
+        name: "Steam Friends",
+      });
+
       const list = container.getElementsByTagName("div")[0];
       friendListElem = list;
       list.classList.add("friendsContainer");
+
+      const divider = document.createElement("div");
+      divider.classList.add("divider");
+      list.appendChild(divider);
 
       const toCopy = document.getElementById("friendToCopy");
       const order = [6, 1, 4, 2, 3, 0, 5];
@@ -115,9 +123,6 @@ let categories = [
           );
           return;
         }
-
-        console.log("all checks");
-        console.log(friends);
 
         const sorted = structuredClone(friends);
         sorted.forEach((f) => {
@@ -187,7 +192,6 @@ let categories = [
           elem.setAttribute("userStatus", f.userStatus);
           elem.setAttribute("infoText", status);
 
-          console.log("append");
           list.appendChild(elem);
         });
         list.childNodes.forEach((x) => {
@@ -313,7 +317,7 @@ export let settings = [
   },
   {
     id: "highlightFriends",
-    category: "General",
+    category: "Steam Friends",
     type: "toggle",
     name: "Highlight Lobbies /w Friends",
     icon: "fa-solid fa-star",
@@ -982,78 +986,85 @@ export function init() {
     const cat = createCategory(val);
     settingsList.appendChild(cat);
     if (!val.customHandler) {
-      let index = [];
-      settings.forEach((x, i) => {
-        if (x.category == val.name) index.push(i);
-      });
-      if (val.sort && val.sortMode) {
-        const order = categorySorts.find(
-          (x) => x.name.toLowerCase() == val.sortMode.toLowerCase(),
-        );
-        if (order) index = order.callback(index, val.sortOrder);
-      }
-
-      for (const i of index) {
-        const val = settings[i];
-        const type = types.find((t) => t.type == val.type);
-        if (type == null) {
-          console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
-          continue;
-        }
-
-        const saved = localStorage.getItem(getElemId(val.id));
-        let _val;
-        if (saved != null && saved != undefined) {
-          try {
-            if (!type.overrideCached)
-              _val = val.storeAsJSON ? JSON.parse(saved) : saved;
-            else _val = type.overrideCached(saved);
-          } catch (ex) {
-            console.error(
-              "Failed to load value from storage, fallback to default (the stored one will be overwritten!)",
-            );
-            console.error(ex);
-            _val = val.defaultValue;
-          }
-        } else {
-          if (typeof val.defaultValue == "function") _val = val.defaultValue();
-          else _val = val.defaultValue;
-        }
-        if (!val.initialValueSet) {
-          setSetting(val.id, _val);
-          val.initialValueSet = true;
-        }
-
-        const category = settingsList
-          .querySelector(
-            `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
-          )
-          ?.getElementsByTagName("div")[0];
-        if (category == null) {
-          console.warn(
-            `Setting '${val.id}' has unknown category: ${val.category}`,
-          );
-          continue;
-        }
-
-        const wrapper = type.callback(val, _val);
-        if (wrapper == null) {
-          console.warn(`Empty wrapper for setting '${val.id}'`);
-          continue;
-        }
-
-        val.elem = wrapper;
-
-        wrapper.addEventListener("onsettingchanged", (v) =>
-          setSetting(val.id, v.detail.new, v.detail.old),
-        );
-
-        category.appendChild(wrapper);
-      }
+      fillCategory(val);
     } else {
       val.customHandler(cat);
     }
   });
+}
+
+function fillCategory(val) {
+  let index = [];
+  settings.forEach((x, i) => {
+    if (x.category == val.name) index.push(i);
+  });
+  if (val.sort && val.sortMode) {
+    const order = categorySorts.find(
+      (x) => x.name.toLowerCase() == val.sortMode.toLowerCase(),
+    );
+    if (order) index = order.callback(index, val.sortOrder);
+  }
+
+  for (const i of index) {
+    const val = settings[i];
+    createSetting(val);
+  }
+}
+
+function createSetting(val) {
+  const settingsList = document.getElementById("settingsList");
+  const type = types.find((t) => t.type == val.type);
+  if (type == null) {
+    console.warn(`Setting '${val.id}' has unknown type: ${val.type}`);
+    return;
+  }
+
+  const saved = localStorage.getItem(getElemId(val.id));
+  let _val;
+  if (saved != null && saved != undefined) {
+    try {
+      if (!type.overrideCached)
+        _val = val.storeAsJSON ? JSON.parse(saved) : saved;
+      else _val = type.overrideCached(saved);
+    } catch (ex) {
+      console.error(
+        "Failed to load value from storage, fallback to default (the stored one will be overwritten!)",
+      );
+      console.error(ex);
+      _val = val.defaultValue;
+    }
+  } else {
+    if (typeof val.defaultValue == "function") _val = val.defaultValue();
+    else _val = val.defaultValue;
+  }
+  if (!val.initialValueSet) {
+    setSetting(val.id, _val);
+    val.initialValueSet = true;
+  }
+
+  const category = settingsList
+    .querySelector(
+      `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
+    )
+    ?.getElementsByTagName("div")[0];
+  if (category == null) {
+    console.warn(`Setting '${val.id}' has unknown category: ${val.category}`);
+    return;
+  }
+
+  const wrapper = type.callback(val, _val);
+  if (wrapper == null) {
+    console.warn(`Empty wrapper for setting '${val.id}'`);
+    return;
+  }
+
+  val.elem = wrapper;
+
+  wrapper.addEventListener("onsettingchanged", (v) =>
+    setSetting(val.id, v.detail.new, v.detail.old),
+  );
+
+  category.appendChild(wrapper);
 }
 
 export function setSetting(setting, value, old = null) {

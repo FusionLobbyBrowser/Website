@@ -19,6 +19,7 @@ import {
   addSetting,
   getSetting,
   friends,
+  setFriendsInLobby,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
@@ -382,6 +383,7 @@ async function createLobbies(signal) {
       });
     }
   });
+  setFriendsInLobby(inLobby);
 
   console.log(
     `Creating %c${lobbyList.length}%c %s`,
@@ -455,17 +457,20 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.removeAttribute("id");
 
   lobbyElem.setAttribute("filteredout", hidden);
+  let _friends = [];
   if (isToggleChecked("highlightFriends")) {
-    lobbyElem.setAttribute(
-      "hasFriend",
-      String(
-        friends.some((x) =>
-          lobby.playerList.players.some(
-            (y) => String(y.platformID) == String(x.steamId),
-          ),
-        ),
-      ),
-    );
+    lobby.playerList.players.foreach((y) => {
+      if (friends.some((x) => String(y.platformID) == String(x.steamId)))
+        _friends.push(String(y.platformID));
+    });
+    lobbyElem.setAttribute("hasFriend", friends.length > 0);
+  }
+  if (friends.length > 0) {
+    const friendsElem = lobbyElem.getElementsByClassName("lobbyFriends")[0];
+    if (friendsElem) {
+      friendsElem.classList.remove("hidden");
+      setContent(friendsElem, friends.length);
+    }
   }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];

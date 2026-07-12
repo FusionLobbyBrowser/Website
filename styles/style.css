@@ -902,8 +902,7 @@ a > .textIcon {
 }
 
 .lobby[hasFriend="true"] {
-  -webkit-box-shadow: 10px 5px 5px var(--flb-status6-color);
-  box-shadow: 10px 5px 5px var(--flb-status6-color);
+  border: 2px solid var(--flb-status6-color);
 }
 
 .tippy-box[data-theme~="website"] {
@@ -1281,11 +1280,18 @@ a > .textIcon {
   margin-right: auto;
 }
 
-.lobbyPlayerCount {
+.rightTopCorner {
+  display: flex;
+  flex-direction: row;
+  gap: 0.35em;
   position: absolute;
   text-align: center;
   top: 2%;
   right: 3.5%;
+  margin: 0;
+}
+
+.rightTopCorner > p {
   margin-top: 0;
   width: auto;
   padding: 0.3em 0.3em 0.3em 0.3em;
@@ -1296,6 +1302,10 @@ a > .textIcon {
     transparent 30%
   );
   border-radius: 5px;
+}
+
+.lime {
+  color: lime;
 }
 
 .platformIcon {
@@ -1891,10 +1901,17 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .friendsContainer {
-  margin-top: 0.25em;
   display: flex;
   flex-direction: column;
   gap: 0.25em;
+}
+
+.divider {
+  height: 0.05em;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  width: 98%;
+  background-color: var(--flb-border-color);
 }
 
 .steamUsername {
