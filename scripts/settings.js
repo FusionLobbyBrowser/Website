@@ -1,6 +1,6 @@
 import { Converter } from "./unityRichText.js";
 import { barcodes } from "./const.js";
-import { getSelf, getFriends, getProfile } from "./steam.js";
+import { getSelf, getFriends } from "./steam.js";
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
 // Is this overkill? probably
@@ -196,7 +196,10 @@ let categories = [
           list.appendChild(elem);
         });
         list.childNodes.forEach((x) => {
-          if (!friends.find((f) => f.steamId == x.getAttribute("steamid")))
+          if (
+            x.classList.contains("steamAccount") &&
+            !friends.find((f) => f.steamId == x.getAttribute("steamid"))
+          )
             x.remove();
         });
         areFriendsFetched = true;
