@@ -956,10 +956,12 @@ async function createPlayerView(player, thumbnail, platform) {
         var yyyy = date.getFullYear();
         var mm = date.getMonth() + 1;
         var dd = date.getDate();
-        view.getElementsByClassName("createDate")[0].textContent =
+        view.getElementsByClassName("steamAdditionalInfo")[0].textContent =
           `Created on: ${dd}-${mm}-${yyyy}`;
       } else {
-        view.getElementsByClassName("createDate")[0].classList.add("hidden");
+        view
+          .getElementsByClassName("steamAdditionalInfo")[0]
+          .classList.add("hidden");
       }
     }
   } else {
