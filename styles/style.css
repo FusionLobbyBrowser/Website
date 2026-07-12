@@ -930,7 +930,7 @@ a > .textIcon {
   border-right-color: var(--flb-primary-background-color);
 }
 
-tippy-box[data-theme~="website-background"] {
+.tippy-box[data-theme~="website-background"] {
   background-color: var(--flb-primary-box-shadow-color);
 }
 
