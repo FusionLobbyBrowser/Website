@@ -35,6 +35,11 @@ let categories = [
     expanded: false,
   },
   {
+    name: "Visibility",
+    icon: "fa-solid fa-eye",
+    expanded: false,
+  },
+  {
     name: "Level",
     icon: "fa-solid fa-map",
     expanded: false,
@@ -327,14 +332,6 @@ export let settings = [
     icon: "fa-solid fa-arrows-rotate fa-spin",
     defaultValue: false,
   },
-  {
-    id: "highlightFriends",
-    category: "Steam Friends",
-    type: "toggle",
-    name: "Highlight Lobbies /w Friends",
-    icon: "fa-solid fa-star",
-    defaultValue: true,
-  },
   // Groups
   {
     id: "roleplayLobbies",
@@ -477,6 +474,37 @@ export let settings = [
 
     defaultValue: false,
   },
+  // Visibility
+  {
+    id: "publicLobbies",
+    category: "Visibility",
+    type: "toggle",
+    name: "Public Lobbies",
+    icon: "fas fa-user-group",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return lobby.privacyLevel == 0;
+    },
+
+    defaultValue: true,
+  },
+  {
+    id: "friendsOnlyLobbies",
+    category: "Visibility",
+    type: "toggle",
+    name: "Friends Only Lobbies",
+    icon: "fas fa-lock",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      return lobby.privacyLevel == 2;
+    },
+
+    defaultValue: true,
+  },
   // Levels
   {
     id: "vanillaLevels",
@@ -564,6 +592,15 @@ export let settings = [
     type: "toggle",
     name: "Censor Profanities",
     icon: "fa-solid fa-hand-middle-finger",
+    defaultValue: true,
+  },
+  // Steam Friends
+  {
+    id: "highlightFriends",
+    category: "Steam Friends",
+    type: "toggle",
+    name: "Highlight Lobbies /w Friends",
+    icon: "fa-solid fa-star",
     defaultValue: true,
   },
 ];
