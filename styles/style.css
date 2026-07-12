@@ -930,6 +930,27 @@ a > .textIcon {
   border-right-color: var(--flb-primary-background-color);
 }
 
+tippy-box[data-theme~="website-background"] {
+  background-color: var(--flb-primary-box-shadow-color);
+}
+
+.tippy-box[data-theme~="website-background"][data-placement^="top"]
+  > .tippy-arrow::before {
+  border-top-color: var(--flb-primary-box-shadow-color);
+}
+.tippy-box[data-theme~="website-background"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: var(--flb-primary-box-shadow-color);
+}
+.tippy-box[data-theme~="website-background"][data-placement^="left"]
+  > .tippy-arrow::before {
+  border-left-color: var(--flb-primary-box-shadow-color);
+}
+.tippy-box[data-theme~="website-background"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: var(--flb-primary-box-shadow-color);
+}
+
 @-webkit-keyframes fadein {
   from {
     opacity: 0;

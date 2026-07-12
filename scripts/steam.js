@@ -27,12 +27,12 @@ async function init() {
       .getElementsByClassName("elemContent")[0].textContent = self.nickname;
     tippy(account, {
       content:
-        '<a class="logout" href="https://fusionapi.hahoos.dev/steam/logout?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank" rel="noopener noreferrer">Logout</a>',
+        '<a class="logout" href="https://fusionapi.hahoos.dev/steam/logout?redirectUrl=https://fusion.hahoos.dev/preview" rel="noopener noreferrer">Logout</a>',
       animation: "scale",
       appendTo: "parent",
       interactive: true,
       allowHTML: true,
-      theme: "website",
+      theme: "website-background",
       placement: "bottom",
       trigger: "click",
     });
