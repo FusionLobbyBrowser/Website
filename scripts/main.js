@@ -459,7 +459,7 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.setAttribute("filteredout", hidden);
   let _friends = [];
   if (isToggleChecked("highlightFriends")) {
-    lobby.playerList.players.foreach((y) => {
+    lobby.playerList.players.forEach((y) => {
       if (friends.some((x) => String(y.platformID) == String(x.steamId)))
         _friends.push(String(y.platformID));
     });

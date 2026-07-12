@@ -857,17 +857,17 @@ export function setFriendsInLobby(friends) {
     if (friend) {
       x.style.order = 0;
       additionalInfo.style.color = window
-        .getComputedStyle(toCopy)
+        .getComputedStyle(x)
         .getPropertyValue(`--flb-status6-color`);
       additionalInfo.innerHTML = `Playing in a lobby - ${friend.lobbyName}`;
     } else if (x.hasAttribute("overridenInfo")) {
       additionalInfo.style.color = window
-        .getComputedStyle(toCopy)
+        .getComputedStyle(x)
         .getPropertyValue(
           `--flb-status${Number(elem.getAttribute("userStatus"))}-color`,
         );
       x.style.order = order.findIndex((x) => x == f.userStatus) + 1;
-      additionalInfo.textContent = elem.getAttribute("infoText");
+      additionalInfo.textContent = x.getAttribute("infoText");
     }
   });
 }
