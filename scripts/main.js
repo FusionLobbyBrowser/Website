@@ -473,6 +473,10 @@ async function createLobby(lobby, signal, hidden) {
     const friendsElem = lobbyElem.getElementsByClassName("lobbyFriends")[0];
     if (friendsElem) {
       friendsElem.classList.remove("hidden");
+      if (lobby.privacy == 2) {
+        friendsElem.getElementsByClassName("textIcon")[0].className =
+          "textIcon fas fa-user-lock";
+      }
       setContent(friendsElem, _friends.length);
     }
   }

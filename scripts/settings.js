@@ -495,7 +495,7 @@ export let settings = [
     category: "Visibility",
     type: "toggle",
     name: "Friends Only Lobbies",
-    icon: "fas fa-lock",
+    icon: "fas fa-user-lock",
 
     lobbyFilter: true,
     filterValue: false,
