@@ -473,7 +473,7 @@ async function createLobby(lobby, signal, hidden) {
     const friendsElem = lobbyElem.getElementsByClassName("lobbyFriends")[0];
     if (friendsElem) {
       friendsElem.classList.remove("hidden");
-      setContent(friendsElem, friends.length);
+      setContent(friendsElem, _friends.length);
     }
   }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
