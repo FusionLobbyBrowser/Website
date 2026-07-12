@@ -485,7 +485,7 @@ export let settings = [
     lobbyFilter: true,
     filterValue: false,
     lobbyValidator: (lobby) => {
-      return lobby.privacyLevel == 0;
+      return lobby.privacy == 0;
     },
 
     defaultValue: true,
@@ -500,7 +500,7 @@ export let settings = [
     lobbyFilter: true,
     filterValue: false,
     lobbyValidator: (lobby) => {
-      return lobby.privacyLevel == 2;
+      return lobby.privacy == 2;
     },
 
     defaultValue: true,
