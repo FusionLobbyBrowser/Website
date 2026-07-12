@@ -20,6 +20,7 @@ import {
   getSetting,
   friends,
   setFriendsInLobby,
+  areFriendsFetched,
 } from "./settings.js";
 
 const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
@@ -56,6 +57,8 @@ let thumbnailCache = new Map();
 const cacheExpireTime = 15 * 60;
 
 let showingInfo = false;
+
+let firstFetch = false;
 
 const converter = new Converter();
 
@@ -95,9 +98,10 @@ const sorting = [
 ];
 
 async function fetchAndCreateLobbies() {
-  if (refreshing) return;
+  if (refreshing || !areFriendsFetched) return;
 
   refreshing = true;
+  firstFetch = true;
   console.log("Fetching lobbies");
   const start = Date.now();
   try {
@@ -375,9 +379,9 @@ async function createLobbies(signal) {
       friends.some((x) => x.steamId == String(y.platformID)),
     );
     if (filtered) {
-      filtered.forEach((x) => {
+      filtered.forEach((y) => {
         inLobby.push({
-          id: String(x.platformID),
+          id: String(y.platformID),
           lobbyName: getLobbyName(x, false),
         });
       });
@@ -463,9 +467,9 @@ async function createLobby(lobby, signal, hidden) {
       if (friends.some((x) => String(y.platformID) == String(x.steamId)))
         _friends.push(String(y.platformID));
     });
-    lobbyElem.setAttribute("hasFriend", friends.length > 0);
+    lobbyElem.setAttribute("hasFriend", _friends.length > 0);
   }
-  if (friends.length > 0) {
+  if (_friends.length > 0) {
     const friendsElem = lobbyElem.getElementsByClassName("lobbyFriends")[0];
     if (friendsElem) {
       friendsElem.classList.remove("hidden");
@@ -1486,6 +1490,9 @@ adjustTheme();
 
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
+window.addEventListener("onfriendslistfetched", () => {
+  if (!firstFetch) fetchAndCreateLobbies();
+});
 
 async function init() {
   console.log("Window has been loaded");

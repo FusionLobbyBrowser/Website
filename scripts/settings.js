@@ -11,6 +11,7 @@ export let friends = [];
 
 let friendListElem;
 let friendsCancel;
+export let areFriendsFetched = false;
 
 let categories = [
   {
@@ -198,6 +199,8 @@ let categories = [
           if (!friends.find((f) => f.steamId == x.getAttribute("steamid")))
             x.remove();
         });
+        areFriendsFetched = true;
+        window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
       }
       create(true);
 
