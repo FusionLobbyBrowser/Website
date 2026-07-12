@@ -25,6 +25,17 @@ async function init() {
     account
       .getElementsByClassName("steamName")[0]
       .getElementsByClassName("elemContent")[0].textContent = self.nickname;
+    tippy(account, {
+      content:
+        '<a class="logout" href="https://fusionapi.hahoos.dev/steam/logout?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank" rel="noopener noreferrer">Logout</a>',
+      animation: "scale",
+      appendTo: "parent",
+      interactive: true,
+      allowHTML: true,
+      theme: "website",
+      placement: "bottom",
+      trigger: "click",
+    });
   }
 }
 

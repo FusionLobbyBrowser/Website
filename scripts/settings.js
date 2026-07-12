@@ -870,7 +870,7 @@ export function setFriendsInLobby(friends) {
       additionalInfo.style.color = window
         .getComputedStyle(x)
         .getPropertyValue(
-          `--flb-status${Number(elem.getAttribute("userStatus"))}-color`,
+          `--flb-status${Number(x.getAttribute("userStatus"))}-color`,
         );
       x.style.order = order.findIndex((x) => x == f.userStatus) + 1;
       additionalInfo.textContent = x.getAttribute("infoText");
