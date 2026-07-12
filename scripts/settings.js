@@ -853,9 +853,7 @@ export function setFriendsInLobby(friends) {
   const order = [6, 1, 4, 2, 3, 0, 5];
   friendListElem.childNodes.forEach((x) => {
     const friend = friends.find((y) => y.id == x.getAttribute("steamid"));
-    const additionalInfo = elem.getElementsByClassName(
-      "steamAdditionalInfo",
-    )[0];
+    const additionalInfo = x.getElementsByClassName("steamAdditionalInfo")[0];
     if (friend) {
       x.style.order = 0;
       additionalInfo.style.color = window
@@ -868,7 +866,7 @@ export function setFriendsInLobby(friends) {
         .getPropertyValue(
           `--flb-status${Number(elem.getAttribute("userStatus"))}-color`,
         );
-      elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
+      x.style.order = order.findIndex((x) => x == f.userStatus) + 1;
       additionalInfo.textContent = elem.getAttribute("infoText");
     }
   });
