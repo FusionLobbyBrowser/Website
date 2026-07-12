@@ -915,7 +915,8 @@ export function setFriendsInLobby(friends) {
         .getPropertyValue(
           `--flb-status${Number(x.getAttribute("userStatus"))}-color`,
         );
-      x.style.order = order.findIndex((x) => x == f.userStatus) + 1;
+      x.style.order =
+        order.findIndex((x) => x == Number(x.getAttribute("userStatus"))) + 1;
       additionalInfo.textContent = x.getAttribute("infoText");
     }
   });
