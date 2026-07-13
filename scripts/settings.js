@@ -757,7 +757,6 @@ let types = [
       wrapper.classList.add("rangeWrapper");
 
       const label = document.createElement("label");
-      label.setAttribute("for", getElemId(setting.id));
       fillLabel(setting, label);
       if (setting.displayLabel != false) wrapper.appendChild(label);
 
