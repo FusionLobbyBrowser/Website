@@ -24,9 +24,9 @@ import {
 } from "./settings.js";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
-const LOBBY_LIST = `${HOST}lobbylist`;
-const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode=[barcode]`;
-const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
+const LOBBY_LIST = "[host]lobbylist";
+const THUMBNAIL = "[host]thumbnail/[modId]?barcode=[barcode]";
+const STEAM_PROFILE = "[host]steam/profile/[id]";
 
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
@@ -1149,7 +1149,9 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       };
     }
     const response = await fetch(
-      THUMBNAIL.replace("[modId]", modId).replace("[barcode]", barcode),
+      THUMBNAIL.replace("[host]", HOST)
+        .replace("[modId]", modId)
+        .replace("[barcode]", barcode),
     );
     if (!response.ok)
       return { error: await response.text(), status: response.status };
@@ -1277,7 +1279,9 @@ function setPlayerCount(filteredPlayers, allPlayers) {
 
 async function getSteamProfile(id) {
   try {
-    const response = await fetch(STEAM_PROFILE.replace("[id]", id));
+    const response = await fetch(
+      STEAM_PROFILE.replace("[host]", HOST).replace("[id]", id),
+    );
     if (!response.ok) return { error: await response.text() };
 
     return await response.json();
@@ -1292,7 +1296,7 @@ async function getSteamProfile(id) {
 
 async function getJSON() {
   try {
-    const response = await fetch(LOBBY_LIST);
+    const response = await fetch(LOBBY_LIST.replace("[host]", HOST));
     if (!response.ok) return { error: await response.text() };
 
     return {
