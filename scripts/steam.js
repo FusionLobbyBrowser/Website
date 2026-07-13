@@ -4,16 +4,17 @@ const ME = `${STEAM}me`;
 const PROFILE = `${STEAM}profile/[id]`;
 const FRIENDS = `${STEAM}friends/[id]`; // ID needs to be the same as logged in user
 
-if (
-  window.location.hostname == "hoodrp.com" ||
-  window.location.hostname == "www.hoodrp.com"
-) {
-  HOST = "https://api.hoodrp.com/";
-}
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
+  if (
+    window.location.hostname == "hoodrp.com" ||
+    window.location.hostname == "www.hoodrp.com"
+  ) {
+    HOST = "https://api.hoodrp.com/";
+  }
+
   const container = document.getElementById("steamAccount");
   const redirect = document.getElementById("steamRedirect");
   const account = container.getElementsByClassName("steamAccount")[0];
@@ -21,7 +22,7 @@ async function init() {
   if (!self) {
     account.classList.add("hidden");
     redirect.classList.remove("hidden");
-    redirect.href = `https://fusionapi.hahoos.dev/steam/login?redirectUrl=${window.location.href}`;
+    redirect.href = `${HOST}steam/login?redirectUrl=${window.location.href}`;
   } else {
     account.classList.remove("hidden");
     redirect.classList.add("hidden");
@@ -33,7 +34,7 @@ async function init() {
       .getElementsByClassName("steamName")[0]
       .getElementsByClassName("elemContent")[0].textContent = self.nickname;
     tippy(account, {
-      content: `<a class="logout" href="https://fusionapi.hahoos.dev/steam/logout?redirectUrl=${window.location.href}" rel="noopener noreferrer">Logout</a>`,
+      content: `<a class="logout" href=${HOST}steam/logout?redirectUrl=${window.location.href}" rel="noopener noreferrer">Logout</a>`,
       animation: "scale",
       appendTo: "parent",
       interactive: true,
