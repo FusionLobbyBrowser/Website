@@ -379,7 +379,7 @@ async function createLobbies(signal) {
       friends.some((x) => x.steamId == String(y.platformID)),
     );
     if (filtered && filtered.length > 0) {
-      lobbiesWithFriends.push(x.lobbyID);
+      lobbiesWithFriends.push(x);
       filtered.forEach((y) => {
         inLobby.push({
           id: String(y.platformID),
@@ -402,7 +402,6 @@ async function createLobbies(signal) {
     prioritized = lobbiesWithFriends;
   else if (isToggleChecked("prioritizeFriendsOnlyLobbies"))
     prioritized = lobbyList.filter((x) => x.privacy == 2);
-  console.log(prioritized);
 
   if (prioritized && prioritized.length > 0) {
     const sort = getSettingValue("sort");
@@ -1542,6 +1541,8 @@ async function init() {
   settingsEvent();
 
   // Require the lobby list to be created again
+  filterEvent("prioritizeLobbiesWithFriends", true);
+  filterEvent("prioritizeFriendsOnlyLobbies", true);
   filterEvent("highlightFriends", true);
   filterEvent("censorNSFW", true);
   filterEvent("sort", true);

@@ -5,8 +5,8 @@ const regex = new RegExp(
   /(?:https:\/\/discord[\.\,]com\/invite\/|(?<=^|\s)(?:discord)?[\.\,]com\/invite\/|https?:\/\/discord[\.\,]gg\/|(?<=^|\s)(?:discord)?[\.\,]gg\/|Discord(?: Server| Link| Code|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
 );
 
-function getServerIconURL(guildId, id, size = 256) {
-  return `https://cdn.discordapp.com/icons/${guildId}/${id}.webp?size=${size}&animated=true`;
+function getServerIconURL(guildId, id, size = 256, animated = true) {
+  return `https://cdn.discordapp.com/icons/${guildId}/${id}.webp?size=${size}&animated=${animated}`;
 }
 
 async function getServerInfo(inviteCode) {
