@@ -76,6 +76,7 @@
   <!-- [ Internal ] -->
   <script src="../scripts/shared.js" type="module" crossOrigin="anonymous"></script>
   <script src="../scripts/oneko.js" type="module" crossOrigin="anonymous"></script>
+  <script src="../scripts/steam.js" type="module" crossOrigin="anonymous"></script>
 
 
   <link rel="stylesheet" href="../styles/fonts.css" crossOrigin="anonymous" />
@@ -118,6 +119,21 @@
         <i class="textIcon fa-brands fa-github"></i>
         <span class="elemContent">Source Code</span>
       </a>
+
+      <div id="steamAccount">
+        <a id="steamRedirect" class="navigationItem"
+          href="https://fusionapi.hahoos.dev/steam/login?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank"
+          rel="noopener noreferrer">
+          <i class="textIcon fa-brands fa-steam"></i>
+          <span class="elemContent">Log in with Steam</span>
+        </a>
+        <div class="steamAccount hidden">
+          <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+            class="steamSmall" />
+          <button class="textButton steamName"><span class="elemContent">RottenCheese</span><i
+              class="fa-solid fa-caret-down"></i></button></i>
+        </div>
+      </div>
     </div>
   </header>
   <div id="faqContent">
