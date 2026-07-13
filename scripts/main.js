@@ -23,7 +23,7 @@ import {
   areFriendsFetched,
 } from "./settings.js";
 
-const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
+let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
 const LOBBY_LIST = `${HOST}lobbylist`;
 const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode=[barcode]`;
 const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
@@ -1581,6 +1581,7 @@ async function init() {
 }
 
 function activateHoodRpMode() {
+  HOST = "https://api.hoodrp.com/";
   let link = document.createElement("link");
   link.rel = "stylesheet";
   link.href = "styles/hoodrp.css";

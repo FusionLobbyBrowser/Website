@@ -1,9 +1,15 @@
-const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
+let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
 const STEAM = `${HOST}steam/`;
 const ME = `${STEAM}me`;
 const PROFILE = `${STEAM}profile/[id]`;
 const FRIENDS = `${STEAM}friends/[id]`; // ID needs to be the same as logged in user
 
+if (
+  window.location.hostname == "hoodrp.com" ||
+  window.location.hostname == "www.hoodrp.com"
+) {
+  HOST = "https://api.hoodrp.com/";
+}
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
