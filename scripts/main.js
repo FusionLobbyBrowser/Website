@@ -1550,7 +1550,7 @@ async function init() {
   clickEvent("info-close", () => hideShow(true));
   clickEvent("settingsButton", openSettings);
   clickEvent("settingsClose", closeSettings);
-  clickEvent("fuckyoujackbaker", fuckyoujackbaker);
+  clickEvent("hotak0CurseButton", initCurse);
   joinInfo(document.getElementById("info-connect"));
 
   uptimeContainer = document.querySelector(".uptime-container");
@@ -1576,10 +1576,11 @@ async function init() {
   const getRandomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
+
   // fuck you
   const r = Math.round(getRandomNumber(1, 25));
   if (r == lucky)
-    document.getElementById("fuckyoujackbaker").classList.remove("hidden");
+    document.getElementById("hotak0CurseButton").classList.remove("hidden");
 
   updateTime();
 
@@ -1602,27 +1603,21 @@ function activateHoodRpMode() {
 // i was forced to do this at exactly 00:47:30 AM by an individual that goes by the name Jack Baker
 // i do not bear any responsibility for the possible trauma or any other issues
 // fuck you jack baker
-function fuckyoujackbaker() {
-  var audio = new Audio("images/fuckyou.ogg");
-  audio.play();
-  document
-    .getElementById("fuckyouevenmorejackbaker")
-    .classList.remove("hidden");
+function initCurse() {
+  document.getElementById("yourecursedgoodluck").classList.remove("hidden");
   document.getElementsByClassName("istfg")[0].classList.remove("hidden");
 
   document.getElementsByTagName("title")[0].textContent =
     "uh oh you angered the thing!";
-  var fuckyouevenmorejackbaker = new Audio(
-    "images/fuckyouevenmorejackbaker.mp3",
-  );
+  var fuckyouevenmorejackbaker = new Audio("hotak0/sounds/hotak0_ambiance.mp3");
   fuckyouevenmorejackbaker.play();
-  fuckyouevenmorejackbaker.vol;
+  fuckyouevenmorejackbaker.loop = true;
   looped(fuckyouevenmorejackbaker);
 }
 
 async function looped(_audio) {
   while (true) {
-    var audio = new Audio("images/fuckyou.ogg");
+    var audio = new Audio("hotak0/sounds/youangeredthething.ogg");
     audio.play();
     audio.volume = Math.random();
     _audio.volume = Math.random();
