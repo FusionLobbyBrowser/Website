@@ -574,6 +574,7 @@ a > .textIcon {
   -ms-flex-pack: center;
   justify-content: center;
   align-items: center;
+  flex-flow: wrap;
   gap: 1em;
 }
 
