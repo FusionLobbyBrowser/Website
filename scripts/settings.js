@@ -479,7 +479,7 @@ export let settings = [
     id: "publicLobbies",
     category: "Visibility",
     type: "toggle",
-    name: "Public Lobbies",
+    name: "Public",
     icon: "fas fa-user-group",
 
     lobbyFilter: true,
@@ -494,7 +494,7 @@ export let settings = [
     id: "friendsOnlyLobbies",
     category: "Visibility",
     type: "toggle",
-    name: "Friends Only Lobbies",
+    name: "Friends Only",
     icon: "fas fa-user-lock",
 
     lobbyFilter: true,
@@ -932,7 +932,7 @@ export function setFriendsInLobby(friends) {
           `--flb-status${Number(x.getAttribute("userStatus"))}-color`,
         );
       x.style.order =
-        order.findIndex((x) => x == Number(x.getAttribute("userStatus"))) + 1;
+        order.findIndex((y) => y == Number(x.getAttribute("userStatus"))) + 1;
       additionalInfo.textContent = x.getAttribute("infoText");
     }
   });
