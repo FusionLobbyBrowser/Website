@@ -466,6 +466,8 @@ async function createLobby(lobby, signal, hidden) {
     if (friends.some((x) => String(y.platformID) == String(x.steamId)))
       _friends.push(String(y.platformID));
   });
+
+  // TODO: add tooltip for lobbyFriends element and add more settings, for example: Prioritize Friends Only Lobbies, Prioritize Lobbies with Friends etc.
   if (isToggleChecked("highlightFriends"))
     lobbyElem.setAttribute("hasFriend", _friends.length > 0);
 

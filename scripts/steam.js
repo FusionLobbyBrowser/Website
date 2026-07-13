@@ -15,6 +15,7 @@ async function init() {
   if (!self) {
     account.classList.add("hidden");
     redirect.classList.remove("hidden");
+    redirect.href = `https://fusionapi.hahoos.dev/steam/login?redirectUrl=${window.location.href}`;
   } else {
     account.classList.remove("hidden");
     redirect.classList.add("hidden");
@@ -26,8 +27,7 @@ async function init() {
       .getElementsByClassName("steamName")[0]
       .getElementsByClassName("elemContent")[0].textContent = self.nickname;
     tippy(account, {
-      content:
-        '<a class="logout" href="https://fusionapi.hahoos.dev/steam/logout?redirectUrl=https://fusion.hahoos.dev/preview" rel="noopener noreferrer">Logout</a>',
+      content: `<a class="logout" href="https://fusionapi.hahoos.dev/steam/logout?redirectUrl=${window.location.href}" rel="noopener noreferrer">Logout</a>`,
       animation: "scale",
       appendTo: "parent",
       interactive: true,
