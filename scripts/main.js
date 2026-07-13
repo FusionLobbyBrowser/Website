@@ -378,7 +378,7 @@ async function createLobbies(signal) {
     const filtered = x.playerList.players.filter((y) =>
       friends.some((x) => x.steamId == String(y.platformID)),
     );
-    if (filtered) {
+    if (filtered && filtered.length > 0) {
       lobbiesWithFriends.push(x.lobbyID);
       filtered.forEach((y) => {
         inLobby.push({
