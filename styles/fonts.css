@@ -1,63 +1,52 @@
-/* ubuntu-300 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Ubuntu";
   font-style: normal;
   font-weight: 300;
   src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-300.woff2")
-    format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    format("woff2");
 }
-/* ubuntu-regular - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext */
+
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Ubuntu";
   font-style: normal;
   font-weight: 400;
   src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-regular.woff2")
-    format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    format("woff2");
 }
-/* ubuntu-italic - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext */
+
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Ubuntu";
   font-style: italic;
   font-weight: 400;
   src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-italic.woff2")
-    format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    format("woff2");
 }
-/* ubuntu-500 - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext */
+
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Ubuntu";
   font-style: normal;
   font-weight: 500;
   src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-500.woff2")
-    format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    format("woff2");
 }
-/* ubuntu-500italic - cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext */
+
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Ubuntu";
   font-style: italic;
   font-weight: 500;
   src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-500italic.woff2")
-    format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    format("woff2");
 }
 
-/* montserrat-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 400;
-  src: url("../fonts/montserrat-v31-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-}
-
-/* outfit-regular - latin */
-@font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: "Outfit";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/outfit-v15-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url("../fonts/outfit-v15-latin-regular.woff2") format("woff2");
 }
