@@ -8,6 +8,7 @@ if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
+  console.log(window.location.hostname);
   if (
     window.location.hostname == "hoodrp.com" ||
     window.location.hostname == "www.hoodrp.com"
