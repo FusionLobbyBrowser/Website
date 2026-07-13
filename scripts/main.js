@@ -401,7 +401,8 @@ async function createLobbies(signal) {
   if (isToggleChecked("prioritizeLobbiesWithFriends"))
     prioritized = lobbiesWithFriends;
   else if (isToggleChecked("prioritizeFriendsOnlyLobbies"))
-    prioritized = allLobbies.filter((x) => x.privacy == 2);
+    prioritized = lobbyList.filter((x) => x.privacy == 2);
+  console.log(prioritized);
 
   if (prioritized && prioritized.length > 0) {
     const sort = getSettingValue("sort");
@@ -435,6 +436,7 @@ async function createLobbies(signal) {
   const other = lobbyList.filter(
     (x) => !prioritized.some((y) => y.lobbyID == x.lobbyID),
   );
+  console.log(other.length);
   for (let i = 0; i < other.length; i++) {
     if (signal?.aborted == true) return;
     count++;
