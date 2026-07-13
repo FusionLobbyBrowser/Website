@@ -7,7 +7,7 @@ import {
   gamemodes,
   statuses,
 } from "./const.js";
-import { getSelf, getFriends, getProfile } from "./steam.js";
+import { getProfile } from "./steam.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
@@ -373,12 +373,13 @@ async function createLobbies(signal) {
   }
 
   let inLobby = [];
-  let fLobbies = structuredClone(allLobbies);
-  fLobbies.forEach((x) => {
+  let lobbiesWithFriends = [];
+  allLobbies.forEach((x) => {
     const filtered = x.playerList.players.filter((y) =>
       friends.some((x) => x.steamId == String(y.platformID)),
     );
     if (filtered) {
+      lobbiesWithFriends.push(x.lobbyID);
       filtered.forEach((y) => {
         inLobby.push({
           id: String(y.platformID),
@@ -396,12 +397,49 @@ async function createLobbies(signal) {
     "lobbies",
   );
 
+  let prioritized = [];
+  if (isToggleChecked("prioritizeLobbiesWithFriends"))
+    prioritized = lobbiesWithFriends;
+  else if (isToggleChecked("prioritizeFriendsOnlyLobbies"))
+    prioritized = allLobbies.filter((x) => x.privacy == 2);
+
+  if (prioritized && prioritized.length > 0) {
+    const sort = getSettingValue("sort");
+    let sorted = false;
+    if (sort) {
+      const s = sorting.find((x) => x.name == sort);
+      if (s) {
+        s.callback(
+          prioritized,
+          getSettingValue("sortOrder") != "Descending" ? 2 : 1,
+        );
+        sorted = true;
+      }
+    }
+    if (!sorted)
+      sorting.find((x) => x.name == "Players").callback(prioritized, 2);
+  }
+
   const shouldUpdate = infoView != -1;
 
-  for (let i = 0; i < lobbyList.length; i++) {
+  let count = 0;
+  for (let i = 0; i < prioritized.length; i++) {
     if (signal?.aborted == true) return;
-    const lobby = lobbyList[i];
-    setContent(refreshBtn, `Loading (${i + 1} of ${lobbyList.length})`);
+    count++;
+    const lobby = prioritized[i];
+    setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
+    if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
+      infoUpdated = true;
+  }
+
+  const other = lobbyList.filter(
+    (x) => !prioritized.some((y) => y.lobbyID == x.lobbyID),
+  );
+  for (let i = 0; i < other.length; i++) {
+    if (signal?.aborted == true) return;
+    count++;
+    const lobby = other[i];
+    setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }
@@ -934,7 +972,7 @@ async function createPlayerView(player, thumbnail, platform) {
     ).replace("\n", "<br>"),
   );
   if (platform == "Steam") {
-    const req = await getSteamProfile(player.platformID);
+    const req = await getProfile(player.platformID);
     if (req && !req.error) {
       const avatar = view.getElementsByClassName("steamAvatar")[0];
       avatar.setAttribute("src", req.avatarFullUrl);
@@ -1258,40 +1296,9 @@ async function onConnect(elem, lobby) {
 }
 
 function setPlayerCount(filteredPlayers, allPlayers) {
-  const format =
-    "[service] has a limit of [limit] lobbies, due to the high number of lobbies some may not appear. This is a limit implemented by Steam themselves and nothing can be done about it!";
-
   const playerCount = document.getElementById("playerCount");
   if (filteredPlayers == allPlayers) playerCount.textContent = filteredPlayers;
   else playerCount.textContent = `${filteredPlayers}/${allPlayers}`;
-
-  /*
-  const highLobby = document.getElementById("lobbyLimit");
-  const limitNum = new Map(limit).get(service);
-  if (limitNum && lobbies >= limitNum) {
-    highLobby.textContent = format
-      .replace("[service]", service)
-      .replace("[limit]", limitNum);
-    highLobby.classList.remove("hidden");
-  } else highLobby.classList.add("hidden");
-   */
-}
-
-async function getSteamProfile(id) {
-  try {
-    const response = await fetch(
-      STEAM_PROFILE.replace("[host]", HOST).replace("[id]", id),
-    );
-    if (!response.ok) return { error: await response.text() };
-
-    return await response.json();
-  } catch (ex) {
-    console.error(ex);
-    return {
-      error:
-        "Failed to get lobbies due to the request failing, check console for more details",
-    };
-  }
 }
 
 async function getJSON() {
@@ -1402,7 +1409,7 @@ function hideLobbies(changeElem = true) {
   }
   const notice = document
     .getElementById("lobbies")
-    .getElementsByClassName("lobbyNotice");
+    .getElementsByClassName("notice");
   if (list.length > 0 && notice.length > 0) notice[0].remove();
   else if (list.length == 0 && notice.length == 0) {
     lobbyNotice(

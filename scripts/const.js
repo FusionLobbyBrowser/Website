@@ -234,7 +234,7 @@ export const statuses = [
 
 export const gamemodes = [
   {
-    barcode: "",
+    barcode: "", // Sandbox does not have a barcode
     icon: "img:./images/gamemodes/Sandbox.png",
   },
   {

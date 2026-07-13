@@ -596,6 +596,22 @@ export let settings = [
   },
   // Steam Friends
   {
+    id: "prioritizeLobbiesWithFriends",
+    category: "Steam Friends",
+    type: "toggle",
+    name: "Prioritize Lobbies /w Friends",
+    icon: "fa-solid fa-arrow-up",
+    defaultValue: true,
+  },
+  {
+    id: "prioritizeFriendsOnlyLobbies",
+    category: "Steam Friends",
+    type: "toggle",
+    name: "Prioritize Friends Only Lobbies",
+    icon: "fa-solid fa-arrow-up",
+    defaultValue: true,
+  },
+  {
     id: "highlightFriends",
     category: "Steam Friends",
     type: "toggle",
