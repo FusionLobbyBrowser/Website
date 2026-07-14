@@ -458,6 +458,11 @@ div:has(> .notice),
 #refreshButton {
   margin-top: 0.75rem;
   min-width: 7em;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
 }
 
 #notFound {
@@ -598,7 +603,10 @@ a > .textIcon {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -ms-flex-flow: wrap;
   flex-flow: wrap;
   gap: 1em;
 }
@@ -1332,7 +1340,12 @@ a > .textIcon {
 }
 
 .rightTopCorner {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
   gap: 0.35em;
   position: absolute;
@@ -1517,8 +1530,10 @@ button:hover {
   (
     (
       (
-        (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
-          (appearance: base-select)
+        (
+          (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
+            (appearance: base-select)
+        )
       )
     )
   )
@@ -1893,8 +1908,12 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .steamAccount {
+  display: -ms-grid;
   display: grid;
+  -ms-grid-columns: auto 0.25em 1fr;
   grid-template-columns: auto 1fr; /* avatar | text */
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
   align-items: stretch;
   gap: 0.25em;
 }
@@ -1965,7 +1984,12 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .friendsContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   gap: 0.25em;
 }
@@ -1991,8 +2015,15 @@ input[type="range"]::-webkit-slider-thumb {
 .infoContainer {
   padding: 0;
   height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -2001,6 +2032,7 @@ input[type="range"]::-webkit-slider-thumb {
   aspect-ratio: 1/1;
   border-radius: 50%;
   display: block;
+  -o-object-fit: cover;
   object-fit: cover;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -2022,6 +2054,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .avatarContainer {
+  -ms-flex-item-align: stretch;
+  -ms-grid-row-align: stretch;
   align-self: stretch;
   aspect-ratio: 1/1;
   padding: 0;
