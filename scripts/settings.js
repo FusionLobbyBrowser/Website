@@ -149,10 +149,27 @@ let categories = [
           let elem = list.querySelector(`div[steamid="${f.steamId}"]`);
           if (!elem) elem = toCopy.cloneNode(true);
           elem.removeAttribute("id");
+          const avatar = elem.getElementsByClassName("friendAvatar")[0];
+          if (f.userStatus == 0) {
+            elem.classList.add("hidden");
+            avatar.loading = "lazy";
+            avatar.fetchpriority = "low";
+          } else {
+            elem.classList.remove("hidden");
+            avatar.loading = "eager";
+            avatar.fetchpriority = "auto";
+          }
           elem.setAttribute("steamid", f.steamId);
-          elem
-            .getElementsByClassName("friendAvatar")[0]
-            .setAttribute("src", f.avatarUrl);
+          avatar.width = 32;
+          avatar.height = 32;
+          avatar.setAttribute("alt", `Avatar of ${f.nickname}`);
+          avatar.setAttribute(
+            "src",
+            f.avatarUrl.replace(
+              "avatars.steamstatic.com",
+              "avatars.fastly.steamstatic.com",
+            ),
+          );
           const username = elem.getElementsByClassName("friendUsername")[0];
           username.textContent = f.nickname;
           username.href = f.profileUrl;
@@ -925,21 +942,34 @@ export function setFriendsInLobby(friends) {
   friendListElem.childNodes.forEach((x) => {
     const friend = friends.find((y) => y.id == x.getAttribute("steamid"));
     const additionalInfo = x.getElementsByClassName("steamAdditionalInfo")[0];
+    const avatar = x.getElementsByClassName("friendAvatar")[0];
+    let userStatus = -1;
     if (friend) {
       x.style.order = 0;
       additionalInfo.style.color = window
         .getComputedStyle(x)
         .getPropertyValue(`--flb-status6-color`);
+      userStatus = 6;
       additionalInfo.innerHTML = `Playing in a lobby - ${friend.lobbyName}`;
     } else if (x.hasAttribute("overridenInfo")) {
+      userStatus = Number(x.getAttribute("userStatus"));
       additionalInfo.style.color = window
         .getComputedStyle(x)
-        .getPropertyValue(
-          `--flb-status${Number(x.getAttribute("userStatus"))}-color`,
-        );
-      x.style.order =
-        order.findIndex((y) => y == Number(x.getAttribute("userStatus"))) + 1;
+        .getPropertyValue(`--flb-status${userStatus}-color`);
+      x.style.order = order.findIndex((y) => y == userStatus) + 1;
       additionalInfo.textContent = x.getAttribute("infoText");
+    }
+
+    if (userStatus != -1) {
+      if (userStatus == 0) {
+        x.classList.add("hidden");
+        avatar.loading = "lazy";
+        avatar.fetchpriority = "low";
+      } else {
+        x.classList.remove("hidden");
+        avatar.loading = "eager";
+        avatar.fetchpriority = "auto";
+      }
     }
   });
 }
