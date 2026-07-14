@@ -2,13 +2,6 @@ body {
   height: 100%;
   background-color: var(--flb-primary-background-color);
   color: var(--flb-paragraph-color);
-  --flb-status0-color: var(--flb-gray-color);
-  --flb-status1-color: cyan;
-  --flb-status2-color: red;
-  --flb-status3-color: orange;
-  --flb-status4-color: cyan;
-  --flb-status5-color: var(--flb-gray-color);
-  --flb-status6-color: lime;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -54,6 +47,14 @@ body {
     --flb-link-color: #5eb3ff;
     --flb-link-hover-color: #8fcdff;
     --flb-invisible-link-hover-color: #b4b6b8;
+
+    --flb-status0-color: var(--flb-gray-color);
+    --flb-status1-color: cyan;
+    --flb-status2-color: red;
+    --flb-status3-color: orange;
+    --flb-status4-color: cyan;
+    --flb-status5-color: var(--flb-gray-color);
+    --flb-status6-color: lime;
   }
 }
 
@@ -91,15 +92,23 @@ body {
     --flb-heading-color: black;
     --flb-paragraph-color: black;
     --flb-icon-filter: brightness(0);
-    --flb-error-color: #f4320b;
-    --flb-error-hover-color: #cc2c0c;
+    --flb-error-color: #b00810;
+    --flb-error-hover-color: #8c080e;
     --flb-success-color: chartreuse;
-    --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
-    --flb-support-color: #f78d97;
-    --flb-support-hover-color: #f7b5bb;
-    --flb-link-color: #3fa5ff;
-    --flb-link-hover-color: #77c2ff;
+    --flb-gray-color: #595959; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+    --flb-support-color: #b00810;
+    --flb-support-hover-color: #8c080e;
+    --flb-link-color: #00529e;
+    --flb-link-hover-color: #003970;
     --flb-invisible-link-hover-color: #c5c5c5;
+
+    --flb-status0-color: var(--flb-gray-color);
+    --flb-status1-color: #0054a8;
+    --flb-status2-color: #b00810;
+    --flb-status3-color: #0054a8;
+    --flb-status4-color: #0054a8;
+    --flb-status5-color: var(--flb-gray-color);
+    --flb-status6-color: #175e17;
   }
 }
 
@@ -145,6 +154,14 @@ body {
   --flb-link-color: #5eb3ff;
   --flb-link-hover-color: #8fcdff;
   --flb-invisible-link-hover-color: #b4b6b8;
+
+  --flb-status0-color: var(--flb-gray-color);
+  --flb-status1-color: cyan;
+  --flb-status2-color: red;
+  --flb-status3-color: orange;
+  --flb-status4-color: cyan;
+  --flb-status5-color: var(--flb-gray-color);
+  --flb-status6-color: lime;
 }
 
 :root[theme="light"] {
@@ -180,15 +197,23 @@ body {
   --flb-heading-color: black;
   --flb-paragraph-color: black;
   --flb-icon-filter: brightness(0);
-  --flb-error-color: #f4320b;
-  --flb-error-hover-color: #cc2c0c;
+  --flb-error-color: #b00810;
+  --flb-error-hover-color: #8c080e;
   --flb-success-color: chartreuse;
-  --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
-  --flb-support-color: #f78d97;
-  --flb-support-hover-color: #f7b5bb;
-  --flb-link-color: #3fa5ff;
-  --flb-link-hover-color: #77c2ff;
+  --flb-gray-color: #595959; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+  --flb-support-color: #b00810;
+  --flb-support-hover-color: #8c080e;
+  --flb-link-color: #00529e;
+  --flb-link-hover-color: #003970;
   --flb-invisible-link-hover-color: #c5c5c5;
+
+  --flb-status0-color: var(--flb-gray-color);
+  --flb-status1-color: #0054a8;
+  --flb-status2-color: #b00810;
+  --flb-status3-color: #0054a8;
+  --flb-status4-color: #0054a8;
+  --flb-status5-color: var(--flb-gray-color);
+  --flb-status6-color: #175e17;
 }
 
 .header-moreInfoOpened {

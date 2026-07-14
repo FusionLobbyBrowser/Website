@@ -499,7 +499,6 @@ async function createLobby(lobby, signal, hidden) {
   let lobbyElem = copy.cloneNode(true);
   lobbyElem.removeAttribute("id");
 
-  lobbyElem.setAttribute("filteredout", hidden);
   let _friends = [];
   lobby.playerList.players.forEach((y) => {
     if (friends.some((x) => String(y.platformID) == String(x.steamId)))
@@ -545,10 +544,16 @@ async function createLobby(lobby, signal, hidden) {
   };
   const thumb = hidden ? setThumb() : await setThumb();
   if (hidden) {
-    thumb.then((x) =>
-      censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw),
-    );
+    thumb.then((x) => {
+      if (thumb.nsfw == true && isToggleChecked("hideNSFWLobbies")) {
+        hidden = true;
+        lobbyElem.setAttribute("filteredout", true);
+      }
+      censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw);
+    });
   }
+  if (!hidden && thumb.nsfw == true && isToggleChecked("hideNSFWLobbies"))
+    hidden = true;
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
@@ -632,6 +637,7 @@ async function createLobby(lobby, signal, hidden) {
   };
   if (showingInfo) setButton(infoBtn, false);
 
+  lobbyElem.setAttribute("filteredout", hidden);
   lobbies.appendChild(lobbyElem);
 
   const time = (Date.now() - date) / 1000;

@@ -342,15 +342,7 @@ export let settings = [
 
     lobbyFilter: true,
     filterValue: false,
-    filterWords: [
-      "hood",
-      "hoodrp",
-      "shooting",
-      "shooter",
-      "rp",
-      "war",
-      "roleplay",
-    ],
+    filterWords: ["shooting", "shooter", "rp", "war", "roleplay"],
     filterLevels: RP_LEVELS,
 
     defaultValue: true,
@@ -587,6 +579,14 @@ export let settings = [
     defaultValue: true,
   },
   {
+    id: "hideNSFWLobbies",
+    category: "Filtering",
+    type: "toggle",
+    name: "Hide NSFW Lobbies",
+    icon: "fa-solid fa-shield",
+    defaultValue: true,
+  },
+  {
     id: "censorProfanities",
     category: "Filtering",
     type: "toggle",
@@ -792,8 +792,10 @@ let types = [
         sliderDiv.style.right = `${right}%`;
       }
 
-      function createSlider(_class, val) {
+      function createSlider(_class, val, label = null) {
+        if (!label) label = val;
         const slider = document.createElement("input");
+        slider.setAttribute("aria-label", label);
         slider.type = "range";
         slider.classList.add(_class);
         slider.min = setting.minValue ?? 0;
@@ -818,8 +820,8 @@ let types = [
         return slider;
       }
 
-      min = createSlider("minRange", "min");
-      max = createSlider("maxRange", "max");
+      min = createSlider("minRange", "min", "Minimum Value");
+      max = createSlider("maxRange", "max", "Maximum Value");
 
       container.appendChild(min);
       container.appendChild(max);
@@ -830,8 +832,13 @@ let types = [
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
     setValue: (elem, val) => {
-      const input = elem?.getElementsByTagName("select");
-      if (input && input.length > 0) input[0].value = val;
+      if (val.min && val.max) {
+        const minInput = elem?.getElementsByClassName("minRange");
+        if (minInput && minInput.length > 0) minInput[0].value = val.min;
+
+        const maxInput = elem?.getElementsByClassName("maxRange");
+        if (maxInput && maxInput.length > 0) maxInput[0].value = val.max;
+      }
     },
   },
 ];
