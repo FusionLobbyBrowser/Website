@@ -522,7 +522,7 @@ async function createLobby(lobby, signal, hidden) {
   }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
-  icon.classes = "";
+  icon.className = "";
   icon.classList.add("platformIcon");
   if (lobby.lobbyPlatform == "Steam") {
     icon.classList.add("fa-brands");
