@@ -26,7 +26,6 @@ import {
 let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
 const LOBBY_LIST = "[host]lobbylist";
 const THUMBNAIL = "[host]thumbnail/[modId]?barcode=[barcode]";
-const STEAM_PROFILE = "[host]steam/profile/[id]";
 
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
@@ -1527,8 +1526,8 @@ window.addEventListener("onfriendslistfetched", () => {
 });
 
 window.addEventListener("displayInfo", async (e) => {
-  if (e.detail && e.detail.id) {
-    const lobby = allLobbies.find((x) => (x.lobbyID = e.detail.id));
+  if (e.detail && e.detail.lobbyID) {
+    const lobby = allLobbies.find((x) => (x.lobbyID = e.detail.lobbyID));
     if (lobby) {
       infoView = lobby.lobbyID;
 

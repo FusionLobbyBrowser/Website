@@ -176,12 +176,15 @@ let categories = [
           const additionalInfo = elem.getElementsByClassName(
             "steamAdditionalInfo",
           )[0];
+          const btnContainer =
+            elem.getElementsByClassName("buttonContainer")[0];
           const inLobby = friendsLobbies.find((x) => x.id == f.steamId);
           if (!inLobby) {
             additionalInfo.style.color = window
               .getComputedStyle(toCopy)
               .getPropertyValue(`--flb-status${f.userStatus}-color`);
             elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
+            btnContainer.classList.add("hidden");
           } else {
             elem.setAttribute("overridenInfo", "true");
             elem.style.order = 0;
@@ -189,6 +192,18 @@ let categories = [
               .getComputedStyle(toCopy)
               .getPropertyValue(`--flb-status6-color`);
             additionalInfo.innerHTML = `Playing in a lobby - ${inLobby.lobbyName}`;
+            btnContainer.classList.remove("hidden");
+            const joinBtn = x.getElementsByClassName("joinButton")[0];
+            joinInfo(joinBtn);
+            joinBtn.onclick = async () =>
+              await requestJoin(inLobby.lobbyCode, inLobby.lobbyPlatform);
+            const infoBtn = x.getElementsByClassName("infoButton")[0];
+            infoBtn.onclick = () =>
+              window.dispatchEvent(
+                new CustomEvent("displayInfo", {
+                  detail: { lobbyID: inLobby.lobbyID },
+                }),
+              );
           }
 
           let status;
