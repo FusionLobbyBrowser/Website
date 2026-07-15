@@ -193,11 +193,11 @@ let categories = [
               .getPropertyValue(`--flb-status6-color`);
             additionalInfo.innerHTML = `Playing in a lobby - ${inLobby.lobbyName}`;
             btnContainer.classList.remove("hidden");
-            const joinBtn = x.getElementsByClassName("joinButton")[0];
+            const joinBtn = elem.getElementsByClassName("joinButton")[0];
             joinInfo(joinBtn);
             joinBtn.onclick = async () =>
               await requestJoin(inLobby.lobbyCode, inLobby.lobbyPlatform);
-            const infoBtn = x.getElementsByClassName("infoButton")[0];
+            const infoBtn = elem.getElementsByClassName("infoButton")[0];
             infoBtn.onclick = () =>
               window.dispatchEvent(
                 new CustomEvent("displayInfo", {
