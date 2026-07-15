@@ -1,5 +1,5 @@
 import { Converter } from "./unityRichText.js";
-import { barcodes } from "./const.js";
+import { barcodes, layers } from "./const.js";
 import { getSelf, getFriends } from "./steam.js";
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
@@ -936,6 +936,48 @@ function notice(
   div.appendChild(notice);
 }
 
+function createToolTip(e, content, placement = "top") {
+  if (e._tippy) e._tippy.setProps({ content: content });
+
+  e._tippy = tippy(e, {
+    content: content,
+    animation: "scale",
+    appendTo: "parent",
+    interactive: true,
+    placement: placement,
+    allowHTML: true,
+    theme: "website",
+  });
+}
+
+function joinInfo(btn) {
+  createToolTip(
+    btn,
+    'To join, you must have the <a class="modLink" href="https://github.com/FusionLobbyBrowser/Mod/releases/latest" target="_blank" rel="noopener noreferrer">mod</a> (>= 1.1.0 version) installed and have launched the game at least once since installation',
+  );
+}
+
+async function requestJoin(code, platform) {
+  const mapped = new Map(layers);
+  const layer = mapped.get(platform);
+  if (!layer) {
+    console.error("An unmapped layer found, cannot join");
+    return;
+  }
+
+  try {
+    let encoded = btoa(JSON.stringify({ code: code, layer: layer }));
+
+    encoded = encoded
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/\=+$/, "");
+    window.location.replace(URI_JOIN.replace("[data]", encoded));
+  } catch (ex) {
+    console.error(ex);
+  }
+}
+
 export function setFriendsInLobby(friends) {
   friendsLobbies = friends;
   const order = [6, 1, 4, 2, 3, 0, 5];
@@ -943,6 +985,7 @@ export function setFriendsInLobby(friends) {
     const friend = friends.find((y) => y.id == x.getAttribute("steamid"));
     const additionalInfo = x.getElementsByClassName("steamAdditionalInfo")[0];
     const avatar = x.getElementsByClassName("friendAvatar")[0];
+    const btnContainer = x.getElementsByClassName("buttonContainer")[0];
     let userStatus = -1;
     if (friend) {
       x.style.order = 0;
@@ -951,6 +994,18 @@ export function setFriendsInLobby(friends) {
         .getPropertyValue(`--flb-status6-color`);
       userStatus = 6;
       additionalInfo.innerHTML = `Playing in a lobby - ${friend.lobbyName}`;
+      btnContainer.classList.remove("hidden");
+      const joinBtn = x.getElementsByClassName("joinButton")[0];
+      joinInfo(joinBtn);
+      joinBtn.onclick = async () =>
+        await requestJoin(friend.lobbyCode, friend.lobbyPlatform);
+      const infoBtn = x.getElementsByClassName("infoButton")[0];
+      infoBtn.onclick = () =>
+        window.dispatchEvent(
+          new CustomEvent("displayInfo", {
+            detail: { lobbyID: friend.lobbyID },
+          }),
+        );
     } else if (x.hasAttribute("overridenInfo")) {
       userStatus = Number(x.getAttribute("userStatus"));
       additionalInfo.style.color = window
@@ -958,6 +1013,7 @@ export function setFriendsInLobby(friends) {
         .getPropertyValue(`--flb-status${userStatus}-color`);
       x.style.order = order.findIndex((y) => y == userStatus) + 1;
       additionalInfo.textContent = x.getAttribute("infoText");
+      btnContainer.classList.add("hidden");
     }
 
     if (userStatus != -1) {

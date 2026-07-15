@@ -384,6 +384,9 @@ async function createLobbies(signal) {
         inLobby.push({
           id: String(y.platformID),
           lobbyName: getLobbyName(x, false),
+          lobbyCode: x.lobbyCode,
+          lobbyPlatform: x.lobbyPlatform,
+          lobbyID: x.lobbyID,
         });
       });
     }
@@ -505,7 +508,7 @@ async function createLobby(lobby, signal, hidden) {
       _friends.push(String(y.platformID));
   });
 
-  // TODO: add tooltip for lobbyFriends element and add more settings, for example: Prioritize Friends Only Lobbies, Prioritize Lobbies with Friends etc.
+  // TODO: add tooltip for lobbyFriends element
   if (isToggleChecked("highlightFriends"))
     lobbyElem.setAttribute("hasFriend", _friends.length > 0);
 
@@ -557,7 +560,7 @@ async function createLobby(lobby, signal, hidden) {
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
-    if (signal?.aborted != true) displayInfo(lobby, thumb, signal);
+    if (signal?.aborted != true) displayInfo(lobby, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
@@ -629,8 +632,9 @@ async function createLobby(lobby, signal, hidden) {
     infoView = lobby.lobbyID;
 
     enableInfoButton(false);
+    const iSignal = new AbortController();
     try {
-      await displayInfo(lobby, thumb, signal);
+      await displayInfo(lobby, iSignal);
     } finally {
       enableInfoButton(true);
     }
@@ -1520,6 +1524,23 @@ if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 window.addEventListener("onfriendslistfetched", () => {
   if (!firstFetch) fetchAndCreateLobbies();
+});
+
+window.addEventListener("displayInfo", async (e) => {
+  if (e.detail && e.detail.id) {
+    const lobby = allLobbies.find((x) => (x.lobbyID = e.detail.id));
+    if (lobby) {
+      infoView = lobby.lobbyID;
+
+      const iSignal = new AbortController();
+      enableInfoButton(false);
+      try {
+        await displayInfo(lobby, iSignal);
+      } finally {
+        enableInfoButton(true);
+      }
+    }
+  }
 });
 
 async function init() {

@@ -1994,6 +1994,13 @@ input[type="range"]::-webkit-slider-thumb {
   gap: 0.25em;
 }
 
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-self: end;
+  gap: 0.25em;
+}
+
 .divider {
   height: 0.05em;
   margin-top: 0.25em;
@@ -2045,12 +2052,20 @@ input[type="range"]::-webkit-slider-thumb {
   margin-top: 0;
   padding-top: 0;
   margin-bottom: 0.1rem;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .steamAdditionalInfo {
   color: var(--flb-gray-color);
   font-size: 0.65rem;
   margin: 0;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .avatarContainer {
