@@ -1531,8 +1531,10 @@ button:hover {
     (
       (
         (
-          (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
-            (appearance: base-select)
+          (
+            (-webkit-appearance: base-select) or (-moz-appearance: base-select)
+              or (appearance: base-select)
+          )
         )
       )
     )
@@ -1910,17 +1912,21 @@ input[type="range"]::-webkit-slider-thumb {
 .steamAccount {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: auto 0.25em 1fr;
-  grid-template-columns: auto 1fr; /* avatar | text */
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  gap: 0.25em;
+  -ms-grid-columns: auto minmax(0, 1fr) minmax(0, auto);
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, auto); /* avatar | text */
+}
+
+.steamAccount > *:not(.hidden) {
+  margin-right: 0.25em !important;
+}
+
+.steamAccount > *:not(.hidden):last-child {
+  margin-right: 0em !important;
 }
 
 .steamAccount.hidden {
   display: none !important;
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
 .steamName {
@@ -1994,11 +2000,31 @@ input[type="range"]::-webkit-slider-thumb {
   gap: 0.25em;
 }
 
+.friendsContainer > .steamAccount {
+  width: 98%;
+}
+
 .buttonContainer {
-  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-item-align: end;
+  -ms-grid-row-align: end;
   align-self: end;
   gap: 0.25em;
+}
+
+.buttonContainer.hidden {
+  visibility: hidden;
+  display: none;
+  width: 0;
 }
 
 .divider {
@@ -2056,6 +2082,10 @@ input[type="range"]::-webkit-slider-thumb {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.friendsContainer > .steamAccount > .infoContainer > .steamAdditionalInfo {
+  width: 100%;
 }
 
 .steamAdditionalInfo {
