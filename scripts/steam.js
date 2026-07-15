@@ -34,7 +34,7 @@ async function init() {
       .getElementsByClassName("steamName")[0]
       .getElementsByClassName("elemContent")[0].textContent = self.nickname;
     tippy(account, {
-      content: `<a class="logout" href=${HOST}steam/logout?redirectUrl=${window.location.href}" rel="noopener noreferrer">Logout</a>`,
+      content: `<a class="logout" href="${HOST}steam/logout?redirectUrl=${window.location.href}" rel="noopener noreferrer">Logout</a>`,
       animation: "scale",
       appendTo: "parent",
       interactive: true,
