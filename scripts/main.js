@@ -1527,7 +1527,9 @@ window.addEventListener("onfriendslistfetched", () => {
 
 window.addEventListener("displayInfo", async (e) => {
   if (e.detail && e.detail.lobbyID) {
-    const lobby = allLobbies.find((x) => (x.lobbyID = e.detail.lobbyID));
+    const lobby = allLobbies.find(
+      (x) => String(x.lobbyID) == String(e.detail.lobbyID),
+    );
     if (lobby) {
       infoView = lobby.lobbyID;
 
