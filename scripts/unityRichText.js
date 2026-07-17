@@ -99,7 +99,6 @@ const colors = [
 ];
 
 const color4unity2html = {
-  // From what I remember, this regex pattern was created using AI for the most part
   pattern: new RegExp(
     "(?:<color=(?<Color>[^>]*)>|<(?<Color>#[a-fA-F0-9]{3,8})>)(?<Content>.*?)(?=</color>|<color=[^>]*>|<#[a-fA-F0-9]{3,8}>|$)",
   ),
