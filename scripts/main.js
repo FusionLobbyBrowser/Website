@@ -6,6 +6,7 @@ import {
   permsList,
   gamemodes,
   statuses,
+  blacklist,
 } from "./const.js";
 import { getProfile } from "./steam.js";
 import Discord from "./discord.js";
@@ -21,6 +22,7 @@ import {
   friends,
   setFriendsInLobby,
   areFriendsFetched,
+  containsWord,
 } from "./settings.js";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
@@ -107,6 +109,7 @@ async function fetchAndCreateLobbies() {
     if (lobbiesSignal) lobbiesSignal.abort();
     const controller = new AbortController();
     lobbiesSignal = controller;
+    filterBadges();
     const refreshBtn = document.getElementById("refreshButton");
     const refresh = document.getElementById("refresh");
     try {
@@ -183,9 +186,7 @@ async function fetchAndCreateLobbies() {
               }
             });
 
-            filterBadges();
             await createLobbies(controller?.signal);
-            filterBadges();
           } else {
             hideShow(true);
           }
@@ -239,7 +240,12 @@ function filterBadges() {
       badge.classList.add("infoBadge");
       const content = document.createElement("span");
       content.classList.add("elemContent");
-      const text = x.type != "search" ? x.name : val;
+      const text =
+        x.type != "search"
+          ? x.baseName && x.baseName != ""
+            ? x.baseName
+            : x.name
+          : val;
       if (!x.icon) {
         content.textContent = text;
       } else {
@@ -430,6 +436,15 @@ async function createLobbies(signal) {
     count++;
     const lobby = prioritized[i];
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
+
+    if (containsWord(lobby, blacklist)) {
+      console.error(
+        "Lobby name contains blacklisted word, ignoring: " +
+          Converter.removeRichText(lobby.lobbyName),
+      );
+      continue;
+    }
+
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }
@@ -443,6 +458,15 @@ async function createLobbies(signal) {
     count++;
     const lobby = other[i];
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
+
+    if (containsWord(lobby, blacklist)) {
+      console.error(
+        "Lobby name contains blacklisted word, ignoring: " +
+          Converter.removeRichText(lobby.lobbyName),
+      );
+      continue;
+    }
+
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }

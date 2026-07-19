@@ -98,6 +98,12 @@ let categories = [
         }
         seconds = 0;
 
+        function hide() {
+          list.childNodes.forEach((x) => {
+            if (x.classList.contains("steamAccount")) x.classList.add("hidden");
+          });
+        }
+
         const self = await getSelf();
         if (!self) {
           notice(
@@ -108,6 +114,7 @@ let categories = [
           );
           areFriendsFetched = true;
           window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
+          hide();
           return;
         }
         friends = await getFriends(self.steamId);
@@ -122,6 +129,7 @@ let categories = [
           );
           areFriendsFetched = true;
           window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
+          hide();
           return;
         } else if (!friends) {
           notice(
@@ -133,6 +141,7 @@ let categories = [
           );
           areFriendsFetched = true;
           window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
+          hide();
           return;
         }
 
@@ -460,7 +469,7 @@ export let settings = [
         if (x.category != "Groups") continue;
 
         if (!x.filterWords) continue;
-        if (isGroup(lobby, x.filterWords)) return false;
+        if (containsWord(lobby, x.filterWords)) return false;
       }
       return true;
     },
@@ -1089,10 +1098,17 @@ function fillLabel(setting, elem) {
   }
 }
 
-function isGroup(lobby, array) {
+export function containsWord(lobby, array) {
   if (!lobby || !lobby.lobbyName || lobby.lobbyName == "") return false;
 
   const iName = Converter.removeRichText(lobby.lobbyName);
+  for (const s of array) {
+    if (s && s != "") {
+      const regex = new RegExp(RegExp.escape(s), "mi");
+      if (regex.test(iName)) return true;
+    }
+  }
+  /*
   const words = removeSymbols(iName).split(" ");
   for (const s of array) {
     if (!s) return;
@@ -1106,6 +1122,7 @@ function isGroup(lobby, array) {
         return true;
     }
   }
+    */
 
   return false;
 }
@@ -1368,7 +1385,8 @@ export function isLobbyValid(setting, i) {
   if (!setting) return true;
   let valid = true;
 
-  if (setting.filterWords && isGroup(i, setting.filterWords)) valid = false;
+  if (setting.filterWords && containsWord(i, setting.filterWords))
+    valid = false;
   if (
     setting.lobbyValidator &&
     setting.lobbyValidator(i, getSettingValue(setting.id))

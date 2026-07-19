@@ -320,3 +320,11 @@ export const permsList = [
     icon: "fas fa-code",
   },
 ];
+
+export const blacklist = [
+  "tcc",
+  "true crime",
+  "abusive",
+  "porn",
+  "purryforn",
+]
