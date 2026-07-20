@@ -527,12 +527,17 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.removeAttribute("id");
 
   let _friends = [];
+  let friendsTooltip;
+
+  if (lobby.privacy == 2) friendsTooltip += "[Friends Only]<br /><br />";
+
   lobby.playerList.players.forEach((y) => {
-    if (friends.some((x) => String(y.platformID) == String(x)))
+    if (friends.some((x) => String(y.platformID) == String(x))) {
       _friends.push(String(y.platformID));
+      friendsTooltip += `${getName(y).name.trim()}<br />`;
+    }
   });
 
-  // TODO: add tooltip for lobbyFriends element
   if (isToggleChecked("highlightFriends"))
     lobbyElem.setAttribute("hasFriend", _friends.length > 0);
 
@@ -545,6 +550,7 @@ async function createLobby(lobby, signal, hidden) {
           "textIcon fas fa-user-lock";
       }
       setContent(friendsElem, _friends.length);
+      createToolTip(friendsElem, friendsTooltip, "bottom", "none");
     }
   }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
@@ -643,7 +649,7 @@ async function createLobby(lobby, signal, hidden) {
   });
   for (const p of players) tooltip += `${getName(p).name.trim()}<br />`;
 
-  createToolTip(playerCount, tooltip, "bottom");
+  createToolTip(playerCount, tooltip, "bottom", "none");
 
   joinInfo(connectBtn);
 
@@ -680,7 +686,7 @@ function isEllipsisActive(e) {
   return e.clientHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
 }
 
-function createToolTip(e, content, placement = "top") {
+function createToolTip(e, content, placement = "top", maxWidth = 350) {
   if (e._tippy) e._tippy.setProps({ content: content });
 
   e._tippy = tippy(e, {
@@ -690,6 +696,7 @@ function createToolTip(e, content, placement = "top") {
     interactive: true,
     placement: placement,
     allowHTML: true,
+    maxWidth: maxWidth,
     theme: "website",
   });
 }
