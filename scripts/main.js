@@ -1616,7 +1616,7 @@ async function init() {
   addEventListener("theme", adjustTheme);
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
-    const num = Number(params.get(LOBBY_PARAM));
+    const num = params.get(LOBBY_PARAM);
     if (num) infoView = num;
   }
 
