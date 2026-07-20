@@ -943,6 +943,58 @@ a > .textIcon {
   border: 2px solid var(--flb-status6-color);
 }
 
+.thumbnailContainer {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+.thumbnailContainer > img {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.thumbnailSpinner {
+  display: block;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  animation-name: fa-spin-centered;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 2s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumbnailSpinner {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes fa-spin-centered {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+    -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    -moz-transform: translate(-50%, -50%) rotate(0deg);
+    -ms-transform: translate(-50%, -50%) rotate(0deg);
+    -o-transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    -moz-transform: translate(-50%, -50%) rotate(360deg);
+    -ms-transform: translate(-50%, -50%) rotate(360deg);
+    -o-transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .tippy-box[data-theme~="website"] {
   background-color: var(--flb-primary-background-color);
 }

@@ -569,18 +569,17 @@ async function createLobby(lobby, signal, hidden) {
       false,
     );
   };
-  const thumb = hidden ? setThumb() : await setThumb();
-  if (hidden) {
-    thumb.then((x) => {
-      if (thumb.nsfw == true && isToggleChecked("hideNSFWLobbies")) {
-        hidden = true;
-        lobbyElem.setAttribute("filteredout", true);
-      }
-      censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw);
-    });
+
+  function verifyNSFW() {
+    if (thumb.nsfw == true && isToggleChecked("hideNSFWLobbies")) {
+      hidden = true;
+      lobbyElem.setAttribute("filteredout", true);
+    }
+    censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw);
   }
-  if (!hidden && thumb.nsfw == true && isToggleChecked("hideNSFWLobbies"))
-    hidden = true;
+
+  const thumb = setThumb();
+  thumb.then(verifyNSFW);
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
@@ -1191,7 +1190,19 @@ function setURLParams() {
   window.history.pushState(null, "", url.toString());
 }
 
+let processed = [];
+
 async function getThumbnail(modId, title, barcode, isAvatar) {
+  while (!processed.some((x) => x.modId == modId || x.barcode == barcode))
+    await delay(50);
+
+  const obj = {
+    modId: modId,
+    barcode: barcode,
+  };
+
+  processed.push(obj);
+
   if (modId == -1 || modId == 0 || modId == null) {
     const value = barcodes.find(
       (x) =>
@@ -1200,6 +1211,9 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
         x.name == barcode,
     );
     if (value) {
+      const index = processed.indexOf(obj);
+      if (index > -1) processed.splice(index, 1);
+
       return {
         thumbnail: `/images/default/${value.name}.webp`,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
@@ -1217,6 +1231,8 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       Date.now() / 1000 - cacheItem.createdAt < cacheExpireTime
     ) {
       console.log("   > Using a thumbnail from cache!");
+      const index = processed.indexOf(obj);
+      if (index > -1) processed.splice(index, 1);
       return {
         thumbnail: cacheItem.src,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
@@ -1240,9 +1256,13 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       isNSFW: res.nsfw,
       createdAt: Date.now() / 1000,
     };
+    const index = processed.indexOf(obj);
+    if (index > -1) processed.splice(index, 1);
     return res;
   } catch (ex) {
     console.error(ex);
+    const index = processed.indexOf(obj);
+    if (index > -1) processed.splice(index, 1);
     return {
       error:
         "Failed to get thumbnail due to the request failing, check console for more details",
@@ -1250,8 +1270,19 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
   }
 }
 
+function delay(millisec) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, millisec);
+  });
+}
+
 async function setThumbnail(elem, modId, title, barcode, isAvatar) {
-  elem.removeAttribute("loading");
+  const spinners =
+    elem.parentElement.getElementsByClassName("thumbnailSpinner");
+  let spinner;
+  if (spinners && spinners.length > 0) spinner = spinners[0];
   elem.setAttribute("fetchpriority", "high");
   elem.addEventListener("error", function () {
     const alt = Converter.removeRichText(
@@ -1267,6 +1298,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       const alt = Converter.removeRichText(
         `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
       );
+      spinner?.classList?.add("hidden");
       elem.setAttribute("src", "images/default/Mods_Level.webp");
       elem.setAttribute("alt", alt);
       return {
@@ -1278,6 +1310,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
+    spinner?.classList?.add("hidden");
     elem.setAttribute("src", "images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
     return {
@@ -1289,6 +1322,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
+    spinner?.classList?.add("hidden");
     elem.setAttribute("src", "images/nsfwCover.webp");
     elem.setAttribute("alt", alt);
     return {
@@ -1297,6 +1331,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       nsfw: true,
     };
   } else {
+    spinner?.classList?.add("hidden");
     elem.setAttribute("src", thumbnail.thumbnail);
     elem.setAttribute("alt", Converter.removeRichText(thumbnail.alt));
     return thumbnail;
@@ -1546,9 +1581,6 @@ adjustTheme();
 
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
-window.addEventListener("onfriendslistfetched", () => {
-  if (!firstFetch) fetchAndCreateLobbies();
-});
 
 window.addEventListener("displayInfo", async (e) => {
   if (e.detail && e.detail.lobbyID) {
@@ -1647,7 +1679,7 @@ async function init() {
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
 
-  fetchAndCreateLobbies();
+  //fetchAndCreateLobbies();
 }
 
 function activateHoodRpMode() {
