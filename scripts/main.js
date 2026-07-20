@@ -21,7 +21,6 @@ import {
   getSetting,
   friends,
   setFriendsInLobby,
-  areFriendsFetched,
   containsWord,
 } from "./settings.js";
 
@@ -39,6 +38,7 @@ const LOBBY_PARAM = "lobby";
 const SIMULATE_HOODRP = false;
 
 let allLobbies;
+let friendIDs;
 
 let infoView = -1;
 
@@ -99,7 +99,7 @@ const sorting = [
 ];
 
 async function fetchAndCreateLobbies() {
-  if (refreshing || !areFriendsFetched) return;
+  if (refreshing) return;
 
   refreshing = true;
   firstFetch = true;
@@ -157,6 +157,7 @@ async function fetchAndCreateLobbies() {
             let lobbies = json.lobbies;
 
             allLobbies = structuredClone(lobbies);
+            friendIDs = structuredClone(json.friends);
 
             let _gamemodes = [];
             lobbies.forEach((val) => {
@@ -381,7 +382,7 @@ async function createLobbies(signal) {
   let lobbiesWithFriends = [];
   allLobbies.forEach((x) => {
     const filtered = x.playerList.players.filter((y) =>
-      friends.some((x) => x.steamId == String(y.platformID)),
+      friendIDs.some((x) => x == String(y.platformID)),
     );
     if (filtered && filtered.length > 0) {
       lobbiesWithFriends.push(x);
@@ -527,7 +528,7 @@ async function createLobby(lobby, signal, hidden) {
 
   let _friends = [];
   lobby.playerList.players.forEach((y) => {
-    if (friends.some((x) => String(y.platformID) == String(x.steamId)))
+    if (friends.some((x) => String(y.platformID) == String(x)))
       _friends.push(String(y.platformID));
   });
 
