@@ -334,6 +334,7 @@ async function createLobbies(signal) {
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
   const lobbyList = structuredClone(allLobbies);
+  lobbyList = lobbyList.filter((x) => !containsWord(x, blacklist));
   let lobbyCountMax = lobbyList.length;
   let allowed = hideLobbies(false);
 
@@ -380,7 +381,7 @@ async function createLobbies(signal) {
 
   let inLobby = [];
   let lobbiesWithFriends = [];
-  allLobbies.forEach((x) => {
+  lobbyList.forEach((x) => {
     const filtered = x.playerList.players.filter((y) =>
       friendIDs.some((x) => x == String(y.platformID)),
     );
@@ -737,6 +738,7 @@ function enableInfoButton(enabled) {
 }
 
 async function displayInfo(lobby, signal) {
+  if (containsWord(lobby, blacklist)) return;
   if (infoSignal) infoSignal.abort();
   showingInfo = true;
   try {
