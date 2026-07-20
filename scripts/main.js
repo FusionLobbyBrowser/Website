@@ -534,7 +534,7 @@ async function createLobby(lobby, signal, hidden) {
   lobby.playerList.players.forEach((y) => {
     if (friends.some((x) => String(y.platformID) == String(x))) {
       _friends.push(String(y.platformID));
-      friendsTooltip += `${getName(y, "p").name.trim()}<br />`;
+      friendsTooltip += `${getName(y, "div").name.trim()}<br />`;
     }
   });
 
@@ -647,7 +647,7 @@ async function createLobby(lobby, signal, hidden) {
 
     return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
   });
-  for (const p of players) tooltip += `${getName(p, "p").name.trim()}<br />`;
+  for (const p of players) tooltip += `${getName(p, "div").name.trim()}<br />`;
 
   createToolTip(playerCount, tooltip, "bottom", "none");
 
