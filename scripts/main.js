@@ -570,7 +570,7 @@ async function createLobby(lobby, signal, hidden) {
     );
   };
 
-  function verifyNSFW() {
+  function verifyNSFW(x) {
     if (thumb.nsfw == true && isToggleChecked("hideNSFWLobbies")) {
       hidden = true;
       lobbyElem.setAttribute("filteredout", true);
@@ -1230,7 +1230,6 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       cacheItem.createdAt &&
       Date.now() / 1000 - cacheItem.createdAt < cacheExpireTime
     ) {
-      console.log("   > Using a thumbnail from cache!");
       const index = processed.indexOf(obj);
       if (index > -1) processed.splice(index, 1);
       return {
