@@ -534,7 +534,7 @@ async function createLobby(lobby, signal, hidden) {
   lobby.playerList.players.forEach((y) => {
     if (friends.some((x) => String(y.platformID) == String(x))) {
       _friends.push(String(y.platformID));
-      friendsTooltip += `${getName(y).name.trim()}<br />`;
+      friendsTooltip += `${getName(y, "p").name.trim()}<br />`;
     }
   });
 
@@ -647,7 +647,7 @@ async function createLobby(lobby, signal, hidden) {
 
     return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
   });
-  for (const p of players) tooltip += `${getName(p).name.trim()}<br />`;
+  for (const p of players) tooltip += `${getName(p, "p").name.trim()}<br />`;
 
   createToolTip(playerCount, tooltip, "bottom", "none");
 
@@ -701,7 +701,7 @@ function createToolTip(e, content, placement = "top", maxWidth = 350) {
   });
 }
 
-function getName(player) {
+function getName(player, container = "") {
   let hasNickname = player.nickname != "" && player.nickname;
   let name = hasNickname ? player.nickname : player.username;
   if (!player.nickname && !player.username) name = "N/A";
@@ -713,7 +713,7 @@ function getName(player) {
     hasNickname = false;
   if (name.includes("\n")) name = name.split("\n")[0];
   return {
-    name: convert(name),
+    name: convert(name, container),
     hasNickName: hasNickname,
   };
 }
@@ -1120,8 +1120,11 @@ function colorPermission(perm) {
   };
 }
 
-function convert(text) {
-  return DOMPurify.sanitize(converter.unity2html(censorWords(text)));
+function convert(text, container = "") {
+  const converted = DOMPurify.sanitize(converter.unity2html(censorWords(text)));
+  if (container && container != "" && Converter.hasRichText(text))
+    return `<${container}>${converted}</${container}>`;
+  else return converted;
 }
 function censorWords(text) {
   if (!isToggleChecked("censorProfanities")) return text;

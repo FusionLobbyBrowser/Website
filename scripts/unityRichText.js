@@ -279,6 +279,10 @@ export class Converter {
     return input;
   }
 
+  static hasRichText(input) {
+    return new RegExp(/<.*?>/g).test(input);
+  }
+
   verityinput(input) {
     if (input === undefined || input === null)
       throw new Error(`input is undefined or null: ${input}`);
