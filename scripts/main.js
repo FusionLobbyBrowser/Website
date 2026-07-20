@@ -1193,7 +1193,7 @@ function setURLParams() {
 let processed = [];
 
 async function getThumbnail(modId, title, barcode, isAvatar) {
-  while (!processed.some((x) => x.modId == modId || x.barcode == barcode))
+  while (processed.some((x) => x.modId == modId || x.barcode == barcode))
     await delay(50);
 
   const obj = {
@@ -1679,7 +1679,7 @@ async function init() {
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
 
-  //fetchAndCreateLobbies();
+  fetchAndCreateLobbies();
 }
 
 function activateHoodRpMode() {
