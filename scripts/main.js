@@ -333,7 +333,7 @@ async function createLobbies(signal) {
   const refreshBtn = document.getElementById("refreshButton");
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
-  const lobbyList = structuredClone(allLobbies);
+  let lobbyList = structuredClone(allLobbies);
   lobbyList = lobbyList.filter((x) => !containsWord(x, blacklist));
   let lobbyCountMax = lobbyList.length;
   let allowed = hideLobbies(false);
