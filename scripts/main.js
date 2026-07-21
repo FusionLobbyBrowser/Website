@@ -747,8 +747,7 @@ async function displayInfo(lobby, signal) {
       "color: #0f0",
     );
 
-    var controller = new AbortController();
-    infoSignal = controller;
+    infoSignal = signal;
     infoView = lobby.lobbyID;
 
     hideShow(false);
