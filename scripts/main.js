@@ -974,11 +974,13 @@ async function displayInfo(lobby, signal) {
         "color: #0ff",
       );
     }
-    playersList
-      .querySelectorAll("div:not([playerId])")
-      .forEach((x) => x.remove());
-    playersList
-      .querySelectorAll("div")
+    Array.prototype.slice
+      .call(playersList.getElementsByTagName("div"))
+      .forEach((x) => {
+        if (!x.hasAttribute("playerId")) x.remove();
+      });
+    Array.prototype.slice
+      .call(playersList.getElementsByTagName("div"))
       .forEach((x) => x.classList.remove("hidden"));
     lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
     lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
