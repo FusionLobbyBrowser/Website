@@ -906,6 +906,7 @@ let types = [
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
     setValue: (elem, val, setting) => {
       if (val.min && val.max) {
+        const sliderDiv = elem?.querySelector(".rangeSlider");
         const minInput = elem?.getElementsByClassName("minRange");
         if (minInput && minInput.length > 0) minInput[0].value = val.min;
         else return;
