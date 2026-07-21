@@ -1372,7 +1372,14 @@ export function addCategory(category) {
 export function removeCategory(categoryName) {
   if (!categoryName || !categories.find((x) => x.name == categoryName)) return;
   categories = categories.filter((x) => x.name != categoryName);
-  init();
+  const settingsList = document.getElementById("settingsList");
+  const category = settingsList.querySelector(
+    `#${getCategoryId(categories.find((x) => x.name == val.category))}`,
+  );
+
+  if (category == null) return;
+
+  category.remove();
 }
 
 export function addSetting(setting) {
@@ -1382,9 +1389,10 @@ export function addSetting(setting) {
 }
 
 export function removeSetting(settingId) {
-  if (!settingId || !settings.find((x) => x.id == settingId)) return;
+  const s = settings.find((x) => x.id == settingId);
+  if (!settingId || !s) return;
+  if (s.elem) s.elem.remove();
   settings = settings.filter((x) => x.id != settingId);
-  init();
 }
 
 export function filterWithSettings(lobbies) {
