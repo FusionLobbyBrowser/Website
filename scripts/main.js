@@ -568,15 +568,6 @@ async function createLobby(lobby, signal, hidden) {
   }
   createToolTip(icon, `ID: ${lobby.lobbyID}`);
   const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
-  const setThumb = async () => {
-    return await setThumbnail(
-      lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
-      lobby.levelModID,
-      lobby.levelTitle,
-      lobby.levelBarcode,
-      false,
-    );
-  };
 
   function verifyNSFW(x) {
     if (thumb.nsfw == true && isToggleChecked("hideNSFWLobbies")) {
@@ -586,7 +577,13 @@ async function createLobby(lobby, signal, hidden) {
     censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw);
   }
 
-  const thumb = setThumb();
+  const thumb = setThumbnail(
+    lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
+    lobby.levelModID,
+    lobby.levelTitle,
+    lobby.levelBarcode,
+    false,
+  );
   thumb.then(verifyNSFW);
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
@@ -903,13 +900,22 @@ async function displayInfo(lobby, signal) {
       const toCopy = document.getElementById("playerToCopy");
       const playerElem = toCopy.cloneNode(true);
       playerElem.removeAttribute("id");
-      const thumb = await setThumbnail(
+
+      let thumbRes;
+      function verifyNSFW(x) {
+        thumbRes = x;
+        censorModTitle(avatarTitle, player.avatarModID, avatar, thumb.nsfw);
+      }
+
+      const thumb = setThumbnail(
         playerElem.getElementsByClassName("avatarThumbnail")[0],
         player.avatarModID,
         player.avatarTitle,
         player.avatarTitle,
         true,
       );
+      thumb.then(verifyNSFW);
+
       const name = getName(player);
       const nameElem = playerElem.getElementsByClassName("name")[0];
       nameElem.innerHTML = convert(name.name);
@@ -927,7 +933,7 @@ async function displayInfo(lobby, signal) {
         .addEventListener("click", async () => {
           const html = await createPlayerView(
             player,
-            thumb,
+            thumbRes,
             lobby.lobbyPlatform,
           );
           Swal.fire({
@@ -955,7 +961,7 @@ async function displayInfo(lobby, signal) {
       const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
       playerObserver.observe(avatarTitle);
 
-      censorModTitle(avatarTitle, player.avatarModID, avatar, thumb.nsfw);
+      avatarTitle.innerHTML = avatar;
       playerElem.setAttribute("playerId", player.platformID);
       if (signal?.signal?.aborted == true) return;
 
@@ -992,9 +998,13 @@ async function createPlayerView(player, thumbnail, platform) {
   const view = toCopy.cloneNode(true);
   view.removeAttribute("id");
   const name = getName(player);
-  const thumb = view.getElementsByClassName("viewThumbnail")[0];
-  thumb.src = thumbnail.thumbnail;
-  thumb.alt = thumbnail.alt;
+  if (thumbnail && thumbnail.thumbnail && thumbnail.alt) {
+    const thumb = view.getElementsByClassName("viewThumbnail")[0];
+    thumb.src = thumbnail.thumbnail;
+    thumb.alt = thumbnail.alt;
+  } else {
+    thumb.classList.add("hidden");
+  }
   view.getElementsByClassName("playerDisplayName")[0].innerHTML = convert(
     name.name,
   );
