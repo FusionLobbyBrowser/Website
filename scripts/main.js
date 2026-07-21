@@ -1389,7 +1389,9 @@ function setPlayerCount(filteredPlayers, allPlayers) {
 
 async function getJSON() {
   try {
-    const response = await fetch(LOBBY_LIST.replace("[host]", HOST));
+    const response = await fetch(LOBBY_LIST.replace("[host]", HOST), {
+      credentials: "include",
+    });
     if (!response.ok) return { error: await response.text() };
 
     return {
