@@ -1032,6 +1032,7 @@ function joinInfo(btn) {
   );
 }
 
+const URI_JOIN = "flb-bridge://join/[data]";
 async function requestJoin(code, platform) {
   const mapped = new Map(layers);
   const layer = mapped.get(platform);
