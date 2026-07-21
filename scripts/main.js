@@ -107,6 +107,7 @@ async function fetchAndCreateLobbies() {
   const start = Date.now();
   try {
     if (lobbiesSignal) lobbiesSignal.abort();
+    if (infoSignal) infoSignal.abort();
     const controller = new AbortController();
     lobbiesSignal = controller;
     filterBadges();
@@ -590,7 +591,8 @@ async function createLobby(lobby, signal, hidden) {
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
-    if (signal?.signal?.aborted != true) displayInfo(lobby, signal);
+    if (signal?.signal?.aborted != true)
+      displayInfo(lobby, new AbortController());
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
