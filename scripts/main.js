@@ -187,7 +187,7 @@ async function fetchAndCreateLobbies() {
               }
             });
 
-            await createLobbies(controller?.signal);
+            await createLobbies(controller);
           } else {
             hideShow(true);
           }
@@ -434,7 +434,7 @@ async function createLobbies(signal) {
 
   let count = 0;
   for (let i = 0; i < prioritized.length; i++) {
-    if (signal?.aborted == true) return;
+    if (signal?.signal?.aborted == true) return;
     count++;
     const lobby = prioritized[i];
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
@@ -455,7 +455,7 @@ async function createLobbies(signal) {
     (x) => !prioritized.some((y) => y.lobbyID == x.lobbyID),
   );
   for (let i = 0; i < other.length; i++) {
-    if (signal?.aborted == true) return;
+    if (signal?.signal?.aborted == true) return;
     count++;
     const lobby = other[i];
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
@@ -590,7 +590,7 @@ async function createLobby(lobby, signal, hidden) {
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
-    if (signal?.aborted != true) displayInfo(lobby, signal);
+    if (signal?.signal?.aborted != true) displayInfo(lobby, signal);
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
@@ -894,7 +894,7 @@ async function displayInfo(lobby, signal) {
         (!player.nickname || player.nickname == "")
       )
         continue;
-      if (controller?.signal?.aborted == true) return;
+      if (signal?.signal?.aborted == true) break;
 
       console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
 
@@ -955,8 +955,8 @@ async function displayInfo(lobby, signal) {
 
       censorModTitle(avatarTitle, player.avatarModID, avatar, thumb.nsfw);
       playerElem.setAttribute("playerId", player.platformID);
-      if (signal?.aborted == true || controller?.signal?.aborted == true)
-        return;
+      if (signal?.signal?.aborted == true) return;
+
       playersList.appendChild(playerElem);
       const time = (Date.now() - plrStart) / 1000;
       console.log(
