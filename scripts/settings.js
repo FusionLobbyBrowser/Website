@@ -853,7 +853,7 @@ let types = [
         const maxVal = parseInt(max.value);
         const n = `${setting.baseName} [${minVal} - ${maxVal}]`;
         setting.name = n;
-        setSettingsTitle(setting.id, n);
+        setContent(label, n);
 
         const left =
           ((minVal - setting.minValue) / (min.max - setting.minValue)) * 100;
@@ -903,13 +903,32 @@ let types = [
       return wrapper;
     },
     setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
-    setValue: (elem, val) => {
+    setValue: (elem, val, setting) => {
       if (val.min && val.max) {
         const minInput = elem?.getElementsByClassName("minRange");
         if (minInput && minInput.length > 0) minInput[0].value = val.min;
+        else return;
 
         const maxInput = elem?.getElementsByClassName("maxRange");
         if (maxInput && maxInput.length > 0) maxInput[0].value = val.max;
+        else return;
+
+        if (!setting.baseName) setting.baseName = setting.name;
+        const n = `${setting.baseName} [${val.min} - ${val.max}]`;
+        setting.name = n;
+        setSettingsTitle(setting.id, n);
+
+        const left =
+          ((val.min - setting.minValue) /
+            (minInput[0].max - setting.minValue)) *
+          100;
+        const right =
+          100 -
+          ((val.max - setting.minValue) /
+            (maxInput[0].max - setting.minValue)) *
+            100;
+        sliderDiv.style.left = `${left}%`;
+        sliderDiv.style.right = `${right}%`;
       }
     },
   },
@@ -1306,7 +1325,7 @@ export function setSetting(setting, value, old = null) {
     if (s.callback) s.callback(value, old);
 
     const type = types.find((t) => t.type == s.type);
-    if (type && type.setValue) type.setValue(s.elem, value);
+    if (type && type.setValue) type.setValue(s.elem, value, s);
 
     window.dispatchEvent(
       new CustomEvent("onsettingchanged", {
@@ -1335,7 +1354,7 @@ export function setSettingsTitle(setting, title) {
     if (!val.elem) return;
     settings[index].name = title;
     const type = types.find((t) => t.type == val.type);
-    if (type && type.setTitle) type.setTitle(val.elem, title);
+    if (type && type.setTitle) type.setTitle(val.elem, title, val);
   }
 }
 
