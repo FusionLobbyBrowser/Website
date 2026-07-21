@@ -1271,8 +1271,11 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
         .replace("[modId]", modId)
         .replace("[barcode]", barcode),
     );
-    if (!response.ok)
+    if (!response.ok) {
+      const index = processed.indexOf(obj);
+      if (index > -1) processed.splice(index, 1);
       return { error: await response.text(), status: response.status };
+    }
     const res = {
       thumbnail: URL.createObjectURL(await response.blob()),
       alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
