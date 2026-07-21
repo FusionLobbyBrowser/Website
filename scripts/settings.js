@@ -59,25 +59,32 @@ let categories = [
     expanded: false,
   },
   {
-    name: "Steam Friends",
+    name: "Steam Settings",
     icon: "fa-brands fa-steam",
     expanded: false,
+  },
+  {
+    name: "Friends",
+    icon: "fa-solid fa-user-group",
+    expanded: true,
     customHandler: async (container) => {
       if (friendsCancel) friendsCancel.abort();
       const controller = new AbortController();
       friendsCancel = controller;
 
       fillCategory({
-        name: "Steam Friends",
+        name: "Friends",
       });
 
       const list = container.getElementsByTagName("div")[0];
       friendListElem = list;
       list.classList.add("friendsContainer");
 
-      const divider = document.createElement("div");
-      divider.classList.add("divider");
-      list.appendChild(divider);
+      if (list.hasChildNodes()) {
+        const divider = document.createElement("div");
+        divider.classList.add("divider");
+        list.appendChild(divider);
+      }
 
       const toCopy = document.getElementById("friendToCopy");
       const order = [6, 1, 4, 2, 3, 0, 5];
@@ -103,6 +110,9 @@ let categories = [
             if (x.classList.contains("steamAccount")) x.classList.add("hidden");
           });
         }
+
+        const notices = list.getElementsByClassName("notice");
+        if (notices && notices.length > 0) for (const n of notices) n.remove();
 
         const self = await getSelf();
         if (!self) {
@@ -154,12 +164,15 @@ let categories = [
             order.findIndex((x) => x == a.userStatus) -
             order.findIndex((x) => x == b.userStatus),
         );
+        let anyDisplayed = false;
+        const onlyInLobby = getSettingValue("displayInLobby");
         sorted.forEach((f) => {
           let elem = list.querySelector(`div[steamid="${f.steamId}"]`);
           if (!elem) elem = toCopy.cloneNode(true);
           elem.removeAttribute("id");
           const avatar = elem.getElementsByClassName("friendAvatar")[0];
-          if (f.userStatus == 0) {
+          const inLobby = friendsLobbies.find((x) => x.id == f.steamId);
+          if (f.userStatus == 0 || (onlyInLobby && !inLobby)) {
             elem.classList.add("hidden");
             avatar.loading = "lazy";
             avatar.fetchpriority = "low";
@@ -167,6 +180,7 @@ let categories = [
             elem.classList.remove("hidden");
             avatar.loading = "eager";
             avatar.fetchpriority = "auto";
+            anyDisplayed = true;
           }
           elem.setAttribute("steamid", f.steamId);
           avatar.width = 32;
@@ -187,7 +201,6 @@ let categories = [
           )[0];
           const btnContainer =
             elem.getElementsByClassName("buttonContainer")[0];
-          const inLobby = friendsLobbies.find((x) => x.id == f.steamId);
           if (!inLobby) {
             additionalInfo.style.color = window
               .getComputedStyle(toCopy)
@@ -254,6 +267,16 @@ let categories = [
           )
             x.remove();
         });
+        if (!anyDisplayed) {
+          notice(
+            list,
+            "Nobody's there",
+            onlyInLobby
+              ? "Seems like nobody's playing BONELAB right now"
+              : "Seems like nobody's playing anything right now",
+            "fas fa-face-frown",
+          );
+        }
         areFriendsFetched = true;
         window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
       }
@@ -635,10 +658,10 @@ export let settings = [
     icon: "fa-solid fa-hand-middle-finger",
     defaultValue: true,
   },
-  // Steam Friends
+  // Steam Settings
   {
     id: "prioritizeLobbiesWithFriends",
-    category: "Steam Friends",
+    category: "Steam Settings",
     type: "toggle",
     name: "Prioritize Lobbies /w Friends",
     icon: "fa-solid fa-arrow-up",
@@ -646,15 +669,23 @@ export let settings = [
   },
   {
     id: "prioritizeFriendsOnlyLobbies",
-    category: "Steam Friends",
+    category: "Steam Settings",
     type: "toggle",
     name: "Prioritize Friends Only Lobbies",
     icon: "fa-solid fa-arrow-up",
     defaultValue: true,
   },
   {
+    id: "displayInLobby",
+    category: "Steam Settings",
+    type: "toggle",
+    name: "Only Display Friends in Lobby",
+    icon: "fa-solid fa-play",
+    defaultValue: true,
+  },
+  {
     id: "highlightFriends",
-    category: "Steam Friends",
+    category: "Steam Settings",
     type: "toggle",
     name: "Highlight Lobbies /w Friends",
     icon: "fa-solid fa-star",
@@ -1272,6 +1303,7 @@ export function setSetting(setting, value, old = null) {
     eventListeners.forEach((x) => {
       if (x.id == setting) x.callback(value);
     });
+    if (s.callback) s.callback(value, old);
 
     const type = types.find((t) => t.type == s.type);
     if (type && type.setValue) type.setValue(s.elem, value);
