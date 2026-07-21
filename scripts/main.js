@@ -974,14 +974,13 @@ async function displayInfo(lobby, signal) {
         "color: #0ff",
       );
     }
-    Array.prototype.slice
-      .call(playersList.getElementsByTagName("div"))
-      .forEach((x) => {
-        if (!x.hasAttribute("playerId")) x.remove();
-      });
-    Array.prototype.slice
-      .call(playersList.getElementsByTagName("div"))
-      .forEach((x) => x.classList.remove("hidden"));
+    playersList.childNodes.forEach((x) => {
+      if (x.tagName.toLowerCase() == "div" && !x.hasAttribute("playerId"))
+        x.remove();
+    });
+    playersList.childNodes.forEach((x) => {
+      if (x.tagName.toLowerCase() == "div") x.classList.remove("hidden");
+    });
     lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
     lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
     const time = (Date.now() - start) / 1000;
