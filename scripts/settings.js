@@ -1222,15 +1222,18 @@ export function init() {
   const settingsList = document.getElementById("settingsList");
   settingsList.replaceChildren();
 
-  categories.forEach((val) => {
-    const cat = createCategory(val);
-    settingsList.appendChild(cat);
-    if (!val.customHandler) {
-      fillCategory(val);
-    } else {
-      val.customHandler(cat);
-    }
-  });
+  categories.forEach(setupCategory);
+}
+
+function setupCategory(val) {
+  const settingsList = document.getElementById("settingsList");
+  const cat = createCategory(val);
+  settingsList.appendChild(cat);
+  if (!val.customHandler) {
+    fillCategory(val);
+  } else {
+    val.customHandler(cat);
+  }
 }
 
 function fillCategory(val) {
@@ -1363,7 +1366,7 @@ export function setSettingsTitle(setting, title) {
 export function addCategory(category) {
   if (!category || categories.find((x) => x.name == category.name)) return;
   categories.push(category);
-  init();
+  setupCategory(category);
 }
 
 export function removeCategory(categoryName) {
@@ -1375,7 +1378,7 @@ export function removeCategory(categoryName) {
 export function addSetting(setting) {
   if (!setting || settings.find((x) => x.id == setting.id)) return;
   settings.push(setting);
-  init();
+  createSetting(setting);
 }
 
 export function removeSetting(settingId) {
