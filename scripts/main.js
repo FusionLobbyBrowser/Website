@@ -454,7 +454,6 @@ async function createLobbies(signal) {
   const other = lobbyList.filter(
     (x) => !prioritized.some((y) => y.lobbyID == x.lobbyID),
   );
-  console.log(other.length);
   for (let i = 0; i < other.length; i++) {
     if (signal?.aborted == true) return;
     count++;
