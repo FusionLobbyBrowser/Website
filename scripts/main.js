@@ -901,6 +901,12 @@ async function displayInfo(lobby, signal) {
       const playerElem = toCopy.cloneNode(true);
       playerElem.removeAttribute("id");
 
+      let avatar =
+        player.avatarTitle && player.avatarTitle != ""
+          ? convert(player.avatarTitle)
+          : "N/A";
+      const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
+
       let thumbRes;
       function verifyNSFW(x) {
         thumbRes = x;
@@ -954,16 +960,11 @@ async function displayInfo(lobby, signal) {
           });
         });
 
-      let avatar =
-        player.avatarTitle && player.avatarTitle != ""
-          ? convert(player.avatarTitle)
-          : "N/A";
-      const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
       playerObserver.observe(avatarTitle);
 
       avatarTitle.innerHTML = avatar;
       playerElem.setAttribute("playerId", player.platformID);
-      if (signal?.signal?.aborted == true) return;
+      if (signal?.signal?.aborted == true) break;
 
       playersList.appendChild(playerElem);
       const time = (Date.now() - plrStart) / 1000;
