@@ -532,7 +532,7 @@ async function createLobby(lobby, signal, hidden) {
   if (lobby.privacy == 2) friendsTooltip += "[Friends Only]<br /><br />";
 
   lobby.playerList.players.forEach((y) => {
-    if (friends.some((x) => String(y.platformID) == String(x))) {
+    if (friendIDs.some((x) => String(y.platformID) == String(x))) {
       _friends.push(String(y.platformID));
       const n = getName(y, "div").name.trim();
       friendsTooltip += `${n}${n.startsWith("<div>") ? "" : "<br />"}`;

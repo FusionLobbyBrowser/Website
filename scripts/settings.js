@@ -1056,6 +1056,7 @@ async function requestJoin(code, platform) {
 export function setFriendsInLobby(friends) {
   friendsLobbies = friends;
   const order = [6, 1, 4, 2, 3, 0, 5];
+  const onlyInLobby = getSettingValue("displayInLobby");
   friendListElem.childNodes.forEach((x) => {
     const friend = friends.find((y) => y.id == x.getAttribute("steamid"));
     const additionalInfo = x.getElementsByClassName("steamAdditionalInfo")[0];
@@ -1092,7 +1093,7 @@ export function setFriendsInLobby(friends) {
     }
 
     if (userStatus != -1) {
-      if (userStatus == 0) {
+      if (userStatus == 0 || (onlyInLobby && !friend)) {
         x.classList.add("hidden");
         avatar.loading = "lazy";
         avatar.fetchpriority = "low";
@@ -1100,6 +1101,8 @@ export function setFriendsInLobby(friends) {
         x.classList.remove("hidden");
         avatar.loading = "eager";
         avatar.fetchpriority = "auto";
+        const notices = friendListElem.getElementsByClassName("notice");
+        if (notices && notices.length > 0) for (const n of notices) n.remove();
       }
     }
   });
