@@ -527,9 +527,9 @@ async function createLobby(lobby, signal, hidden) {
   lobbyElem.removeAttribute("id");
 
   let _friends = [];
-  let friendsTooltip;
+  let friendsTooltip = "";
 
-  if (lobby.privacy == 2) friendsTooltip += "[Friends Only]<br /><br />";
+  if (lobby.privacy == 2) friendsTooltip = "[Friends Only]<br />";
 
   lobby.playerList.players.forEach((y) => {
     if (friendIDs.some((x) => String(y.platformID) == String(x))) {
