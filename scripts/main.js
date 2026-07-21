@@ -167,7 +167,7 @@ async function fetchAndCreateLobbies() {
               const g = gamemodes.find((x) => x.barcode == val.gamemodeBarcode);
               if (!_gamemodes.includes(gamemode)) {
                 addSetting({
-                  id: `gamemode_${gamemode}`,
+                  id: `gamemode_${!gamemode || gamemode == "" ? "Lakatrazz.Sandbox" : gamemode}`,
                   category: "Gamemodes",
                   type: "toggle",
                   name: val.gamemodeTitle

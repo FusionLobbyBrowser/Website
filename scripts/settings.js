@@ -682,6 +682,7 @@ export let settings = [
     name: "Only Display Friends in Lobby",
     icon: "fa-solid fa-play",
     defaultValue: true,
+    callback: () => init(),
   },
   {
     id: "highlightFriends",
@@ -1191,6 +1192,7 @@ function createCategory(category) {
   if (category.expanded) button.classList.add("collapsed");
   button.addEventListener("click", () => {
     button.classList.toggle("collapsed");
+    category.expanded = !category.expanded;
   });
   const title = document.createElement("h2");
   title.innerHTML = getCategoryText(category);
@@ -1322,7 +1324,7 @@ export function setSetting(setting, value, old = null) {
     eventListeners.forEach((x) => {
       if (x.id == setting) x.callback(value);
     });
-    if (s.callback) s.callback(value, old);
+    if (s.callback && s.initialValueSet) s.callback(value, old);
 
     const type = types.find((t) => t.type == s.type);
     if (type && type.setValue) type.setValue(s.elem, value, s);
