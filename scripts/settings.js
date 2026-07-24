@@ -1,5 +1,5 @@
 import { Converter } from "./unityRichText.js";
-import { barcodes, layers } from "./const.js";
+import { barcodes, layers, furryMods } from "./const.js";
 import { getSelf, getFriends } from "./steam.js";
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
@@ -480,6 +480,26 @@ export let settings = [
       "0gravity.BackroomsEntropy.Level.BackroomsEntropy",
       "HombresGuapos.TheBackroomsA24.Level.TheBackroomsA24",
     ],
+
+    defaultValue: true,
+  },
+  {
+    id: "furryLobbies",
+    category: "Groups",
+    type: "toggle",
+    name: "Furry",
+    icon: "fa-solid fa-paw",
+
+    lobbyFilter: true,
+    filterValue: false,
+    lobbyValidator: (lobby) => {
+      lobby.playerList.players.forEach((y) => {
+        if (furryMods.some((x) => y.avatarModID == x)) {
+          return true;
+        }
+      });
+      return false;
+    },
 
     defaultValue: true,
   },
