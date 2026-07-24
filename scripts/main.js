@@ -562,7 +562,7 @@ async function createLobby(lobby, signal, hidden) {
           "textIcon fas fa-user-lock";
       }
       setContent(friendsElem, _friends.length);
-      createToolTip(friendsElem, friendsTooltip, "bottom", "none");
+      createToolTip(friendsElem, friendsTooltip, "bottom", "100vw");
     }
   }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
@@ -662,7 +662,7 @@ async function createLobby(lobby, signal, hidden) {
     tooltip += `${n}${n.startsWith("<div>") ? "" : "<br />"}`;
   }
 
-  createToolTip(playerCount, tooltip, "bottom", "none");
+  createToolTip(playerCount, tooltip, "bottom", "100vw");
 
   joinInfo(connectBtn);
 
