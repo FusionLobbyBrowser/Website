@@ -322,9 +322,15 @@ export const permsList = [
 ];
 
 export const blacklist = [
-  "tcc",
-  "true crime",
-  "abusive",
-  "porn",
-  "purryforn",
-]
+  // Hood RP lobbies are sort of a gray area, not sure whether these should be blacklisted
+
+  "tcc", // recreating real life tragedies where people genuinely lost their lifes while you're just having fun? that's just fucked up
+  "true crime", // same as above
+  "abusive", // this is mostly in lobbies called stuff like "Abusive Dad RP", like brother you are not funny and that's just shitty
+  "abussive", // just a typo of the above that i noticed
+  "beat your wife", // really what the fuck? I've seen a lobby like that on the website before, i am NOT displaying shit like this
+  "porn", // do i really need to expose people to weird shit? especially considering the community is full of kids its just best this is not displayed, even though i havent seen any like that so far
+  "purryforn", // mostly related to a lobby called "RussianPurryForn /'\OwO/'\ 17+", like do you really find this funny? i just think it's weird, but hey maybe i'm the weird one here
+  "ukraine vs russia", // ongoing conflict that for some reason people like to "roleplay" in fusion, which is honestly disrespectful as fuck to the people.
+  "ukr vs rus", // anothey way to call the above
+];
