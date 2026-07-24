@@ -493,9 +493,9 @@ export let settings = [
     lobbyFilter: true,
     filterValue: false,
     lobbyValidator: (lobby) => {
-      lobby.playerList.players.forEach((y) => {
+      for (const y of lobby.playerList.players) {
         if (furryMods.some((x) => Number(y.avatarModID) == x)) return true;
-      });
+      }
       return false;
     },
 
