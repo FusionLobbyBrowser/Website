@@ -94,7 +94,7 @@ body {
     --flb-icon-filter: brightness(0);
     --flb-error-color: #b00810;
     --flb-error-hover-color: #8c080e;
-    --flb-success-color: chartreuse;
+    --flb-success-color: #175e17;
     --flb-gray-color: #595959; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
     --flb-support-color: #b00810;
     --flb-support-hover-color: #8c080e;
@@ -199,7 +199,7 @@ body {
   --flb-icon-filter: brightness(0);
   --flb-error-color: #b00810;
   --flb-error-hover-color: #8c080e;
-  --flb-success-color: chartreuse;
+  --flb-success-color: #175e17;
   --flb-gray-color: #595959; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
   --flb-support-color: #b00810;
   --flb-support-hover-color: #8c080e;

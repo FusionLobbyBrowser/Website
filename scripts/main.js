@@ -143,6 +143,8 @@ async function fetchAndCreateLobbies() {
 
         setLobbyCount(-1);
         setPlayerCount(0, 0);
+        document.getElementById("steamCount").textContent = 0;
+        document.getElementById("epicCount").textContent = 0;
         hideShow(true);
       } else {
         if (json.interval) refreshInterval = Number(json.interval);
@@ -158,6 +160,7 @@ async function fetchAndCreateLobbies() {
             let lobbies = json.lobbies;
 
             allLobbies = structuredClone(lobbies);
+            allLobbies = allLobbies.filter((x) => !containsWord(x, blacklist));
             friendIDs = structuredClone(json.friends);
 
             let _gamemodes = [];
@@ -335,7 +338,6 @@ async function createLobbies(signal) {
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
   let lobbyList = structuredClone(allLobbies);
-  lobbyList = lobbyList.filter((x) => !containsWord(x, blacklist));
   let lobbyCountMax = lobbyList.length;
   let allowed = hideLobbies(false);
 
@@ -354,12 +356,18 @@ async function createLobbies(signal) {
   if (!sorted) sorting.find((x) => x.name == "Players").callback(lobbyList, 2);
 
   let players = 0;
+  let steam = 0;
+  let epic = 0;
   let allPlayers = 0;
   lobbyList.forEach((val) => {
+    if (val.lobbyPlatform == "Steam") steam++;
+    else if (val.lobbyPlatform == "Epic") epic++;
     allPlayers += Number(val.playerCount);
     if (allowed.includes(val.lobbyID)) players += Number(val.playerCount);
   });
 
+  document.getElementById("steamCount").textContent = steam;
+  document.getElementById("epicCount").textContent = epic;
   setLobbyCount(allowed.length, lobbyCountMax);
   setPlayerCount(players, allPlayers);
 
@@ -441,9 +449,10 @@ async function createLobbies(signal) {
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
 
     if (containsWord(lobby, blacklist)) {
-      console.error(
-        "Lobby name contains blacklisted word, ignoring: " +
+      console.log(
+        "%c > Lobby name contains blacklisted word, ignoring: " +
           Converter.removeRichText(lobby.lobbyName),
+        "color: #f00",
       );
       continue;
     }
@@ -462,9 +471,10 @@ async function createLobbies(signal) {
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
 
     if (containsWord(lobby, blacklist)) {
-      console.error(
-        "Lobby name contains blacklisted word, ignoring: " +
+      console.log(
+        "%c > Lobby name contains blacklisted word, ignoring: " +
           Converter.removeRichText(lobby.lobbyName),
+        "color: #f00",
       );
       continue;
     }
@@ -1667,6 +1677,7 @@ async function init() {
   filterEvent("sort", true);
   filterEvent("sortOrder", true);
   filterEvent("censorProfanities", true);
+  filterEvent("hideNSFWLobbies", true);
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("info-close", () => hideShow(true));

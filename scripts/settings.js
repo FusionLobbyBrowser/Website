@@ -396,6 +396,15 @@ export let settings = [
     icon: "fa-solid fa-arrows-rotate fa-spin",
     defaultValue: false,
   },
+  {
+    id: "filterCount",
+    category: "General",
+    type: "toggle",
+    name: "Show Lobby Count on Filters",
+    icon: "fa-solid fa-list-ol",
+    defaultValue: false,
+    callback: () => init(),
+  },
   // Groups
   {
     id: "roleplayLobbies",
@@ -1306,6 +1315,13 @@ function createSetting(val) {
     return;
   }
 
+  if (
+    getSettingValue("filterCount") == false &&
+    val.baseName &&
+    val.name != val.baseName
+  )
+    type.setTitle(wrapper, val.baseName);
+
   val.elem = wrapper;
 
   wrapper.addEventListener("onsettingchanged", (v) =>
@@ -1438,7 +1454,10 @@ export function filterWithSettings(lobbies) {
     setting.currCount = curr;
 
     if (!setting.baseName) setting.baseName = setting.name;
-    if (setting.setFilterName != false)
+    if (
+      setting.setFilterName != false &&
+      getSettingValue("filterCount") == true
+    )
       setSettingsTitle(
         setting.id,
         `${setting.baseName} [${total == curr ? total : `${curr}/${total}`}]`,
