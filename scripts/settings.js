@@ -514,7 +514,7 @@ export let settings = [
       for (const x of settings) {
         if (x.category != "Groups" || x.id == "otherLobbies") continue;
 
-        if (!x.filterWords) continue;
+        if (!x.filterWords && !x.filterLevels && !x.lobbyValidator) continue;
         if (isLobbyValid(x, lobby)) return false;
       }
       return true;
