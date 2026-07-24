@@ -1330,7 +1330,8 @@ function createSetting(val) {
   if (
     getSettingValue("filterCount") == false &&
     val.baseName &&
-    val.name != val.baseName
+    val.name != val.baseName &&
+    val.setFilterName != false
   )
     type.setTitle(wrapper, val.baseName);
 
