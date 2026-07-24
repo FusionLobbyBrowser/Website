@@ -1642,11 +1642,11 @@ window.addEventListener("displayInfo", async (e) => {
 });
 
 async function init() {
+  adjustTheme();
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   settingsInit();
-  adjustTheme();
   addEventListener("theme", adjustTheme);
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
@@ -1783,12 +1783,11 @@ function adjustTheme() {
     window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
   const isDarkMode = darkMode && darkMode.matches;
 
-  const val = getSettingValue("theme") || localStorage.getItem("setting_theme");
+  const val = localStorage.getItem(`setting_theme`);
   let v;
   if (!val) v = isDarkMode ? "dark" : "light";
   else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
   document.getElementsByTagName("html")[0].setAttribute("theme", v);
-  return v;
 }
 
 async function updateTime() {
