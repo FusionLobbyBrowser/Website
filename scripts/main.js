@@ -1122,9 +1122,7 @@ function lobbyNotice(
   classes.forEach((x) => _icon.classList.add(x));
   _title.textContent = title;
   _description.textContent = description;
-  notice.style.color = window
-    .getComputedStyle(toCopy)
-    .getPropertyValue(colorVariable);
+  notice.style.color = `var(${colorVariable})`;
   lobbies.appendChild(notice);
 }
 

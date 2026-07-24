@@ -202,17 +202,13 @@ let categories = [
           const btnContainer =
             elem.getElementsByClassName("buttonContainer")[0];
           if (!inLobby) {
-            additionalInfo.style.color = window
-              .getComputedStyle(toCopy)
-              .getPropertyValue(`--flb-status${f.userStatus}-color`);
+            additionalInfo.style.color = `var(--flb-status${f.userStatus}-color)`;
             elem.style.order = order.findIndex((x) => x == f.userStatus) + 1;
             btnContainer.classList.add("hidden");
           } else {
             elem.setAttribute("overridenInfo", "true");
             elem.style.order = 0;
-            additionalInfo.style.color = window
-              .getComputedStyle(toCopy)
-              .getPropertyValue(`--flb-status6-color`);
+            additionalInfo.style.color = "var(--flb-status6-color)";
             additionalInfo.innerHTML = `Playing in a lobby - ${inLobby.lobbyName}`;
             btnContainer.classList.remove("hidden");
             const joinBtn = elem.getElementsByClassName("joinButton")[0];
@@ -1015,9 +1011,7 @@ function notice(
   classes.forEach((x) => _icon.classList.add(x));
   _title.textContent = title;
   _description.textContent = description;
-  notice.style.color = window
-    .getComputedStyle(toCopy)
-    .getPropertyValue(colorVariable);
+  notice.style.color = `var(${colorVariable})`;
   div.appendChild(notice);
 }
 
@@ -1095,9 +1089,7 @@ export function setFriendsInLobby(friends) {
         );
     } else if (x.hasAttribute("overridenInfo")) {
       userStatus = Number(x.getAttribute("userStatus"));
-      additionalInfo.style.color = window
-        .getComputedStyle(x)
-        .getPropertyValue(`--flb-status${userStatus}-color`);
+      additionalInfo.style.color = `var(--flb-status${userStatus}-color)`;
       x.style.order = order.findIndex((y) => y == userStatus) + 1;
       additionalInfo.textContent = x.getAttribute("infoText");
       btnContainer.classList.add("hidden");
