@@ -512,10 +512,10 @@ export let settings = [
     filterValue: false,
     lobbyValidator: (lobby) => {
       for (const x of settings) {
-        if (x.category != "Groups") continue;
+        if (x.category != "Groups" || x.id == "otherLobbies") continue;
 
         if (!x.filterWords) continue;
-        if (containsWord(lobby, x.filterWords)) return false;
+        if (isLobbyValid(x, lobby)) return false;
       }
       return true;
     },
