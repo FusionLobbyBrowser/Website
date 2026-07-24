@@ -1788,6 +1788,7 @@ function adjustTheme() {
   if (!val) v = isDarkMode ? "dark" : "light";
   else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
   document.getElementsByTagName("html")[0].setAttribute("theme", v);
+  return v;
 }
 
 async function updateTime() {
