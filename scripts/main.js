@@ -1740,7 +1740,7 @@ function initCurse() {
 
   document.getElementsByTagName("title")[0].textContent =
     "uh oh you angered the thing!";
-  var fuckyouevenmorejackbaker = new Audio("hotak0/sounds/hotak0_ambiance.mp3");
+  var fuckyouevenmorejackbaker = new Audio("hotak0/sounds/hotak0_ambience.mp3");
   fuckyouevenmorejackbaker.play();
   fuckyouevenmorejackbaker.loop = true;
   looped(fuckyouevenmorejackbaker);
