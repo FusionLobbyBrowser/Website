@@ -1551,12 +1551,8 @@ export function filterWithSettings(lobbies) {
       !setting.lobbyValidator
     )
       continue;
-    let filter = false;
 
     const val = getSettingValue(setting.id);
-    if (typeof setting.filterValue == "function")
-      filter = setting.filterValue(setting, val);
-    else filter = setting.filterValue == val;
 
     if (val.include) includes.push(setting);
     else if (val.exclude)
@@ -1565,9 +1561,8 @@ export function filterWithSettings(lobbies) {
 
   if (includes && includes.length > 0)
     lobbies = lobbies.filter((i) => {
-      for (const x of includes) {
-        if (!isLobbyValid(x, i)) return false;
-      }
+      for (const x of includes) if (isLobbyValid(x, i)) return false;
+
       return true;
     });
 
