@@ -405,12 +405,12 @@ export let settings = [
   {
     id: "roleplayLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Roleplay",
     icon: "fa-solid fa-briefcase",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     filterWords: [
       "shooting",
       "shooter",
@@ -420,31 +420,33 @@ export let settings = [
     ],
     filterLevels: RP_LEVELS,
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "hoodLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Hood RP",
     icon: "fa-solid fa-person-rifle",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     filterWords: ["hood", "hoodrp"],
     filterLevels: RP_LEVELS,
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "russianLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Russian",
     icon: "fi fis fi-ru",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     filterWords: [
       "russian",
       "russia",
@@ -455,17 +457,18 @@ export let settings = [
       { word: "ru", type: "whole-word" },
     ],
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "horrorLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Horror",
     icon: "fa-solid fa-ghost",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     filterWords: [
       "horror",
       "monster",
@@ -478,34 +481,36 @@ export let settings = [
       "hide n seek",
     ],
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "backroomsLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Backrooms",
     icon: "fa-solid fa-biohazard",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     filterWords: ["backrooms", "backroom"],
     filterLevels: [
       "0gravity.BackroomsEntropy.Level.BackroomsEntropy",
       "HombresGuapos.TheBackroomsA24.Level.TheBackroomsA24",
     ],
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "furryLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Furry",
     icon: "fa-solid fa-paw",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       for (const y of lobby.playerList.players) {
         if (furryMods.some((x) => Number(y.avatarModID) == x)) return true;
@@ -513,17 +518,18 @@ export let settings = [
       return false;
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "otherLobbies",
     category: "Groups",
-    type: "toggle",
+    type: "filter",
     name: "Other",
     icon: "fa-solid fa-plus",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       for (const x of settings) {
         if (x.category != "Groups" || x.id == "otherLobbies") continue;
@@ -534,100 +540,107 @@ export let settings = [
       return true;
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   // Platforms
   {
     id: "steamPlatform",
     category: "Platforms",
-    type: "toggle",
+    type: "filter",
     name: "Steam",
     icon: "fa-brands fa-steam",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return lobby.lobbyPlatform == "Steam";
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "epicPlatform",
     category: "Platforms",
-    type: "toggle",
+    type: "filter",
     name: "Epic Games",
     icon: "fa-custom fa-epicgames",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return lobby.lobbyPlatform == "Epic";
     },
 
-    defaultValue: false,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   // Visibility
   {
     id: "publicLobbies",
     category: "Visibility",
-    type: "toggle",
+    type: "filter",
     name: "Public",
     icon: "fas fa-user-group",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return lobby.privacy == 0;
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "friendsOnlyLobbies",
     category: "Visibility",
-    type: "toggle",
+    type: "filter",
     name: "Friends Only",
     icon: "fas fa-user-lock",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return lobby.privacy == 2;
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   // Levels
   {
     id: "vanillaLevels",
     category: "Level",
-    type: "toggle",
+    type: "filter",
     name: "Vanilla",
     icon: "fas fa-map-location-dot",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return barcodes.find((x) => x.barcode == lobby.levelBarcode);
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   {
     id: "moddedLevels",
     category: "Level",
-    type: "toggle",
+    type: "filter",
     name: "Modded",
     icon: "fas fa-wrench",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return !barcodes.find((x) => x.barcode == lobby.levelBarcode);
     },
 
-    defaultValue: true,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   // Players
   {
@@ -658,17 +671,18 @@ export let settings = [
   {
     id: "fullLobbies",
     category: "Players",
-    type: "toggle",
+    type: "filter",
     icon: "fa-solid fa-users-viewfinder",
     name: "Full Lobbies",
 
+    filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    filterValue: false,
     lobbyValidator: (lobby) => {
       return lobby.playerCount == lobby.maxPlayers;
     },
 
-    defaultValue: false,
+    defaultValue: { include: false, exclude: false },
+    storeAsJSON: true,
   },
   // Filtering
   {
@@ -730,6 +744,7 @@ let types = [
       const wrapper = document.createElement("div");
       wrapper.classList.add("checkbox-wrapper");
       const input = document.createElement("input");
+      input.classList.add("checkbox");
       input.setAttribute("type", "checkbox");
       input.setAttribute("name", setting.name);
       input.setAttribute("id", getElemId(setting.id));
@@ -763,6 +778,76 @@ let types = [
         if (val == "true" || val == true) _val = true;
         else _val = false;
         input[0].checked = _val;
+      }
+    },
+  },
+  {
+    type: "filter",
+    callback: (setting, value) => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("checkbox-wrapper");
+      const include = document.createElement("input");
+      include.classList.add("checkbox");
+      include.setAttribute("type", "checkbox");
+      include.setAttribute("name", `Include ${setting.name}`);
+      include.setAttribute("id", getElemId(setting.id));
+      if (value.include) include.setAttribute("checked", true);
+
+      const exclude = document.createElement("input");
+      exclude.classList.add("exclude");
+      exclude.setAttribute("type", "checkbox");
+      exclude.setAttribute("name", `Exclude ${setting.name}`);
+      exclude.setAttribute("id", `${getElemId(setting.id)}_exclude`);
+      if (value.exclude) exclude.setAttribute("checked", true);
+      createToolTip(exclude, "Exclude");
+
+      let old = {
+        include: include.checked,
+        exclude: exclude.checked,
+      };
+      function onChanged() {
+        if (old.include && exclude.checked) include.checked = false;
+        else if (old.exclude && include.checked) exclude.checked = false;
+
+        const val = {
+          include: include.checked,
+          exclude: exclude.checked,
+        };
+        wrapper.dispatchEvent(
+          new CustomEvent("onsettingchanged", {
+            detail: { old: old, new: val },
+          }),
+        );
+        old = val;
+      }
+
+      include.addEventListener("change", onChanged);
+      exclude.addEventListener("change", onChanged);
+      const label = document.createElement("label");
+      label.setAttribute("for", getElemId(setting.id));
+      fillLabel(setting, label);
+
+      wrapper.appendChild(include);
+      if (setting.displayLabel != false) wrapper.appendChild(label);
+      wrapper.appendChild(exclude);
+      return wrapper;
+    },
+    setTitle: (elem, title) => setContent(elem.querySelector("label"), title),
+    setValue: (elem, val) => {
+      const include = elem?.querySelector(".checkbox");
+      if (include) {
+        let _val;
+        if (val && val.include) _val = true;
+        else _val = false;
+        include.checked = _val;
+      }
+
+      const exclude = elem?.querySelector(".exclude");
+      if (exclude) {
+        let _val;
+        if (val && val.exclude) _val = true;
+        else _val = false;
+        exclude.checked = _val;
       }
     },
   },
@@ -1014,6 +1099,19 @@ let settingsValues = [];
 let eventListeners = [];
 
 let friendsLobbies = [];
+
+function createTooltip(e, content, placement = "top", maxWidth = 350) {
+  if (e._tippy) e._tippy.setProps({ content: content });
+
+  e._tippy = tippy(e, {
+    content: content,
+    animation: "scale",
+    appendTo: "parent",
+    placement: placement,
+    maxWidth: maxWidth,
+    theme: "website",
+  });
+}
 
 function notice(
   div,
@@ -1442,10 +1540,46 @@ export function removeSetting(settingId) {
 
 export function filterWithSettings(lobbies) {
   const constValue = structuredClone(lobbies);
+
+  const includes = [];
+  for (const setting of settings) {
+    if (!setting || !setting.lobbyFilter || setting.type != "filter") continue;
+
+    if (
+      !setting.filterWords &&
+      !setting.filterLevels &&
+      !setting.lobbyValidator
+    )
+      continue;
+    let filter = false;
+
+    const val = getSettingValue(setting.id);
+    if (typeof setting.filterValue == "function")
+      filter = setting.filterValue(setting, val);
+    else filter = setting.filterValue == val;
+
+    if (val.include) includes.push(setting);
+    else if (val.exclude)
+      lobbies = lobbies.filter((i) => !isLobbyValid(setting, i));
+  }
+
+  if (includes && includes.length > 0)
+    lobbies = lobbies.filter((i) => {
+      for (const x of includes) {
+        if (!isLobbyValid(x, i)) return false;
+      }
+      return true;
+    });
+
   for (const setting of settings) {
     if (!setting || !setting.lobbyFilter) continue;
 
-    if (!setting.filterWords && !setting.lobbyValidator) continue;
+    if (
+      !setting.filterWords &&
+      !setting.filterLevels &&
+      !setting.lobbyValidator
+    )
+      continue;
     let filter = false;
 
     const val = getSettingValue(setting.id);

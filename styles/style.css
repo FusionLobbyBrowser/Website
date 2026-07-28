@@ -17,6 +17,9 @@ body {
     --flb-setting-input-hover-background-color: rgb(50, 50, 50);
     --flb-checkmark-color: white;
 
+    --flb-exclude-background-color: rgb(50, 50, 50);
+    --flb-exclude-background-hover-color: rgb(60, 60, 60);
+
     --flb-primary-background-color: rgb(30, 30, 30);
     --flb-primary-box-shadow-color: rgb(20, 20, 20);
 
@@ -71,6 +74,9 @@ body {
     --flb-setting-input-hover-background-color: rgb(230, 230, 230);
     --flb-checkmark-color: white;
 
+    --flb-exclude-background-color: rgb(230, 230, 230);
+    --flb-exclude-background-hover-color: rgb(220, 220, 220);
+
     --flb-primary-background-color: rgb(255, 255, 255);
     --flb-primary-box-shadow-color: rgb(235, 235, 235);
 
@@ -124,6 +130,9 @@ body {
   --flb-setting-input-hover-background-color: rgb(50, 50, 50);
   --flb-checkmark-color: white;
 
+  --flb-exclude-background-color: rgb(50, 50, 50);
+  --flb-exclude-background-hover-color: rgb(60, 60, 60);
+
   --flb-primary-background-color: rgb(30, 30, 30);
   --flb-primary-box-shadow-color: rgb(20, 20, 20);
 
@@ -175,6 +184,9 @@ body {
 
   --flb-setting-input-hover-background-color: rgb(230, 230, 230);
   --flb-checkmark-color: white;
+
+  --flb-exclude-background-color: rgb(230, 230, 230);
+  --flb-exclude-background-hover-color: rgb(220, 220, 220);
 
   --flb-primary-background-color: rgb(255, 255, 255);
   --flb-primary-box-shadow-color: rgb(235, 235, 235);
@@ -1777,7 +1789,7 @@ button:hover {
   margin-top: 0.25em;
 }
 
-.checkbox-wrapper input {
+.checkbox-wrapper .checkbox {
   position: relative;
   display: inline-block;
   -webkit-appearance: none;
@@ -1807,21 +1819,21 @@ label {
   transition: all 100ms ease-out;
 }
 
-.checkbox-wrapper input[type="checkbox"] {
+.checkbox-wrapper .input[type="checkbox"] {
   cursor: default;
 }
 
-.checkbox-wrapper input:hover {
+.checkbox-wrapper .checkbox:hover {
   background: var(--flb-setting-input-hover-background-color);
   -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
 
-.checkbox-wrapper input:checked {
+.checkbox-wrapper .checkbox:checked {
   background-color: var(--flb-primary-input-background-color);
 }
 
-.checkbox-wrapper input::after {
+.checkbox-wrapper .checkbox::after {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
   color: var(--flb-checkmark-color, var(--flb-paragraph-color));
@@ -1839,7 +1851,7 @@ label {
   --fa-style: 900;
 }
 
-.checkbox-wrapper input:checked::after {
+.checkbox-wrapper .checkbox:checked::after {
   opacity: 1;
 }
 
@@ -1847,8 +1859,61 @@ label {
   outline: 0;
 }
 
-.checkbox-wrapper input:checked:hover {
+.checkbox-wrapper .checkbox:checked:hover {
   background-color: var(--flb-primary-input-hover-background-color);
+}
+
+.checkbox-wrapper .exclude {
+  position: relative;
+  margin-left: auto;
+  margin-right: 15px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: var(--flb-exclude-background-color);
+  border-radius: 5px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 15px;
+  width: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.checkbox-wrapper .exclude:hover {
+  background-color: var(--flb-exclude-background-hover-color);
+}
+
+.checkbox-wrapper .exclude:checked:hover {
+  background-color: var(--flb-error-hover-color);
+}
+
+.checkbox-wrapper .exclude:checked {
+  background-color: var(--flb-error-color);
+}
+
+.checkbox-wrapper .exclude::after {
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--flb-secondary-background-color);
+  width: 100%;
+  display: block;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  font-family: "Font Awesome 7 Free";
+  font-size: 10px;
+  font-weight: 900;
+  content: "\f068";
+  --fa-style: 900;
+}
+
+.checkbox-wrapper .exclude:checked::after {
+  opacity: 1;
 }
 
 /* Range */

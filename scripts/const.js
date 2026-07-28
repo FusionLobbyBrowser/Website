@@ -366,7 +366,7 @@ export const blacklist = [
   "mass shoot", // typo
   "mass shot", // typo
   "cheese pizza", // havent seen any like that, but wouldnt be surprised if somebody tried to make a "funny joke" like that
-  "child porn", // okay i can understand why could people be like haha cheese pizza is cp abbreviated, but this is just beyond fucked up
+  "child porn", // okay i can sort of understand why could people be like haha cheese pizza is cp abbreviated, but this is just beyond fucked up
   { word: "cp", type: "whole-word" }, // abbrevation
   "sweetie fox", // porn star that people like to joke about for some reason
   { word: "scat", type: "whole-word" }, // word for "poop" used in pornography, apparently
@@ -377,7 +377,8 @@ export const blacklist = [
   "nga", // typo
   "niga", // typo
 
-  // copied from fusion profanity list
+  // i dont think the words below require explanation
+  // https://github.com/Lakatrazz/Fusion-Lists/blob/main/profanityList.json
   "fag",
   "faggot",
   "dildo",

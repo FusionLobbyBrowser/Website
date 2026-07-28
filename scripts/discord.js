@@ -85,12 +85,15 @@ function createServerElem(obj, code) {
   return server;
 }
 
-function createTooltip(elem, content) {
-  tippy(elem, {
+function createTooltip(e, content, placement = "top", maxWidth = 350) {
+  if (e._tippy) e._tippy.setProps({ content: content });
+
+  e._tippy = tippy(e, {
     content: content,
-    placement: "bottom",
-    appendTo: "parent",
     animation: "scale",
+    appendTo: "parent",
+    placement: placement,
+    maxWidth: maxWidth,
     theme: "website",
   });
 }
