@@ -411,7 +411,13 @@ export let settings = [
 
     lobbyFilter: true,
     filterValue: false,
-    filterWords: ["shooting", "shooter", "rp", "war", "roleplay"],
+    filterWords: [
+      "shooting",
+      "shooter",
+      { word: "rp", type: "whole-word" },
+      "war",
+      "roleplay",
+    ],
     filterLevels: RP_LEVELS,
 
     defaultValue: true,
@@ -439,7 +445,15 @@ export let settings = [
 
     lobbyFilter: true,
     filterValue: false,
-    filterWords: ["russian", "russia", "rus", "russ", "russi", "russkie", "ru"],
+    filterWords: [
+      "russian",
+      "russia",
+      "rus",
+      "russ",
+      "russi",
+      "russkie",
+      { word: "ru", type: "whole-word" },
+    ],
 
     defaultValue: true,
   },
@@ -671,14 +685,6 @@ export let settings = [
     type: "toggle",
     name: "Hide NSFW Lobbies",
     icon: "fa-solid fa-shield",
-    defaultValue: true,
-  },
-  {
-    id: "censorProfanities",
-    category: "Filtering",
-    type: "toggle",
-    name: "Censor Profanities",
-    icon: "fa-solid fa-hand-middle-finger",
     defaultValue: true,
   },
   // Steam Settings
@@ -1179,7 +1185,14 @@ export function containsWord(lobby, array) {
   const iName = Converter.removeRichText(lobby.lobbyName);
   for (const s of array) {
     if (s && s != "") {
-      const regex = new RegExp(RegExp.escape(s), "mi");
+      let match = s;
+      let regex = null;
+      if (!isString(s)) {
+        match = s.word;
+        if (s.type == "whole-word")
+          regex = new RegExp(`\\b${RegExp.escape(match)}\\b`, "mi");
+      }
+      if (regex == null) regex = new RegExp(RegExp.escape(match), "mi");
       if (regex.test(iName)) return true;
     }
   }
@@ -1465,14 +1478,16 @@ export function filterWithSettings(lobbies) {
     setting.currCount = curr;
 
     if (!setting.baseName) setting.baseName = setting.name;
-    if (
-      setting.setFilterName != false &&
-      getSettingValue("filterCount") == true
-    )
-      setSettingsTitle(
-        setting.id,
-        `${setting.baseName} [${total == curr ? total : `${curr}/${total}`}]`,
-      );
+    if (setting.setFilterName != false) {
+      const name = `${setting.baseName} [${total == curr ? total : `${curr}/${total}`}]`;
+      setting.name = name;
+      if (getSettingValue("filterCount") == true) {
+        setSettingsTitle(
+          setting.id,
+          `${setting.baseName} [${total == curr ? total : `${curr}/${total}`}]`,
+        );
+      }
+    }
   }
 
   return lobbies;

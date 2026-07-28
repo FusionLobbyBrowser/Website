@@ -52,7 +52,6 @@ let fullyLoaded = false;
 let lobbiesSignal;
 let infoSignal;
 
-let profanities = [];
 let thumbnailCache = new Map();
 
 const cacheExpireTime = 15 * 60;
@@ -1147,30 +1146,10 @@ function colorPermission(perm) {
 }
 
 function convert(text, container = "") {
-  const converted = DOMPurify.sanitize(converter.unity2html(censorWords(text)));
+  const converted = DOMPurify.sanitize(converter.unity2html(text));
   if (container && container != "" && Converter.hasRichText(text))
     return `<${container}>${converted}</${container}>`;
   else return converted;
-}
-function censorWords(text) {
-  if (!isToggleChecked("censorProfanities")) return text;
-
-  if (text == null || text == "") return text;
-
-  let mapped = [];
-  let plain = text.replace(/<.*?>/g, (match, offset) => {
-    mapped.push({ tag: match, offset: offset });
-    return "";
-  });
-  for (const s of profanities) {
-    let regex = new RegExp(s, "gmi");
-    plain = plain.replaceAll(regex, "*".repeat(s.length));
-  }
-  for (const m of mapped) {
-    plain =
-      plain.slice(0, m.offset) + m.tag + plain.slice(m.offset, plain.length);
-  }
-  return plain;
 }
 
 // DOES NOT sanitize!!!
@@ -1556,25 +1535,6 @@ async function updateFilters() {
   filterBadges();
 }
 
-async function loadProfanities() {
-  console.log(`Loading profanities from ${PROFANITY_LIST}`);
-  try {
-    const res = await fetch(PROFANITY_LIST);
-    if (res.ok) {
-      const json = await res.json();
-      console.log(
-        `Successfully loaded %c${json.words.length}%c %s`,
-        "color: #f00",
-        "color: inherit",
-        "profanities",
-      );
-      for (const word of json.words) profanities.push(word);
-    }
-  } catch (ex) {
-    console.error(ex);
-  }
-}
-
 function filterEvent(id, redo = false) {
   if (!id) return;
 
@@ -1674,7 +1634,6 @@ async function init() {
   filterEvent("censorNSFW", true);
   filterEvent("sort", true);
   filterEvent("sortOrder", true);
-  filterEvent("censorProfanities", true);
   filterEvent("hideNSFWLobbies", true);
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
@@ -1714,8 +1673,6 @@ async function init() {
     document.getElementById("hotak0CurseButton").classList.remove("hidden");
 
   updateTime();
-
-  loadProfanities();
 
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;

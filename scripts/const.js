@@ -355,9 +355,40 @@ export const blacklist = [
   "true crime", // same as above
   "abusive", // this is mostly in lobbies called stuff like "Abusive Dad RP", like brother you are not funny and that's just shitty
   "abussive", // just a typo of the above that i noticed
+  "abuse",
   "beat your wife", // really what the fuck? I've seen a lobby like that on the website before, i am NOT displaying shit like this
   "porn", // do i really need to expose people to weird shit? especially considering the community is full of kids its just best this is not displayed, even though i havent seen any like that so far
   "purryforn", // mostly related to a lobby called "RussianPurryForn /'\OwO/'\ 17+", like do you really find this funny? i just think it's weird, but hey maybe i'm the weird one here
   "ukraine vs russia", // ongoing conflict that for some reason people like to "roleplay" in fusion, which is honestly disrespectful as fuck to the people.
-  "ukr vs rus", // anothey way to call the above
+  "ukr vs rus", // anothey way to call the above,
+  "mass shooting", // what the fuck dude? like im surprised a lobby like that was made, its probably like 11 y/o's kids playing and thinking it's fun, but like it's fucked up
+  "mass shotting", // typo
+  "mass shoot", // typo
+  "mass shot", // typo
+  "cheese pizza", // havent seen any like that, but wouldnt be surprised if somebody tried to make a "funny joke" like that
+  "child porn", // okay i can understand why could people be like haha cheese pizza is cp abbreviated, but this is just beyond fucked up
+  { word: "cp", type: "whole-word" }, // abbrevation
+  "sweetie fox", // porn star that people like to joke about for some reason
+  { word: "scat", type: "whole-word" }, // word for "poop" used in pornography, apparently
+  "testicles", // brother what the fuck
+  "testies", // abbreviation / slang(?) for the word above
+  "nigger", // haha racism whatever
+  "nigga", // typo
+  "nga", // typo
+  "niga", // typo
+
+  // copied from fusion profanity list
+  "fag",
+  "faggot",
+  "dildo",
+  "sex",
+  "rape",
+  "raping",
+  "butt gex",
+  "futa",
+  "hitler",
+  "trannies",
+  "tranny",
+  { word: "cum", type: "whole-word" },
+  "ballsack",
 ];
