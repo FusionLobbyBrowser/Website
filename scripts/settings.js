@@ -1561,9 +1561,9 @@ export function filterWithSettings(lobbies) {
 
   if (includes && includes.length > 0)
     lobbies = lobbies.filter((i) => {
-      for (const x of includes) if (isLobbyValid(x, i)) return false;
+      for (const x of includes) if (isLobbyValid(x, i)) return true;
 
-      return true;
+      return false;
     });
 
   for (const setting of settings) {
