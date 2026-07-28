@@ -535,7 +535,7 @@ export let settings = [
         if (x.category != "Groups" || x.id == "otherLobbies") continue;
 
         if (!x.filterWords && !x.filterLevels && !x.lobbyValidator) continue;
-        if (isLobbyValid(x, lobby)) return false;
+        if (meetsConditions(x, lobby)) return false;
       }
       return true;
     },
@@ -1556,14 +1556,20 @@ export function filterWithSettings(lobbies) {
 
     if (val.include) includes.push(setting);
     else if (val.exclude)
-      lobbies = lobbies.filter((i) => !isLobbyValid(setting, i));
+      lobbies = lobbies.filter((i) => !meetsConditions(setting, i));
   }
 
   if (includes && includes.length > 0)
     lobbies = lobbies.filter((i) => {
-      for (const x of includes) if (isLobbyValid(x, i)) return true;
+      let _return = false;
+      for (const x of includes) {
+        if (meetsConditions(x, i)) {
+          _return = true;
+          break;
+        }
+      }
 
-      return false;
+      return _return;
     });
 
   for (const setting of settings) {
@@ -1582,7 +1588,7 @@ export function filterWithSettings(lobbies) {
       filter = setting.filterValue(setting, val);
     else filter = setting.filterValue == val;
 
-    if (filter) lobbies = lobbies.filter((i) => !isLobbyValid(setting, i));
+    if (filter) lobbies = lobbies.filter((i) => !meetsConditions(setting, i));
   }
 
   for (const setting of settings) {
@@ -1595,11 +1601,11 @@ export function filterWithSettings(lobbies) {
 
     if (setting.setFilterName != false) {
       constValue.forEach((element) => {
-        if (isLobbyValid(setting, element)) total++;
+        if (meetsConditions(setting, element)) total++;
       });
 
       lobbies.forEach((element) => {
-        if (isLobbyValid(setting, element)) curr++;
+        if (meetsConditions(setting, element)) curr++;
       });
     }
 
@@ -1623,23 +1629,22 @@ export function filterWithSettings(lobbies) {
 }
 
 // This is in reverse
-export function isLobbyValid(setting, i) {
+export function meetsConditions(setting, i) {
   if (isString(setting)) setting = getSetting(setting);
   if (!setting) return true;
-  let valid = true;
+  let valid = false;
 
-  if (setting.filterWords && containsWord(i, setting.filterWords))
-    valid = false;
+  if (setting.filterWords && containsWord(i, setting.filterWords)) valid = true;
   if (
     setting.lobbyValidator &&
     setting.lobbyValidator(i, getSettingValue(setting.id))
   )
-    valid = false;
+    valid = true;
 
   if (setting.filterLevels && setting.filterLevels.includes(i.levelBarcode))
-    valid = false;
+    valid = true;
 
-  return !valid;
+  return valid;
 }
 
 export function addEventListener(id, callback) {
