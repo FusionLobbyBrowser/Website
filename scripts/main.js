@@ -172,7 +172,7 @@ async function fetchAndCreateLobbies() {
                 addSetting({
                   id: `gamemode_${!gamemode || gamemode == "" ? "Lakatrazz.Sandbox" : gamemode}`,
                   category: "Gamemodes",
-                  type: "toggle",
+                  type: "filter",
                   name: val.gamemodeTitle
                     ? Converter.removeRichText(val.gamemodeTitle)
                     : "Sandbox",
@@ -184,7 +184,7 @@ async function fetchAndCreateLobbies() {
                     return lobby.gamemodeBarcode == gamemode;
                   },
 
-                  defaultValue: true,
+                  defaultValue: { include: false, exclude: false },
                 });
                 _gamemodes.push(gamemode);
               }
