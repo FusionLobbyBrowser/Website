@@ -1598,6 +1598,8 @@ export function filterWithSettings(lobbies) {
     let curr = 0;
 
     if (!setting.filterWords && !setting.lobbyValidator) continue;
+    if (setting.type == "filter" && getSettingValue(setting.id).include == true)
+      continue;
 
     if (setting.setFilterName != false) {
       constValue.forEach((element) => {
