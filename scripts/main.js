@@ -587,6 +587,7 @@ async function createLobby(lobby, signal, hidden) {
     icon.classList.add("fa-epicgames");
   }
   createToolTip(icon, `ID: ${lobby.lobbyID}`);
+
   const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
 
   function verifyNSFW(x) {
@@ -1170,7 +1171,6 @@ function setContent(elem, content) {
       return;
     }
   }
-
   elem.innerHTML = content;
 }
 

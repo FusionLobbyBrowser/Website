@@ -1398,6 +1398,7 @@ a > .textIcon {
   font-size: inherit;
   font-family: inherit;
   font-weight: inherit;
+  white-space: nowrap;
 }
 
 .info {
