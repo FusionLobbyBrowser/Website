@@ -814,7 +814,7 @@ async function displayInfo(lobby, signal) {
       header.getElementsByClassName("level")[0],
       lobby.levelModID,
       lobby.levelTitle,
-      _thumbnail.nsfw ?? false,
+      _thumbnail?.nsfw ?? false,
     );
 
     const gamemode = header.getElementsByClassName("gamemode")[0];
