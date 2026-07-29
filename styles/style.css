@@ -923,6 +923,8 @@ a > .textIcon {
   margin-bottom: 0.25em;
   font-family: "Ubuntu", sans-serif;
   padding-left: 0.3em;
+  margin-left: 0;
+  font-size: 1.75rem;
 }
 
 /* TODO: make padding consistent with settingsTitle */
@@ -1382,7 +1384,7 @@ a > .textIcon {
   display: none;
 }
 
-.collapsable > button > h2 {
+.collapsable > button > h3 {
   margin-bottom: 0em;
   margin-top: 0em;
 }

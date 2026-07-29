@@ -1331,7 +1331,7 @@ function createCategory(category) {
     button.classList.toggle("collapsed");
     category.expanded = !category.expanded;
   });
-  const title = document.createElement("h2");
+  const title = document.createElement("h3");
   title.innerHTML = getCategoryText(category);
   const div = document.createElement("div");
 
