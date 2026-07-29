@@ -392,6 +392,7 @@ export const blacklist = [
   "niga", // typo
   { word: "cum", type: "whole-word" },
   "ballsack",
+  "vagina",
 
   // i dont think the words below require explanation
   // https://github.com/Lakatrazz/Fusion-Lists/blob/main/profanityList.json
