@@ -1359,13 +1359,6 @@ a > .textIcon {
   margin-bottom: 0;
 }
 
-.searchOptions-clickable h2 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 .collapsable > button.collapsed > :first-child:after {
   font-family: "Font Awesome 7 Free";
   font-weight: 900;
@@ -1397,6 +1390,14 @@ a > .textIcon {
   font-size: 0.688rem;
   margin-top: 0.25em;
   margin-bottom: 0;
+}
+
+.playerTooltip {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
 .info {

@@ -555,8 +555,8 @@ async function createLobby(lobby, signal, hidden) {
   lobby.playerList.players.forEach((y) => {
     if (friendIDs.some((x) => String(y.platformID) == String(x))) {
       _friends.push(String(y.platformID));
-      const n = getName(y, "div").name.trim();
-      friendsTooltip += `${n}${n.startsWith("<div>") ? "" : "<br />"}`;
+      const n = getName(y).name.trim();
+      friendsTooltip += `<p class="playerTooltip">${n}</p>"}`;
     }
   });
 
@@ -668,8 +668,8 @@ async function createLobby(lobby, signal, hidden) {
     return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
   });
   for (const p of players) {
-    const n = getName(p, "div").name.trim();
-    tooltip += `${n}${n.startsWith("<div>") ? "" : "<br />"}`;
+    const n = getName(p).name.trim();
+    tooltip += `<p class="playerTooltip">${n}</p>`;
   }
 
   createToolTip(playerCount, tooltip, "bottom", "100vw");
@@ -724,7 +724,7 @@ function createToolTip(e, content, placement = "top", maxWidth = 350) {
   });
 }
 
-function getName(player, container = "") {
+function getName(player) {
   let hasNickname = player.nickname != "" && player.nickname;
   let name = hasNickname ? player.nickname : player.username;
   if (!player.nickname && !player.username) name = "N/A";
@@ -736,7 +736,7 @@ function getName(player, container = "") {
     hasNickname = false;
   if (name.includes("\n")) name = name.split("\n")[0];
   return {
-    name: convert(name, container),
+    name: convert(name),
     hasNickName: hasNickname,
   };
 }
@@ -1156,11 +1156,8 @@ function colorPermission(perm) {
   };
 }
 
-function convert(text, container = "") {
-  const converted = DOMPurify.sanitize(converter.unity2html(text));
-  if (container && container != "" && Converter.hasRichText(text))
-    return `<${container}>${converted}</${container}>`;
-  else return converted;
+function convert(text) {
+  return DOMPurify.sanitize(converter.unity2html(text));
 }
 
 // DOES NOT sanitize!!!
