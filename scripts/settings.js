@@ -417,6 +417,8 @@ export let settings = [
       { word: "rp", type: "whole-word" },
       "war",
       "roleplay",
+      "cops",
+      "robbers",
     ],
     filterLevels: RP_LEVELS,
 
