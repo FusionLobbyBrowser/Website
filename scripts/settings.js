@@ -510,6 +510,8 @@ export let settings = [
     type: "filter",
     name: "Furry",
     icon: "fa-solid fa-paw",
+    tooltip:
+      "This shows lobbies that HAVE players in them with furry avatars, this means that if for example somebody joins a hood rp lobby with a furry avatar, it will be considered in this filter.",
 
     filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
@@ -1102,7 +1104,7 @@ let eventListeners = [];
 
 let friendsLobbies = [];
 
-function createTooltip(e, content, placement = "top", maxWidth = 350) {
+function createToolTip(e, content, placement = "top", maxWidth = 350) {
   if (e._tippy) e._tippy.setProps({ content: content });
 
   e._tippy = tippy(e, {
@@ -1137,20 +1139,6 @@ function notice(
   _description.textContent = description;
   notice.style.color = `var(${colorVariable})`;
   div.appendChild(notice);
-}
-
-function createToolTip(e, content, placement = "top") {
-  if (e._tippy) e._tippy.setProps({ content: content });
-
-  e._tippy = tippy(e, {
-    content: content,
-    animation: "scale",
-    appendTo: "parent",
-    interactive: true,
-    placement: placement,
-    allowHTML: true,
-    theme: "website",
-  });
 }
 
 function joinInfo(btn) {
@@ -1267,15 +1255,20 @@ export function getIconElem(icon) {
 }
 
 function fillLabel(setting, elem) {
-  if (setting.icon) {
-    elem.appendChild(getIconElem(setting.icon));
+  if (setting.icon) elem.appendChild(getIconElem(setting.icon));
 
-    const content = document.createElement("span");
-    content.classList.add("elemContent");
-    content.textContent = setting.name;
-    elem.appendChild(content);
-  } else {
-    elem.textContent = setting.name;
+  const content = document.createElement("span");
+  content.classList.add("elemContent");
+  content.textContent = setting.name;
+  elem.appendChild(content);
+
+  if (setting.tooltip) {
+    const tooltipIcon = document.createElement("i");
+    tooltipIcon.classList.add("fas");
+    tooltipIcon.classList.add("fa-circle-info");
+    tooltipIcon.classList.add("tooltipIcon");
+    createToolTip(tooltipIcon, setting.tooltip);
+    elem.appendChild(tooltipIcon);
   }
 }
 

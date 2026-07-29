@@ -1150,6 +1150,10 @@ a > .textIcon {
   border-right-color: var(--flb-primary-box-shadow-color);
 }
 
+.tooltipIcon {
+  margin-left: 0.25em;
+}
+
 @-webkit-keyframes fadein {
   from {
     opacity: 0;
