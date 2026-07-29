@@ -511,7 +511,7 @@ export let settings = [
     name: "Furry",
     icon: "fa-solid fa-paw",
     tooltip:
-      "This shows lobbies that HAVE players in them with furry avatars, this means that if for example somebody joins a hood rp lobby with a furry avatar, it will be considered in this filter.",
+      'This shows lobbies that HAVE players in them with furry avatars from <a class="modLink" href="https://mod.io/g/bonelab/c/every-furry-mod" target="_blank" rel="noopener noreferrer">Bonesi\'s collection</a> this means that if for example somebody joins a hood rp lobby with a furry avatar, it will be considered in this filter.',
 
     filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
@@ -1111,7 +1111,9 @@ function createToolTip(e, content, placement = "top", maxWidth = 350) {
     content: content,
     animation: "scale",
     appendTo: "parent",
+    interactive: true,
     placement: placement,
+    allowHTML: true,
     maxWidth: maxWidth,
     theme: "website",
   });
