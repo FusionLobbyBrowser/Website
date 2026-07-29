@@ -796,7 +796,7 @@ async function displayInfo(lobby, signal) {
       lobby.levelBarcode,
       false,
     );
-    thumb.then(verifyNSFW);
+    thumbnail.then(verifyNSFW);
 
     const lobbyInfo = document.getElementById("info");
     lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
