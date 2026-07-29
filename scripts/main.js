@@ -259,6 +259,17 @@ function filterBadges() {
         settingContent.textContent = text;
         content.appendChild(settingIcon);
         content.appendChild(settingContent);
+        if (x.type == "filter") {
+          const settingType = document.createElement("i");
+          settingType.classList.add("fas");
+          if (val && val.include == true) {
+            settingType.classList.add("fa-check");
+            content.appendChild(settingType);
+          } else if (val && val.exclude == true) {
+            settingType.classList.add("fa-xmark");
+            content.appendChild(settingType);
+          }
+        }
       }
       badge.appendChild(content);
       list.appendChild(badge);
@@ -1607,6 +1618,7 @@ async function init() {
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   settingsInit();
+  createGamemodes();
   addEventListener("theme", adjustTheme);
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
@@ -1678,6 +1690,26 @@ async function init() {
   fullyLoaded = true;
 
   fetchAndCreateLobbies();
+}
+
+function createGamemodes() {
+  for (const g of gamemodes) {
+    addSetting({
+      id: `gamemode_${!g.barcode || g.barcode == "" ? "Lakatrazz.Sandbox" : g.barcode}`,
+      category: "Gamemodes",
+      type: "filter",
+      name: g.title ? Converter.removeRichText(g.title) : "Sandbox",
+      icon: g && g.icon ? g.icon : "fas fa-puzzle-piece",
+
+      lobbyFilter: true,
+      filterValue: false,
+      lobbyValidator: (lobby) => {
+        return lobby.gamemodeBarcode == g.barcode;
+      },
+
+      defaultValue: { include: false, exclude: false },
+    });
+  }
 }
 
 function activateHoodRpMode() {

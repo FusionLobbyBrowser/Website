@@ -234,54 +234,66 @@ export const statuses = [
 
 export const gamemodes = [
   {
+    title: "Sandbox",
     barcode: "", // Sandbox does not have a barcode
     icon: "img:./images/gamemodes/Sandbox.png",
   },
   {
+    title: "Deathmatch",
     barcode: "Lakatrazz.Deathmatch",
     icon: "img:./images/gamemodes/Deathmatch.png",
   },
   {
+    title: "Team Deathmatch",
     barcode: "Lakatrazz.Team Deathmatch",
     icon: "img:./images/gamemodes/TeamDeathmatch.png",
   },
   {
+    title: "Smash Bones",
     barcode: "Lakatrazz.Smash Bones",
     icon: "img:./images/gamemodes/SmashBones.png",
   },
   {
+    title: "Juggernaut",
     barcode: "Lakatrazz.Juggernaut",
     icon: "img:./images/gamemodes/Juggernaut.png",
   },
   {
+    title: "Hide & Seek",
     barcode: "Lakatrazz.Hide And Seek",
     icon: "img:./images/gamemodes/HideAndSeek.png",
   },
   {
+    title: "Entangled",
     barcode: "Lakatrazz.Entangled",
     icon: "img:./images/gamemodes/Entangled.png",
   },
   {
+    title: "Avatar Infection",
     barcode: "HAHOOS.Avatar Infection",
     icon: "img:./images/gamemodes/AvatarInfection.png",
     link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
   },
   {
+    title: "Bone Strike",
     barcode: "Mash.Bone Strike",
     icon: "img:./images/gamemodes/BoneStrike.png",
     link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
   },
   {
+    title: "Trouble In Ford Town",
     barcode: "JonLandonMods.TroubleInFordTown",
     icon: "fa-brands fa-redhat",
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/TroubleInFordTown",
   },
   {
+    title: "Ford Royale",
     barcode: "JonLandonMods.Ford Royale",
     icon: "fa-solid fa-umbrella",
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/FordRoyale/",
   },
   {
+    title: "DayZ Survival",
     barcode: "Codex.DayZFusionSurvival",
     icon: "fa-solid fa-suitcase-medical",
     link: "https://thunderstore.io/c/bonelab/p/ChappieStudios/DayZFusionSurvival/",
@@ -377,6 +389,8 @@ export const blacklist = [
   "nigga", // typo
   "nga", // typo
   "niga", // typo
+  { word: "cum", type: "whole-word" },
+  "ballsack",
 
   // i dont think the words below require explanation
   // https://github.com/Lakatrazz/Fusion-Lists/blob/main/profanityList.json
@@ -391,6 +405,4 @@ export const blacklist = [
   "hitler",
   "trannies",
   "tranny",
-  { word: "cum", type: "whole-word" },
-  "ballsack",
 ];
