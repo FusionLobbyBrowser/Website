@@ -60,6 +60,12 @@ let showingInfo = false;
 
 let firstFetch = false;
 
+let oldSize = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+window.addEventListener("resize", onResize);
+
 const converter = new Converter();
 
 let uptimeContainer;
@@ -1700,6 +1706,17 @@ async function init() {
   fullyLoaded = true;
 
   fetchAndCreateLobbies();
+}
+
+function onResize() {
+  if (oldSize.width < 850 && window.innerWidth >= 850) {
+    document.getElementById("popupBackground").classList.add("hidden");
+    document.getElementById("settings").classList.remove("open");
+  }
+  oldSize = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
 }
 
 function createGamemodes() {
