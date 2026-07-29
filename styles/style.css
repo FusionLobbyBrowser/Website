@@ -1377,7 +1377,8 @@ a > .textIcon {
   display: none;
 }
 
-.collapsable > button > h3 {
+.collapsable > button > h3,
+.collapsable > button > h2 {
   margin-bottom: 0em;
   margin-top: 0em;
 }
