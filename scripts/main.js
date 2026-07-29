@@ -777,13 +777,26 @@ async function displayInfo(lobby, signal) {
     const left = content.getElementsByClassName("left-content")[0];
     const thumb = left.getElementsByClassName("thumbnail")[0];
     const description = right.getElementsByClassName("lobbyDescription")[0];
-    const thumbnail = await setThumbnail(
+
+    let _thumbnail;
+    function verifyNSFW(x) {
+      _thumbnail = x;
+      censorModTitle(
+        header.getElementsByClassName("level")[0],
+        lobby.levelModID,
+        lobby.levelTitle,
+        x.nsfw,
+      );
+    }
+
+    const thumbnail = setThumbnail(
       thumb,
       lobby.levelModID,
       lobby.levelTitle,
       lobby.levelBarcode,
       false,
     );
+    thumb.then(verifyNSFW);
 
     const lobbyInfo = document.getElementById("info");
     lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
@@ -801,7 +814,7 @@ async function displayInfo(lobby, signal) {
       header.getElementsByClassName("level")[0],
       lobby.levelModID,
       lobby.levelTitle,
-      thumbnail.nsfw,
+      _thumbnail.nsfw ?? false,
     );
 
     const gamemode = header.getElementsByClassName("gamemode")[0];

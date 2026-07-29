@@ -1020,6 +1020,17 @@ a > .textIcon {
   width: 100%;
 }
 
+.thumbnailContainer:has(.viewThumbnail) {
+  position: relative;
+  margin-bottom: 0.5em;
+  aspect-ratio: 16/9;
+  width: 95%;
+}
+
+.thumbnailContainer:has(.viewThumbnail) > .thumbnailSpinner {
+  font-size: 50%;
+}
+
 .thumbnailContainer > img {
   text-indent: 100%;
   white-space: nowrap;
@@ -2150,9 +2161,8 @@ input[type="range"]::-webkit-slider-thumb {
 
 .viewThumbnail {
   border-radius: 5%;
-  margin-bottom: 0.5em;
   aspect-ratio: 16/9;
-  width: 95%;
+  width: 100%;
 }
 
 .viewContent {
