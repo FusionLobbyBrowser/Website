@@ -1,3 +1,60 @@
+/* Fonts */
+
+@font-face {
+  font-display: swap;
+  font-family: "Ubuntu";
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-300.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ubuntu";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-regular.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ubuntu";
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-italic.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ubuntu";
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-500.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Ubuntu";
+  font-style: italic;
+  font-weight: 500;
+  src: url("../fonts/ubuntu-v21-cyrillic_cyrillic-ext_greek_greek-ext_latin_latin-ext-500italic.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/outfit-v15-latin-regular.woff2") format("woff2");
+}
+
+/* End of Fonts */
+
 body {
   height: 100%;
   background-color: var(--flb-primary-background-color);
@@ -16,6 +73,9 @@ body {
 
     --flb-setting-input-hover-background-color: rgb(50, 50, 50);
     --flb-checkmark-color: white;
+
+    --flb-exclude-background-color: rgb(50, 50, 50);
+    --flb-exclude-background-hover-color: rgb(60, 60, 60);
 
     --flb-primary-background-color: rgb(30, 30, 30);
     --flb-primary-box-shadow-color: rgb(20, 20, 20);
@@ -39,6 +99,7 @@ body {
     --flb-paragraph-color: white;
     --flb-icon-filter: brightness(0) invert(1);
     --flb-error-color: #f4320b;
+    --flb-error-hover-color: #cc2c0c;
     --flb-success-color: chartreuse;
     --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
     --flb-support-color: #f78d97;
@@ -46,6 +107,14 @@ body {
     --flb-link-color: #5eb3ff;
     --flb-link-hover-color: #8fcdff;
     --flb-invisible-link-hover-color: #b4b6b8;
+
+    --flb-status0-color: var(--flb-gray-color);
+    --flb-status1-color: cyan;
+    --flb-status2-color: red;
+    --flb-status3-color: orange;
+    --flb-status4-color: cyan;
+    --flb-status5-color: var(--flb-gray-color);
+    --flb-status6-color: lime;
   }
 }
 
@@ -61,6 +130,9 @@ body {
 
     --flb-setting-input-hover-background-color: rgb(230, 230, 230);
     --flb-checkmark-color: white;
+
+    --flb-exclude-background-color: rgb(230, 230, 230);
+    --flb-exclude-background-hover-color: rgb(220, 220, 220);
 
     --flb-primary-background-color: rgb(255, 255, 255);
     --flb-primary-box-shadow-color: rgb(235, 235, 235);
@@ -83,14 +155,23 @@ body {
     --flb-heading-color: black;
     --flb-paragraph-color: black;
     --flb-icon-filter: brightness(0);
-    --flb-error-color: #f4320b;
-    --flb-success-color: chartreuse;
-    --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
-    --flb-support-color: #f78d97;
-    --flb-support-hover-color: #f7b5bb;
-    --flb-link-color: #3fa5ff;
-    --flb-link-hover-color: #77c2ff;
+    --flb-error-color: #b00810;
+    --flb-error-hover-color: #8c080e;
+    --flb-success-color: #175e17;
+    --flb-gray-color: #595959; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+    --flb-support-color: #b00810;
+    --flb-support-hover-color: #8c080e;
+    --flb-link-color: #00529e;
+    --flb-link-hover-color: #003970;
     --flb-invisible-link-hover-color: #c5c5c5;
+
+    --flb-status0-color: var(--flb-gray-color);
+    --flb-status1-color: #0054a8;
+    --flb-status2-color: #b00810;
+    --flb-status3-color: #0054a8;
+    --flb-status4-color: #0054a8;
+    --flb-status5-color: var(--flb-gray-color);
+    --flb-status6-color: #175e17;
   }
 }
 
@@ -105,6 +186,9 @@ body {
 
   --flb-setting-input-hover-background-color: rgb(50, 50, 50);
   --flb-checkmark-color: white;
+
+  --flb-exclude-background-color: rgb(50, 50, 50);
+  --flb-exclude-background-hover-color: rgb(60, 60, 60);
 
   --flb-primary-background-color: rgb(30, 30, 30);
   --flb-primary-box-shadow-color: rgb(20, 20, 20);
@@ -128,6 +212,7 @@ body {
   --flb-paragraph-color: white;
   --flb-icon-filter: brightness(0) invert(1);
   --flb-error-color: #f4320b;
+  --flb-error-hover-color: #cc2c0c;
   --flb-success-color: chartreuse;
   --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
   --flb-support-color: #f78d97;
@@ -135,6 +220,14 @@ body {
   --flb-link-color: #5eb3ff;
   --flb-link-hover-color: #8fcdff;
   --flb-invisible-link-hover-color: #b4b6b8;
+
+  --flb-status0-color: var(--flb-gray-color);
+  --flb-status1-color: cyan;
+  --flb-status2-color: red;
+  --flb-status3-color: orange;
+  --flb-status4-color: cyan;
+  --flb-status5-color: var(--flb-gray-color);
+  --flb-status6-color: lime;
 }
 
 :root[theme="light"] {
@@ -148,6 +241,9 @@ body {
 
   --flb-setting-input-hover-background-color: rgb(230, 230, 230);
   --flb-checkmark-color: white;
+
+  --flb-exclude-background-color: rgb(230, 230, 230);
+  --flb-exclude-background-hover-color: rgb(220, 220, 220);
 
   --flb-primary-background-color: rgb(255, 255, 255);
   --flb-primary-box-shadow-color: rgb(235, 235, 235);
@@ -170,14 +266,23 @@ body {
   --flb-heading-color: black;
   --flb-paragraph-color: black;
   --flb-icon-filter: brightness(0);
-  --flb-error-color: #f4320b;
-  --flb-success-color: chartreuse;
-  --flb-gray-color: gray; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
-  --flb-support-color: #f78d97;
-  --flb-support-hover-color: #f7b5bb;
-  --flb-link-color: #3fa5ff;
-  --flb-link-hover-color: #77c2ff;
+  --flb-error-color: #b00810;
+  --flb-error-hover-color: #8c080e;
+  --flb-success-color: #175e17;
+  --flb-gray-color: #595959; /* If somehow you set the colors to some weird ass thing that grey is barely readable */
+  --flb-support-color: #b00810;
+  --flb-support-hover-color: #8c080e;
+  --flb-link-color: #00529e;
+  --flb-link-hover-color: #003970;
   --flb-invisible-link-hover-color: #c5c5c5;
+
+  --flb-status0-color: var(--flb-gray-color);
+  --flb-status1-color: #0054a8;
+  --flb-status2-color: #b00810;
+  --flb-status3-color: #0054a8;
+  --flb-status4-color: #0054a8;
+  --flb-status5-color: var(--flb-gray-color);
+  --flb-status6-color: #175e17;
 }
 
 .header-moreInfoOpened {
@@ -345,6 +450,16 @@ ul {
   text-align: center;
 }
 
+div:has(> .notice),
+#lobbies:has(> .notice) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 #lobbies {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -361,27 +476,19 @@ ul {
   gap: 1em;
 }
 
-#lobbies:has(.lobbyNotice) {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.lobbyNotice {
+.notice {
   text-align: center;
   width: 100%;
+  text-wrap: wrap;
 }
 @media (min-width: 1200px) {
-  #lobbies:has(.lobbyNotice) {
+  #lobbies:has(.notice) {
     -ms-flex: 0 0 calc(100% - (22em * 2) - 1em);
     -webkit-box-flex: 0;
     flex: 0 0 calc(100% - (22em * 2) - 1em); /* Safari */
   }
 
-  .lobbyNotice {
+  #lobbies > .notice {
     width: 65%;
   }
 }
@@ -420,6 +527,11 @@ ul {
 #refreshButton {
   margin-top: 0.75rem;
   min-width: 7em;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
 }
 
 #notFound {
@@ -510,7 +622,8 @@ ul {
   font-size: 0.8rem;
 }
 
-.gamemodeIcon:before {
+.gamemodeIcon:before,
+.textIconElem:before {
   content: "\00a0";
 }
 
@@ -559,6 +672,11 @@ a > .textIcon {
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-flow: wrap;
+  flex-flow: wrap;
   gap: 1em;
 }
 
@@ -862,6 +980,8 @@ a > .textIcon {
   margin-bottom: 0.25em;
   font-family: "Ubuntu", sans-serif;
   padding-left: 0.3em;
+  margin-left: 0;
+  font-size: 1.75rem;
 }
 
 /* TODO: make padding consistent with settingsTitle */
@@ -890,6 +1010,104 @@ a > .textIcon {
   transition: 0.75s;
 }
 
+.lobby[hasFriend="true"] {
+  border: 2px solid var(--flb-status6-color);
+}
+
+.thumbnailContainer {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
+.thumbnailContainer:has(.viewThumbnail) {
+  position: relative;
+  margin-bottom: 0.5em;
+  aspect-ratio: 16/9;
+  width: 95%;
+}
+
+.thumbnailContainer:has(.viewThumbnail) > .thumbnailSpinner {
+  font-size: 50%;
+}
+
+.thumbnailContainer > img {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.thumbnailSpinner {
+  display: block;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+  -webkit-animation-name: fa-spin-centered;
+
+  animation-name: fa-spin-centered;
+  -webkit-animation-delay: var(--fa-animation-delay, 0s);
+  animation-delay: var(--fa-animation-delay, 0s);
+  -webkit-animation-direction: var(--fa-animation-direction, normal);
+  animation-direction: var(--fa-animation-direction, normal);
+  -webkit-animation-duration: var(--fa-animation-duration, 2s);
+  animation-duration: var(--fa-animation-duration, 2s);
+  -webkit-animation-iteration-count: var(
+    --fa-animation-iteration-count,
+    infinite
+  );
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  -webkit-animation-timing-function: var(--fa-animation-timing, linear);
+  animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumbnailSpinner {
+    -webkit-animation: none !important;
+    animation: none !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
+}
+
+@-webkit-keyframes fa-spin-centered {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+    -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    -moz-transform: translate(-50%, -50%) rotate(0deg);
+    -ms-transform: translate(-50%, -50%) rotate(0deg);
+    -o-transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    -moz-transform: translate(-50%, -50%) rotate(360deg);
+    -ms-transform: translate(-50%, -50%) rotate(360deg);
+    -o-transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes fa-spin-centered {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+    -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    -moz-transform: translate(-50%, -50%) rotate(0deg);
+    -ms-transform: translate(-50%, -50%) rotate(0deg);
+    -o-transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+    -webkit-transform: translate(-50%, -50%) rotate(360deg);
+    -moz-transform: translate(-50%, -50%) rotate(360deg);
+    -ms-transform: translate(-50%, -50%) rotate(360deg);
+    -o-transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .tippy-box[data-theme~="website"] {
   background-color: var(--flb-primary-background-color);
 }
@@ -909,6 +1127,31 @@ a > .textIcon {
 .tippy-box[data-theme~="website"][data-placement^="right"]
   > .tippy-arrow::before {
   border-right-color: var(--flb-primary-background-color);
+}
+
+.tippy-box[data-theme~="website-background"] {
+  background-color: var(--flb-primary-box-shadow-color);
+}
+
+.tippy-box[data-theme~="website-background"][data-placement^="top"]
+  > .tippy-arrow::before {
+  border-top-color: var(--flb-primary-box-shadow-color);
+}
+.tippy-box[data-theme~="website-background"][data-placement^="bottom"]
+  > .tippy-arrow::before {
+  border-bottom-color: var(--flb-primary-box-shadow-color);
+}
+.tippy-box[data-theme~="website-background"][data-placement^="left"]
+  > .tippy-arrow::before {
+  border-left-color: var(--flb-primary-box-shadow-color);
+}
+.tippy-box[data-theme~="website-background"][data-placement^="right"]
+  > .tippy-arrow::before {
+  border-right-color: var(--flb-primary-box-shadow-color);
+}
+
+.tooltipIcon {
+  margin-left: 0.25em;
 }
 
 @-webkit-keyframes fadein {
@@ -978,7 +1221,8 @@ a > .textIcon {
 #playerToCopy,
 #discordToCopy,
 #playerViewToCopy,
-#lobbyNoticeToCopy,
+#noticeToCopy,
+#friendToCopy,
 .hidden {
   display: none;
   visibility: hidden;
@@ -1218,13 +1462,6 @@ a > .textIcon {
   margin-bottom: 0;
 }
 
-.searchOptions-clickable h2 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
 .collapsable > button.collapsed > :first-child:after {
   font-family: "Font Awesome 7 Free";
   font-weight: 900;
@@ -1243,6 +1480,7 @@ a > .textIcon {
   display: none;
 }
 
+.collapsable > button > h3,
 .collapsable > button > h2 {
   margin-bottom: 0em;
   margin-top: 0em;
@@ -1258,17 +1496,38 @@ a > .textIcon {
   margin-bottom: 0;
 }
 
+.playerTooltip {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  white-space: nowrap;
+}
+
 .info {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
 }
 
-.lobbyPlayerCount {
+.rightTopCorner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  gap: 0.35em;
   position: absolute;
   text-align: center;
   top: 2%;
   right: 3.5%;
+  margin: 0;
+}
+
+.rightTopCorner > p {
   margin-top: 0;
   width: auto;
   padding: 0.3em 0.3em 0.3em 0.3em;
@@ -1279,6 +1538,10 @@ a > .textIcon {
     transparent 30%
   );
   border-radius: 5px;
+}
+
+.lime {
+  color: lime;
 }
 
 .platformIcon {
@@ -1439,8 +1702,14 @@ button:hover {
   (
     (
       (
-        (-webkit-appearance: base-select) or (-moz-appearance: base-select) or
-          (appearance: base-select)
+        (
+          (
+            (
+              (-webkit-appearance: base-select) or
+                (-moz-appearance: base-select) or (appearance: base-select)
+            )
+          )
+        )
       )
     )
   )
@@ -1630,7 +1899,7 @@ button:hover {
   margin-top: 0.25em;
 }
 
-.checkbox-wrapper input {
+.checkbox-wrapper .checkbox {
   position: relative;
   display: inline-block;
   -webkit-appearance: none;
@@ -1660,21 +1929,21 @@ label {
   transition: all 100ms ease-out;
 }
 
-.checkbox-wrapper input[type="checkbox"] {
+.checkbox-wrapper .input[type="checkbox"] {
   cursor: default;
 }
 
-.checkbox-wrapper input:hover {
+.checkbox-wrapper .checkbox:hover {
   background: var(--flb-setting-input-hover-background-color);
   -webkit-transition-duration: 0s;
   transition-duration: 0s;
 }
 
-.checkbox-wrapper input:checked {
+.checkbox-wrapper .checkbox:checked {
   background-color: var(--flb-primary-input-background-color);
 }
 
-.checkbox-wrapper input::after {
+.checkbox-wrapper .checkbox::after {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
   color: var(--flb-checkmark-color, var(--flb-paragraph-color));
@@ -1692,7 +1961,7 @@ label {
   --fa-style: 900;
 }
 
-.checkbox-wrapper input:checked::after {
+.checkbox-wrapper .checkbox:checked::after {
   opacity: 1;
 }
 
@@ -1700,8 +1969,61 @@ label {
   outline: 0;
 }
 
-.checkbox-wrapper input:checked:hover {
+.checkbox-wrapper .checkbox:checked:hover {
   background-color: var(--flb-primary-input-hover-background-color);
+}
+
+.checkbox-wrapper .exclude {
+  position: relative;
+  margin-left: auto;
+  margin-right: 15px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: var(--flb-exclude-background-color);
+  border-radius: 5px;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  height: 15px;
+  width: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.checkbox-wrapper .exclude:hover {
+  background-color: var(--flb-exclude-background-hover-color);
+}
+
+.checkbox-wrapper .exclude:checked:hover {
+  background-color: var(--flb-error-hover-color);
+}
+
+.checkbox-wrapper .exclude:checked {
+  background-color: var(--flb-error-color);
+}
+
+.checkbox-wrapper .exclude::after {
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--flb-secondary-background-color);
+  width: 100%;
+  display: block;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  font-family: "Font Awesome 7 Free";
+  font-size: 10px;
+  font-weight: 900;
+  content: "\f068";
+  --fa-style: 900;
+}
+
+.checkbox-wrapper .exclude:checked::after {
+  opacity: 1;
 }
 
 /* Range */
@@ -1775,6 +2097,19 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* Steam Profile */
 
+.logout {
+  color: var(--flb-error-color);
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
+}
+
+.logout:hover {
+  color: var(--flb-error-hover-color);
+}
+
 .steamProfile {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1792,50 +2127,79 @@ input[type="range"]::-webkit-slider-thumb {
 .steamAvatar {
   aspect-ratio: 1/1;
   border-radius: 50%;
-  height: auto;
   height: 3.5em;
+}
+
+.steamSmall {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  height: 1.75rem;
+}
+
+.steamAccount {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: auto minmax(0, 1fr) minmax(0, auto);
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, auto); /* avatar | text */
+}
+
+.steamAccount > *:not(.hidden) {
+  margin-right: 0.25em !important;
+}
+
+.steamAccount > *:not(.hidden):last-child {
+  margin-right: 0em !important;
+}
+
+.steamAccount.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.steamName {
+  margin: 0 !important;
+  padding: 0;
 }
 
 /* Offline */
 .status0 {
-  background-color: gray;
+  background-color: var(--flb-status0-color);
 }
 
 /* Online */
 .status1 {
-  background-color: greenyellow;
+  background-color: var(--flb-status1-color);
 }
 
 /* Busy */
 .status2 {
-  background-color: red;
+  background-color: var(--flb-status2-color);
 }
 
 /* Away */
 .status3 {
-  background-color: orange;
+  background-color: var(--flb-status3-color);
 }
 
 /* Snooze / AFK */
 .status4 {
-  background-color: cyan;
+  background-color: var(--flb-status4-color);
 }
 
 /* Unknown */
 .status5 {
-  background-color: gray;
+  background-color: var(--flb-status5-color);
 }
 
 /* In Game */
 .status6 {
-  background-color: green;
+  background-color: var(--flb-status6-color);
 }
 
 .viewThumbnail {
   border-radius: 5%;
-  margin-bottom: 0.5em;
   aspect-ratio: 16/9;
-  width: 95%;
+  width: 100%;
 }
 
 .viewContent {
@@ -1851,20 +2215,122 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
 }
 
+.friendsContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.friendsContainer > .steamAccount {
+  width: 98%;
+}
+
+.buttonContainer {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-item-align: end;
+  -ms-grid-row-align: end;
+  align-self: end;
+  gap: 0.25em;
+}
+
+.buttonContainer.hidden {
+  visibility: hidden;
+  display: none;
+  width: 0;
+}
+
+.divider {
+  height: 0.05em;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  width: 98%;
+  background-color: var(--flb-border-color);
+}
+
 .steamUsername {
   margin-top: 0;
   margin-bottom: 0.1rem;
 }
 
-.createDate {
+.steamAccount > .avatarContainer > .statusIndicator {
+  height: 0.25em;
+  width: 0.25em;
+}
+
+.infoContainer {
+  padding: 0;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.friendAvatar {
+  height: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display: block;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+.friendUsername {
+  font-size: 0.9rem;
+  margin-top: 0;
+  padding-top: 0;
+  margin-bottom: 0.1rem;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.friendsContainer > .steamAccount > .infoContainer > .steamAdditionalInfo {
+  width: 100%;
+}
+
+.steamAdditionalInfo {
   color: var(--flb-gray-color);
   font-size: 0.65rem;
   margin: 0;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .avatarContainer {
+  -ms-flex-item-align: stretch;
+  -ms-grid-row-align: stretch;
+  align-self: stretch;
+  aspect-ratio: 1/1;
+  padding: 0;
   position: relative;
-  padding-right: 0.3em;
 }
 
 .statusIndicator {
@@ -1941,13 +2407,13 @@ input[type="range"]::-webkit-slider-thumb {
   margin-top: 0em;
 }
 
-#fuckyoujackbaker {
+#hotak0CurseButton {
   position: absolute;
   right: 0.5em;
   top: 0.5em;
 }
 
-#fuckyouevenmorejackbaker {
+#yourecursedgoodluck {
   position: fixed;
   top: 0;
   left: 0;

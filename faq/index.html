@@ -18,6 +18,7 @@
 
   <link rel="canonical" href="https://fusion.hahoos.dev/faq" />
   <link rel="alternate" href="https://hoodrp.com/faq" />
+  <link rel="alternate" href="https://www.hoodrp.com/faq" />
   <script type="application/ld+json">
     {
     "@context": "http://schema.org",
@@ -31,7 +32,6 @@
 
   <!-- Discord Embed-->
   <meta property="og:title" content="Fusion Lobby Browser" />
-  <meta property="og:site_name" content="Fusion Lobby Browser">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://fusion.hahoos.dev/" />
   <meta property="og:description"
@@ -76,9 +76,9 @@
   <!-- [ Internal ] -->
   <script src="../scripts/shared.js" type="module" crossOrigin="anonymous"></script>
   <script src="../scripts/oneko.js" type="module" crossOrigin="anonymous"></script>
+  <script src="../scripts/steam.js" type="module" crossOrigin="anonymous"></script>
 
 
-  <link rel="stylesheet" href="../styles/fonts.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="../styles/style.css" crossOrigin="anonymous" />
 
   <link rel="stylesheet" href="../fa/css/fontawesome.css" crossOrigin="anonymous" />
@@ -118,14 +118,28 @@
         <i class="textIcon fa-brands fa-github"></i>
         <span class="elemContent">Source Code</span>
       </a>
+
+      <div id="steamAccount">
+        <a id="steamRedirect" class="navigationItem"
+          href="https://fusionapi.hahoos.dev/steam/login?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank"
+          rel="noopener noreferrer">
+          <i class="textIcon fa-brands fa-steam"></i>
+          <span class="elemContent">Log in with Steam</span>
+        </a>
+        <div class="steamAccount hidden">
+          <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+            class="steamSmall" />
+          <button class="textButton steamName"><span class="elemContent">RottenCheese</span><i
+              class="fa-solid fa-caret-down"></i></button></i>
+        </div>
+      </div>
     </div>
   </header>
   <div id="faqContent">
     <div id="faqHeader">
       <h1 id="faqTitle"><i class="fas fa-question"></i>FAQ<i class="fas fa-question"></i></h1>
       <p id="faqDescription">Have an issue? Check out the most frequently asked questions!<br>In case of any additional
-        questions, dm me on
-        Discord @hahoos, ask on my modding thread on the BONELAB discord server or create a github issue!</p>
+        questions, contact me directly (check question on how to contact below)</p>
     </div>
     <div id="questions">
       <div class="collapsable">
@@ -136,7 +150,7 @@
           <p>Fusion Lobby Browser is a website dedicated to help BONELAB players. BONELAB does not have official
             multiplayer support, though a mod exists that adds support for it. The website's purpose is to allow players
             to quickly view the current lobbies in LabFusion (the multiplayer mod), while providing many features to
-            make the browsing experience.
+            make the browsing experience better.
           </p>
         </div>
       </div>
@@ -146,23 +160,11 @@
           <h2 class="questionTitle"><b>Q:</b> Why are the thumbnails on my unlisted avatar/level not displayed?</h2>
         </button>
         <div>
-          <p>The backend does not have access to any information regarding unlisted/private mods to which it not has
+          <p>The backend does not have access to any information regarding unlisted/private mods to which it has not
             been granted access to. If you'd like for your avatar/level to have the thumbnail displayed, send me on
             Discord (@hahoos) a link to the preview or (if thats even possible to do) add
             <code>FusionLobbyBrowser</code> to have preview access
           </p>
-        </div>
-      </div>
-
-      <div class="collapsable">
-        <button class="textButton" data-toggle="collapse">
-          <h2 class="questionTitle"><b>Q:</b> Why can't I find the website on Google?</h2>
-        </button>
-        <div>
-          <p>Google disabled the website from being indexed, what that means is that it simply won't display it on their
-            search engine. It's an issue that will need to be looked into, though Google has not provided any specific
-            reason, rather a general one which implies that they do not deem the website to be worthy of being
-            displayed.</p>
         </div>
       </div>
 
@@ -188,11 +190,46 @@
 
       <div class="collapsable">
         <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> Why do you show Hood RP lobbies and other questionable lobbies?</h2>
+        </button>
+        <div>
+          <p>The purpose of the website is to allow for easier browsing of lobbies, which are sourced from services like
+            Steam and Epic Games Online Services. I have no way of preventing such lobbies from being created. I deem to
+            Hood RP to be "acceptable" to be displayed, though it is questionable to say the least and may be changed in
+            the future. Currently lobbies
+            that try to recreate real life tragedies, such as school shootings, assasinations etc. (known as True Crime
+            Community, or TCC in short) and other less or more questionable (such as lobbies called for example "Abusive
+            Dad RP", yes there were lobbies like that and others) are hidden from the website with no option of
+            displaying them.<br><br>The range of lobbies hidden is subject to change and will be updated when needed.
+          </p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
+          <h2 class="questionTitle"><b>Q:</b> Was AI used in the creation of the website?</h2>
+        </button>
+        <div>
+          <p>I try to limit the usage of AI as much as possible, but sometimes there are issues that I couldn't fix for
+            a very long time no matter what and just gave up and used AI. AI has been mostly used to fix layout-related
+            issues in CSS and fixing RegEx. Artificial Intelligence was not used at any point in the creation of the
+            design of the website nor has it been used to create entire new features, but only to fix a few bugs. And I
+            do not mean to say that with those bugs I used AI immiediately, prior I tried many things to fix them with
+            no result. When it comes to the backend, it was used to implement Steam login (or at least to fix it,
+            because i already had some code but didn't really understand how Steam's OpenID login works with the backend
+            even after reading a lot of things about it), and to try and fix a bug with the GC (Garbage Collection) with
+            no success</p>
+        </div>
+      </div>
+
+      <div class="collapsable">
+        <button class="textButton" data-toggle="collapse">
           <h2 class="questionTitle"><b>Q:</b> How do I contact you?</h2>
         </button>
         <div>
           <p>In the case that you need to contact me for various reasons, you can either e-mail me at <a
-              href="mailto:hahoos@hahoos.dev">hahoos@hahoos.dev</a> or DM me on Discord @hahoos</p>
+              href="mailto:hahoos@hahoos.dev">hahoos@hahoos.dev</a>, ask on my modding thread on the BONELAB discord
+            server or DM me on Discord @hahoos</p>
         </div>
       </div>
     </div>

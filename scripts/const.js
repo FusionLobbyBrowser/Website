@@ -234,54 +234,66 @@ export const statuses = [
 
 export const gamemodes = [
   {
-    barcode: "",
+    title: "Sandbox",
+    barcode: "", // Sandbox does not have a barcode
     icon: "img:./images/gamemodes/Sandbox.png",
   },
   {
+    title: "Deathmatch",
     barcode: "Lakatrazz.Deathmatch",
     icon: "img:./images/gamemodes/Deathmatch.png",
   },
   {
+    title: "Team Deathmatch",
     barcode: "Lakatrazz.Team Deathmatch",
     icon: "img:./images/gamemodes/TeamDeathmatch.png",
   },
   {
+    title: "Smash Bones",
     barcode: "Lakatrazz.Smash Bones",
     icon: "img:./images/gamemodes/SmashBones.png",
   },
   {
+    title: "Juggernaut",
     barcode: "Lakatrazz.Juggernaut",
     icon: "img:./images/gamemodes/Juggernaut.png",
   },
   {
+    title: "Hide & Seek",
     barcode: "Lakatrazz.Hide And Seek",
     icon: "img:./images/gamemodes/HideAndSeek.png",
   },
   {
+    title: "Entangled",
     barcode: "Lakatrazz.Entangled",
     icon: "img:./images/gamemodes/Entangled.png",
   },
   {
+    title: "Avatar Infection",
     barcode: "HAHOOS.Avatar Infection",
     icon: "img:./images/gamemodes/AvatarInfection.png",
     link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
   },
   {
+    title: "Bone Strike",
     barcode: "Mash.Bone Strike",
     icon: "img:./images/gamemodes/BoneStrike.png",
     link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
   },
   {
+    title: "Trouble In Ford Town",
     barcode: "JonLandonMods.TroubleInFordTown",
     icon: "fa-brands fa-redhat",
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/TroubleInFordTown",
   },
   {
+    title: "Ford Royale",
     barcode: "JonLandonMods.Ford Royale",
     icon: "fa-solid fa-umbrella",
     link: "https://thunderstore.io/c/bonelab/p/JonLandonMods/FordRoyale/",
   },
   {
+    title: "DayZ Survival",
     barcode: "Codex.DayZFusionSurvival",
     icon: "fa-solid fa-suitcase-medical",
     link: "https://thunderstore.io/c/bonelab/p/ChappieStudios/DayZFusionSurvival/",
@@ -319,4 +331,79 @@ export const permsList = [
     name: "Developer Tools",
     icon: "fas fa-code",
   },
+];
+
+// list from https://mod.io/g/bonelab/c/every-furry-mod
+
+export const furryMods = [
+  2394301, 2405450, 2470972, 2499990, 2529975, 2699152, 2781632, 2790222,
+  2824765, 2953815, 2991533, 3226730, 3230733, 3337440, 3367502, 3401887,
+  3487610, 3802277, 3832777, 3835246, 3848946, 3852490, 4054227, 4067735,
+  4076372, 4087078, 4112162, 4113367, 4133688, 4165308, 4177034, 4193034,
+  4198702, 4209099, 4210807, 4211651, 4215149, 4265967, 4275026, 4279697,
+  4438520, 4462890, 4481226, 4518835, 4534052, 4586648, 4619135, 4624344,
+  4656717, 4690685, 4694766, 4749232, 4750902, 4752268, 4757961, 4768972,
+  4833893, 4838771, 4856412, 4858331, 4869496, 4872693, 4888298, 4901432,
+  4909461, 4918378, 4919456, 4968603, 4970233, 4987423, 4994673, 5015090,
+  5038718, 5075018, 5103453, 5114346, 5154445, 5168226, 5169997, 5215065,
+  5251155, 5255771, 5274610, 5286949, 5294136, 5322694, 5464580, 5541360,
+  5586557, 5617855, 5659109, 5688012, 5711601, 5713979, 5727084, 5770674,
+  5802395, 5809825, 5810809, 5826499, 5862090, 5878065, 5924997, 5934422,
+  5935264, 5945945, 5956375, 5962680, 5997073, 6008185, 6009731, 6017933,
+  6022232, 6038149, 6043125, 6044266, 6047611, 6047677, 6047810, 6048734,
+  6049580, 6058392, 6060437, 6060447, 6060453, 6066104, 6075090, 6077201,
+  6082270, 6085898, 6093675, 6100132, 6103326, 6106079, 6110132, 6114206,
+  6115808, 6116382, 6118993, 6121521, 6130398, 6135730, 6138375, 6140264,
+  6140800, 6142543, 6144049, 6145296, 6145335, 6148454, 6150839, 6151502,
+  6155289, 6157903, 6159283, 6162674, 6164793, 6168182, 6178258, 6179830,
+  6182758, 6189221, 6198416, 6205539, 6208704, 6218117, 6219768, 6225665,
+  6227722, 6227742, 6227808, 6227847, 6230215, 6244358, 6244658, 6247307,
+  6259719, 6244658, 6250955, 6254083, 6263733, 6259108,
+];
+
+export const blacklist = [
+  // Hood RP lobbies are sort of a gray area, not sure whether these should be blacklisted
+
+  "tcc", // recreating real life tragedies where people genuinely lost their lifes while you're just having fun? that's just fucked up
+  "true crime", // same as above
+  "abusive", // this is mostly in lobbies called stuff like "Abusive Dad RP", like brother you are not funny and that's just shitty
+  "abussive", // just a typo of the above that i noticed
+  "abuse", // typo
+  "abusiv", // how many typos will there be wtf
+  "beat your wife", // really what the fuck? I've seen a lobby like that on the website before, i am NOT displaying shit like this
+  "porn", // do i really need to expose people to weird shit? especially considering the community is full of kids its just best this is not displayed, even though i havent seen any like that so far
+  "purryforn", // mostly related to a lobby called "RussianPurryForn /'\OwO/'\ 17+", like do you really find this funny? i just think it's weird, but hey maybe i'm the weird one here
+  "ukraine vs russia", // ongoing conflict that for some reason people like to "roleplay" in fusion, which is honestly disrespectful as fuck to the people.
+  "ukr vs rus", // anothey way to call the above,
+  "mass shooting", // what the fuck dude? like im surprised a lobby like that was made, its probably like 11 y/o's kids playing and thinking it's fun, but like it's fucked up
+  "mass shotting", // typo
+  "mass shoot", // typo
+  "mass shot", // typo
+  "cheese pizza", // havent seen any like that, but wouldnt be surprised if somebody tried to make a "funny joke" like that
+  "child porn", // okay i can sort of understand why could people be like haha cheese pizza is cp abbreviated, but this is just beyond fucked up
+  { word: "cp", type: "whole-word" }, // abbrevation
+  "sweetie fox", // porn star that people like to joke about for some reason
+  { word: "scat", type: "whole-word" }, // word for "poop" used in pornography, apparently
+  "testicles", // brother what the fuck
+  "testies", // abbreviation / slang(?) for the word above
+  "nigger", // haha racism whatever
+  "nigga", // typo
+  "nga", // typo
+  "niga", // typo
+  { word: "cum", type: "whole-word" },
+  "ballsack",
+
+  // i dont think the words below require explanation
+  // https://github.com/Lakatrazz/Fusion-Lists/blob/main/profanityList.json
+  "fag",
+  "faggot",
+  "dildo",
+  "sex",
+  "rape",
+  "raping",
+  "butt gex",
+  "futa",
+  "hitler",
+  "trannies",
+  "tranny",
 ];

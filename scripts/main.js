@@ -6,7 +6,9 @@ import {
   permsList,
   gamemodes,
   statuses,
+  blacklist,
 } from "./const.js";
+import { getProfile } from "./steam.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
@@ -17,12 +19,14 @@ import {
   getIconElem,
   addSetting,
   getSetting,
+  friends,
+  setFriendsInLobby,
+  containsWord,
 } from "./settings.js";
 
-const HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
-const LOBBY_LIST = `${HOST}lobbylist`;
-const THUMBNAIL = `${HOST}thumbnail/[modId]?barcode=[barcode]`;
-const STEAM_PROFILE = `${HOST}steam/profile/[id]`;
+let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
+const LOBBY_LIST = "[host]lobbylist";
+const THUMBNAIL = "[host]thumbnail/[modId]?barcode=[barcode]";
 
 const PROFANITY_LIST =
   "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
@@ -34,6 +38,7 @@ const LOBBY_PARAM = "lobby";
 const SIMULATE_HOODRP = false;
 
 let allLobbies;
+let friendIDs;
 
 let infoView = -1;
 
@@ -47,12 +52,19 @@ let fullyLoaded = false;
 let lobbiesSignal;
 let infoSignal;
 
-let profanities = [];
 let thumbnailCache = new Map();
 
 const cacheExpireTime = 15 * 60;
 
 let showingInfo = false;
+
+let firstFetch = false;
+
+let oldSize = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+window.addEventListener("resize", onResize);
 
 const converter = new Converter();
 
@@ -95,15 +107,17 @@ async function fetchAndCreateLobbies() {
   if (refreshing) return;
 
   refreshing = true;
+  firstFetch = true;
   console.log("Fetching lobbies");
   const start = Date.now();
   try {
     if (lobbiesSignal) lobbiesSignal.abort();
+    if (infoSignal) infoSignal.abort();
     const controller = new AbortController();
     lobbiesSignal = controller;
+    filterBadges();
     const refreshBtn = document.getElementById("refreshButton");
     const refresh = document.getElementById("refresh");
-    const highLobby = document.getElementById("lobbyLimit");
     try {
       refreshBtn.classList.add("blocked");
       refreshBtn.getElementsByClassName("textIcon")[0].classList.add("fa-spin");
@@ -132,10 +146,10 @@ async function fetchAndCreateLobbies() {
 
         setTimeElem(refresh, null);
 
-        highLobby.classList.add("hidden");
-
         setLobbyCount(-1);
-        setPlayerCount(-1, -1);
+        setPlayerCount(0, 0);
+        document.getElementById("steamCount").textContent = 0;
+        document.getElementById("epicCount").textContent = 0;
         hideShow(true);
       } else {
         if (json.interval) refreshInterval = Number(json.interval);
@@ -151,6 +165,8 @@ async function fetchAndCreateLobbies() {
             let lobbies = json.lobbies;
 
             allLobbies = structuredClone(lobbies);
+            allLobbies = allLobbies.filter((x) => !containsWord(x, blacklist));
+            friendIDs = structuredClone(json.friends);
 
             let _gamemodes = [];
             lobbies.forEach((val) => {
@@ -160,9 +176,9 @@ async function fetchAndCreateLobbies() {
               const g = gamemodes.find((x) => x.barcode == val.gamemodeBarcode);
               if (!_gamemodes.includes(gamemode)) {
                 addSetting({
-                  id: `gamemode_${gamemode}`,
+                  id: `gamemode_${!gamemode || gamemode == "" ? "Lakatrazz.Sandbox" : gamemode}`,
                   category: "Gamemodes",
-                  type: "toggle",
+                  type: "filter",
                   name: val.gamemodeTitle
                     ? Converter.removeRichText(val.gamemodeTitle)
                     : "Sandbox",
@@ -174,15 +190,13 @@ async function fetchAndCreateLobbies() {
                     return lobby.gamemodeBarcode == gamemode;
                   },
 
-                  defaultValue: true,
+                  defaultValue: { include: false, exclude: false },
                 });
                 _gamemodes.push(gamemode);
               }
             });
 
-            filterBadges();
-            await createLobbies(controller?.signal);
-            filterBadges();
+            await createLobbies(controller);
           } else {
             hideShow(true);
           }
@@ -236,7 +250,12 @@ function filterBadges() {
       badge.classList.add("infoBadge");
       const content = document.createElement("span");
       content.classList.add("elemContent");
-      const text = x.type != "search" ? x.name : val;
+      const text =
+        x.type != "search"
+          ? x.baseName && x.baseName != ""
+            ? x.baseName
+            : x.name
+          : val;
       if (!x.icon) {
         content.textContent = text;
       } else {
@@ -246,6 +265,17 @@ function filterBadges() {
         settingContent.textContent = text;
         content.appendChild(settingIcon);
         content.appendChild(settingContent);
+        if (x.type == "filter") {
+          const settingType = document.createElement("i");
+          settingType.classList.add("fas");
+          if (val && val.include == true) {
+            settingType.classList.add("fa-check");
+            content.appendChild(settingType);
+          } else if (val && val.exclude == true) {
+            settingType.classList.add("fa-xmark");
+            content.appendChild(settingType);
+          }
+        }
       }
       badge.appendChild(content);
       list.appendChild(badge);
@@ -323,7 +353,7 @@ async function createLobbies(signal) {
   const refreshBtn = document.getElementById("refreshButton");
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
-  const lobbyList = structuredClone(allLobbies);
+  let lobbyList = structuredClone(allLobbies);
   let lobbyCountMax = lobbyList.length;
   let allowed = hideLobbies(false);
 
@@ -342,12 +372,18 @@ async function createLobbies(signal) {
   if (!sorted) sorting.find((x) => x.name == "Players").callback(lobbyList, 2);
 
   let players = 0;
+  let steam = 0;
+  let epic = 0;
   let allPlayers = 0;
   lobbyList.forEach((val) => {
+    if (val.lobbyPlatform == "Steam") steam++;
+    else if (val.lobbyPlatform == "Epic") epic++;
     allPlayers += Number(val.playerCount);
     if (allowed.includes(val.lobbyID)) players += Number(val.playerCount);
   });
 
+  document.getElementById("steamCount").textContent = steam;
+  document.getElementById("epicCount").textContent = epic;
   setLobbyCount(allowed.length, lobbyCountMax);
   setPlayerCount(players, allPlayers);
 
@@ -368,6 +404,27 @@ async function createLobbies(signal) {
     );
   }
 
+  let inLobby = [];
+  let lobbiesWithFriends = [];
+  lobbyList.forEach((x) => {
+    const filtered = x.playerList.players.filter((y) =>
+      friendIDs.some((x) => x == String(y.platformID)),
+    );
+    if (filtered && filtered.length > 0) {
+      lobbiesWithFriends.push(x);
+      filtered.forEach((y) => {
+        inLobby.push({
+          id: String(y.platformID),
+          lobbyName: getLobbyName(x, false),
+          lobbyCode: x.lobbyCode,
+          lobbyPlatform: x.lobbyPlatform,
+          lobbyID: x.lobbyID,
+        });
+      });
+    }
+  });
+  setFriendsInLobby(inLobby);
+
   console.log(
     `Creating %c${lobbyList.length}%c %s`,
     "color: #0ff",
@@ -375,12 +432,69 @@ async function createLobbies(signal) {
     "lobbies",
   );
 
+  let prioritized = [];
+  if (isToggleChecked("prioritizeLobbiesWithFriends"))
+    prioritized = lobbiesWithFriends;
+  else if (isToggleChecked("prioritizeFriendsOnlyLobbies"))
+    prioritized = lobbyList.filter((x) => x.privacy == 2);
+
+  if (prioritized && prioritized.length > 0) {
+    const sort = getSettingValue("sort");
+    let sorted = false;
+    if (sort) {
+      const s = sorting.find((x) => x.name == sort);
+      if (s) {
+        s.callback(
+          prioritized,
+          getSettingValue("sortOrder") != "Descending" ? 2 : 1,
+        );
+        sorted = true;
+      }
+    }
+    if (!sorted)
+      sorting.find((x) => x.name == "Players").callback(prioritized, 2);
+  }
+
   const shouldUpdate = infoView != -1;
 
-  for (let i = 0; i < lobbyList.length; i++) {
-    if (signal?.aborted == true) return;
-    const lobby = lobbyList[i];
-    setContent(refreshBtn, `Loading (${i + 1} of ${lobbyList.length})`);
+  let count = 0;
+  for (let i = 0; i < prioritized.length; i++) {
+    if (signal?.signal?.aborted == true) return;
+    count++;
+    const lobby = prioritized[i];
+    setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
+
+    if (containsWord(lobby, blacklist)) {
+      console.log(
+        "%c > Lobby name contains blacklisted word, ignoring: " +
+          Converter.removeRichText(lobby.lobbyName),
+        "color: #f00",
+      );
+      continue;
+    }
+
+    if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
+      infoUpdated = true;
+  }
+
+  const other = lobbyList.filter(
+    (x) => !prioritized.some((y) => y.lobbyID == x.lobbyID),
+  );
+  for (let i = 0; i < other.length; i++) {
+    if (signal?.signal?.aborted == true) return;
+    count++;
+    const lobby = other[i];
+    setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
+
+    if (containsWord(lobby, blacklist)) {
+      console.log(
+        "%c > Lobby name contains blacklisted word, ignoring: " +
+          Converter.removeRichText(lobby.lobbyName),
+        "color: #f00",
+      );
+      continue;
+    }
+
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }
@@ -439,9 +553,38 @@ async function createLobby(lobby, signal, hidden) {
   let lobbyElem = copy.cloneNode(true);
   lobbyElem.removeAttribute("id");
 
-  lobbyElem.setAttribute("filteredout", hidden);
+  let _friends = [];
+  let friendsTooltip = "";
+
+  if (lobby.privacy == 2) friendsTooltip = "[Friends Only]<br />";
+
+  lobby.playerList.players.forEach((y) => {
+    if (friendIDs.some((x) => String(y.platformID) == String(x))) {
+      _friends.push(String(y.platformID));
+      const n = getName(y).name.trim();
+      friendsTooltip += `<p class="playerTooltip">${n}</p>"}`;
+    }
+  });
+
+  if (isToggleChecked("highlightFriends"))
+    lobbyElem.setAttribute("hasFriend", _friends.length > 0);
+
+  if (_friends.length > 0) {
+    const friendsElem = lobbyElem.getElementsByClassName("lobbyFriends")[0];
+    if (friendsElem) {
+      friendsElem.classList.remove("hidden");
+      if (lobby.privacy == 2) {
+        friendsElem.getElementsByClassName("textIcon")[0].className =
+          "textIcon fas fa-user-lock";
+      }
+      setContent(friendsElem, _friends.length);
+      createToolTip(friendsElem, friendsTooltip, "bottom", "100vw");
+    }
+  }
   lobbyElem.setAttribute("platform", lobby.lobbyPlatform);
   const icon = lobbyElem.getElementsByClassName("platformIcon")[0];
+  icon.className = "";
+  icon.classList.add("platformIcon");
   if (lobby.lobbyPlatform == "Steam") {
     icon.classList.add("fa-brands");
     icon.classList.add("fa-steam");
@@ -450,26 +593,30 @@ async function createLobby(lobby, signal, hidden) {
     icon.classList.add("fa-epicgames");
   }
   createToolTip(icon, `ID: ${lobby.lobbyID}`);
+
   const levelTitle = lobbyElem.getElementsByClassName("levelTitle")[0];
-  const setThumb = async () => {
-    return await setThumbnail(
-      lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
-      lobby.levelModID,
-      lobby.levelTitle,
-      lobby.levelBarcode,
-      false,
-    );
-  };
-  const thumb = hidden ? setThumb() : await setThumb();
-  if (hidden) {
-    thumb.then((x) =>
-      censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw),
-    );
+
+  function verifyNSFW(x) {
+    if (thumb.nsfw == true && isToggleChecked("hideNSFWLobbies")) {
+      hidden = true;
+      lobbyElem.setAttribute("filteredout", true);
+    }
+    censorModTitle(levelTitle, lobby.levelModID, lobby.levelTitle, x.nsfw);
   }
+
+  const thumb = setThumbnail(
+    lobbyElem.getElementsByClassName("lobbyThumbnail")[0],
+    lobby.levelModID,
+    lobby.levelTitle,
+    lobby.levelBarcode,
+    false,
+  );
+  thumb.then(verifyNSFW);
 
   if (infoView != -1 && infoView == lobby.lobbyID) {
     infoUpdated = true;
-    if (signal?.aborted != true) displayInfo(lobby, thumb, signal);
+    if (signal?.signal?.aborted != true)
+      displayInfo(lobby, new AbortController());
   }
   lobbyElem.setAttribute("lobbyId", lobby.lobbyID);
   const lobbyName = lobbyElem.getElementsByClassName("lobbyName")[0];
@@ -527,9 +674,12 @@ async function createLobby(lobby, signal, hidden) {
 
     return parseInt(second.permissionLevel) - parseInt(first.permissionLevel);
   });
-  for (const p of players) tooltip += `${getName(p).name.trim()}<br />`;
+  for (const p of players) {
+    const n = getName(p).name.trim();
+    tooltip += `<p class="playerTooltip">${n}</p>`;
+  }
 
-  createToolTip(playerCount, tooltip, "bottom");
+  createToolTip(playerCount, tooltip, "bottom", "100vw");
 
   joinInfo(connectBtn);
 
@@ -541,14 +691,16 @@ async function createLobby(lobby, signal, hidden) {
     infoView = lobby.lobbyID;
 
     enableInfoButton(false);
+    const iSignal = new AbortController();
     try {
-      await displayInfo(lobby, thumb, signal);
+      await displayInfo(lobby, iSignal);
     } finally {
       enableInfoButton(true);
     }
   };
   if (showingInfo) setButton(infoBtn, false);
 
+  lobbyElem.setAttribute("filteredout", hidden);
   lobbies.appendChild(lobbyElem);
 
   const time = (Date.now() - date) / 1000;
@@ -564,8 +716,7 @@ function isEllipsisActive(e) {
   return e.clientHeight < e.scrollHeight || e.offsetWidth < e.scrollWidth;
 }
 
-function createToolTip(e, content, placement = "top") {
-  console.log(content);
+function createToolTip(e, content, placement = "top", maxWidth = 350) {
   if (e._tippy) e._tippy.setProps({ content: content });
 
   e._tippy = tippy(e, {
@@ -575,6 +726,7 @@ function createToolTip(e, content, placement = "top") {
     interactive: true,
     placement: placement,
     allowHTML: true,
+    maxWidth: maxWidth,
     theme: "website",
   });
 }
@@ -611,6 +763,7 @@ function enableInfoButton(enabled) {
 }
 
 async function displayInfo(lobby, signal) {
+  if (containsWord(lobby, blacklist)) return;
   if (infoSignal) infoSignal.abort();
   showingInfo = true;
   try {
@@ -620,8 +773,7 @@ async function displayInfo(lobby, signal) {
       "color: #0f0",
     );
 
-    var controller = new AbortController();
-    infoSignal = controller;
+    infoSignal = signal;
     infoView = lobby.lobbyID;
 
     hideShow(false);
@@ -631,13 +783,26 @@ async function displayInfo(lobby, signal) {
     const left = content.getElementsByClassName("left-content")[0];
     const thumb = left.getElementsByClassName("thumbnail")[0];
     const description = right.getElementsByClassName("lobbyDescription")[0];
-    const thumbnail = await setThumbnail(
+
+    let _thumbnail;
+    function verifyNSFW(x) {
+      _thumbnail = x;
+      censorModTitle(
+        header.getElementsByClassName("level")[0],
+        lobby.levelModID,
+        lobby.levelTitle,
+        x.nsfw,
+      );
+    }
+
+    const thumbnail = setThumbnail(
       thumb,
       lobby.levelModID,
       lobby.levelTitle,
       lobby.levelBarcode,
       false,
     );
+    thumbnail.then(verifyNSFW);
 
     const lobbyInfo = document.getElementById("info");
     lobbyInfo.setAttribute("uptime", Number(lobby.lobbyUptime));
@@ -655,7 +820,7 @@ async function displayInfo(lobby, signal) {
       header.getElementsByClassName("level")[0],
       lobby.levelModID,
       lobby.levelTitle,
-      thumbnail.nsfw,
+      _thumbnail?.nsfw ?? false,
     );
 
     const gamemode = header.getElementsByClassName("gamemode")[0];
@@ -768,20 +933,35 @@ async function displayInfo(lobby, signal) {
         (!player.nickname || player.nickname == "")
       )
         continue;
-      if (controller?.signal?.aborted == true) return;
+      if (signal?.signal?.aborted == true) break;
 
       console.log(`  > Creating player %c${player.platformID}`, "color: #0f0");
 
       const toCopy = document.getElementById("playerToCopy");
       const playerElem = toCopy.cloneNode(true);
       playerElem.removeAttribute("id");
-      const thumb = await setThumbnail(
+
+      let avatar =
+        player.avatarTitle && player.avatarTitle != ""
+          ? convert(player.avatarTitle)
+          : "N/A";
+      const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
+
+      let thumbRes;
+      function verifyNSFW(x) {
+        thumbRes = x;
+        censorModTitle(avatarTitle, player.avatarModID, avatar, thumb.nsfw);
+      }
+
+      const thumb = setThumbnail(
         playerElem.getElementsByClassName("avatarThumbnail")[0],
         player.avatarModID,
         player.avatarTitle,
         player.avatarTitle,
         true,
       );
+      thumb.then(verifyNSFW);
+
       const name = getName(player);
       const nameElem = playerElem.getElementsByClassName("name")[0];
       nameElem.innerHTML = convert(name.name);
@@ -799,7 +979,7 @@ async function displayInfo(lobby, signal) {
         .addEventListener("click", async () => {
           const html = await createPlayerView(
             player,
-            thumb,
+            thumbRes,
             lobby.lobbyPlatform,
           );
           Swal.fire({
@@ -820,17 +1000,12 @@ async function displayInfo(lobby, signal) {
           });
         });
 
-      let avatar =
-        player.avatarTitle && player.avatarTitle != ""
-          ? convert(player.avatarTitle)
-          : "N/A";
-      const avatarTitle = playerElem.getElementsByClassName("avatarTitle")[0];
       playerObserver.observe(avatarTitle);
 
-      censorModTitle(avatarTitle, player.avatarModID, avatar, thumb.nsfw);
+      avatarTitle.innerHTML = avatar;
       playerElem.setAttribute("playerId", player.platformID);
-      if (signal?.aborted == true || controller?.signal?.aborted == true)
-        return;
+      if (signal?.signal?.aborted == true) break;
+
       playersList.appendChild(playerElem);
       const time = (Date.now() - plrStart) / 1000;
       console.log(
@@ -839,12 +1014,13 @@ async function displayInfo(lobby, signal) {
         "color: #0ff",
       );
     }
-    playersList
-      .querySelectorAll("div:not([playerId])")
-      .forEach((x) => x.remove());
-    playersList
-      .querySelectorAll("div")
-      .forEach((x) => x.classList.remove("hidden"));
+    playersList.childNodes.forEach((x) => {
+      if (x.tagName.toLowerCase() == "div" && !x.hasAttribute("playerId"))
+        x.remove();
+    });
+    playersList.childNodes.forEach((x) => {
+      if (x.tagName.toLowerCase() == "div") x.classList.remove("hidden");
+    });
     lobbyInfo.setAttribute("lobbyId", lobby.lobbyID);
     lobbyInfo.scrollIntoView({ behavior: "smooth", block: "start" });
     const time = (Date.now() - start) / 1000;
@@ -864,9 +1040,13 @@ async function createPlayerView(player, thumbnail, platform) {
   const view = toCopy.cloneNode(true);
   view.removeAttribute("id");
   const name = getName(player);
-  const thumb = view.getElementsByClassName("viewThumbnail")[0];
-  thumb.src = thumbnail.thumbnail;
-  thumb.alt = thumbnail.alt;
+  if (thumbnail && thumbnail.thumbnail && thumbnail.alt) {
+    const thumb = view.getElementsByClassName("viewThumbnail")[0];
+    thumb.src = thumbnail.thumbnail;
+    thumb.alt = thumbnail.alt;
+  } else {
+    thumb.classList.add("hidden");
+  }
   view.getElementsByClassName("playerDisplayName")[0].innerHTML = convert(
     name.name,
   );
@@ -893,7 +1073,7 @@ async function createPlayerView(player, thumbnail, platform) {
     ).replace("\n", "<br>"),
   );
   if (platform == "Steam") {
-    const req = await getSteamProfile(player.platformID);
+    const req = await getProfile(player.platformID);
     if (req && !req.error) {
       const avatar = view.getElementsByClassName("steamAvatar")[0];
       avatar.setAttribute("src", req.avatarFullUrl);
@@ -921,10 +1101,12 @@ async function createPlayerView(player, thumbnail, platform) {
         var yyyy = date.getFullYear();
         var mm = date.getMonth() + 1;
         var dd = date.getDate();
-        view.getElementsByClassName("createDate")[0].textContent =
+        view.getElementsByClassName("steamAdditionalInfo")[0].textContent =
           `Created on: ${dd}-${mm}-${yyyy}`;
       } else {
-        view.getElementsByClassName("createDate")[0].classList.add("hidden");
+        view
+          .getElementsByClassName("steamAdditionalInfo")[0]
+          .classList.add("hidden");
       }
     }
   } else {
@@ -955,12 +1137,12 @@ function lobbyNotice(
   removeLobbies = true,
 ) {
   const lobbies = document.getElementById("lobbies");
-  const notices = lobbies.getElementsByClassName("lobbyNotice");
+  const notices = lobbies.getElementsByClassName("notice");
   if (removeLobbies) lobbies.replaceChildren();
   if (notices && notices.length > 0) {
     for (const n of notices) n.remove();
   }
-  const toCopy = document.getElementById("lobbyNoticeToCopy");
+  const toCopy = document.getElementById("noticeToCopy");
   const notice = toCopy.cloneNode(true);
   notice.removeAttribute("id");
   const _icon = notice.getElementsByClassName("noticeIcon")[0];
@@ -970,9 +1152,7 @@ function lobbyNotice(
   classes.forEach((x) => _icon.classList.add(x));
   _title.textContent = title;
   _description.textContent = description;
-  notice.style.color = window
-    .getComputedStyle(toCopy)
-    .getPropertyValue(colorVariable);
+  notice.style.color = `var(${colorVariable})`;
   lobbies.appendChild(notice);
 }
 
@@ -997,27 +1177,7 @@ function colorPermission(perm) {
 }
 
 function convert(text) {
-  return DOMPurify.sanitize(converter.unity2html(censorWords(text)));
-}
-function censorWords(text) {
-  if (!isToggleChecked("censorProfanities")) return text;
-
-  if (text == null || text == "") return text;
-
-  let mapped = [];
-  let plain = text.replace(/<.*?>/g, (match, offset) => {
-    mapped.push({ tag: match, offset: offset });
-    return "";
-  });
-  for (const s of profanities) {
-    let regex = new RegExp(s, "gmi");
-    plain = plain.replaceAll(regex, "*".repeat(s.length));
-  }
-  for (const m of mapped) {
-    plain =
-      plain.slice(0, m.offset) + m.tag + plain.slice(m.offset, plain.length);
-  }
-  return plain;
+  return DOMPurify.sanitize(converter.unity2html(text));
 }
 
 // DOES NOT sanitize!!!
@@ -1030,7 +1190,6 @@ function setContent(elem, content) {
       return;
     }
   }
-
   elem.innerHTML = content;
 }
 
@@ -1073,7 +1232,19 @@ function setURLParams() {
   window.history.pushState(null, "", url.toString());
 }
 
+let processed = [];
+
 async function getThumbnail(modId, title, barcode, isAvatar) {
+  while (processed.some((x) => x.modId == modId || x.barcode == barcode))
+    await delay(50);
+
+  const obj = {
+    modId: modId,
+    barcode: barcode,
+  };
+
+  processed.push(obj);
+
   if (modId == -1 || modId == 0 || modId == null) {
     const value = barcodes.find(
       (x) =>
@@ -1082,6 +1253,9 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
         x.name == barcode,
     );
     if (value) {
+      const index = processed.indexOf(obj);
+      if (index > -1) processed.splice(index, 1);
+
       return {
         thumbnail: `/images/default/${value.name}.webp`,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
@@ -1098,7 +1272,8 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       cacheItem.createdAt &&
       Date.now() / 1000 - cacheItem.createdAt < cacheExpireTime
     ) {
-      console.log("   > Using a thumbnail from cache!");
+      const index = processed.indexOf(obj);
+      if (index > -1) processed.splice(index, 1);
       return {
         thumbnail: cacheItem.src,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
@@ -1106,10 +1281,15 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       };
     }
     const response = await fetch(
-      THUMBNAIL.replace("[modId]", modId).replace("[barcode]", barcode),
+      THUMBNAIL.replace("[host]", HOST)
+        .replace("[modId]", modId)
+        .replace("[barcode]", barcode),
     );
-    if (!response.ok)
+    if (!response.ok) {
+      const index = processed.indexOf(obj);
+      if (index > -1) processed.splice(index, 1);
       return { error: await response.text(), status: response.status };
+    }
     const res = {
       thumbnail: URL.createObjectURL(await response.blob()),
       alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
@@ -1120,9 +1300,13 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       isNSFW: res.nsfw,
       createdAt: Date.now() / 1000,
     };
+    const index = processed.indexOf(obj);
+    if (index > -1) processed.splice(index, 1);
     return res;
   } catch (ex) {
     console.error(ex);
+    const index = processed.indexOf(obj);
+    if (index > -1) processed.splice(index, 1);
     return {
       error:
         "Failed to get thumbnail due to the request failing, check console for more details",
@@ -1130,8 +1314,19 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
   }
 }
 
+function delay(millisec) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, millisec);
+  });
+}
+
 async function setThumbnail(elem, modId, title, barcode, isAvatar) {
-  elem.removeAttribute("loading");
+  const spinners =
+    elem.parentElement.getElementsByClassName("thumbnailSpinner");
+  let spinner;
+  if (spinners && spinners.length > 0) spinner = spinners[0];
   elem.setAttribute("fetchpriority", "high");
   elem.addEventListener("error", function () {
     const alt = Converter.removeRichText(
@@ -1147,6 +1342,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       const alt = Converter.removeRichText(
         `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
       );
+      spinner?.classList?.add("hidden");
       elem.setAttribute("src", "images/default/Mods_Level.webp");
       elem.setAttribute("alt", alt);
       return {
@@ -1158,6 +1354,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
+    spinner?.classList?.add("hidden");
     elem.setAttribute("src", "images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
     return {
@@ -1169,6 +1366,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
+    spinner?.classList?.add("hidden");
     elem.setAttribute("src", "images/nsfwCover.webp");
     elem.setAttribute("alt", alt);
     return {
@@ -1177,6 +1375,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       nsfw: true,
     };
   } else {
+    spinner?.classList?.add("hidden");
     elem.setAttribute("src", thumbnail.thumbnail);
     elem.setAttribute("alt", Converter.removeRichText(thumbnail.alt));
     return thumbnail;
@@ -1194,7 +1393,7 @@ function modRedirect(id, name) {
 function setLobbyCount(count, max) {
   const elem = document.getElementsByClassName("lobbyTitle")[0];
   if (count == -1) {
-    elem.textContent = "Lobbies (None)";
+    elem.textContent = "Lobbies (0)";
   } else {
     if (count == max) elem.textContent = `Lobbies (${count})`;
     else elem.textContent = `Lobbies (${count}/${max})`;
@@ -1213,43 +1412,16 @@ async function onConnect(elem, lobby) {
 }
 
 function setPlayerCount(filteredPlayers, allPlayers) {
-  const format =
-    "[service] has a limit of [limit] lobbies, due to the high number of lobbies some may not appear. This is a limit implemented by Steam themselves and nothing can be done about it!";
-
   const playerCount = document.getElementById("playerCount");
   if (filteredPlayers == allPlayers) playerCount.textContent = filteredPlayers;
   else playerCount.textContent = `${filteredPlayers}/${allPlayers}`;
-
-  /*
-  const highLobby = document.getElementById("lobbyLimit");
-  const limitNum = new Map(limit).get(service);
-  if (limitNum && lobbies >= limitNum) {
-    highLobby.textContent = format
-      .replace("[service]", service)
-      .replace("[limit]", limitNum);
-    highLobby.classList.remove("hidden");
-  } else highLobby.classList.add("hidden");
-   */
-}
-
-async function getSteamProfile(id) {
-  try {
-    const response = await fetch(STEAM_PROFILE.replace("[id]", id));
-    if (!response.ok) return { error: await response.text() };
-
-    return await response.json();
-  } catch (ex) {
-    console.error(ex);
-    return {
-      error:
-        "Failed to get lobbies due to the request failing, check console for more details",
-    };
-  }
 }
 
 async function getJSON() {
   try {
-    const response = await fetch(LOBBY_LIST);
+    const response = await fetch(LOBBY_LIST.replace("[host]", HOST), {
+      credentials: "include",
+    });
     if (!response.ok) return { error: await response.text() };
 
     return {
@@ -1355,7 +1527,7 @@ function hideLobbies(changeElem = true) {
   }
   const notice = document
     .getElementById("lobbies")
-    .getElementsByClassName("lobbyNotice");
+    .getElementsByClassName("notice");
   if (list.length > 0 && notice.length > 0) notice[0].remove();
   else if (list.length == 0 && notice.length == 0) {
     lobbyNotice(
@@ -1388,25 +1560,6 @@ async function updateFilters() {
   setPlayerCount(players, allPlayers);
 
   filterBadges();
-}
-
-async function loadProfanities() {
-  console.log(`Loading profanities from ${PROFANITY_LIST}`);
-  try {
-    const res = await fetch(PROFANITY_LIST);
-    if (res.ok) {
-      const json = await res.json();
-      console.log(
-        `Successfully loaded %c${json.words.length}%c %s`,
-        "color: #f00",
-        "color: inherit",
-        "profanities",
-      );
-      for (const word of json.words) profanities.push(word);
-    }
-  } catch (ex) {
-    console.error(ex);
-  }
 }
 
 function filterEvent(id, redo = false) {
@@ -1456,16 +1609,36 @@ adjustTheme();
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
 
+window.addEventListener("displayInfo", async (e) => {
+  if (e.detail && e.detail.lobbyID) {
+    const lobby = allLobbies.find(
+      (x) => String(x.lobbyID) == String(e.detail.lobbyID),
+    );
+    if (lobby) {
+      infoView = lobby.lobbyID;
+
+      const iSignal = new AbortController();
+      enableInfoButton(false);
+      try {
+        await displayInfo(lobby, iSignal);
+      } finally {
+        enableInfoButton(true);
+      }
+    }
+  }
+});
+
 async function init() {
+  adjustTheme();
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
   settingsInit();
-  adjustTheme();
+  createGamemodes();
   addEventListener("theme", adjustTheme);
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
-    const num = Number(params.get(LOBBY_PARAM));
+    const num = params.get(LOBBY_PARAM);
     if (num) infoView = num;
   }
 
@@ -1483,16 +1656,19 @@ async function init() {
   settingsEvent();
 
   // Require the lobby list to be created again
+  filterEvent("prioritizeLobbiesWithFriends", true);
+  filterEvent("prioritizeFriendsOnlyLobbies", true);
+  filterEvent("highlightFriends", true);
   filterEvent("censorNSFW", true);
   filterEvent("sort", true);
   filterEvent("sortOrder", true);
-  filterEvent("censorProfanities", true);
+  filterEvent("hideNSFWLobbies", true);
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("info-close", () => hideShow(true));
   clickEvent("settingsButton", openSettings);
   clickEvent("settingsClose", closeSettings);
-  clickEvent("fuckyoujackbaker", fuckyoujackbaker);
+  clickEvent("hotak0CurseButton", initCurse);
   joinInfo(document.getElementById("info-connect"));
 
   uptimeContainer = document.querySelector(".uptime-container");
@@ -1518,14 +1694,13 @@ async function init() {
   const getRandomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
+
   // fuck you
   const r = Math.round(getRandomNumber(1, 25));
   if (r == lucky)
-    document.getElementById("fuckyoujackbaker").classList.remove("hidden");
+    document.getElementById("hotak0CurseButton").classList.remove("hidden");
 
   updateTime();
-
-  loadProfanities();
 
   console.log("[Init] Creating lobbies");
   fullyLoaded = true;
@@ -1533,7 +1708,39 @@ async function init() {
   fetchAndCreateLobbies();
 }
 
+function onResize() {
+  if (oldSize.width < 850 && window.innerWidth >= 850) {
+    document.getElementById("popupBackground").classList.add("hidden");
+    document.getElementById("settings").classList.remove("open");
+  }
+  oldSize = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+}
+
+function createGamemodes() {
+  for (const g of gamemodes) {
+    addSetting({
+      id: `gamemode_${!g.barcode || g.barcode == "" ? "Lakatrazz.Sandbox" : g.barcode}`,
+      category: "Gamemodes",
+      type: "filter",
+      name: g.title ? Converter.removeRichText(g.title) : "Sandbox",
+      icon: g && g.icon ? g.icon : "fas fa-puzzle-piece",
+
+      lobbyFilter: true,
+      filterValue: false,
+      lobbyValidator: (lobby) => {
+        return lobby.gamemodeBarcode == g.barcode;
+      },
+
+      defaultValue: { include: false, exclude: false },
+    });
+  }
+}
+
 function activateHoodRpMode() {
+  HOST = "https://api.hoodrp.com/";
   let link = document.createElement("link");
   link.rel = "stylesheet";
   link.href = "styles/hoodrp.css";
@@ -1543,27 +1750,21 @@ function activateHoodRpMode() {
 // i was forced to do this at exactly 00:47:30 AM by an individual that goes by the name Jack Baker
 // i do not bear any responsibility for the possible trauma or any other issues
 // fuck you jack baker
-function fuckyoujackbaker() {
-  var audio = new Audio("images/fuckyou.ogg");
-  audio.play();
-  document
-    .getElementById("fuckyouevenmorejackbaker")
-    .classList.remove("hidden");
+function initCurse() {
+  document.getElementById("yourecursedgoodluck").classList.remove("hidden");
   document.getElementsByClassName("istfg")[0].classList.remove("hidden");
 
   document.getElementsByTagName("title")[0].textContent =
     "uh oh you angered the thing!";
-  var fuckyouevenmorejackbaker = new Audio(
-    "images/fuckyouevenmorejackbaker.mp3",
-  );
+  var fuckyouevenmorejackbaker = new Audio("hotak0/sounds/hotak0_ambience.mp3");
   fuckyouevenmorejackbaker.play();
-  fuckyouevenmorejackbaker.vol;
+  fuckyouevenmorejackbaker.loop = true;
   looped(fuckyouevenmorejackbaker);
 }
 
 async function looped(_audio) {
   while (true) {
-    var audio = new Audio("images/fuckyou.ogg");
+    var audio = new Audio("hotak0/sounds/youangeredthething.ogg");
     audio.play();
     audio.volume = Math.random();
     _audio.volume = Math.random();
@@ -1598,7 +1799,7 @@ function adjustTheme() {
     window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
   const isDarkMode = darkMode && darkMode.matches;
 
-  const val = getSettingValue("theme") || localStorage.getItem("setting_theme");
+  const val = localStorage.getItem(`setting_theme`);
   let v;
   if (!val) v = isDarkMode ? "dark" : "light";
   else v = val == "systemPreference" ? (isDarkMode ? "dark" : "light") : val;
@@ -1638,12 +1839,7 @@ function timeAgoElem(elem, date = null) {
 function setTimeElem(elem, val) {
   if (val == null || val == undefined) val = "N/A";
   elem.textContent = val;
-  if (val == "N/A") {
-    elem.removeAttribute("date");
-    elem.classList.add("hidden");
-  } else {
-    elem.classList.remove("hidden");
-  }
+  if (val == "N/A") elem.removeAttribute("date");
 }
 
 function timeFromResponse(elem, val) {

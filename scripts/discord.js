@@ -1,12 +1,11 @@
 import { Converter } from "./unityRichText.js";
 
-// From what I remember, this RegEx was created using AI, because my little brain cannot comprehend creating regex patterns
 const regex = new RegExp(
   /(?:https:\/\/discord[\.\,]com\/invite\/|(?<=^|\s)(?:discord)?[\.\,]com\/invite\/|https?:\/\/discord[\.\,]gg\/|(?<=^|\s)(?:discord)?[\.\,]gg\/|Discord(?: Server| Link| Code|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
 );
 
-function getServerIconURL(guildId, id, size = 256) {
-  return `https://cdn.discordapp.com/icons/${guildId}/${id}.webp?size=${size}&animated=true`;
+function getServerIconURL(guildId, id, size = 256, animated = true) {
+  return `https://cdn.discordapp.com/icons/${guildId}/${id}.webp?size=${size}&animated=${animated}`;
 }
 
 async function getServerInfo(inviteCode) {
@@ -86,12 +85,15 @@ function createServerElem(obj, code) {
   return server;
 }
 
-function createTooltip(elem, content) {
-  tippy(elem, {
+function createTooltip(e, content, placement = "top", maxWidth = 350) {
+  if (e._tippy) e._tippy.setProps({ content: content });
+
+  e._tippy = tippy(e, {
     content: content,
-    placement: "bottom",
-    appendTo: "parent",
     animation: "scale",
+    appendTo: "parent",
+    placement: placement,
+    maxWidth: maxWidth,
     theme: "website",
   });
 }

@@ -20,6 +20,7 @@
 
   <link rel="canonical" href="https://fusion.hahoos.dev/" />
   <link rel="alternate" href="https://hoodrp.com" />
+  <link rel="alternate" href="https://www.hoodrp.com" />
   <script type="application/ld+json">
     {
     "@context": "http://schema.org",
@@ -33,7 +34,6 @@
 
   <!-- Discord Embed-->
   <meta property="og:title" content="Fusion Lobby Browser" />
-  <meta property="og:site_name" content="Fusion Lobby Browser">
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://fusion.hahoos.dev/" />
   <meta property="og:description"
@@ -81,11 +81,11 @@
   <script src="scripts/const.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/purify.min.js" crossOrigin="anonymous"></script>
+  <script src="scripts/steam.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/settings.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/main.js" type="module" crossOrigin="anonymous"></script>
   <script src="scripts/oneko.js" data-cat="images/oneko.gif" type="module" crossOrigin="anonymous"></script>
 
-  <link rel="stylesheet" href="styles/fonts.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="styles/style.css" crossOrigin="anonymous" />
 
   <link rel="stylesheet" href="fa/css/fontawesome.css" crossOrigin="anonymous" />
@@ -96,14 +96,17 @@
 
 <body>
   <div class="stuffToCopy">
-    <div class="lobbyNotice" id="lobbyNoticeToCopy">
+    <div class="notice" id="noticeToCopy">
       <i class="noticeIcon textIcon fas fa-xmark"></i>
       <h2 class="noticeTitle">Error!</h2>
       <p class="noticeDescription">Failed to load lobbies!</p>
     </div>
     <div class="lobby" id="lobbyToCopy">
-      <i class="platformIcon"></i>
-      <img class="lobbyThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+      <div class="thumbnailContainer">
+        <i class="thumbnailSpinner fas fa-spinner"></i>
+        <img class="lobbyThumbnail" src="images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
+      </div>
+      <i class="platformIcon fa-brands fa-steam"></i>
       <p class="info lobbyName">HAHOOS's Lobby!</p>
       <p class="info lobbyHostName"><i class="fa-solid fa-user textIcon"></i><span
           class="elemContent">RottenCheese</span>
@@ -111,12 +114,19 @@
       <p class="info levelTitle"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">7/11</span></p>
       <p class="info gamemodeTitle"><i class="fa-solid fa-puzzle-piece textIcon"></i><span class="elemContent">Avatar
           Infection</span></p>
-      <p class="lobbyPlayerCount"><span class="elemContent">(0/10)</span><i class="fas fa-caret-down"></i></p>
+      <div class="rightTopCorner">
+        <p class="lobbyFriends hidden"><i class="lime textIcon fas fa-user-group"></i><span class="elemContent">0</span>
+        </p>
+        <p class="lobbyPlayerCount"><span class="elemContent">(0/10)</span><i class="fas fa-caret-down"></i></p>
+      </div>
       <button class="connect"><i class="fa-solid fa-play textIcon"></i>Join</button>
       <button class="infoButton"><i class="fa-solid fa-info textIcon"></i>Info</button>
     </div>
     <div class="player" id="playerToCopy">
-      <img class="avatarThumbnail" src="images/default/Jay.webp" loading="lazy" alt="Template thumbnail">
+      <div class="thumbnailContainer">
+        <i class="thumbnailSpinner fas fa-spinner"></i>
+        <img class="avatarThumbnail" src="images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
+      </div>
       <p class="name">RottenCheese</p>
       <p class="permissions"><i class="fa-solid fa-shield-halved textIcon"></i><span class="elemContent">GUEST</span>
       </p>
@@ -134,7 +144,10 @@
     </div>
     <div class="playerView" id="playerViewToCopy">
       <div>
-        <img class="viewThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+        <div class="thumbnailContainer">
+          <i class="thumbnailSpinner fas fa-spinner"></i>
+          <img class="viewThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+        </div>
         <div class="viewContent">
           <p class="detail"><i class="fa-solid fa-circle-user textIcon"></i>Display Name</p>
           <p class="detail-info playerDisplayName">RottenCheese</p>
@@ -160,15 +173,28 @@
               <div class="statusIndicator" data-tippy-content="N/A"></div>
             </div>
             <div>
-              <div class="linkContainer">
-                <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect steamUsername"><i
-                    class="fi fi-pl textIcon"></i> <span class="elemContent">RottenCheese</span></a>
-                <i class="linkIcon fas fa-link"></i>
-              </div>
-              <p class="createDate">Created on: N/A</p>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect steamUsername"><i
+                  class="fi fi-pl textIcon"></i> <span class="elemContent">RottenCheese</span></a></i>
+              <p class="steamAdditionalInfo">Created on: N/A</p>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="steamAccount" id="friendToCopy">
+      <div class="avatarContainer">
+        <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+          class="friendAvatar" />
+        <div class="statusIndicator" data-tippy-content="N/A"></div>
+      </div>
+      <div class="infoContainer">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect friendUsername"><span
+            class="elemContent">RottenCheese</span></a></i>
+        <p class="steamAdditionalInfo">In Lobby - hood rp (5/6)</p>
+      </div>
+      <div class="buttonContainer hidden">
+        <button class="textButton joinButton"><i class="fas fa-play"></i></button>
+        <button class="textButton infoButton"><i class="fas fa-info"></i></button>
       </div>
     </div>
   </div>
@@ -202,6 +228,21 @@
         <i class="textIcon fa-brands fa-github"></i>
         <span class="elemContent">Source Code</span>
       </a>
+
+      <div id="steamAccount">
+        <a id="steamRedirect" class="navigationItem"
+          href="https://fusionapi.hahoos.dev/steam/login?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank"
+          rel="noopener noreferrer">
+          <i class="textIcon fa-brands fa-steam"></i>
+          <span class="elemContent">Log in with Steam</span>
+        </a>
+        <div class="steamAccount hidden">
+          <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+            class="steamSmall" />
+          <button class="textButton steamName"><span class="elemContent">RottenCheese</span><i
+              class="fa-solid fa-caret-down"></i></button></i>
+        </div>
+      </div>
     </div>
     <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
         class="elemContent">Refresh</span></button>
@@ -262,6 +303,8 @@
   <div id="content">
     <div id="lobbyHeader">
       <h2 class="lobbyTitle">Lobbies (10)</h2>
+      <p id="lobbyDetails"><i class="textIcon fab fa-steam"></i><span id="steamCount">0</span> lobbies • <i
+          class="textIcon fac fa-epicgames"></i><span id="epicCount">0</span> lobbies</p>
       <p id="lobbyDetails"><i class="textIcon fas fa-users"></i><span id="playerCount">0</span> • <i
           class="textIcon fas fa-clock"></i><span id="refresh">N/A</span></p>
       <div id="appliedFilters" class="badges">
@@ -272,21 +315,20 @@
     <div id="popupBackground" class="hidden"></div>
     <div id="mainContent" role="main">
       <div id="settings">
-        <h1 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h1>
+        <h2 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h2>
         <button id="settingsClose" class="textButton"><i class="fas fa-x"></i></button>
         <div id="settingsList">
 
         </div>
       </div>
       <div id="lobbies">
-
       </div>
     </div>
     <div class="hotak0">
-      <button class="textButton hidden" id="fuckyoujackbaker">
-        <img src="images/fuckyou.png" width="64" height="64">
+      <button class="textButton hidden" id="hotak0CurseButton">
+        <img src="hotak0/images/cute_hotak0.png" alt="A little cute hotak0. Press him!">
       </button>
-      <img src="images/fuckyouevenmorejackbaker.png" class="hidden" id="fuckyouevenmorejackbaker">
+      <img src="hotak0/images/hotak0_curse.png" class="hidden" id="yourecursedgoodluck" alt="Sorry, I lied :(">
       <p class="istfg fa-spin hidden">You have 9 days to live</p>
     </div>
   </div>
