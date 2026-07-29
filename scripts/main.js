@@ -562,7 +562,7 @@ async function createLobby(lobby, signal, hidden) {
     if (friendIDs.some((x) => String(y.platformID) == String(x))) {
       _friends.push(String(y.platformID));
       const n = getName(y).name.trim();
-      friendsTooltip += `<p class="playerTooltip">${n}</p>"}`;
+      friendsTooltip += `<p class="playerTooltip">${n}</p>`;
     }
   });
 
