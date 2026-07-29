@@ -515,12 +515,8 @@ export let settings = [
 
     filterValue: (s, val) => val && (val.include || val.exclude),
     lobbyFilter: true,
-    lobbyValidator: (lobby) => {
-      for (const y of lobby.playerList.players) {
-        if (furryMods.some((x) => Number(y.avatarModID) == x)) return true;
-      }
-      return false;
-    },
+    lobbyValidator: (lobby) =>
+      lobby.lobbyHasFurries == "true" || lobby.lobbyHasFurries == true,
 
     defaultValue: { include: false, exclude: false },
     storeAsJSON: true,
