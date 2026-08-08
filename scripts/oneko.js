@@ -121,7 +121,7 @@
     nekoEl.style.width = "32px";
     nekoEl.style.height = "32px";
     nekoEl.style.position = "fixed";
-    nekoEl.style.pointerEvents = "none";
+    nekoEl.style.pointerEvents = "auto";
     nekoEl.style.imageRendering = "pixelated";
     nekoEl.style.left = `${nekoPosX - 16}px`;
     nekoEl.style.top = `${nekoPosY - 16}px`;
@@ -240,6 +240,53 @@
     }
     idleAnimationFrame += 1;
   }
+
+  function explodeHearts() {
+    const parent = nekoEl.parentElement;
+    const rect = nekoEl.getBoundingClientRect();
+    const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const centerX = rect.left + rect.width / 2 + scrollLeft;
+    const centerY = rect.top + rect.height / 2 + scrollTop;
+
+    for (let i = 0; i < 10; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "❤";
+      const offsetX = (Math.random() - 0.5) * 50;
+      const offsetY = (Math.random() - 0.5) * 50;
+      heart.style.left = `${centerX + offsetX - 16}px`;
+      heart.style.top = `${centerY + offsetY - 16}px`;
+      heart.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`;
+      parent.appendChild(heart);
+
+      setTimeout(() => {
+        parent.removeChild(heart);
+      }, 1000);
+    }
+  }
+
+  const style = document.createElement("style");
+  style.innerHTML = `
+		  @keyframes heartBurst {
+			  0% { transform: scale(0); opacity: 1; }
+			  100% { transform: scale(1); opacity: 0; }
+		  }
+		  .heart {
+			  position: absolute;
+			  font-size: 2em;
+			  animation: heartBurst 1s ease-out;
+			  animation-fill-mode: forwards;
+			  color: var(--flb-support-color);
+		  }
+
+      #oneko:hover{
+        cursor: pointer;
+      }
+	  `;
+
+  document.head.appendChild(style);
+  nekoEl.addEventListener("click", explodeHearts);
 
   function frame() {
     frameCount += 1;
