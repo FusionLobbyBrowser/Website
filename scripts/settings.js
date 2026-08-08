@@ -11,6 +11,7 @@ export let friends = [];
 
 let friendListElem;
 let friendsCancel;
+let initialized = false;
 export let areFriendsFetched = false;
 
 let categories = [
@@ -1351,6 +1352,7 @@ export function init() {
   settingsList.replaceChildren();
 
   categories.forEach(setupCategory);
+  initialized = true;
 }
 
 function setupCategory(val) {
@@ -1502,7 +1504,7 @@ export function setSettingsTitle(setting, title) {
 export function addCategory(category) {
   if (!category || categories.find((x) => x.name == category.name)) return;
   categories.push(category);
-  setupCategory(category);
+  if (initialized) setupCategory(category);
 }
 
 export function removeCategory(categoryName) {
@@ -1521,7 +1523,7 @@ export function removeCategory(categoryName) {
 export function addSetting(setting) {
   if (!setting || settings.find((x) => x.id == setting.id)) return;
   settings.push(setting);
-  createSetting(setting);
+  if (initialized) createSetting(setting);
 }
 
 export function removeSetting(settingId) {

@@ -351,6 +351,9 @@ export const blacklist = [
   "mass shotting", // typo
   "mass shoot", // typo
   "mass shot", // typo
+  "active shooter",
+  "active shoot",
+  "active shot",
   "cheese pizza", // havent seen any like that, but wouldnt be surprised if somebody tried to make a "funny joke" like that
   "child porn", // okay i can sort of understand why could people be like haha cheese pizza is cp abbreviated, but this is just beyond fucked up
   { word: "cp", type: "whole-word" }, // abbrevation
@@ -365,6 +368,10 @@ export const blacklist = [
   { word: "cum", type: "whole-word" },
   "ballsack",
   "vagina",
+  "goon",
+  "gooning",
+  "goonin",
+  { word: "ph", type: "whole-word" },
 
   // i dont think the words below require explanation
   // https://github.com/Lakatrazz/Fusion-Lists/blob/main/profanityList.json

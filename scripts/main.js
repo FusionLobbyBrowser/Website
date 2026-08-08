@@ -1633,8 +1633,8 @@ async function init() {
   console.log("Window has been loaded");
   document.getElementById("javascriptRequired").classList.add("hidden");
 
-  settingsInit();
   createGamemodes();
+  settingsInit();
   addEventListener("theme", adjustTheme);
   const params = new URLSearchParams(window.location.search);
   if (params.has(LOBBY_PARAM)) {
@@ -1729,12 +1729,13 @@ function createGamemodes() {
       icon: g && g.icon ? g.icon : "fas fa-puzzle-piece",
 
       lobbyFilter: true,
-      filterValue: false,
+      filterValue: (s, val) => val && (val.include || val.exclude),
       lobbyValidator: (lobby) => {
         return lobby.gamemodeBarcode == g.barcode;
       },
 
       defaultValue: { include: false, exclude: false },
+      storeAsJSON: true,
     });
   }
 }
