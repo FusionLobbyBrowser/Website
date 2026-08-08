@@ -21,6 +21,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Replace cache query parameter
+        run: |
+          ts=$(date +%s)
+          find . -name "*.html" -type f -exec sed -i "s/\?timestamp=1/\?$ts/g" {} +
       - name: Installing minifier
         run: sudo apt-get install minify
       - name: Minifying files
@@ -32,10 +36,6 @@ jobs:
           known_hosts: "ignorethislmao"
       - name: Adding known hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-      - name: Replace cache query parameter
-        run: |
-          ts=$(date +%s)
-          find . -name "*.html" -type f -exec sed -i "s/\?timestamp=1/\?$ts/g" {} +
       - name: Deploying with rsync
         run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/FLB/preview
       - name: Purging cache
