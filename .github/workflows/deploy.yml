@@ -38,7 +38,7 @@ jobs:
       - name: Replace cache query parameter
         run: |
           ts=$(date +%s)
-          find . -name "*.html" -type f -exec sed -i "s/\?timestamp/\?$ts/g" {} +
+          find . -name "*.html" -type f -exec sed -i "s/\?timestamp=1/\?$ts/g" {} +
       - name: Deploying with rsync
         run: rsync -avz ./dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/FLB
       - name: Purging cache
