@@ -1220,6 +1220,19 @@ export function setFriendsInLobby(friends) {
       }
     }
   });
+
+  if (!friendListElem.childNodes.some((x) => !x.classList.contains("hidden"))) {
+    const notices = list.getElementsByClassName("notice");
+    if (notices && notices.length > 0) for (const n of notices) n.remove();
+    notice(
+      list,
+      "Nobody's there",
+      onlyInLobby
+        ? "Seems like nobody's playing BONELAB right now"
+        : "Seems like nobody's playing anything right now",
+      "fas fa-face-frown",
+    );
+  }
 }
 
 function setOption(option, id, name, icon) {

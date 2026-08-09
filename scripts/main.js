@@ -837,6 +837,23 @@ async function displayInfo(lobby, signal) {
     const iconElem = getIconElem(g && g.icon ? g.icon : "fas fa-puzzle-piece");
     gamemode.insertBefore(iconElem, gamemode.firstChild);
 
+    const platform = header.getElementsByClassName("platform")[0];
+
+    const platformIcon = platform.getElementsByTagName("i")[0];
+    platformIcon.className = "";
+    platformIcon.classList.add("textIcon");
+    if (lobby.lobbyPlatform == "Steam") {
+      platformIcon.classList.add("fa-brands");
+      platformIcon.classList.add("fa-steam");
+    } else {
+      platformIcon.classList.add("fa-custom");
+      platformIcon.classList.add("fa-epicgames");
+    }
+    setContent(
+      platform,
+      lobby.lobbyPlatform == "Steam" ? "Steam" : "Epic Games",
+    );
+
     setContent(
       gamemode,
       lobby.gamemodeBarcode != "" && lobby.gamemodeBarcode
