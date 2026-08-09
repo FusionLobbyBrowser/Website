@@ -1221,7 +1221,12 @@ export function setFriendsInLobby(friends) {
     }
   });
 
-  if (!friendListElem.childNodes.some((x) => !x.classList.contains("hidden"))) {
+  let anyVisible = false;
+  friendListElem.childNodes.forEach((x) => {
+    if (!x.classList.contains("hidden")) anyVisible = true;
+  });
+
+  if (!anyVisible) {
     const notices = list.getElementsByClassName("notice");
     if (notices && notices.length > 0) for (const n of notices) n.remove();
     notice(
