@@ -58,7 +58,7 @@ const cacheExpireTime = 15 * 60;
 
 let showingInfo = false;
 
-let firstFetch = false;
+let fetchError = false;
 
 let oldSize = {
   width: window.innerWidth,
@@ -107,7 +107,6 @@ async function fetchAndCreateLobbies() {
   if (refreshing) return;
 
   refreshing = true;
-  firstFetch = true;
   console.log("Fetching lobbies");
   const start = Date.now();
   try {
@@ -128,14 +127,15 @@ async function fetchAndCreateLobbies() {
       const json = res.res ?? res;
       if (json.error != null) {
         lobbies.replaceChildren();
-        if (!(await isServerOnline()))
+        if (!(await isServerOnline())) {
           lobbyNotice(
             "Request Error",
             "Failed to fetch lobbies, because the server is currently offline. Try again later!",
             "fas fa-xmark",
             "--flb-error-color",
           );
-        else
+          fetchError = true;
+        } else {
           lobbyNotice(
             "Request Error",
             "Failed to fetch lobbies, server responded with the following error: " +
@@ -143,6 +143,8 @@ async function fetchAndCreateLobbies() {
             "fas fa-xmark",
             "--flb-error-color",
           );
+          fetchError = true;
+        }
 
         setTimeElem(refresh, null);
 
@@ -152,6 +154,7 @@ async function fetchAndCreateLobbies() {
         document.getElementById("epicCount").textContent = 0;
         hideShow(true);
       } else {
+        fetchError = false;
         if (json.interval) refreshInterval = Number(json.interval);
         let date = refresh.getAttribute("date");
         let numDate = -1;
@@ -349,10 +352,13 @@ function getLobbyName(lobby, stripRichText = true) {
 }
 
 async function createLobbies(signal) {
+  if (allLobbies == null || allLobbies == undefined) return;
+
   let infoUpdated = false;
   const refreshBtn = document.getElementById("refreshButton");
   const lobbies = document.getElementById("lobbies");
   lobbies.replaceChildren();
+
   let lobbyList = structuredClone(allLobbies);
   let lobbyCountMax = lobbyList.length;
   let allowed = hideLobbies(false);
@@ -1817,11 +1823,16 @@ async function updateTime() {
     if (info.hasAttribute("uptime") && uptimeContent) {
       const uptime = info.getElementsByClassName("uptime")[0];
       const t = Number(info.getAttribute("uptime"));
-      setContent(uptime, timePassed(t));
+      if (t) {
+        setContent(uptime, timePassed(t));
 
-      uptimeContent.innerHTML = DOMPurify.sanitize(
-        `${timePassed(t, false)}<br>Discovered: ${new Date(t * 1000).toLocaleString()}`,
-      );
+        uptimeContent.innerHTML = DOMPurify.sanitize(
+          `${timePassed(t, false)}<br>Discovered: ${new Date(t * 1000).toLocaleString()}`,
+        );
+      } else {
+        setContent(uptime, "N/A");
+        uptimeContent.innerHTML = "N/A";
+      }
     }
 
     await refreshButton(new Date(Number(refresh.getAttribute("date"))));
@@ -1833,7 +1844,7 @@ async function updateTime() {
 function timeAgoElem(elem, date = null) {
   if (date != null || elem.hasAttribute("date")) {
     const _date = date ?? new Date(Number(elem.getAttribute("date")));
-    setTimeElem(elem, timeAgo(_date));
+    if (_date) setTimeElem(elem, timeAgo(_date));
   }
 }
 

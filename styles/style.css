@@ -290,7 +290,7 @@ body {
 }
 
 header {
-  margin-top: 2.5em;
+  margin-top: 0;
   text-align: center;
   padding-bottom: 0.5em;
 }
@@ -308,7 +308,8 @@ h6 {
 
 h1 {
   font-size: 2rem;
-  margin-bottom: 0.135em;
+  margin-bottom: 0em;
+  margin-top: 0.25em;
 }
 
 h2 {
@@ -495,12 +496,12 @@ div:has(> .notice),
 
 .noticeIcon {
   font-size: 2.5rem;
-  margin-bottom: 0.1em;
+  margin-bottom: 0.05em;
 }
 
 .noticeTitle {
   margin-top: 0;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
 }
 
 .noticeDescription {
@@ -614,7 +615,14 @@ div:has(> .notice),
   text-align: center;
 }
 
-#lobbyDetails {
+#lobbiesInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+#lobbiesInfo > p {
   color: var(--flb-gray-color);
   text-align: center;
   margin-top: 0.25em;
@@ -630,11 +638,8 @@ div:has(> .notice),
 #appliedFilters {
   gap: 0.25em;
   text-align: center;
-  margin-bottom: 1em;
-}
-
-#appliedFilters {
-  margin-top: 0.75em;
+  margin-top: 0.15em;
+  margin-bottom: 0.15em;
 }
 
 #appliedFilters > .infoBadge {
@@ -665,7 +670,7 @@ a > .textIcon {
 }
 
 #navigationBar {
-  margin-top: 0.75em;
+  margin-top: 0.3em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -878,8 +883,8 @@ a > .textIcon {
 }
 
 .headerText {
-  margin-top: 0.1em;
-  margin-bottom: 0.25em;
+  margin-top: 0em;
+  margin-bottom: 0.5em;
   font-style: italic;
   font-size: 0.95rem;
 }
@@ -1295,6 +1300,10 @@ a > .textIcon {
   -webkit-transition: 0.5s;
   transition: 0.5s;
   margin: 0;
+}
+
+#appliedFilters > * {
+  font-size: 13px;
 }
 
 .badges {
