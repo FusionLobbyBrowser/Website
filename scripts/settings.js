@@ -1230,7 +1230,7 @@ export function setFriendsInLobby(friends) {
     const notices = list.getElementsByClassName("notice");
     if (notices && notices.length > 0) for (const n of notices) n.remove();
     notice(
-      list,
+      friendListElem,
       "Nobody's there",
       onlyInLobby
         ? "Seems like nobody's playing BONELAB right now"
