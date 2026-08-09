@@ -1227,7 +1227,7 @@ export function setFriendsInLobby(friends) {
   });
 
   if (!anyVisible) {
-    const notices = list.getElementsByClassName("notice");
+    const notices = friendListElem.getElementsByClassName("notice");
     if (notices && notices.length > 0) for (const n of notices) n.remove();
     notice(
       friendListElem,
