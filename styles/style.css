@@ -1469,6 +1469,9 @@ a > .textIcon {
 .name {
   word-wrap: break-word;
   margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1rem;
+  min-height: 1rem;
 }
 
 .collapsable > button.collapsed > :first-child:after {

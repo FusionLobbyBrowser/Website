@@ -1070,6 +1070,9 @@ async function createPlayerView(player, thumbnail, platform) {
   } else {
     thumb.classList.add("hidden");
   }
+
+  const spinner = view.getElementsByClassName("thumbnailSpinner")[0];
+  spinner.classList.add("hidden");
   view.getElementsByClassName("playerDisplayName")[0].innerHTML = convert(
     name.name,
   );
