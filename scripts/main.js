@@ -19,17 +19,13 @@ import {
   getIconElem,
   addSetting,
   getSetting,
-  friends,
   setFriendsInLobby,
   containsWord,
 } from "./settings.js";
 
-let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
+let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const LOBBY_LIST = "[host]lobbylist";
 const THUMBNAIL = "[host]thumbnail/[modId]?barcode=[barcode]";
-
-const PROFANITY_LIST =
-  "https://raw.githubusercontent.com/Lakatrazz/Fusion-Lists/refs/heads/main/profanityList.json";
 
 const URI_JOIN = "flb-bridge://join/[data]";
 
@@ -221,10 +217,9 @@ async function fetchAndCreateLobbies() {
   } catch (ex) {
     lobbyNotice(
       "Error",
-      DOMPurify.sanitize(
-        'An unexpected error has occurred while fetching/creating lobbies! If the error persits, contact the developer (check FAQ for contact)! If possible, <a class="modLink" href="https://balsamiq.com/support/troubleshooting-faqs/browser-console/" target="_blank" rel="noopener noreferrer">provide the error from the console</a> <br /> Exception: ' +
-          ex,
-      ),
+
+      'An unexpected error has occurred while fetching/creating lobbies! If the error persits, contact the developer (check FAQ for contact)! If possible, <a class="modLink" href="https://balsamiq.com/support/troubleshooting-faqs/browser-console/" target="_blank" rel="noopener noreferrer">provide the error from the console</a> <br /> Exception: ' +
+        DOMPurify.sanitize(ex),
       "fas fa-xmark",
       "--flb-error-color",
     );
@@ -1062,14 +1057,14 @@ async function displayInfo(lobby, signal) {
     hideShow(true, true);
     Swal.fire({
       title: "Something broke!",
-      html: DOMPurify.sanitize(
+      html:
         'An error has occurred while trying to display info for the lobby! If the error persists, contact the developer (check on FAQ page!). If possible, <a class="modLink" href="https://balsamiq.com/support/troubleshooting-faqs/browser-console/" target="_blank" rel="noopener noreferrer">provide the error from the console</a>. <br /> Error: ' +
-          ex,
-      ),
+        DOMPurify.sanitize(ex),
       icon: "error",
       toast: true,
       position: "bottom-end",
       width: "30em",
+      theme: adjustTheme(),
       showCloseButton: true,
       showConfirmButton: false,
     });
@@ -1693,8 +1688,14 @@ async function init() {
     window.location.hostname == "hoodrp.com" ||
     window.location.hostname == "www.hoodrp.com" ||
     SIMULATE_HOODRP
-  )
+  ) {
     activateHoodRpMode();
+  } else if (
+    window.location.hostname == "localhost:5500" ||
+    window.location.hostname == "localhost"
+  ) {
+    HOST = "https://localhost:7073/";
+  }
 
   collapsableMenus();
 

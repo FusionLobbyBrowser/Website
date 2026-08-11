@@ -1,4 +1,4 @@
-let HOST = "https://fusionapi.hahoos.dev/"; // http://localhost:5000/
+let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const STEAM = "[host]steam/";
 const ME = `${STEAM}me`;
 const PROFILE = `${STEAM}profile/[id]`;
@@ -13,6 +13,11 @@ async function init() {
     window.location.hostname == "www.hoodrp.com"
   ) {
     HOST = "https://api.hoodrp.com/";
+  } else if (
+    window.location.hostname == "localhost:5500" ||
+    window.location.hostname == "localhost"
+  ) {
+    HOST = "https://localhost:7073/";
   }
 
   const container = document.getElementById("steamAccount");
