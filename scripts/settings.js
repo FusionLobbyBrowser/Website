@@ -1226,7 +1226,7 @@ export function setFriendsInLobby(friends) {
     if (!x.classList.contains("hidden")) anyVisible = true;
   });
 
-  if (!anyVisible) {
+  if (!anyVisible && friends && friends.length > 0) {
     const notices = friendListElem.getElementsByClassName("notice");
     if (notices && notices.length > 0) for (const n of notices) n.remove();
     notice(
