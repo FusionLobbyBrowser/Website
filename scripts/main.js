@@ -138,8 +138,10 @@ async function fetchAndCreateLobbies() {
         } else {
           lobbyNotice(
             "Request Error",
-            "Failed to fetch lobbies, server responded with the following error: " +
-              json.error,
+            DOMPurify.sanitize(
+              "Failed to fetch lobbies, server responded with the following error: " +
+                json.error,
+            ),
             "fas fa-xmark",
             "--flb-error-color",
           );
@@ -219,8 +221,10 @@ async function fetchAndCreateLobbies() {
   } catch (ex) {
     lobbyNotice(
       "Error",
-      "An unexpected error has occurred while fetching/creating lobbies, if the error persits, contact the developer (check FAQ page for contact)! Exception: " +
-        ex,
+      DOMPurify.sanitize(
+        'An unexpected error has occurred while fetching/creating lobbies! If the error persits, contact the developer (check FAQ for contact)! If possible, <a class="modLink" href="https://balsamiq.com/support/troubleshooting-faqs/browser-console/" target="_blank" rel="noopener noreferrer">provide the error from the console</a> <br /> Exception: ' +
+          ex,
+      ),
       "fas fa-xmark",
       "--flb-error-color",
     );
@@ -1052,6 +1056,23 @@ async function displayInfo(lobby, signal) {
       "color: #0f0",
       "color: #0ff",
     );
+  } catch (ex) {
+    console.error("An error has occurred while trying to display info!");
+    console.error(ex);
+    hideShow(true, true);
+    Swal.fire({
+      title: "Something broke!",
+      html: DOMPurify.sanitize(
+        'An error has occurred while trying to display info for the lobby! If the error persists, contact the developer (check on FAQ page!). If possible, <a class="modLink" href="https://balsamiq.com/support/troubleshooting-faqs/browser-console/" target="_blank" rel="noopener noreferrer">provide the error from the console</a>. <br /> Error: ' +
+          ex,
+      ),
+      icon: "error",
+      toast: true,
+      position: "bottom-end",
+      width: "30em",
+      showCloseButton: true,
+      showConfirmButton: false,
+    });
   } finally {
     showingInfo = false;
     enableInfoButton(true);
@@ -1177,7 +1198,7 @@ function lobbyNotice(
   const classes = icon.split(" ");
   classes.forEach((x) => _icon.classList.add(x));
   _title.textContent = title;
-  _description.textContent = description;
+  _description.innerHTML = description;
   notice.style.color = `var(${colorVariable})`;
   lobbies.appendChild(notice);
 }
