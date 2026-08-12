@@ -1,4 +1,4 @@
-import { Converter } from "./unityRichText.js";
+import { Converter } from "unityRichText";
 import {
   barcodes,
   layers,
@@ -7,9 +7,9 @@ import {
   gamemodes,
   statuses,
   blacklist,
-} from "./const.js";
-import { getProfile } from "./steam.js";
-import Discord from "./discord.js";
+} from "const";
+import { getProfile } from "steam";
+import Discord from "discord";
 import {
   init as settingsInit,
   getSettingValue,
@@ -21,7 +21,7 @@ import {
   getSetting,
   setFriendsInLobby,
   containsWord,
-} from "./settings.js";
+} from "settings";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const LOBBY_LIST = "[host]lobbylist";

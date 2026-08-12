@@ -1,4 +1,4 @@
-import { Converter } from "./unityRichText.js";
+import { Converter } from "unityRichText";
 
 const regex = new RegExp(
   /(?:https:\/\/discord[\.\,]com\/invite\/|(?<=^|\s)(?:discord)?[\.\,]com\/invite\/|https?:\/\/discord[\.\,]gg\/|(?<=^|\s)(?:discord)?[\.\,]gg\/|Discord(?: Server| Link| Code|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
