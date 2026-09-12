@@ -874,7 +874,7 @@ async function displayInfo(lobby, signal) {
       (lobby.lobbyDescription != ""
         ? lobby.lobbyDescription
         : "No description provided"
-      ).replace("\n", "<br>"),
+      ).replaceAll("\n", "<br>"),
     );
 
     const discord = await Discord(lobby.lobbyDescription ?? "N/A");
@@ -1112,7 +1112,7 @@ async function createPlayerView(player, thumbnail, platform) {
     (player.description != ""
       ? player.description
       : "No description provided"
-    ).replace("\n", "<br>"),
+    ).replaceAll("\n", "<br>"),
   );
   if (platform == "Steam") {
     const req = await getProfile(player.platformID);
