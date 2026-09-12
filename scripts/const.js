@@ -373,6 +373,10 @@ export const blacklist = [
   "goonin",
   { word: "ph", type: "whole-word" },
 
+  "9/11",
+  "nine eleven",
+  "twin tower",
+
   // i dont think the words below require explanation
   // https://github.com/Lakatrazz/Fusion-Lists/blob/main/profanityList.json
   "fag",
