@@ -349,6 +349,8 @@ export const blacklist = [
   "ukr vs rus", // anothey way to call the above,
   "russia vs ukraine",
   "rus vs ukr",
+  "ru vs ukr",
+  "ukr vs ru",
   "mass shooting", // what the fuck dude? like im surprised a lobby like that was made, its probably like 11 y/o's kids playing and thinking it's fun, but like it's fucked up
   "mass shotting", // typo
   "mass shoot", // typo
