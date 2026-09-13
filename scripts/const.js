@@ -347,6 +347,8 @@ export const blacklist = [
   "purryforn", // mostly related to a lobby called "RussianPurryForn /'\OwO/'\ 17+", like do you really find this funny? i just think it's weird, but hey maybe i'm the weird one here
   "ukraine vs russia", // ongoing conflict that for some reason people like to "roleplay" in fusion, which is honestly disrespectful as fuck to the people.
   "ukr vs rus", // anothey way to call the above,
+  "russia vs ukraine",
+  "rus vs ukr",
   "mass shooting", // what the fuck dude? like im surprised a lobby like that was made, its probably like 11 y/o's kids playing and thinking it's fun, but like it's fucked up
   "mass shotting", // typo
   "mass shoot", // typo
