@@ -274,6 +274,10 @@ let categories = [
               : "Seems like nobody's playing anything right now",
             "fas fa-face-frown",
           );
+        } else {
+          const notices = list.getElementsByClassName("notice");
+          if (notices && notices.length > 0)
+            for (const n of notices) n.remove();
         }
         areFriendsFetched = true;
         window.dispatchEvent(new CustomEvent("onfriendslistfetched", {}));
@@ -1174,6 +1178,7 @@ export function setFriendsInLobby(friends) {
   friendsLobbies = friends;
   const order = [6, 1, 4, 2, 3, 0, 5];
   const onlyInLobby = getSettingValue("displayInLobby");
+  let anyVisible = false;
   friendListElem.childNodes.forEach((x) => {
     const friend = friends.find((y) => y.id == x.getAttribute("steamid"));
     const additionalInfo = x.getElementsByClassName("steamAdditionalInfo")[0];
@@ -1200,6 +1205,7 @@ export function setFriendsInLobby(friends) {
           }),
         );
       friendsAnyDisplayed = true;
+      anyVisible = true;
     } else if (x.hasAttribute("overridenInfo")) {
       userStatus = Number(x.getAttribute("userStatus"));
       additionalInfo.style.color = `var(--flb-status${userStatus}-color)`;
@@ -1223,7 +1229,6 @@ export function setFriendsInLobby(friends) {
     }
   });
 
-  let anyVisible = false;
   friendListElem.childNodes.forEach((x) => {
     if (!x.classList.contains("hidden")) anyVisible = true;
   });
