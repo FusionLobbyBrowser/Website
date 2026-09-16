@@ -7,7 +7,7 @@ import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
 
 // To get value changed event, listen for event "onsettingchanged" on window
 
-export let friends = [];
+export let friends = undefined;
 
 let friendListElem;
 let friendsCancel;
@@ -265,7 +265,7 @@ let categories = [
           )
             x.remove();
         });
-        if (!friendsAnyDisplayed) {
+        if (!friendsAnyDisplayed && friends) {
           notice(
             list,
             "Nobody's there",

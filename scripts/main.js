@@ -21,6 +21,7 @@ import {
   getSetting,
   setFriendsInLobby,
   containsWord,
+  friends,
 } from "settings";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
@@ -55,6 +56,8 @@ const cacheExpireTime = 15 * 60;
 let showingInfo = false;
 
 let fetchError = false;
+
+let inLobby;
 
 let oldSize = {
   width: window.innerWidth,
@@ -409,7 +412,7 @@ async function createLobbies(signal) {
     );
   }
 
-  let inLobby = [];
+  inLobby = [];
   let lobbiesWithFriends = [];
   lobbyList.forEach((x) => {
     const filtered = x.playerList.players.filter((y) =>
@@ -428,7 +431,8 @@ async function createLobbies(signal) {
       });
     }
   });
-  setFriendsInLobby(inLobby);
+  if (friends != undefined) setFriendsInLobby(inLobby);
+  else window.addEventListener("onfriendslistfetched", waitForFriendsFetch);
 
   console.log(
     `Creating %c${lobbyList.length}%c %s`,
@@ -505,6 +509,11 @@ async function createLobbies(signal) {
   }
 
   if (infoUpdated == false && shouldUpdate) hideShow(true);
+}
+
+function waitForFriendsFetch() {
+  setFriendsInLobby(inLobby);
+  window.removeEventListener("onfriendslistfetched", waitForFriendsFetch);
 }
 
 async function refreshButton(date) {
