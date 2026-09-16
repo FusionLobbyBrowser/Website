@@ -12,6 +12,7 @@ export let friends = [];
 let friendListElem;
 let friendsCancel;
 let initialized = false;
+let friendsAnyDisplayed = false;
 export let areFriendsFetched = false;
 
 let categories = [
@@ -165,7 +166,7 @@ let categories = [
             order.findIndex((x) => x == a.userStatus) -
             order.findIndex((x) => x == b.userStatus),
         );
-        let anyDisplayed = false;
+        friendsAnyDisplayed = false;
         const onlyInLobby = getSettingValue("displayInLobby");
         sorted.forEach((f) => {
           let elem = list.querySelector(`div[steamid="${f.steamId}"]`);
@@ -181,7 +182,7 @@ let categories = [
             elem.classList.remove("hidden");
             avatar.loading = "eager";
             avatar.fetchpriority = "auto";
-            anyDisplayed = true;
+            friendsAnyDisplayed = true;
           }
           elem.setAttribute("steamid", f.steamId);
           avatar.width = 32;
@@ -264,7 +265,7 @@ let categories = [
           )
             x.remove();
         });
-        if (!anyDisplayed) {
+        if (!friendsAnyDisplayed) {
           notice(
             list,
             "Nobody's there",
@@ -1198,6 +1199,7 @@ export function setFriendsInLobby(friends) {
             detail: { lobbyID: friend.lobbyID },
           }),
         );
+      friendsAnyDisplayed = true;
     } else if (x.hasAttribute("overridenInfo")) {
       userStatus = Number(x.getAttribute("userStatus"));
       additionalInfo.style.color = `var(--flb-status${userStatus}-color)`;
