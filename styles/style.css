@@ -2090,6 +2090,7 @@ label {
   height: 0.5em;
   background: none;
   pointer-events: none;
+  outline: none !important;
   cursor: pointer;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -2097,14 +2098,22 @@ label {
 }
 
 /* Styles for the range thumb in WebKit browsers */
-input[type="range"]::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb,
+input[type="range"]::-moz-slider-thumb {
   height: 1.5em;
   width: 1.5em;
 
   border-radius: 70%;
   background: var(--flb-border-color);
   pointer-events: auto;
+  appearance: none;
   -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+input[type="range"]::-moz-range-track,
+input[type="range"]::-webkit-slider-runnable-track {
+  cursor: pointer;
 }
 
 /* Steam Profile */
