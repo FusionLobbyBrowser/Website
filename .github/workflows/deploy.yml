@@ -1,4 +1,4 @@
-name: Deploy Site
+name: Website
 
 on:
   push:
@@ -17,6 +17,7 @@ concurrency:
 
 jobs:
   deployment:
+    name: "Deploy to Backend"
     runs-on: ubuntu-latest
     environment:
       name: production
