@@ -376,6 +376,7 @@ export const blacklist = [
   "gooning",
   "goonin",
   { word: "ph", type: "whole-word" },
+  "sperm",
 
   "9/11",
   "nine eleven",
