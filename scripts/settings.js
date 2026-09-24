@@ -443,7 +443,7 @@ export let settings = [
     filterWords: ["hood", "hoodrp"],
     filterLevels: RP_LEVELS,
 
-    defaultValue: { include: false, exclude: false },
+    defaultValue: { include: false, exclude: true },
     storeAsJSON: true,
   },
   {
