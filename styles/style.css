@@ -616,8 +616,14 @@ div:has(> .notice),
 }
 
 #lobbiesInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   gap: 0.5em;
 }
@@ -1523,6 +1529,13 @@ a > .textIcon {
   margin-right: auto;
 }
 
+.stuffToCopy {
+  display: none !important;
+  visibility: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
 .rightTopCorner {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1717,8 +1730,10 @@ button:hover {
         (
           (
             (
-              (-webkit-appearance: base-select) or
-                (-moz-appearance: base-select) or (appearance: base-select)
+              (
+                (-webkit-appearance: base-select) or
+                  (-moz-appearance: base-select) or (appearance: base-select)
+              )
             )
           )
         )
@@ -2091,7 +2106,6 @@ label {
   background: none;
   pointer-events: none;
   outline: none !important;
-  cursor: pointer;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -2099,7 +2113,7 @@ label {
 
 /* Styles for the range thumb in WebKit browsers */
 input[type="range"]::-webkit-slider-thumb,
-input[type="range"]::-moz-slider-thumb {
+input[type="range"]::-moz-range-thumb {
   height: 1.5em;
   width: 1.5em;
 
@@ -2109,11 +2123,6 @@ input[type="range"]::-moz-slider-thumb {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-}
-
-input[type="range"]::-moz-range-track,
-input[type="range"]::-webkit-slider-runnable-track {
-  cursor: pointer;
 }
 
 /* Steam Profile */
