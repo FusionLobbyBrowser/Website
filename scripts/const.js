@@ -333,6 +333,11 @@ export const permsList = [
   },
 ];
 
+// Believe that some word that is included here should not be here?
+// Create an issue on Github or contact me personally! (check FAQ page on the website)
+// If the reasoning will make sense, I will remove it. Though considering most of the community is <13 restrictions must be put.
+// Also if there's a word you believe should be blacklisted let me know.
+
 export const blacklist = [
   // Hood RP lobbies are sort of a gray area, not sure whether these should be blacklisted
 
@@ -377,6 +382,9 @@ export const blacklist = [
   "goonin",
   { word: "ph", type: "whole-word" },
   "sperm",
+  "penis",
+  { word: "cock", type: "whole-word" },
+  "boobs",
 
   "9/11",
   "nine eleven",
