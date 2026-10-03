@@ -6,7 +6,6 @@ import {
   permsList,
   gamemodes,
   statuses,
-  blacklist,
 } from "const";
 import { getProfile } from "steam";
 import Discord from "discord";
@@ -169,7 +168,6 @@ async function fetchAndCreateLobbies() {
             let lobbies = json.lobbies;
 
             allLobbies = structuredClone(lobbies);
-            allLobbies = allLobbies.filter((x) => !containsWord(x, blacklist));
             friendIDs = structuredClone(json.friends);
 
             let _gamemodes = [];
@@ -473,15 +471,6 @@ async function createLobbies(signal) {
     const lobby = prioritized[i];
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
 
-    if (containsWord(lobby, blacklist)) {
-      console.log(
-        "%c > Lobby name contains blacklisted word, ignoring: " +
-          Converter.removeRichText(lobby.lobbyName),
-        "color: #f00",
-      );
-      continue;
-    }
-
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
   }
@@ -494,15 +483,6 @@ async function createLobbies(signal) {
     count++;
     const lobby = other[i];
     setContent(refreshBtn, `Loading (${count} of ${lobbyList.length})`);
-
-    if (containsWord(lobby, blacklist)) {
-      console.log(
-        "%c > Lobby name contains blacklisted word, ignoring: " +
-          Converter.removeRichText(lobby.lobbyName),
-        "color: #f00",
-      );
-      continue;
-    }
 
     if (await createLobby(lobby, signal, !allowed.includes(lobby.lobbyID)))
       infoUpdated = true;
@@ -777,7 +757,6 @@ function enableInfoButton(enabled) {
 }
 
 async function displayInfo(lobby, signal) {
-  if (containsWord(lobby, blacklist)) return;
   if (infoSignal) infoSignal.abort();
   showingInfo = true;
   try {
