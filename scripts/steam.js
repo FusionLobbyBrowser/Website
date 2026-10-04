@@ -2,7 +2,7 @@ let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const STEAM = "[host]steam/";
 const ME = `${STEAM}me`;
 const PROFILE = `${STEAM}profile/[id]`;
-const FRIENDS = `${STEAM}friends/[id]`; // ID needs to be the same as logged in user
+const FRIENDS = `${STEAM}friends/`; // ID needs to be the same as logged in user
 
 if (document.readyState !== "loading") init();
 else window.addEventListener("DOMContentLoaded", init);
@@ -66,9 +66,12 @@ export async function getSelf() {
 
 export async function getProfile() {
   try {
-    const res = await fetch(PROFILE.replace("[host]", HOST), {
-      credentials: "include",
-    });
+    const res = await fetch(
+      PROFILE.replace("[host]", HOST).replace("[id]", id),
+      {
+        credentials: "include",
+      },
+    );
     if (!res.ok) return null;
     return await res.json();
   } catch (ex) {
@@ -77,14 +80,11 @@ export async function getProfile() {
   }
 }
 
-export async function getFriends(id) {
+export async function getFriends() {
   try {
-    const res = await fetch(
-      FRIENDS.replace("[host]", HOST).replace("[id]", id),
-      {
-        credentials: "include",
-      },
-    );
+    const res = await fetch(FRIENDS.replace("[host]", HOST), {
+      credentials: "include",
+    });
     if (res.status == 401) return false;
     if (!res.ok) return null;
     return await res.json();
