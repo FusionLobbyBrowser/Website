@@ -64,7 +64,7 @@ export async function getSelf() {
   }
 }
 
-export async function getProfile() {
+export async function getProfile(id) {
   try {
     const res = await fetch(
       PROFILE.replace("[host]", HOST).replace("[id]", id),
