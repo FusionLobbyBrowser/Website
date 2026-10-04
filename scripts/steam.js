@@ -64,14 +64,11 @@ export async function getSelf() {
   }
 }
 
-export async function getProfile(id) {
+export async function getProfile() {
   try {
-    const res = await fetch(
-      PROFILE.replace("[host]", HOST).replace("[id]", id),
-      {
-        credentials: "include",
-      },
-    );
+    const res = await fetch(PROFILE.replace("[host]", HOST), {
+      credentials: "include",
+    });
     if (!res.ok) return null;
     return await res.json();
   } catch (ex) {

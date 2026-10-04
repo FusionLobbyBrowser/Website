@@ -19,7 +19,6 @@ import {
   addSetting,
   getSetting,
   setFriendsInLobby,
-  containsWord,
   friends,
 } from "settings";
 
@@ -138,7 +137,7 @@ async function fetchAndCreateLobbies() {
             "Request Error",
             DOMPurify.sanitize(
               "Failed to fetch lobbies, server responded with the following error: " +
-                json.error,
+                json.error.detail,
             ),
             "fas fa-xmark",
             "--flb-error-color",
@@ -1452,7 +1451,7 @@ async function getJSON() {
     const response = await fetch(LOBBY_LIST.replace("[host]", HOST), {
       credentials: "include",
     });
-    if (!response.ok) return { error: await response.text() };
+    if (!response.ok) return { error: await response.json() };
 
     return {
       res: await response.json(),

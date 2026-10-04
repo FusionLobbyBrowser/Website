@@ -129,7 +129,7 @@ let categories = [
           hide();
           return;
         }
-        friends = await getFriends(self.steamId);
+        friends = await getFriends();
         if (friends == false) {
           friends = [];
           notice(
