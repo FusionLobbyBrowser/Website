@@ -1,0 +1,36 @@
+{
+  "name": "fusionlobbybrowser",
+  "version": "1.0.0",
+  "description": "The server that handles the frontend of Fusion Lobby Browser",
+  "homepage": "https://github.com/FusionLobbyBrowser/Website#readme",
+  "bugs": {
+    "url": "https://github.com/FusionLobbyBrowser/Website/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FusionLobbyBrowser/Website.git"
+  },
+  "license": "MIT",
+  "author": "HAHOOS",
+  "type": "commonjs",
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.16.4",
+    "@parcel/resolver-glob": "^2.16.4",
+    "@parcel/transformer-jsonld": "^2.16.4",
+    "@parcel/transformer-webmanifest": "^2.16.4",
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "dompurify": "^3.4.16",
+    "flag-icons": "^7.5.0",
+    "fuse.js": "^7.5.0",
+    "sweetalert2": "^11.26.25",
+    "tippy.js": "^6.3.7"
+  }
+}

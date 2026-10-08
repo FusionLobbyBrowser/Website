@@ -1,0 +1,2278 @@
+.tippy-box[data-animation="fade"][data-state="hidden"] {
+  opacity: 0;
+}
+
+[data-tippy-root] {
+  max-width: calc(100vw - 10px);
+}
+
+.tippy-box {
+  color: #fff;
+  white-space: normal;
+  background-color: #333;
+  border-radius: 4px;
+  outline: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  transition-property: transform, visibility, opacity;
+  position: relative;
+}
+
+.tippy-box[data-placement^="top"] > .tippy-arrow {
+  bottom: 0;
+}
+
+.tippy-box[data-placement^="top"] > .tippy-arrow:before {
+  border-width: 8px 8px 0;
+  border-top-color: initial;
+  transform-origin: top;
+  bottom: -7px;
+  left: 0;
+}
+
+.tippy-box[data-placement^="bottom"] > .tippy-arrow {
+  top: 0;
+}
+
+.tippy-box[data-placement^="bottom"] > .tippy-arrow:before {
+  border-width: 0 8px 8px;
+  border-bottom-color: initial;
+  transform-origin: bottom;
+  top: -7px;
+  left: 0;
+}
+
+.tippy-box[data-placement^="left"] > .tippy-arrow {
+  right: 0;
+}
+
+.tippy-box[data-placement^="left"] > .tippy-arrow:before {
+  border-width: 8px 0 8px 8px;
+  border-left-color: initial;
+  transform-origin: 0;
+  right: -7px;
+}
+
+.tippy-box[data-placement^="right"] > .tippy-arrow {
+  left: 0;
+}
+
+.tippy-box[data-placement^="right"] > .tippy-arrow:before {
+  border-width: 8px 8px 8px 0;
+  border-right-color: initial;
+  transform-origin: 100%;
+  left: -7px;
+}
+
+.tippy-box[data-inertia][data-state="visible"] {
+  transition-timing-function: cubic-bezier(.54, 1.5, .38, 1.11);
+}
+
+.tippy-arrow {
+  color: #333;
+  width: 16px;
+  height: 16px;
+}
+
+.tippy-arrow:before {
+  content: "";
+  border-style: solid;
+  border-color: #0000;
+  position: absolute;
+}
+
+.tippy-content {
+  z-index: 1;
+  padding: 5px 9px;
+  position: relative;
+}
+
+.fib, .fi {
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.fi {
+  width: 1.33333em;
+  line-height: 1em;
+  display: inline-block;
+  position: relative;
+}
+
+.fi:before {
+  content: " ";
+}
+
+.fi.fis {
+  width: 1em;
+}
+
+.fi-xx {
+  background-image: url("xx.449041ed.svg");
+}
+
+.fi-xx.fis {
+  background-image: url("xx.f474863e.svg");
+}
+
+.fi-ad {
+  background-image: url("ad.aa27147b.svg");
+}
+
+.fi-ad.fis {
+  background-image: url("ad.249d9fe9.svg");
+}
+
+.fi-ae {
+  background-image: url("ae.97bdab3f.svg");
+}
+
+.fi-ae.fis {
+  background-image: url("ae.2acd1ba0.svg");
+}
+
+.fi-af {
+  background-image: url("af.6f9b4a40.svg");
+}
+
+.fi-af.fis {
+  background-image: url("af.15e91d9f.svg");
+}
+
+.fi-ag {
+  background-image: url("ag.a98ce206.svg");
+}
+
+.fi-ag.fis {
+  background-image: url("ag.008127c3.svg");
+}
+
+.fi-ai {
+  background-image: url("ai.90aac0f8.svg");
+}
+
+.fi-ai.fis {
+  background-image: url("ai.42d6ca37.svg");
+}
+
+.fi-al {
+  background-image: url("al.06a24de0.svg");
+}
+
+.fi-al.fis {
+  background-image: url("al.b558aedf.svg");
+}
+
+.fi-am {
+  background-image: url("am.9727dd19.svg");
+}
+
+.fi-am.fis {
+  background-image: url("am.3c4decac.svg");
+}
+
+.fi-ao {
+  background-image: url("ao.0d6c4849.svg");
+}
+
+.fi-ao.fis {
+  background-image: url("ao.0282bfd0.svg");
+}
+
+.fi-aq {
+  background-image: url("aq.28782056.svg");
+}
+
+.fi-aq.fis {
+  background-image: url("aq.7e0e26ce.svg");
+}
+
+.fi-ar {
+  background-image: url("ar.f4282e34.svg");
+}
+
+.fi-ar.fis {
+  background-image: url("ar.430d9d5c.svg");
+}
+
+.fi-as {
+  background-image: url("as.9cddb093.svg");
+}
+
+.fi-as.fis {
+  background-image: url("as.df68e6f3.svg");
+}
+
+.fi-at {
+  background-image: url("at.dffbe8d9.svg");
+}
+
+.fi-at.fis {
+  background-image: url("at.377c10d5.svg");
+}
+
+.fi-au {
+  background-image: url("au.0500effb.svg");
+}
+
+.fi-au.fis {
+  background-image: url("au.041d9797.svg");
+}
+
+.fi-aw {
+  background-image: url("aw.9d85df3a.svg");
+}
+
+.fi-aw.fis {
+  background-image: url("aw.84a26760.svg");
+}
+
+.fi-ax {
+  background-image: url("ax.125f8bb4.svg");
+}
+
+.fi-ax.fis {
+  background-image: url("ax.6d744aa4.svg");
+}
+
+.fi-az {
+  background-image: url("az.c7e872c7.svg");
+}
+
+.fi-az.fis {
+  background-image: url("az.5d6cddf3.svg");
+}
+
+.fi-ba {
+  background-image: url("ba.0f6e93a7.svg");
+}
+
+.fi-ba.fis {
+  background-image: url("ba.3c2cb5eb.svg");
+}
+
+.fi-bb {
+  background-image: url("bb.582ff683.svg");
+}
+
+.fi-bb.fis {
+  background-image: url("bb.3aa28ce5.svg");
+}
+
+.fi-bd {
+  background-image: url("bd.dd992072.svg");
+}
+
+.fi-bd.fis {
+  background-image: url("bd.3813882e.svg");
+}
+
+.fi-be {
+  background-image: url("be.954bf929.svg");
+}
+
+.fi-be.fis {
+  background-image: url("be.0508c409.svg");
+}
+
+.fi-bf {
+  background-image: url("bf.ac327fba.svg");
+}
+
+.fi-bf.fis {
+  background-image: url("bf.ebe472de.svg");
+}
+
+.fi-bg {
+  background-image: url("bg.1a78d2a9.svg");
+}
+
+.fi-bg.fis {
+  background-image: url("bg.30f7ed24.svg");
+}
+
+.fi-bh {
+  background-image: url("bh.4aa076ab.svg");
+}
+
+.fi-bh.fis {
+  background-image: url("bh.7792fb1c.svg");
+}
+
+.fi-bi {
+  background-image: url("bi.c0e88191.svg");
+}
+
+.fi-bi.fis {
+  background-image: url("bi.4dfee642.svg");
+}
+
+.fi-bj {
+  background-image: url("bj.c30556d2.svg");
+}
+
+.fi-bj.fis {
+  background-image: url("bj.56cd7f7d.svg");
+}
+
+.fi-bl {
+  background-image: url("bl.6b8a21b4.svg");
+}
+
+.fi-bl.fis {
+  background-image: url("bl.4d189a14.svg");
+}
+
+.fi-bm {
+  background-image: url("bm.7d8732d7.svg");
+}
+
+.fi-bm.fis {
+  background-image: url("bm.7cbae3a4.svg");
+}
+
+.fi-bn {
+  background-image: url("bn.9639b277.svg");
+}
+
+.fi-bn.fis {
+  background-image: url("bn.c310ae96.svg");
+}
+
+.fi-bo {
+  background-image: url("bo.f2bb681c.svg");
+}
+
+.fi-bo.fis {
+  background-image: url("bo.ec7b1ac1.svg");
+}
+
+.fi-bq {
+  background-image: url("bq.b9413e1e.svg");
+}
+
+.fi-bq.fis {
+  background-image: url("bq.5fa49c6d.svg");
+}
+
+.fi-br {
+  background-image: url("br.f02f888d.svg");
+}
+
+.fi-br.fis {
+  background-image: url("br.6f8d9b24.svg");
+}
+
+.fi-bs {
+  background-image: url("bs.149844b8.svg");
+}
+
+.fi-bs.fis {
+  background-image: url("bs.b1b6d090.svg");
+}
+
+.fi-bt {
+  background-image: url("bt.6dcc9806.svg");
+}
+
+.fi-bt.fis {
+  background-image: url("bt.7000534b.svg");
+}
+
+.fi-bv {
+  background-image: url("bv.b4f8f5cb.svg");
+}
+
+.fi-bv.fis {
+  background-image: url("bv.b63b0cbd.svg");
+}
+
+.fi-bw {
+  background-image: url("bw.4e11de84.svg");
+}
+
+.fi-bw.fis {
+  background-image: url("bw.1fc617d0.svg");
+}
+
+.fi-by {
+  background-image: url("by.df6b8454.svg");
+}
+
+.fi-by.fis {
+  background-image: url("by.430b2c9f.svg");
+}
+
+.fi-bz {
+  background-image: url("bz.d116c0e3.svg");
+}
+
+.fi-bz.fis {
+  background-image: url("bz.fab36759.svg");
+}
+
+.fi-ca {
+  background-image: url("ca.02383926.svg");
+}
+
+.fi-ca.fis {
+  background-image: url("ca.a7e3712c.svg");
+}
+
+.fi-cc {
+  background-image: url("cc.f992aefb.svg");
+}
+
+.fi-cc.fis {
+  background-image: url("cc.8e85c057.svg");
+}
+
+.fi-cd {
+  background-image: url("cd.d370bba7.svg");
+}
+
+.fi-cd.fis {
+  background-image: url("cd.223fb2ec.svg");
+}
+
+.fi-cf {
+  background-image: url("cf.5655b4c3.svg");
+}
+
+.fi-cf.fis {
+  background-image: url("cf.9e951af8.svg");
+}
+
+.fi-cg {
+  background-image: url("cg.dd5930d8.svg");
+}
+
+.fi-cg.fis {
+  background-image: url("cg.88ab12b1.svg");
+}
+
+.fi-ch {
+  background-image: url("ch.edcf7bfb.svg");
+}
+
+.fi-ch.fis {
+  background-image: url("ch.8fd52125.svg");
+}
+
+.fi-ci {
+  background-image: url("ci.a3603125.svg");
+}
+
+.fi-ci.fis {
+  background-image: url("ci.a26cd310.svg");
+}
+
+.fi-ck {
+  background-image: url("ck.6bf20cf3.svg");
+}
+
+.fi-ck.fis {
+  background-image: url("ck.3249204a.svg");
+}
+
+.fi-cl {
+  background-image: url("cl.3b4fa76e.svg");
+}
+
+.fi-cl.fis {
+  background-image: url("cl.f7161f31.svg");
+}
+
+.fi-cm {
+  background-image: url("cm.2f002674.svg");
+}
+
+.fi-cm.fis {
+  background-image: url("cm.79b22c24.svg");
+}
+
+.fi-cn {
+  background-image: url("cn.fb6d72c0.svg");
+}
+
+.fi-cn.fis {
+  background-image: url("cn.d441e6fc.svg");
+}
+
+.fi-co {
+  background-image: url("co.80d6d515.svg");
+}
+
+.fi-co.fis {
+  background-image: url("co.b92ee31e.svg");
+}
+
+.fi-cr {
+  background-image: url("cr.6bdee2c1.svg");
+}
+
+.fi-cr.fis {
+  background-image: url("cr.e748fd9c.svg");
+}
+
+.fi-cu {
+  background-image: url("cu.57cdb172.svg");
+}
+
+.fi-cu.fis {
+  background-image: url("cu.0538e543.svg");
+}
+
+.fi-cv {
+  background-image: url("cv.f64080fc.svg");
+}
+
+.fi-cv.fis {
+  background-image: url("cv.6076dfdb.svg");
+}
+
+.fi-cw {
+  background-image: url("cw.6fe023cb.svg");
+}
+
+.fi-cw.fis {
+  background-image: url("cw.e56b743f.svg");
+}
+
+.fi-cx {
+  background-image: url("cx.31fd0a41.svg");
+}
+
+.fi-cx.fis {
+  background-image: url("cx.ced4f073.svg");
+}
+
+.fi-cy {
+  background-image: url("cy.f0ed8f9c.svg");
+}
+
+.fi-cy.fis {
+  background-image: url("cy.cf202037.svg");
+}
+
+.fi-cz {
+  background-image: url("cz.a15fb215.svg");
+}
+
+.fi-cz.fis {
+  background-image: url("cz.dbc2f8d5.svg");
+}
+
+.fi-de {
+  background-image: url("de.d88032b4.svg");
+}
+
+.fi-de.fis {
+  background-image: url("de.9f49b414.svg");
+}
+
+.fi-dj {
+  background-image: url("dj.a3449646.svg");
+}
+
+.fi-dj.fis {
+  background-image: url("dj.092fef92.svg");
+}
+
+.fi-dk {
+  background-image: url("dk.72629624.svg");
+}
+
+.fi-dk.fis {
+  background-image: url("dk.e2a9174e.svg");
+}
+
+.fi-dm {
+  background-image: url("dm.cb8cecd2.svg");
+}
+
+.fi-dm.fis {
+  background-image: url("dm.983c6202.svg");
+}
+
+.fi-do {
+  background-image: url("do.cf7d7306.svg");
+}
+
+.fi-do.fis {
+  background-image: url("do.5cd7a322.svg");
+}
+
+.fi-dz {
+  background-image: url("dz.ed5ed0d6.svg");
+}
+
+.fi-dz.fis {
+  background-image: url("dz.2584c6de.svg");
+}
+
+.fi-ec {
+  background-image: url("ec.a2b03949.svg");
+}
+
+.fi-ec.fis {
+  background-image: url("ec.0161b8eb.svg");
+}
+
+.fi-ee {
+  background-image: url("ee.bc46fb57.svg");
+}
+
+.fi-ee.fis {
+  background-image: url("ee.5532f970.svg");
+}
+
+.fi-eg {
+  background-image: url("eg.fb965ecd.svg");
+}
+
+.fi-eg.fis {
+  background-image: url("eg.1a6d01ae.svg");
+}
+
+.fi-eh {
+  background-image: url("eh.46ec1ac5.svg");
+}
+
+.fi-eh.fis {
+  background-image: url("eh.70b09345.svg");
+}
+
+.fi-er {
+  background-image: url("er.5ac04fa1.svg");
+}
+
+.fi-er.fis {
+  background-image: url("er.c1a0f64a.svg");
+}
+
+.fi-es {
+  background-image: url("es.5a881b41.svg");
+}
+
+.fi-es.fis {
+  background-image: url("es.29d507b0.svg");
+}
+
+.fi-et {
+  background-image: url("et.16d86a4e.svg");
+}
+
+.fi-et.fis {
+  background-image: url("et.730b9638.svg");
+}
+
+.fi-fi {
+  background-image: url("fi.d906a08e.svg");
+}
+
+.fi-fi.fis {
+  background-image: url("fi.29f3849c.svg");
+}
+
+.fi-fj {
+  background-image: url("fj.b9035368.svg");
+}
+
+.fi-fj.fis {
+  background-image: url("fj.04363462.svg");
+}
+
+.fi-fk {
+  background-image: url("fk.28577a55.svg");
+}
+
+.fi-fk.fis {
+  background-image: url("fk.d1862a4e.svg");
+}
+
+.fi-fm {
+  background-image: url("fm.6ca90394.svg");
+}
+
+.fi-fm.fis {
+  background-image: url("fm.2c10d5a9.svg");
+}
+
+.fi-fo {
+  background-image: url("fo.27a4392f.svg");
+}
+
+.fi-fo.fis {
+  background-image: url("fo.a5a2699d.svg");
+}
+
+.fi-fr {
+  background-image: url("fr.242da960.svg");
+}
+
+.fi-fr.fis {
+  background-image: url("fr.5276f786.svg");
+}
+
+.fi-ga {
+  background-image: url("ga.ca9f0b04.svg");
+}
+
+.fi-ga.fis {
+  background-image: url("ga.314d2f02.svg");
+}
+
+.fi-gb {
+  background-image: url("gb.f1651102.svg");
+}
+
+.fi-gb.fis {
+  background-image: url("gb.bf77774a.svg");
+}
+
+.fi-gd {
+  background-image: url("gd.c6c9c1bf.svg");
+}
+
+.fi-gd.fis {
+  background-image: url("gd.cd9dc067.svg");
+}
+
+.fi-ge {
+  background-image: url("ge.dd48ee49.svg");
+}
+
+.fi-ge.fis {
+  background-image: url("ge.a85b7a32.svg");
+}
+
+.fi-gf {
+  background-image: url("gf.73f134af.svg");
+}
+
+.fi-gf.fis {
+  background-image: url("gf.69b45b82.svg");
+}
+
+.fi-gg {
+  background-image: url("gg.4c37956e.svg");
+}
+
+.fi-gg.fis {
+  background-image: url("gg.6153435f.svg");
+}
+
+.fi-gh {
+  background-image: url("gh.a4ebc39e.svg");
+}
+
+.fi-gh.fis {
+  background-image: url("gh.6c48afe2.svg");
+}
+
+.fi-gi {
+  background-image: url("gi.82d632a4.svg");
+}
+
+.fi-gi.fis {
+  background-image: url("gi.b94ddf7a.svg");
+}
+
+.fi-gl {
+  background-image: url("gl.0e71f6b4.svg");
+}
+
+.fi-gl.fis {
+  background-image: url("gl.702a852f.svg");
+}
+
+.fi-gm {
+  background-image: url("gm.ecdbd45b.svg");
+}
+
+.fi-gm.fis {
+  background-image: url("gm.21fc469e.svg");
+}
+
+.fi-gn {
+  background-image: url("gn.575c1548.svg");
+}
+
+.fi-gn.fis {
+  background-image: url("gn.be197cff.svg");
+}
+
+.fi-gp {
+  background-image: url("gp.9d719f25.svg");
+}
+
+.fi-gp.fis {
+  background-image: url("gp.a08ed44c.svg");
+}
+
+.fi-gq {
+  background-image: url("gq.c72ed012.svg");
+}
+
+.fi-gq.fis {
+  background-image: url("gq.bd5a4489.svg");
+}
+
+.fi-gr {
+  background-image: url("gr.2493ac86.svg");
+}
+
+.fi-gr.fis {
+  background-image: url("gr.098f5c58.svg");
+}
+
+.fi-gs {
+  background-image: url("gs.c9542b58.svg");
+}
+
+.fi-gs.fis {
+  background-image: url("gs.c1543af7.svg");
+}
+
+.fi-gt {
+  background-image: url("gt.aeb7008f.svg");
+}
+
+.fi-gt.fis {
+  background-image: url("gt.fc64894d.svg");
+}
+
+.fi-gu {
+  background-image: url("gu.b93c462b.svg");
+}
+
+.fi-gu.fis {
+  background-image: url("gu.0e9e306c.svg");
+}
+
+.fi-gw {
+  background-image: url("gw.1813cdbd.svg");
+}
+
+.fi-gw.fis {
+  background-image: url("gw.0b9bd0bb.svg");
+}
+
+.fi-gy {
+  background-image: url("gy.c542ce05.svg");
+}
+
+.fi-gy.fis {
+  background-image: url("gy.923a04f9.svg");
+}
+
+.fi-hk {
+  background-image: url("hk.4a9541ce.svg");
+}
+
+.fi-hk.fis {
+  background-image: url("hk.6e533047.svg");
+}
+
+.fi-hm {
+  background-image: url("hm.9509155f.svg");
+}
+
+.fi-hm.fis {
+  background-image: url("hm.a3c15c44.svg");
+}
+
+.fi-hn {
+  background-image: url("hn.b814db89.svg");
+}
+
+.fi-hn.fis {
+  background-image: url("hn.47825bf1.svg");
+}
+
+.fi-hr {
+  background-image: url("hr.8cc34d07.svg");
+}
+
+.fi-hr.fis {
+  background-image: url("hr.9b71dd4b.svg");
+}
+
+.fi-ht {
+  background-image: url("ht.0eb4315e.svg");
+}
+
+.fi-ht.fis {
+  background-image: url("ht.7a884606.svg");
+}
+
+.fi-hu {
+  background-image: url("hu.7bc8c4bd.svg");
+}
+
+.fi-hu.fis {
+  background-image: url("hu.43624897.svg");
+}
+
+.fi-id {
+  background-image: url("id.585c91fe.svg");
+}
+
+.fi-id.fis {
+  background-image: url("id.43acb393.svg");
+}
+
+.fi-ie {
+  background-image: url("ie.8af38b64.svg");
+}
+
+.fi-ie.fis {
+  background-image: url("ie.75cd4b92.svg");
+}
+
+.fi-il {
+  background-image: url("il.84039362.svg");
+}
+
+.fi-il.fis {
+  background-image: url("il.b68d41c0.svg");
+}
+
+.fi-im {
+  background-image: url("im.a609a05c.svg");
+}
+
+.fi-im.fis {
+  background-image: url("im.d398ae59.svg");
+}
+
+.fi-in {
+  background-image: url("in.8c6a9372.svg");
+}
+
+.fi-in.fis {
+  background-image: url("in.0c29b9dd.svg");
+}
+
+.fi-io {
+  background-image: url("io.3c755414.svg");
+}
+
+.fi-io.fis {
+  background-image: url("io.7a4dfeb4.svg");
+}
+
+.fi-iq {
+  background-image: url("iq.13f7ee94.svg");
+}
+
+.fi-iq.fis {
+  background-image: url("iq.124bd77a.svg");
+}
+
+.fi-ir {
+  background-image: url("ir.795f2a5e.svg");
+}
+
+.fi-ir.fis {
+  background-image: url("ir.5701f26a.svg");
+}
+
+.fi-is {
+  background-image: url("is.97d2fc8c.svg");
+}
+
+.fi-is.fis {
+  background-image: url("is.e12cf7ad.svg");
+}
+
+.fi-it {
+  background-image: url("it.98023f1a.svg");
+}
+
+.fi-it.fis {
+  background-image: url("it.942f80a8.svg");
+}
+
+.fi-je {
+  background-image: url("je.00778b90.svg");
+}
+
+.fi-je.fis {
+  background-image: url("je.abd0c204.svg");
+}
+
+.fi-jm {
+  background-image: url("jm.0f8427cc.svg");
+}
+
+.fi-jm.fis {
+  background-image: url("jm.a4336d84.svg");
+}
+
+.fi-jo {
+  background-image: url("jo.a136df30.svg");
+}
+
+.fi-jo.fis {
+  background-image: url("jo.2f6c98f1.svg");
+}
+
+.fi-jp {
+  background-image: url("jp.37f02b2d.svg");
+}
+
+.fi-jp.fis {
+  background-image: url("jp.43029297.svg");
+}
+
+.fi-ke {
+  background-image: url("ke.7a9c3dae.svg");
+}
+
+.fi-ke.fis {
+  background-image: url("ke.4ebd5cbf.svg");
+}
+
+.fi-kg {
+  background-image: url("kg.55ac424d.svg");
+}
+
+.fi-kg.fis {
+  background-image: url("kg.c7e0f388.svg");
+}
+
+.fi-kh {
+  background-image: url("kh.ff881c89.svg");
+}
+
+.fi-kh.fis {
+  background-image: url("kh.90f3b440.svg");
+}
+
+.fi-ki {
+  background-image: url("ki.9e672f1d.svg");
+}
+
+.fi-ki.fis {
+  background-image: url("ki.25c31ef8.svg");
+}
+
+.fi-km {
+  background-image: url("km.85a4d048.svg");
+}
+
+.fi-km.fis {
+  background-image: url("km.0479d4cc.svg");
+}
+
+.fi-kn {
+  background-image: url("kn.ce02e185.svg");
+}
+
+.fi-kn.fis {
+  background-image: url("kn.41ce068f.svg");
+}
+
+.fi-kp {
+  background-image: url("kp.a9d4d73b.svg");
+}
+
+.fi-kp.fis {
+  background-image: url("kp.c33131a6.svg");
+}
+
+.fi-kr {
+  background-image: url("kr.95d24cd6.svg");
+}
+
+.fi-kr.fis {
+  background-image: url("kr.1b9f207e.svg");
+}
+
+.fi-kw {
+  background-image: url("kw.560af5de.svg");
+}
+
+.fi-kw.fis {
+  background-image: url("kw.7e2e85b9.svg");
+}
+
+.fi-ky {
+  background-image: url("ky.32aa122e.svg");
+}
+
+.fi-ky.fis {
+  background-image: url("ky.5a2743c3.svg");
+}
+
+.fi-kz {
+  background-image: url("kz.3f082dc4.svg");
+}
+
+.fi-kz.fis {
+  background-image: url("kz.723ef69f.svg");
+}
+
+.fi-la {
+  background-image: url("la.07ca02ae.svg");
+}
+
+.fi-la.fis {
+  background-image: url("la.4e393166.svg");
+}
+
+.fi-lb {
+  background-image: url("lb.b3ff6f7e.svg");
+}
+
+.fi-lb.fis {
+  background-image: url("lb.4d956533.svg");
+}
+
+.fi-lc {
+  background-image: url("lc.4e97c10e.svg");
+}
+
+.fi-lc.fis {
+  background-image: url("lc.c52083b1.svg");
+}
+
+.fi-li {
+  background-image: url("li.9c71a6dd.svg");
+}
+
+.fi-li.fis {
+  background-image: url("li.3d99ab95.svg");
+}
+
+.fi-lk {
+  background-image: url("lk.e9ecb49e.svg");
+}
+
+.fi-lk.fis {
+  background-image: url("lk.a73217cc.svg");
+}
+
+.fi-lr {
+  background-image: url("lr.d70bbf50.svg");
+}
+
+.fi-lr.fis {
+  background-image: url("lr.787ebb2a.svg");
+}
+
+.fi-ls {
+  background-image: url("ls.c3c0d917.svg");
+}
+
+.fi-ls.fis {
+  background-image: url("ls.62d90b94.svg");
+}
+
+.fi-lt {
+  background-image: url("lt.b2d1d4b0.svg");
+}
+
+.fi-lt.fis {
+  background-image: url("lt.4b87530f.svg");
+}
+
+.fi-lu {
+  background-image: url("lu.34e47ab9.svg");
+}
+
+.fi-lu.fis {
+  background-image: url("lu.b353fc42.svg");
+}
+
+.fi-lv {
+  background-image: url("lv.65bb27a9.svg");
+}
+
+.fi-lv.fis {
+  background-image: url("lv.717e0999.svg");
+}
+
+.fi-ly {
+  background-image: url("ly.25a2f213.svg");
+}
+
+.fi-ly.fis {
+  background-image: url("ly.108c0928.svg");
+}
+
+.fi-ma {
+  background-image: url("ma.5c516d8d.svg");
+}
+
+.fi-ma.fis {
+  background-image: url("ma.8c5e227f.svg");
+}
+
+.fi-mc {
+  background-image: url("mc.50571847.svg");
+}
+
+.fi-mc.fis {
+  background-image: url("mc.89a27965.svg");
+}
+
+.fi-md {
+  background-image: url("md.dfbfd55d.svg");
+}
+
+.fi-md.fis {
+  background-image: url("md.f6f92ad8.svg");
+}
+
+.fi-me {
+  background-image: url("me.97d971a7.svg");
+}
+
+.fi-me.fis {
+  background-image: url("me.4a529ede.svg");
+}
+
+.fi-mf {
+  background-image: url("mf.38b6c9bd.svg");
+}
+
+.fi-mf.fis {
+  background-image: url("mf.0530c79c.svg");
+}
+
+.fi-mg {
+  background-image: url("mg.5842e2ea.svg");
+}
+
+.fi-mg.fis {
+  background-image: url("mg.a9e37665.svg");
+}
+
+.fi-mh {
+  background-image: url("mh.254dfe2d.svg");
+}
+
+.fi-mh.fis {
+  background-image: url("mh.5615962f.svg");
+}
+
+.fi-mk {
+  background-image: url("mk.6d7f5d67.svg");
+}
+
+.fi-mk.fis {
+  background-image: url("mk.ff038732.svg");
+}
+
+.fi-ml {
+  background-image: url("ml.da03e023.svg");
+}
+
+.fi-ml.fis {
+  background-image: url("ml.d656794d.svg");
+}
+
+.fi-mm {
+  background-image: url("mm.092a2cc9.svg");
+}
+
+.fi-mm.fis {
+  background-image: url("mm.2a60ce9c.svg");
+}
+
+.fi-mn {
+  background-image: url("mn.1648cbeb.svg");
+}
+
+.fi-mn.fis {
+  background-image: url("mn.2ec09f92.svg");
+}
+
+.fi-mo {
+  background-image: url("mo.e0a27034.svg");
+}
+
+.fi-mo.fis {
+  background-image: url("mo.a9ca9254.svg");
+}
+
+.fi-mp {
+  background-image: url("mp.3b436e1f.svg");
+}
+
+.fi-mp.fis {
+  background-image: url("mp.1cef9f18.svg");
+}
+
+.fi-mq {
+  background-image: url("mq.d841293d.svg");
+}
+
+.fi-mq.fis {
+  background-image: url("mq.e5d78173.svg");
+}
+
+.fi-mr {
+  background-image: url("mr.ed08b979.svg");
+}
+
+.fi-mr.fis {
+  background-image: url("mr.94886433.svg");
+}
+
+.fi-ms {
+  background-image: url("ms.ec7a274b.svg");
+}
+
+.fi-ms.fis {
+  background-image: url("ms.2513e0ab.svg");
+}
+
+.fi-mt {
+  background-image: url("mt.f73bfbee.svg");
+}
+
+.fi-mt.fis {
+  background-image: url("mt.1c2f2e41.svg");
+}
+
+.fi-mu {
+  background-image: url("mu.8aad6861.svg");
+}
+
+.fi-mu.fis {
+  background-image: url("mu.5d2d72fd.svg");
+}
+
+.fi-mv {
+  background-image: url("mv.ad737d22.svg");
+}
+
+.fi-mv.fis {
+  background-image: url("mv.4c1f804e.svg");
+}
+
+.fi-mw {
+  background-image: url("mw.25b4072e.svg");
+}
+
+.fi-mw.fis {
+  background-image: url("mw.0e8b4d30.svg");
+}
+
+.fi-mx {
+  background-image: url("mx.4c1f6566.svg");
+}
+
+.fi-mx.fis {
+  background-image: url("mx.383a952c.svg");
+}
+
+.fi-my {
+  background-image: url("my.187553e7.svg");
+}
+
+.fi-my.fis {
+  background-image: url("my.f6e2a4a2.svg");
+}
+
+.fi-mz {
+  background-image: url("mz.dcd005d9.svg");
+}
+
+.fi-mz.fis {
+  background-image: url("mz.d1c93b8b.svg");
+}
+
+.fi-na {
+  background-image: url("na.5f1f314f.svg");
+}
+
+.fi-na.fis {
+  background-image: url("na.15ff2e8a.svg");
+}
+
+.fi-nc {
+  background-image: url("nc.24ce6077.svg");
+}
+
+.fi-nc.fis {
+  background-image: url("nc.655014ec.svg");
+}
+
+.fi-ne {
+  background-image: url("ne.c33494f4.svg");
+}
+
+.fi-ne.fis {
+  background-image: url("ne.af4dc2cb.svg");
+}
+
+.fi-nf {
+  background-image: url("nf.8202243c.svg");
+}
+
+.fi-nf.fis {
+  background-image: url("nf.7e3a62e8.svg");
+}
+
+.fi-ng {
+  background-image: url("ng.69bb5e62.svg");
+}
+
+.fi-ng.fis {
+  background-image: url("ng.f8fe3a4c.svg");
+}
+
+.fi-ni {
+  background-image: url("ni.02b98858.svg");
+}
+
+.fi-ni.fis {
+  background-image: url("ni.b9a528ea.svg");
+}
+
+.fi-nl {
+  background-image: url("nl.e1aed299.svg");
+}
+
+.fi-nl.fis {
+  background-image: url("nl.26bf94c1.svg");
+}
+
+.fi-no {
+  background-image: url("no.7ea6bcc6.svg");
+}
+
+.fi-no.fis {
+  background-image: url("no.36964c42.svg");
+}
+
+.fi-np {
+  background-image: url("np.df78e0ba.svg");
+}
+
+.fi-np.fis {
+  background-image: url("np.3f0f5371.svg");
+}
+
+.fi-nr {
+  background-image: url("nr.6f22ba5a.svg");
+}
+
+.fi-nr.fis {
+  background-image: url("nr.69c4d43a.svg");
+}
+
+.fi-nu {
+  background-image: url("nu.dc1112be.svg");
+}
+
+.fi-nu.fis {
+  background-image: url("nu.816822a7.svg");
+}
+
+.fi-nz {
+  background-image: url("nz.53c4223a.svg");
+}
+
+.fi-nz.fis {
+  background-image: url("nz.45733bc4.svg");
+}
+
+.fi-om {
+  background-image: url("om.ad41c056.svg");
+}
+
+.fi-om.fis {
+  background-image: url("om.3d946c05.svg");
+}
+
+.fi-pa {
+  background-image: url("pa.a1654927.svg");
+}
+
+.fi-pa.fis {
+  background-image: url("pa.68e265c8.svg");
+}
+
+.fi-pe {
+  background-image: url("pe.e291f534.svg");
+}
+
+.fi-pe.fis {
+  background-image: url("pe.6b45d5e0.svg");
+}
+
+.fi-pf {
+  background-image: url("pf.674f8ec9.svg");
+}
+
+.fi-pf.fis {
+  background-image: url("pf.190f36cb.svg");
+}
+
+.fi-pg {
+  background-image: url("pg.995229aa.svg");
+}
+
+.fi-pg.fis {
+  background-image: url("pg.de6bffad.svg");
+}
+
+.fi-ph {
+  background-image: url("ph.a15aed15.svg");
+}
+
+.fi-ph.fis {
+  background-image: url("ph.6c888a10.svg");
+}
+
+.fi-pk {
+  background-image: url("pk.9d45a8ab.svg");
+}
+
+.fi-pk.fis {
+  background-image: url("pk.f2697483.svg");
+}
+
+.fi-pl {
+  background-image: url("pl.4fb303cd.svg");
+}
+
+.fi-pl.fis {
+  background-image: url("pl.e2cbb341.svg");
+}
+
+.fi-pm {
+  background-image: url("pm.30c3ff15.svg");
+}
+
+.fi-pm.fis {
+  background-image: url("pm.8562e958.svg");
+}
+
+.fi-pn {
+  background-image: url("pn.bd4bcbf0.svg");
+}
+
+.fi-pn.fis {
+  background-image: url("pn.92173b07.svg");
+}
+
+.fi-pr {
+  background-image: url("pr.3716e55d.svg");
+}
+
+.fi-pr.fis {
+  background-image: url("pr.a6993ece.svg");
+}
+
+.fi-ps {
+  background-image: url("ps.067db939.svg");
+}
+
+.fi-ps.fis {
+  background-image: url("ps.67f70ba2.svg");
+}
+
+.fi-pt {
+  background-image: url("pt.debb924a.svg");
+}
+
+.fi-pt.fis {
+  background-image: url("pt.b2c50490.svg");
+}
+
+.fi-pw {
+  background-image: url("pw.3148cb93.svg");
+}
+
+.fi-pw.fis {
+  background-image: url("pw.893b77e1.svg");
+}
+
+.fi-py {
+  background-image: url("py.b98d4512.svg");
+}
+
+.fi-py.fis {
+  background-image: url("py.fb0d1374.svg");
+}
+
+.fi-qa {
+  background-image: url("qa.25647f4f.svg");
+}
+
+.fi-qa.fis {
+  background-image: url("qa.e45989da.svg");
+}
+
+.fi-re {
+  background-image: url("re.d1aeb1e9.svg");
+}
+
+.fi-re.fis {
+  background-image: url("re.f4fce545.svg");
+}
+
+.fi-ro {
+  background-image: url("ro.e0e71be4.svg");
+}
+
+.fi-ro.fis {
+  background-image: url("ro.a0db325e.svg");
+}
+
+.fi-rs {
+  background-image: url("rs.2ccc500f.svg");
+}
+
+.fi-rs.fis {
+  background-image: url("rs.532a91b7.svg");
+}
+
+.fi-ru {
+  background-image: url("ru.2e623ebd.svg");
+}
+
+.fi-ru.fis {
+  background-image: url("ru.cdfa01fa.svg");
+}
+
+.fi-rw {
+  background-image: url("rw.77edc5ae.svg");
+}
+
+.fi-rw.fis {
+  background-image: url("rw.5d57ebeb.svg");
+}
+
+.fi-sa {
+  background-image: url("sa.8367782e.svg");
+}
+
+.fi-sa.fis {
+  background-image: url("sa.bc4a08b5.svg");
+}
+
+.fi-sb {
+  background-image: url("sb.9cde0976.svg");
+}
+
+.fi-sb.fis {
+  background-image: url("sb.4ee63249.svg");
+}
+
+.fi-sc {
+  background-image: url("sc.b61debce.svg");
+}
+
+.fi-sc.fis {
+  background-image: url("sc.921a799c.svg");
+}
+
+.fi-sd {
+  background-image: url("sd.fb608666.svg");
+}
+
+.fi-sd.fis {
+  background-image: url("sd.fe313067.svg");
+}
+
+.fi-se {
+  background-image: url("se.64323c8f.svg");
+}
+
+.fi-se.fis {
+  background-image: url("se.1fedfafc.svg");
+}
+
+.fi-sg {
+  background-image: url("sg.18a43e4a.svg");
+}
+
+.fi-sg.fis {
+  background-image: url("sg.bb076676.svg");
+}
+
+.fi-sh {
+  background-image: url("sh.1dfa1eef.svg");
+}
+
+.fi-sh.fis {
+  background-image: url("sh.72da3706.svg");
+}
+
+.fi-si {
+  background-image: url("si.e651c2cd.svg");
+}
+
+.fi-si.fis {
+  background-image: url("si.fe68736d.svg");
+}
+
+.fi-sj {
+  background-image: url("sj.758fccac.svg");
+}
+
+.fi-sj.fis {
+  background-image: url("sj.cd52cfb8.svg");
+}
+
+.fi-sk {
+  background-image: url("sk.cb363f36.svg");
+}
+
+.fi-sk.fis {
+  background-image: url("sk.843cca2d.svg");
+}
+
+.fi-sl {
+  background-image: url("sl.8bb99887.svg");
+}
+
+.fi-sl.fis {
+  background-image: url("sl.b3247a1b.svg");
+}
+
+.fi-sm {
+  background-image: url("sm.22ab9b3b.svg");
+}
+
+.fi-sm.fis {
+  background-image: url("sm.1a438356.svg");
+}
+
+.fi-sn {
+  background-image: url("sn.b2ad7e2b.svg");
+}
+
+.fi-sn.fis {
+  background-image: url("sn.0add3300.svg");
+}
+
+.fi-so {
+  background-image: url("so.4f59a2c3.svg");
+}
+
+.fi-so.fis {
+  background-image: url("so.8578c705.svg");
+}
+
+.fi-sr {
+  background-image: url("sr.f98d1df2.svg");
+}
+
+.fi-sr.fis {
+  background-image: url("sr.df9adc2b.svg");
+}
+
+.fi-ss {
+  background-image: url("ss.e1239e54.svg");
+}
+
+.fi-ss.fis {
+  background-image: url("ss.44f1a465.svg");
+}
+
+.fi-st {
+  background-image: url("st.1414d029.svg");
+}
+
+.fi-st.fis {
+  background-image: url("st.14827ec3.svg");
+}
+
+.fi-sv {
+  background-image: url("sv.44575c68.svg");
+}
+
+.fi-sv.fis {
+  background-image: url("sv.5c185450.svg");
+}
+
+.fi-sx {
+  background-image: url("sx.4543e14d.svg");
+}
+
+.fi-sx.fis {
+  background-image: url("sx.722e866a.svg");
+}
+
+.fi-sy {
+  background-image: url("sy.53807bd7.svg");
+}
+
+.fi-sy.fis {
+  background-image: url("sy.60ef9a90.svg");
+}
+
+.fi-sz {
+  background-image: url("sz.0515d701.svg");
+}
+
+.fi-sz.fis {
+  background-image: url("sz.d5f50d5d.svg");
+}
+
+.fi-tc {
+  background-image: url("tc.54902fc5.svg");
+}
+
+.fi-tc.fis {
+  background-image: url("tc.96152510.svg");
+}
+
+.fi-td {
+  background-image: url("td.cecdbe1d.svg");
+}
+
+.fi-td.fis {
+  background-image: url("td.5b2e772d.svg");
+}
+
+.fi-tf {
+  background-image: url("tf.7a0e77fb.svg");
+}
+
+.fi-tf.fis {
+  background-image: url("tf.ffbd461a.svg");
+}
+
+.fi-tg {
+  background-image: url("tg.e0273711.svg");
+}
+
+.fi-tg.fis {
+  background-image: url("tg.bb2df2c3.svg");
+}
+
+.fi-th {
+  background-image: url("th.0a9e5ab3.svg");
+}
+
+.fi-th.fis {
+  background-image: url("th.7a24ef7f.svg");
+}
+
+.fi-tj {
+  background-image: url("tj.c180dd98.svg");
+}
+
+.fi-tj.fis {
+  background-image: url("tj.8d95e76e.svg");
+}
+
+.fi-tk {
+  background-image: url("tk.80d8e915.svg");
+}
+
+.fi-tk.fis {
+  background-image: url("tk.a691ad6b.svg");
+}
+
+.fi-tl {
+  background-image: url("tl.678e60f3.svg");
+}
+
+.fi-tl.fis {
+  background-image: url("tl.b0e328d2.svg");
+}
+
+.fi-tm {
+  background-image: url("tm.9df2dac8.svg");
+}
+
+.fi-tm.fis {
+  background-image: url("tm.8b0124a8.svg");
+}
+
+.fi-tn {
+  background-image: url("tn.91b11c40.svg");
+}
+
+.fi-tn.fis {
+  background-image: url("tn.ed0e2506.svg");
+}
+
+.fi-to {
+  background-image: url("to.7a113614.svg");
+}
+
+.fi-to.fis {
+  background-image: url("to.954a7866.svg");
+}
+
+.fi-tr {
+  background-image: url("tr.b48a787d.svg");
+}
+
+.fi-tr.fis {
+  background-image: url("tr.407f3679.svg");
+}
+
+.fi-tt {
+  background-image: url("tt.e5a05f00.svg");
+}
+
+.fi-tt.fis {
+  background-image: url("tt.89bf8527.svg");
+}
+
+.fi-tv {
+  background-image: url("tv.79e4b5f3.svg");
+}
+
+.fi-tv.fis {
+  background-image: url("tv.100506db.svg");
+}
+
+.fi-tw {
+  background-image: url("tw.19a3a05f.svg");
+}
+
+.fi-tw.fis {
+  background-image: url("tw.173a8e43.svg");
+}
+
+.fi-tz {
+  background-image: url("tz.d992baf9.svg");
+}
+
+.fi-tz.fis {
+  background-image: url("tz.070ec4db.svg");
+}
+
+.fi-ua {
+  background-image: url("ua.e9ba5ff4.svg");
+}
+
+.fi-ua.fis {
+  background-image: url("ua.766b9181.svg");
+}
+
+.fi-ug {
+  background-image: url("ug.1385d947.svg");
+}
+
+.fi-ug.fis {
+  background-image: url("ug.d388b066.svg");
+}
+
+.fi-um {
+  background-image: url("um.18dead5e.svg");
+}
+
+.fi-um.fis {
+  background-image: url("um.9fb30130.svg");
+}
+
+.fi-us {
+  background-image: url("us.000c1b93.svg");
+}
+
+.fi-us.fis {
+  background-image: url("us.cc637431.svg");
+}
+
+.fi-uy {
+  background-image: url("uy.4e5a6b5c.svg");
+}
+
+.fi-uy.fis {
+  background-image: url("uy.84651933.svg");
+}
+
+.fi-uz {
+  background-image: url("uz.8cfc97a8.svg");
+}
+
+.fi-uz.fis {
+  background-image: url("uz.aa9ccc80.svg");
+}
+
+.fi-va {
+  background-image: url("va.4f436fb6.svg");
+}
+
+.fi-va.fis {
+  background-image: url("va.a706b036.svg");
+}
+
+.fi-vc {
+  background-image: url("vc.a3c492cd.svg");
+}
+
+.fi-vc.fis {
+  background-image: url("vc.db41a055.svg");
+}
+
+.fi-ve {
+  background-image: url("ve.c0cf1ec1.svg");
+}
+
+.fi-ve.fis {
+  background-image: url("ve.a67f77ae.svg");
+}
+
+.fi-vg {
+  background-image: url("vg.05109a03.svg");
+}
+
+.fi-vg.fis {
+  background-image: url("vg.653ab91f.svg");
+}
+
+.fi-vi {
+  background-image: url("vi.5341f3f7.svg");
+}
+
+.fi-vi.fis {
+  background-image: url("vi.687e7f71.svg");
+}
+
+.fi-vn {
+  background-image: url("vn.d64b5046.svg");
+}
+
+.fi-vn.fis {
+  background-image: url("vn.fd1f1ad6.svg");
+}
+
+.fi-vu {
+  background-image: url("vu.01063818.svg");
+}
+
+.fi-vu.fis {
+  background-image: url("vu.d0db4b17.svg");
+}
+
+.fi-wf {
+  background-image: url("wf.ef7c8972.svg");
+}
+
+.fi-wf.fis {
+  background-image: url("wf.9ed109c5.svg");
+}
+
+.fi-ws {
+  background-image: url("ws.f67ad57c.svg");
+}
+
+.fi-ws.fis {
+  background-image: url("ws.81e407ea.svg");
+}
+
+.fi-ye {
+  background-image: url("ye.6e7efcd4.svg");
+}
+
+.fi-ye.fis {
+  background-image: url("ye.07626378.svg");
+}
+
+.fi-yt {
+  background-image: url("yt.9bfb959e.svg");
+}
+
+.fi-yt.fis {
+  background-image: url("yt.cce5762b.svg");
+}
+
+.fi-za {
+  background-image: url("za.f54d1e8b.svg");
+}
+
+.fi-za.fis {
+  background-image: url("za.f4a34014.svg");
+}
+
+.fi-zm {
+  background-image: url("zm.6c84f10e.svg");
+}
+
+.fi-zm.fis {
+  background-image: url("zm.fb15469a.svg");
+}
+
+.fi-zw {
+  background-image: url("zw.af8d954a.svg");
+}
+
+.fi-zw.fis {
+  background-image: url("zw.d37f9441.svg");
+}
+
+.fi-arab {
+  background-image: url("arab.f3a21bed.svg");
+}
+
+.fi-arab.fis {
+  background-image: url("arab.f623baa1.svg");
+}
+
+.fi-asean {
+  background-image: url("asean.d834adf5.svg");
+}
+
+.fi-asean.fis {
+  background-image: url("asean.536a5cb9.svg");
+}
+
+.fi-cefta {
+  background-image: url("cefta.7a0069e4.svg");
+}
+
+.fi-cefta.fis {
+  background-image: url("cefta.4f441b2f.svg");
+}
+
+.fi-cp {
+  background-image: url("cp.27035d1d.svg");
+}
+
+.fi-cp.fis {
+  background-image: url("cp.f4056638.svg");
+}
+
+.fi-dg {
+  background-image: url("dg.699a4e24.svg");
+}
+
+.fi-dg.fis {
+  background-image: url("dg.e8ee55a9.svg");
+}
+
+.fi-eac {
+  background-image: url("eac.90fde8c9.svg");
+}
+
+.fi-eac.fis {
+  background-image: url("eac.8377847f.svg");
+}
+
+.fi-es-ct {
+  background-image: url("es-ct.26e87381.svg");
+}
+
+.fi-es-ct.fis {
+  background-image: url("es-ct.7ec19e2a.svg");
+}
+
+.fi-es-ga {
+  background-image: url("es-ga.280d3bc0.svg");
+}
+
+.fi-es-ga.fis {
+  background-image: url("es-ga.3c4a4444.svg");
+}
+
+.fi-es-pv {
+  background-image: url("es-pv.dac9364e.svg");
+}
+
+.fi-es-pv.fis {
+  background-image: url("es-pv.98ffb3bb.svg");
+}
+
+.fi-eu {
+  background-image: url("eu.25406a74.svg");
+}
+
+.fi-eu.fis {
+  background-image: url("eu.0552bc4b.svg");
+}
+
+.fi-gb-eng {
+  background-image: url("gb-eng.1b1ac109.svg");
+}
+
+.fi-gb-eng.fis {
+  background-image: url("gb-eng.8c865341.svg");
+}
+
+.fi-gb-nir {
+  background-image: url("gb-nir.933c6364.svg");
+}
+
+.fi-gb-nir.fis {
+  background-image: url("gb-nir.dddaf690.svg");
+}
+
+.fi-gb-sct {
+  background-image: url("gb-sct.dbe3b9ba.svg");
+}
+
+.fi-gb-sct.fis {
+  background-image: url("gb-sct.2e431535.svg");
+}
+
+.fi-gb-wls {
+  background-image: url("gb-wls.3bdf39ad.svg");
+}
+
+.fi-gb-wls.fis {
+  background-image: url("gb-wls.22109327.svg");
+}
+
+.fi-ic {
+  background-image: url("ic.d3ab1d9e.svg");
+}
+
+.fi-ic.fis {
+  background-image: url("ic.32807dcc.svg");
+}
+
+.fi-pc {
+  background-image: url("pc.b904ffdb.svg");
+}
+
+.fi-pc.fis {
+  background-image: url("pc.1e50c127.svg");
+}
+
+.fi-sh-ac {
+  background-image: url("sh-ac.26029042.svg");
+}
+
+.fi-sh-ac.fis {
+  background-image: url("sh-ac.ed2c3930.svg");
+}
+
+.fi-sh-hl {
+  background-image: url("sh-hl.2a464e62.svg");
+}
+
+.fi-sh-hl.fis {
+  background-image: url("sh-hl.6a1653f3.svg");
+}
+
+.fi-sh-ta {
+  background-image: url("sh-ta.b487538a.svg");
+}
+
+.fi-sh-ta.fis {
+  background-image: url("sh-ta.22239097.svg");
+}
+
+.fi-un {
+  background-image: url("un.db842c4e.svg");
+}
+
+.fi-un.fis {
+  background-image: url("un.02fc850f.svg");
+}
+
+.fi-xk {
+  background-image: url("xk.3eccdd65.svg");
+}
+
+.fi-xk.fis {
+  background-image: url("xk.2f625cfc.svg");
+}
+/*# sourceMappingURL=FusionLobbyBrowser.9f367d21.css.map */

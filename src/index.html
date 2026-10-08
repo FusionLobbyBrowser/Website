@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- General -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fusionapi.hahoos.dev">
+  <link rel="dns-prefetch" href="https://fusionapi.hahoos.dev">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- SEO -->
+  <title>Fusion Lobby Browser</title>
+  <meta name="keywords" content="Fusion, LabFusion, BONELAB, BONELAB-Fusion, Boneworks, SLZ, Stress Level Zero" />
+  <meta name="description"
+    content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!" />
+
+  <link rel="canonical" href="https://fusion.hahoos.dev/" />
+  <link rel="alternate" href="https://hoodrp.com" />
+  <link rel="alternate" href="https://www.hoodrp.com" />
+  <script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "url": "https://fusion.hahoos.dev",
+    "name": "Fusion Lobby Browser",
+    "alternateName": ["FLB", "LabFusion Lobby Browser"],
+    "description": "Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!"
+  }
+  </script>
+
+  <!-- Discord Embed-->
+  <meta property="og:title" content="Fusion Lobby Browser" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://fusion.hahoos.dev/" />
+  <meta property="og:description"
+    content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!" />
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://fusion.hahoos.dev/">
+  <meta name="twitter:title" content="Fusion Lobby Browser">
+  <meta name="twitter:description"
+    content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="./images/favicon/favicon-144x144.png" sizes="144x144" />
+  <link rel="icon" type="image/png" href="./images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="./images/favicon/favicon-64x64.png" sizes="64x64" />
+  <link rel="icon" type="image/png" href="./images/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="./images/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="icon" type="image/svg+xml" href="./images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="./images/favicon/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="FLB" />
+  <meta property="og:image" content="https://fusion.hahoos.dev/images/favicon/web-app-manifest-192x192.png" />
+  <link rel="manifest" href="./manifest.json" />
+
+  <!-- Scripts & Styles -->
+
+  <!-- [ Internal ] -->
+
+  <script src="scripts/unityRichText.js?timestamp=1" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/const.js?timestamp=1" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/discord.js?timestamp=1" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/purify.min.js?timestamp=1" crossOrigin="anonymous"></script>
+  <script src="scripts/steam.js?timestamp=1" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/settings.js?timestamp=1" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/main.js?timestamp=1" type="module" crossOrigin="anonymous"></script>
+  <script src="scripts/oneko.js?timestamp=1" data-cat="images/oneko.gif" type="module" crossOrigin="anonymous"></script>
+
+  <link rel="stylesheet" href="styles/style.css?timestamp=1" crossOrigin="anonymous" />
+
+  <link rel="stylesheet" href="fa/css/fontawesome.css?timestamp=1" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/brands.css?timestamp=1" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/regular.css?timestamp=1" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/solid.css?timestamp=1" crossOrigin="anonymous" />
+</head>
+
+<body>
+  <div class="stuffToCopy">
+    <div class="notice" id="noticeToCopy">
+      <i class="noticeIcon textIcon fas fa-xmark"></i>
+      <h2 class="noticeTitle">Error!</h2>
+      <p class="noticeDescription">Failed to load lobbies!</p>
+    </div>
+    <div class="lobby" id="lobbyToCopy">
+      <div class="thumbnailContainer">
+        <i class="thumbnailSpinner fas fa-spinner"></i>
+        <img class="lobbyThumbnail" src="images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
+      </div>
+      <i class="platformIcon fa-brands fa-steam"></i>
+      <p class="info lobbyName">HAHOOS's Lobby!</p>
+      <p class="info lobbyHostName"><i class="fa-solid fa-user textIcon"></i><span
+          class="elemContent">RottenCheese</span>
+      </p>
+      <p class="info levelTitle"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">7/11</span></p>
+      <p class="info gamemodeTitle"><i class="fa-solid fa-puzzle-piece textIcon"></i><span class="elemContent">Avatar
+          Infection</span></p>
+      <div class="rightTopCorner">
+        <p class="lobbyFriends hidden"><i class="lime textIcon fas fa-user-group"></i><span class="elemContent">0</span>
+        </p>
+        <p class="lobbyPlayerCount"><span class="elemContent">(0/10)</span><i class="fas fa-caret-down"></i></p>
+      </div>
+      <button class="connect"><i class="fa-solid fa-play textIcon"></i>Join</button>
+      <button class="infoButton"><i class="fa-solid fa-info textIcon"></i>Info</button>
+    </div>
+    <div class="player" id="playerToCopy">
+      <div class="thumbnailContainer">
+        <i class="thumbnailSpinner fas fa-spinner"></i>
+        <img class="avatarThumbnail" src="images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
+      </div>
+      <p class="name">RottenCheese</p>
+      <p class="permissions"><i class="fa-solid fa-shield-halved textIcon"></i><span class="elemContent">GUEST</span>
+      </p>
+      <p class="avatarTitle">Fancy Ford</p>
+      <button class="profile"><i class="fa-solid fa-circle-user textIcon"></i>Profile</button>
+    </div>
+    <div class="discord" id="discordToCopy">
+      <img class="serverIcon" src="images/default/Jay.webp" loading="lazy" alt="Template icon">
+      <p class="serverName">RottenCheese's Server</p>
+      <p class="memberCount">569 members</p>
+      <p class="serverDescription">No description provided</p>
+      <a class="discordJoin" href="#" target="_blank" rel="noopener noreferrer">
+        <button class="discordJoinBtn"><i class="fa-brands fa-discord textIcon"></i>Join</button>
+      </a>
+    </div>
+    <div class="playerView" id="playerViewToCopy">
+      <div>
+        <div class="thumbnailContainer">
+          <i class="thumbnailSpinner fas fa-spinner"></i>
+          <img class="viewThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+        </div>
+        <div class="viewContent">
+          <p class="detail"><i class="fa-solid fa-circle-user textIcon"></i>Display Name</p>
+          <p class="detail-info playerDisplayName">RottenCheese</p>
+          <p class="detail"><i class="fa-solid fa-id-badge textIcon"></i>Username</p>
+          <p class="detail-info"><span class="playerUsername">HAHOOS</span> <span
+              class="playerId">(76561198320980868)</span></p>
+          <p class="detail"><i class="fa-solid fa-user-pen textIcon"></i>Avatar</p>
+          <p class="detail-info playerAvatar">RottenCheese</p>
+          <p class="detail"><i class="fa-solid fa-book textIcon"></i>Description</p>
+          <p class="detail-info playerDescription">Lorem ipsum dolor sit amet consectetur
+            adipiscing elit. Quisque
+            faucibus ex sapien vitae pellentesque sem placerat. In
+            id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+            fringilla lacus
+            nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+            vel class
+            aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p class="detail steamDetail"><i class="fa-brands fa-steam textIcon"></i>Steam Profile</p>
+          <div class="steamProfile">
+            <div class="avatarContainer">
+              <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+                class="steamAvatar" />
+              <div class="statusIndicator" data-tippy-content="N/A"></div>
+            </div>
+            <div>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect steamUsername"><i
+                  class="fi fi-pl textIcon"></i> <span class="elemContent">RottenCheese</span></a></i>
+              <p class="steamAdditionalInfo">Created on: N/A</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="steamAccount" id="friendToCopy">
+      <div class="avatarContainer">
+        <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+          class="friendAvatar" />
+        <div class="statusIndicator" data-tippy-content="N/A"></div>
+      </div>
+      <div class="infoContainer">
+        <a href="#" target="_blank" rel="noopener noreferrer" class="levelRedirect friendUsername"><span
+            class="elemContent">RottenCheese</span></a></i>
+        <p class="steamAdditionalInfo">In Lobby - hood rp (5/6)</p>
+      </div>
+      <div class="buttonContainer hidden">
+        <button class="textButton joinButton"><i class="fas fa-play"></i></button>
+        <button class="textButton infoButton"><i class="fas fa-info"></i></button>
+      </div>
+    </div>
+  </div>
+  <header>
+    <h1>Fusion Lobby Browser</h1>
+    <p class="headerText">Browse lobbies without having to open BONELAB!</p>
+    <div id="navigationBar">
+
+      <a class="navigationItem" href="/" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-home"></i>
+        <span class="elemContent">Home</span>
+      </a>
+
+      <a class="navigationItem" href="/faq" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-question"></i>
+        <span class="elemContent">FAQ</span>
+      </a>
+
+      <a class="navigationItem" href="https://flb.fider.io/" target="_blank" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-comment"></i>
+        <span class="elemContent">Feedback</span>
+      </a>
+
+      <a class="navigationItem support" href="https://ko-fi.com/hahoos" target="_blank" rel="noopener noreferrer">
+        <i class="textIcon fa-solid fa-heart"></i>
+        <span class="elemContent">Support</span>
+      </a>
+
+      <a class="navigationItem" href="https://github.com/FusionLobbyBrowser/Website" target="_blank"
+        rel="noopener noreferrer">
+        <i class="textIcon fa-brands fa-github"></i>
+        <span class="elemContent">Source Code</span>
+      </a>
+
+      <div id="steamAccount">
+        <a id="steamRedirect" class="navigationItem"
+          href="https://fusionapi.hahoos.dev/steam/login?redirectUrl=https://fusion.hahoos.dev/preview" target="_blank"
+          rel="noopener noreferrer">
+          <i class="textIcon fa-brands fa-steam"></i>
+          <span class="elemContent">Log in with Steam</span>
+        </a>
+        <div class="steamAccount hidden">
+          <img src="https://avatars.steamstatic.com/57d2647b204929180f21b5a01355dcb67d5742ca_full.jpg"
+            class="steamSmall" />
+          <button class="textButton steamName"><span class="elemContent">RottenCheese</span><i
+              class="fa-solid fa-caret-down"></i></button></i>
+        </div>
+      </div>
+    </div>
+    <button id="refreshButton"><i class="fa-solid fa-arrows-rotate textIcon"></i><span
+        class="elemContent">Refresh</span></button>
+    <button id="settingsButton"><i class="fa-solid fa-gear textIcon"></i><span
+        class="elemContent">Settings</span></button>
+  </header>
+  <div id="info-outer" class="hidden">
+
+    <div id="info" class="hidden">
+      <div class="header-outer">
+        <div id="info-header" class="header">
+          <h2 id="info-title">HAHOOS's Lobby!</h2>
+          <div class="badges">
+            <p class="infoBadge uptime"><i class="fa-solid fa-clock textIcon"></i><span class="elemContent">1h</span>
+            </p>
+            <p class="infoBadge version"><i class="fa-solid fa-code-branch textIcon"></i><span
+                class="elemContent">v0.0.0</span></p>
+            <p class="infoBadge level"><i class="fa-solid fa-map textIcon"></i><span class="elemContent">test
+                level</span></p>
+            <p class="infoBadge gamemode"><i class="fa-solid fa-puzzle-piece textIcon"></i><span
+                class="elemContent">Sandbox</span></p>
+            <p class="infoBadge platform"><i class="fa-brands fa-steam textIcon"></i><span
+                class="elemContent">Steam</span>
+            </p>
+          </div>
+          <div class="inline infoControls">
+            <button id="info-connect" class="connect"><i class="fa-solid fa-play textIcon"></i>Join!</button>
+            <button id="info-close"><i class="fa-solid fa-xmark textIcon"></i>Close</button>
+          </div>
+          <div class="uptime-container"></div>
+          <div class="uptime-content">N/A</div>
+        </div>
+      </div>
+      <div id="info-content" class="content hidden">
+        <div class="left-content side">
+          <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+        </div>
+        <div class="right-content side">
+          <p class="detail"><i class="fa-solid fa-book textIcon"></i>Description</p>
+          <p class="detail-info lobbyDescription">Lorem ipsum dolor sit amet consectetur
+            adipiscing elit. Quisque
+            faucibus ex sapien vitae pellentesque sem placerat. In
+            id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus
+            fringilla lacus
+            nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper
+            vel class
+            aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
+          <p class="detail permissionsTitle"><i class="fa-solid fa-gavel textIcon"></i>Permissions</p>
+          <div>
+            <div class="inline permissionsLevels"></div>
+            <div class="inline permissionsList"></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="playersTitle hidden"><i class="fa-solid fa-users textIcon"></i>Players <span
+          class="plrCount">(11/15)</span></h2>
+      <div id="info-players" class="hidden">
+      </div>
+    </div>
+  </div>
+  <div id="content">
+    <div id="lobbyHeader">
+      <h2 class="lobbyTitle">Lobbies (0)</h2>
+      <div id="lobbiesInfo">
+        <p><i class="textIcon fab fa-steam"></i><span id="steamCount">0</span> lobbies</p>
+        <p><i class="textIcon fac fa-epicgames"></i><span id="epicCount">0</span> lobbies</p>
+        <p><i class="textIcon fas fa-users"></i><span id="playerCount">0</span> players</p>
+        <p><i class="textIcon fas fa-clock"></i><span id="refresh">N/A</span></p>
+      </div>
+      <div id="appliedFilters" class="badges">
+        <p id="noFiltersText">No filters applied!</p>
+      </div>
+    </div>
+    <p id="javascriptRequired">This site requires JavaScript to be enabled.</p>
+    <div id="popupBackground" class="hidden"></div>
+    <div id="mainContent" role="main">
+      <div id="settings">
+        <h2 id="settingsTitle"><i class="fa-solid fa-gear"></i>Settings</h2>
+        <button id="settingsClose" class="textButton"><i class="fas fa-x"></i></button>
+        <div id="settingsList">
+
+        </div>
+      </div>
+      <div id="lobbies">
+      </div>
+    </div>
+    <div class="hotak0">
+      <button class="textButton hidden" id="hotak0CurseButton">
+        <img src="hotak0/images/cute_hotak0.png" alt="A little cute hotak0. Press him!">
+      </button>
+      <img src="hotak0/images/hotak0_curse.png" class="hidden" id="yourecursedgoodluck" alt="Sorry, I lied :(">
+      <p class="istfg fa-spin hidden">You have 9 days to live</p>
+    </div>
+  </div>
+</body>
+
+</html>
