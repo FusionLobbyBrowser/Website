@@ -25,7 +25,7 @@ import {
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import DOMPurify from "dompurify";
-import * as thumbnailFiles from "../images/default/*.webp";
+import * as thumbnailFiles from "url:../images/default/**";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const LOBBY_LIST = "[host]lobbylist";
