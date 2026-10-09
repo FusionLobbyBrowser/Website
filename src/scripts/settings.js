@@ -6,6 +6,7 @@ import "tippy.js/dist/tippy.css";
 import DOMPurify from "dompurify";
 import Fuse from "fuse.js";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+import * as gamemodeIcons from "url:../images/gamemodes/**";
 
 // Is this overkill? probably
 
@@ -1273,7 +1274,7 @@ export function getIconElem(icon) {
   if (icon.startsWith("img:")) {
     const img = document.createElement("i");
     img.classList.add("gamemodeIcon");
-    img.style.backgroundImage = `url(${icon.substring(4, icon.length)})`;
+    img.style.backgroundImage = `url(${gamemodeIcons[icon.substring(4, icon.length)]})`;
     return img;
   } else {
     const _icon = document.createElement("i");

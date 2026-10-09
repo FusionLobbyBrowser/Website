@@ -236,48 +236,48 @@ export const gamemodes = [
   {
     title: "Sandbox",
     barcode: "", // Sandbox does not have a barcode
-    icon: "img:./images/gamemodes/Sandbox.png",
+    icon: "img:Sandbox.png",
   },
   {
     title: "Deathmatch",
     barcode: "Lakatrazz.Deathmatch",
-    icon: "img:./images/gamemodes/Deathmatch.png",
+    icon: "img:Deathmatch.png",
   },
   {
     title: "Team Deathmatch",
     barcode: "Lakatrazz.Team Deathmatch",
-    icon: "img:./images/gamemodes/TeamDeathmatch.png",
+    icon: "img:TeamDeathmatch.png",
   },
   {
     title: "Smash Bones",
     barcode: "Lakatrazz.Smash Bones",
-    icon: "img:./images/gamemodes/SmashBones.png",
+    icon: "img:SmashBones.png",
   },
   {
     title: "Juggernaut",
     barcode: "Lakatrazz.Juggernaut",
-    icon: "img:./images/gamemodes/Juggernaut.png",
+    icon: "img:Juggernaut.png",
   },
   {
     title: "Hide & Seek",
     barcode: "Lakatrazz.Hide And Seek",
-    icon: "img:./images/gamemodes/HideAndSeek.png",
+    icon: "img:HideAndSeek.png",
   },
   {
     title: "Entangled",
     barcode: "Lakatrazz.Entangled",
-    icon: "img:./images/gamemodes/Entangled.png",
+    icon: "img:Entangled.png",
   },
   {
     title: "Avatar Infection",
     barcode: "HAHOOS.Avatar Infection",
-    icon: "img:./images/gamemodes/AvatarInfection.png",
+    icon: "img:AvatarInfection.png",
     link: "https://thunderstore.io/c/bonelab/p/HAHOOS/AvatarInfection/",
   },
   {
     title: "Bone Strike",
     barcode: "Mash.Bone Strike",
-    icon: "img:./images/gamemodes/BoneStrike.png",
+    icon: "img:BoneStrike.png",
     link: "https://thunderstore.io/c/bonelab/p/Mash/BoneStrike/",
   },
   {

@@ -1366,7 +1366,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
-    elem.setAttribute("src", require("../images/errorThumbnail.webp"));
+    elem.setAttribute("src", require("url:../images/errorThumbnail.webp"));
     elem.setAttribute("alt", alt);
   });
 
@@ -1377,10 +1377,13 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
         `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
       );
       spinner?.classList?.add("hidden");
-      elem.setAttribute("src", require("../images/default/Mods_Level.webp"));
+      elem.setAttribute(
+        "src",
+        require("url:../images/default/Mods_Level.webp"),
+      );
       elem.setAttribute("alt", alt);
       return {
-        thumbnail: require("../images/default/Mods_Level.webp"),
+        thumbnail: require("url:../images/default/Mods_Level.webp"),
         alt: alt,
         nsfw: false,
       };
@@ -1389,10 +1392,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", require("../images/errorThumbnail.webp"));
+    elem.setAttribute("src", require("url:../images/errorThumbnail.webp"));
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: require("../images/errorThumbnail.webp"),
+      thumbnail: require("url:../images/errorThumbnail.webp"),
       alt: alt,
       nsfw: false,
     };
@@ -1401,10 +1404,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", require("../images/nsfwCover.webp"));
+    elem.setAttribute("src", require("url:../images/nsfwCover.webp"));
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: require("../images/nsfwCover.webp"),
+      thumbnail: require("url:../images/nsfwCover.webp"),
       alt: alt,
       nsfw: true,
     };
