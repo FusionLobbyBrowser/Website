@@ -25,10 +25,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Replace cache query parameter
-        run: |
-          ts=$(date +%s)
-          find . -name "*.html" -type f -exec sed -i "s/\?timestamp=1/\?$ts/g" {} +
       - name: Installing minifier
         run: sudo apt-get install minify
       - name: Minifying files
