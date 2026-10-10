@@ -1,3 +1,6 @@
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const STEAM = "[host]steam/";
 const ME = `${STEAM}me`;

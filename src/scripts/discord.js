@@ -1,4 +1,7 @@
-import { Converter } from "unityRichText";
+import { Converter } from "./unityRichText.js";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import DOMPurify from "dompurify";
 
 const regex = new RegExp(
   /(?:https:\/\/discord[\.\,]com\/invite\/|(?<=^|\s)(?:discord)?[\.\,]com\/invite\/|https?:\/\/discord[\.\,]gg\/|(?<=^|\s)(?:discord)?[\.\,]gg\/|Discord(?: Server| Link| Code|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,

@@ -1,7 +1,12 @@
-import { Converter } from "unityRichText";
-import { barcodes, layers } from "const";
-import { getSelf, getFriends } from "steam";
-import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
+import { Converter } from "./unityRichText.js";
+import { barcodes, layers } from "./const.js";
+import { getSelf, getFriends } from "./steam.js";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import DOMPurify from "dompurify";
+import Fuse from "fuse.js";
+import "/node_modules/flag-icons/css/flag-icons.min.css";
+import * as gamemodeIcons from "url:../images/gamemodes/**";
 
 // Is this overkill? probably
 
@@ -1269,7 +1274,7 @@ export function getIconElem(icon) {
   if (icon.startsWith("img:")) {
     const img = document.createElement("i");
     img.classList.add("gamemodeIcon");
-    img.style.backgroundImage = `url(${icon.substring(4, icon.length)})`;
+    img.style.backgroundImage = `url(${gamemodeIcons[icon.substring(4, icon.length)]})`;
     return img;
   } else {
     const _icon = document.createElement("i");
