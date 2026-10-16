@@ -1,5 +1,5 @@
 {
-  "name": "fusionlobbybrowser",
+  "name": "FusionLobbyBrowser",
   "version": "1.0.0",
   "description": "The server that handles the frontend of Fusion Lobby Browser",
   "homepage": "https://github.com/FusionLobbyBrowser/Website#readme",
@@ -12,12 +12,13 @@
   },
   "license": "MIT",
   "author": "HAHOOS",
-  "type": "commonjs",
   "source": "src/index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "start": "parcel src/*.html src/**/*.html",
-    "build": "parcel build src/*.html src/**/*.html"
+    "start": "node index.js",
+    "dev": "parcel src/*.html src/**/*.html",
+    "build": "parcel build src/*.html src/**/*.html",
+    "watch": "parcel watch src/*.html src/**/*.html --no-hmr"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.16.4",
@@ -27,9 +28,11 @@
     "parcel": "^2.16.4"
   },
   "dependencies": {
-    "dompurify": "^3.4.16",
-    "flag-icons": "^7.5.0",
+    "dompurify": "^3.4.17",
+    "express": "^5.3.0",
+    "flag-icons": "^7.6.0",
     "fuse.js": "^7.5.0",
+    "helmet": "^8.3.0",
     "sweetalert2": "^11.26.25",
     "tippy.js": "^6.3.7"
   }

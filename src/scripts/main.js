@@ -1111,7 +1111,7 @@ async function createPlayerView(player, thumbnail, platform) {
     const req = await getProfile(player.platformID);
     if (req && !req.error) {
       const avatar = view.getElementsByClassName("steamAvatar")[0];
-      avatar.setAttribute("src", req.avatarFullUrl);
+      avatar.setAttribute("src", `${HOST}steam/avatar/${req.steamId}`);
       const indicator = view.getElementsByClassName("statusIndicator")[0];
       indicator.setAttribute(
         "class",
