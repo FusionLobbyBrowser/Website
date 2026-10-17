@@ -23,7 +23,7 @@ import {
 } from "settings";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
-const LOBBY_LIST = "[host]lobbylist";
+const LOBBY_LIST = "[host]lobby/all";
 const THUMBNAIL = "[host]thumbnail/[modId]?barcode=[barcode]";
 
 const URI_JOIN = "flb-bridge://join/[data]";
