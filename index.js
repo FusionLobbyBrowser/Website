@@ -100,11 +100,24 @@ app.get("/faq", (req, res) => {
   res.render("faq", { host: getHost(req) });
 });
 
-app.get("/sitemap.xml", async (req, res) => {
-  const file = await fsAsync.readFile("./sitemap.xml", "utf8");
+async function dynamicHostReplace(
+  req,
+  res,
+  fileName,
+  contentType = "application/xml",
+) {
+  const file = await fsAsync.readFile(fileName, "utf8");
   const val = file.replaceAll("[[host]]", getHost(req));
-  res.contentType("application/xml");
+  res.contentType(contentType);
   res.send(val);
+}
+
+app.get("/sitemap.xml", async (req, res) => {
+  dynamicHostReplace(req, res, "./sitemap.xml");
+});
+
+app.get("/robots.txt", async (req, res) => {
+  dynamicHostReplace(req, res, "./robots.txt", "text/plain");
 });
 
 app.listen(port, () => {
