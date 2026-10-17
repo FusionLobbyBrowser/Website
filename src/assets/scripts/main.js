@@ -7,7 +7,7 @@ import {
   gamemodes,
   statuses,
 } from "./const.js";
-import { getProfile } from "./steam.js";
+import { getProfile, getAvatar } from "./steam.js";
 import Discord from "./discord.js";
 import {
   init as settingsInit,
@@ -1110,7 +1110,7 @@ async function createPlayerView(player, thumbnail, platform) {
     const req = await getProfile(player.platformID);
     if (req && !req.error) {
       const avatar = view.getElementsByClassName("steamAvatar")[0];
-      avatar.setAttribute("src", `${HOST}steam/avatar/${req.steamId}`);
+      avatar.setAttribute("src", getAvatar(Number(req.steamId)));
       const indicator = view.getElementsByClassName("statusIndicator")[0];
       indicator.setAttribute(
         "class",
@@ -1266,6 +1266,18 @@ function setURLParams() {
   window.history.pushState(null, "", url.toString());
 }
 
+function redirectToIndex() {
+  const url = new URL(window.location.href);
+  url.pathname = "/";
+  if (infoView != -1) {
+    url.searchParams.set(LOBBY_PARAM, infoView);
+  } else url.searchParams.delete(LOBBY_PARAM);
+  if (url.searchParams.size <= 0)
+    url.searchParams.forEach((_, key) => url.searchParams.delete(key));
+
+  window.history.pushState(null, "", url.toString());
+}
+
 let processed = [];
 
 async function getThumbnail(modId, title, barcode, isAvatar) {
@@ -1366,7 +1378,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
-    elem.setAttribute("src", "images/errorThumbnail.webp");
+    elem.setAttribute("src", "/images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
   });
 
@@ -1377,10 +1389,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
         `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
       );
       spinner?.classList?.add("hidden");
-      elem.setAttribute("src", "images/default/Mods_Level.webp");
+      elem.setAttribute("src", "/images/default/Mods_Level.webp");
       elem.setAttribute("alt", alt);
       return {
-        thumbnail: "images/default/Mods_Level.webp",
+        thumbnail: "/images/default/Mods_Level.webp",
         alt: alt,
         nsfw: false,
       };
@@ -1389,10 +1401,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", "images/errorThumbnail.webp");
+    elem.setAttribute("src", "/images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: "images/errorThumbnail.webp",
+      thumbnail: "/images/errorThumbnail.webp",
       alt: alt,
       nsfw: false,
     };
@@ -1401,10 +1413,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", "images/nsfwCover.webp");
+    elem.setAttribute("src", "/images/nsfwCover.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: "images/nsfwCover.webp",
+      thumbnail: "/images/nsfwCover.webp",
       alt: alt,
       nsfw: true,
     };
@@ -1698,6 +1710,7 @@ async function init() {
       if (code && platform && id) {
         requestJoin(code, platform);
         infoView = Number(id);
+        redirectToIndex();
       }
     }
   }

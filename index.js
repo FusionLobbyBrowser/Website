@@ -2,11 +2,14 @@ const express = require("express");
 const DOMPurify = require("isomorphic-dompurify");
 const path = require("node:path");
 const fs = require("node:fs");
+const fsAsync = require("node:fs").promises;
 const helmet = require("helmet");
 const app = express();
 const port = 3000;
 
 const manifestPath = path.join(__dirname, "./dist/parcel-manifest.json");
+
+const allowedHosts = ["fusion.hahoos.dev", "www.hoodrp.com", "hoodrp.com"];
 
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -34,12 +37,19 @@ app.locals.asset = function asset(entryName) {
 };
 
 app.get("/", (req, res) => {
-  res.render("index", { lobby: null });
+  res.render("index", { lobby: null, host: getHost(req) });
 });
 
 function removeRichText(input) {
   input = input.replaceAll(/<.*?>/g, "");
   return input;
+}
+
+function getHost(req) {
+  let host = req.host;
+  if (!host || !allowedHosts.some((x) => x == host)) host = "fusion.hahoos.dev";
+
+  return host;
 }
 
 function strip(html) {
@@ -68,7 +78,10 @@ app.get("/join/:query", async (req, res) => {
       json.levelTitle = strip(removeRichText(json.levelTitle));
       json.lobbyCode = strip(json.lobbyCode);
       json.thumbnailUrl = `https://fusionapi.hahoos.dev/thumbnail/${json.levelModId}?barcode=${json.levelBarcode}`;
-      res.render("index", { lobby: json });
+      res.render("index", {
+        lobby: json,
+        host: getHost(req),
+      });
     } else {
       console.log("Failed to fetch info");
       console.log(await info.text());
@@ -84,7 +97,14 @@ app.get("/join/:query", async (req, res) => {
 });
 
 app.get("/faq", (req, res) => {
-  res.render("faq", {});
+  res.render("faq", { host: getHost(req) });
+});
+
+app.get("/sitemap.xml", async (req, res) => {
+  const file = await fsAsync.readFile("./sitemap.xml", "utf8");
+  const val = file.replaceAll("[[host]]", getHost(req));
+  res.contentType("application/xml");
+  res.send(val);
 });
 
 app.listen(port, () => {

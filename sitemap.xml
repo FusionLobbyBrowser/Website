@@ -5,12 +5,12 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-  <loc>https://fusion.hahoos.dev/</loc>
+  <loc>https://[[host]]/</loc>
   <lastmod>2026-06-27T13:46:23+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://fusion.hahoos.dev/faq/</loc>
+  <loc>https://[[host]]/faq/</loc>
   <lastmod>2026-06-27T13:46:22+00:00</lastmod>
   <priority>0.80</priority>
 </url>

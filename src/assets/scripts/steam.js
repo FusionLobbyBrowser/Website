@@ -5,6 +5,7 @@ let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const STEAM = "[host]steam/";
 const ME = `${STEAM}me`;
 const PROFILE = `${STEAM}profile/[id]`;
+const AVATAR = `${STEAM}avatar/[id]`;
 const FRIENDS = `${STEAM}friends/`; // ID needs to be the same as logged in user
 
 if (document.readyState !== "loading") init();
@@ -52,6 +53,10 @@ async function init() {
       trigger: "click",
     });
   }
+}
+
+export function getAvatar(id) {
+  return AVATAR.replace("[host]", HOST).replace("[id]", id);
 }
 
 export async function getSelf() {
