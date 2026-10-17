@@ -87,8 +87,12 @@ function strip(html) {
   return DOMPurify.sanitize(html, { ALLOWED_TAGS: ["#text"] });
 }
 
+function validate(text) {
+  return new RegExp(/^[a-zA-Z0-9]*$/).test(text);
+}
+
 app.get("/join/:query", async (req, res) => {
-  if (!new RegExp(/^[a-zA-Z0-9]*$/).test(req.params.query)) {
+  if (!validate(req.params.query)) {
     res.status(400);
     res.send(
       "You can only include letters and numbers in the query parameter!",
@@ -108,6 +112,17 @@ app.get("/join/:query", async (req, res) => {
       json.lobbyHostName = strip(removeRichText(json.lobbyHostName));
       json.levelTitle = strip(removeRichText(json.levelTitle));
       json.lobbyCode = strip(json.lobbyCode);
+      if (
+        !validate(json.lobbyCode) ||
+        !validate(json.lobbyID) ||
+        !validate(json.lobbyPlatform)
+      ) {
+        res.status(500);
+        res.send(
+          "The requested lobby contains illegal characters in either the ID or the lobby code, which could have possibly lead to a script injection. Will not be attempting to join",
+        );
+        return;
+      }
       json.thumbnailUrl = `https://fusionapi.hahoos.dev/thumbnail/${json.levelModId}?barcode=${json.levelBarcode}`;
       res.render("index", {
         lobby: json,
