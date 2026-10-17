@@ -45,32 +45,25 @@
     content="Browse LabFusion lobbies without having to even launch BONELAB! Check if your friends are playing and even join with just a press of a button!">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="./images/favicon/favicon-144x144.png" sizes="144x144" />
-  <link rel="icon" type="image/png" href="./images/favicon/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/png" href="./images/favicon/favicon-64x64.png" sizes="64x64" />
-  <link rel="icon" type="image/png" href="./images/favicon/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="./images/favicon/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-144x144.png" sizes="144x144" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-64x64.png" sizes="64x64" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png" sizes="16x16" />
 
-  <link rel="icon" type="image/svg+xml" href="./images/favicon/favicon.svg" />
-  <link rel="shortcut icon" href="./images/favicon/favicon.ico" sizes="any" />
-  <link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="FLB" />
   <meta property="og:image" content="https://fusion.hahoos.dev/images/favicon/web-app-manifest-192x192.png" />
   <link rel="manifest" href="./manifest.json" />
 
   <!-- Scripts & Styles -->
 
-  <!-- [ Internal ] -->
+  <!-- Internal -->
+  <script src="<%= asset('index.js') %>" type="module" crossorigin="anonymous"></script>
 
-  <script src="scripts/unityRichText.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/const.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/discord.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/steam.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/settings.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/main.js" type="module" crossOrigin="anonymous"></script>
-  <script src="scripts/oneko.js" type="module" crossOrigin="anonymous"></script>
-
-  <link rel="stylesheet" href="styles/style.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="<%= asset('style.css') %>" crossorigin="anonymous" />
 
   <link rel="stylesheet" href="fa/css/fontawesome.css" crossOrigin="anonymous" />
   <link rel="stylesheet" href="fa/css/brands.css" crossOrigin="anonymous" />
@@ -88,7 +81,7 @@
     <div class="lobby" id="lobbyToCopy">
       <div class="thumbnailContainer">
         <i class="thumbnailSpinner fas fa-spinner"></i>
-        <img class="lobbyThumbnail" src="images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
+        <img class="lobbyThumbnail" src="./images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
       </div>
       <i class="platformIcon fa-brands fa-steam"></i>
       <p class="info lobbyName">HAHOOS's Lobby!</p>
@@ -109,7 +102,8 @@
     <div class="player" id="playerToCopy">
       <div class="thumbnailContainer">
         <i class="thumbnailSpinner fas fa-spinner"></i>
-        <img class="avatarThumbnail" src="images/transparent_placeholder.webp" loading="lazy" alt="Template thumbnail">
+        <img class="avatarThumbnail" src="./images/transparent_placeholder.webp" loading="lazy"
+          alt="Template thumbnail">
       </div>
       <p class="name">RottenCheese</p>
       <p class="permissions"><i class="fa-solid fa-shield-halved textIcon"></i><span class="elemContent">GUEST</span>
@@ -118,7 +112,7 @@
       <button class="profile"><i class="fa-solid fa-circle-user textIcon"></i>Profile</button>
     </div>
     <div class="discord" id="discordToCopy">
-      <img class="serverIcon" src="images/default/Jay.webp" loading="lazy" alt="Template icon">
+      <img class="serverIcon" src="./images/default/Jay.webp" loading="lazy" alt="Template icon">
       <p class="serverName">RottenCheese's Server</p>
       <p class="memberCount">569 members</p>
       <p class="serverDescription">No description provided</p>
@@ -130,7 +124,7 @@
       <div>
         <div class="thumbnailContainer">
           <i class="thumbnailSpinner fas fa-spinner"></i>
-          <img class="viewThumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+          <img class="viewThumbnail" src="./images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
         </div>
         <div class="viewContent">
           <p class="detail"><i class="fa-solid fa-circle-user textIcon"></i>Display Name</p>
@@ -262,7 +256,7 @@
       </div>
       <div id="info-content" class="content hidden">
         <div class="left-content side">
-          <img class="thumbnail" src="images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
+          <img class="thumbnail" src="./images/default/VoidG114.webp" loading="lazy" alt="Template thumbnail">
         </div>
         <div class="right-content side">
           <p class="detail"><i class="fa-solid fa-book textIcon"></i>Description</p>
@@ -315,9 +309,9 @@
     </div>
     <div class="hotak0">
       <button class="textButton hidden" id="hotak0CurseButton">
-        <img src="hotak0/images/cute_hotak0.png" alt="A little cute hotak0. Press him!">
+        <img src="./hotak0/images/cute_hotak0.png" alt="A little cute hotak0. Press him!">
       </button>
-      <img src="hotak0/images/hotak0_curse.png" class="hidden" id="yourecursedgoodluck" alt="Sorry, I lied :(">
+      <img src="./hotak0/images/hotak0_curse.png" class="hidden" id="yourecursedgoodluck" alt="Sorry, I lied :(">
       <p class="istfg fa-spin hidden">You have 9 days to live</p>
     </div>
   </div>

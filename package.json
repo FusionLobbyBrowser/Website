@@ -12,23 +12,25 @@
   },
   "license": "MIT",
   "author": "HAHOOS",
-  "source": "src/index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "node index.js",
-    "dev": "parcel src/*.html src/**/*.html",
-    "build": "parcel build src/*.html src/**/*.html",
-    "watch": "parcel watch src/*.html src/**/*.html --no-hmr"
+    "dev": "parcel ./public/**/*",
+    "build": "parcel build ./public/**/*",
+    "watch": "parcel watch src/client/index.js src/client/subPage.js src/client/style.css --no-hmr"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.16.4",
     "@parcel/resolver-glob": "^2.16.4",
     "@parcel/transformer-jsonld": "^2.16.4",
     "@parcel/transformer-webmanifest": "^2.16.4",
-    "parcel": "^2.16.4"
+    "parcel": "^2.16.4",
+    "parcel-reporter-bundle-manifest": "^1.0.0",
+    "parcel-transformer-ejs": "^1.0.1"
   },
   "dependencies": {
     "dompurify": "^3.4.17",
+    "ejs": "^7.0.1",
     "express": "^5.3.0",
     "flag-icons": "^7.6.0",
     "fuse.js": "^7.5.0",

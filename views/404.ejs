@@ -41,31 +41,29 @@
   <meta name="twitter:description" content="Oops! Seems like the page you are trying to find doesn't exist">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="../images/favicon/favicon-144x144.png" sizes="144x144" />
-  <link rel="icon" type="image/png" href="../images/favicon/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/png" href="../images/favicon/favicon-64x64.png" sizes="64x64" />
-  <link rel="icon" type="image/png" href="../images/favicon/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="../images/favicon/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-144x144.png" sizes="144x144" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-64x64.png" sizes="64x64" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png" sizes="16x16" />
 
-  <link rel="icon" type="image/svg+xml" href="../images/favicon/favicon.svg" />
-  <link rel="shortcut icon" href="../images/favicon/favicon.ico" sizes="any" />
-  <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="FLB" />
   <meta property="og:image" content="https://fusion.hahoos.dev/images/favicon/web-app-manifest-192x192.png" />
-  <link rel="manifest" href="../manifest.json" />
+  <link rel="manifest" href="./manifest.json" />
 
   <!-- Scripts & Styles -->
 
-  <script src="../scripts/oneko.js" type="module" crossOrigin="anonymous"></script>
-  <script src="../scripts/steam.js" type="module" crossOrigin="anonymous"></script>
-  <script src="../scripts/shared.js" type="module" crossOrigin="anonymous"></script>
+  <!-- Internal -->
+  <script src="<%= asset('subPage.js') %>" type="module" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="../styles/style.css" crossOrigin="anonymous" />
-
-  <link rel="stylesheet" href="../fa/css/fontawesome.css" crossOrigin="anonymous" />
-  <link rel="stylesheet" href="../fa/css/brands.css" crossOrigin="anonymous" />
-  <link rel="stylesheet" href="../fa/css/regular.css" crossOrigin="anonymous" />
-  <link rel="stylesheet" href="../fa/css/solid.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="<%= asset('style.css') %>" crossorigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/fontawesome.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/brands.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/regular.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/solid.css" crossOrigin="anonymous" />
 </head>
 
 <body>

@@ -26,7 +26,6 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import DOMPurify from "dompurify";
 import Swal from "sweetalert2";
-import * as thumbnailFiles from "url:../images/default/**";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const LOBBY_LIST = "[host]lobbylist";
@@ -1292,7 +1291,7 @@ async function getThumbnail(modId, title, barcode, isAvatar) {
       if (index > -1) processed.splice(index, 1);
 
       return {
-        thumbnail: thumbnailFiles[`${value.name}.webp`],
+        thumbnail: `/images/default/${value.name}.webp`,
         alt: `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'`,
         nsfw: false,
       };
@@ -1367,7 +1366,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
-    elem.setAttribute("src", require("url:../images/errorThumbnail.webp"));
+    elem.setAttribute("src", "images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
   });
 
@@ -1378,13 +1377,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
         `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
       );
       spinner?.classList?.add("hidden");
-      elem.setAttribute(
-        "src",
-        require("url:../images/default/Mods_Level.webp"),
-      );
+      elem.setAttribute("src", "images/default/Mods_Level.webp");
       elem.setAttribute("alt", alt);
       return {
-        thumbnail: require("url:../images/default/Mods_Level.webp"),
+        thumbnail: "images/default/Mods_Level.webp",
         alt: alt,
         nsfw: false,
       };
@@ -1393,10 +1389,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", require("url:../images/errorThumbnail.webp"));
+    elem.setAttribute("src", "images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: require("url:../images/errorThumbnail.webp"),
+      thumbnail: "images/errorThumbnail.webp",
       alt: alt,
       nsfw: false,
     };
@@ -1405,10 +1401,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", require("url:../images/nsfwCover.webp"));
+    elem.setAttribute("src", "images/nsfwCover.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: require("url:../images/nsfwCover.webp"),
+      thumbnail: "images/nsfwCover.webp",
       alt: alt,
       nsfw: true,
     };
