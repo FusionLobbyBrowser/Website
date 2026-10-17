@@ -25,8 +25,7 @@
     "@parcel/transformer-jsonld": "^2.16.4",
     "@parcel/transformer-webmanifest": "^2.16.4",
     "parcel": "^2.16.4",
-    "parcel-reporter-bundle-manifest": "^1.0.0",
-    "parcel-transformer-ejs": "^1.0.1"
+    "parcel-reporter-bundle-manifest": "^1.0.0"
   },
   "dependencies": {
     "dompurify": "^3.4.17",
