@@ -346,8 +346,8 @@ const playerObserver = new ResizeObserver((entries) => {
 function getLobbyName(lobby, stripRichText = true) {
   const name =
     lobby.lobbyName != "" ? lobby.lobbyName : `${lobby.lobbyHostName}'s Lobby`;
-  if (stripRichText) return Converter.removeRichText(name);
-  else return name;
+  if (stripRichText) return Converter.removeRichText(name) ?? "";
+  else return name ?? "";
 }
 
 async function createLobbies(signal) {
@@ -534,7 +534,13 @@ async function autoRefresh() {
 
 async function createLobby(lobby, signal, hidden) {
   const date = Date.now();
-  if (!lobby || !lobby.lobbyID || lobby.lobbyID == 0) {
+  if (
+    !lobby ||
+    !lobby.lobbyID ||
+    lobby.lobbyID == 0 ||
+    lobby.lobbyID == "" ||
+    lobby.lobbyVersion == "0.0"
+  ) {
     console.log("%c > Invalid lobby, cannot create", "color: #f00");
     return false;
   }
