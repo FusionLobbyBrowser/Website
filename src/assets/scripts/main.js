@@ -24,11 +24,11 @@ import {
 
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import Swal from "sweetalert2";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
-const LOBBY_LIST = "[host]lobbylist";
+const LOBBY_LIST = "[host]lobby/all";
 const THUMBNAIL = "[host]thumbnail/[modId]?barcode=[barcode]";
 
 const URI_JOIN = "flb-bridge://join/[data]";
@@ -1687,6 +1687,19 @@ async function init() {
     window.location.hostname == "localhost"
   ) {
     HOST = "https://localhost:7073/";
+  }
+
+  if (window.location.pathname.startsWith("/join/")) {
+    const embed = document.getElementById("discord:component-embed");
+    if (embed) {
+      const code = embed.getAttribute("data-lobby-code");
+      const platform = embed.getAttribute("data-lobby-platform");
+      const id = embed.getAttribute("data-lobby-id");
+      if (code && platform && id) {
+        requestJoin(code, platform);
+        infoView = Number(id);
+      }
+    }
   }
 
   collapsableMenus();

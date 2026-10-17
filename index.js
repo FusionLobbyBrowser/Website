@@ -1,4 +1,5 @@
 const express = require("express");
+const DOMPurify = require("isomorphic-dompurify");
 const path = require("node:path");
 const fs = require("node:fs");
 const helmet = require("helmet");
@@ -33,7 +34,53 @@ app.locals.asset = function asset(entryName) {
 };
 
 app.get("/", (req, res) => {
-  res.render("index", {});
+  res.render("index", { lobby: null });
+});
+
+function removeRichText(input) {
+  input = input.replaceAll(/<.*?>/g, "");
+  return input;
+}
+
+function strip(html) {
+  return DOMPurify.sanitize(html, { ALLOWED_TAGS: ["#text"] });
+}
+
+app.get("/join/:query", async (req, res) => {
+  if (!new RegExp(/^[a-zA-Z0-9]*$/).test(req.params.query)) {
+    res.status(400);
+    res.send(
+      "You can only include letters and numbers in the query parameter!",
+    );
+    return;
+  }
+  try {
+    console.log("Fetching lobby info for query: " + req.params.query);
+    var info = await fetch(
+      `https://fusionapi.hahoos.dev/lobby/query/${req.params.query}?searchType=All`,
+    );
+    if (info.ok) {
+      console.log("Successfully fetched info, rendering with lobby object");
+      const json = await info.json();
+      json.lobbyName = strip(removeRichText(json.lobbyName));
+      json.lobbyDescription = strip(removeRichText(json.lobbyDescription));
+      json.lobbyHostName = strip(removeRichText(json.lobbyHostName));
+      json.levelTitle = strip(removeRichText(json.levelTitle));
+      json.lobbyCode = strip(json.lobbyCode);
+      json.thumbnailUrl = `https://fusionapi.hahoos.dev/thumbnail/${json.levelModId}?barcode=${json.levelBarcode}`;
+      res.render("index", { lobby: json });
+    } else {
+      console.log("Failed to fetch info");
+      console.log(await info.text());
+      res.redirect("/");
+    }
+  } catch (ex) {
+    console.error(
+      "An unexpected error has occurred while trying to fetch information about lobby, response:\n" +
+        ex,
+    );
+    res.redirect("/");
+  }
 });
 
 app.get("/faq", (req, res) => {

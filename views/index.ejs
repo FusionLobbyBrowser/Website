@@ -56,19 +56,51 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="FLB" />
   <meta property="og:image" content="https://fusion.hahoos.dev/images/favicon/web-app-manifest-192x192.png" />
-  <link rel="manifest" href="./manifest.json" />
+  <link rel="manifest" href="/manifest.json" />
 
-  <!-- Scripts & Styles -->
+  <% if(lobby) { %>
+    <script id="discord:component-embed" type="application/json" data-lobby-code="<%= lobby.lobbyCode %>"
+      data-lobby-platform="<%= lobby.lobbyPlatform %>" data-lobby-id="<%= lobby.lobbyID %>">{
+  "components": [
+    {
+      "type": 17,
+      "accent_color": 16777215,
+      "spoiler": false,
+      "components": [
+        {
+          "type": 9,
+          "components": [
+            {
+              "type": 10,
+              "content": "## <%= lobby.lobbyName %>\n-# Platform: <%= lobby.lobbyPlatform %> • Host: <%= lobby.lobbyHostName %> • Players: <%= lobby.playerCount %>/<%= lobby.maxPlayers %>\n-# Level: <%= lobby.levelTitle %> • Uptime: <t:<%= lobby.lobbyUptime %>:R> • ID: <%= lobby.lobbyID %>\n\n<%= lobby.lobbyDescription %>"
+            }
+          ],
+          "accessory": {
+            "type": 11,
+            "media": {
+              "url": "<%= lobby.thumbnailUrl %>"
+            },
+            "description": "Thumbnail of the level '<%= lobby.levelTitle %>'"
+          }
+        }
+      ]
+    }
+  ],
+  "flags": 32768
+}</script>
+    <%} %>
 
-  <!-- Internal -->
-  <script src="<%= asset('index.js') %>" type="module" crossorigin="anonymous"></script>
+      <!-- Scripts & Styles -->
 
-  <link rel="stylesheet" href="<%= asset('style.css') %>" crossorigin="anonymous" />
+      <!-- Internal -->
+      <script src="<%= asset('index.js') %>" type="module" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="fa/css/fontawesome.css" crossOrigin="anonymous" />
-  <link rel="stylesheet" href="fa/css/brands.css" crossOrigin="anonymous" />
-  <link rel="stylesheet" href="fa/css/regular.css" crossOrigin="anonymous" />
-  <link rel="stylesheet" href="fa/css/solid.css" crossOrigin="anonymous" />
+      <link rel="stylesheet" href="<%= asset('style.css') %>" crossorigin="anonymous" />
+
+      <link rel="stylesheet" href="/fa/css/fontawesome.css" crossOrigin="anonymous" />
+      <link rel="stylesheet" href="/fa/css/brands.css" crossOrigin="anonymous" />
+      <link rel="stylesheet" href="/fa/css/regular.css" crossOrigin="anonymous" />
+      <link rel="stylesheet" href="/fa/css/solid.css" crossOrigin="anonymous" />
 </head>
 
 <body>

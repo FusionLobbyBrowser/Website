@@ -3,7 +3,7 @@ import { barcodes, layers } from "./const.js";
 import { getSelf, getFriends } from "./steam.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import Fuse from "fuse.js";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 

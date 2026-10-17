@@ -28,12 +28,13 @@
     "parcel-reporter-bundle-manifest": "^1.0.0"
   },
   "dependencies": {
-    "dompurify": "^3.4.17",
     "ejs": "^7.0.1",
     "express": "^5.3.0",
     "flag-icons": "^7.6.0",
     "fuse.js": "^7.5.0",
     "helmet": "^8.3.0",
+    "isomorphic-dompurify": "^3.19.0",
+    "jsdom": "^29.1.1",
     "sweetalert2": "^11.26.25",
     "tippy.js": "^6.3.7"
   }
