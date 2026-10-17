@@ -395,7 +395,8 @@ button,
 label,
 a,
 option,
-input {
+input,
+.swal2-popup {
   font-family: var(--flb-paragraph-font);
   font-weight: 400;
   font-style: normal;

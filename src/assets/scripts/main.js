@@ -1732,6 +1732,19 @@ async function init() {
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("info-close", () => hideShow(true));
+  clickEvent("info-share", () => {
+    if (infoView == -1) return;
+
+    Swal.fire({
+      title: "Share the Link!",
+      html: `If you'd like to share with your friends the details of a certain lobby, send the following link:<br><code>https://${window.location.hostname}/?lobby=${DOMPurify.sanitize(infoView)}</code><br><br>Or perhaps you want to a link that will instantly join the lobby!<br><code>https://${window.location.hostname}/join/${DOMPurify.sanitize(infoView)}</code>`,
+      showCloseButton: true,
+      showDenyButton: false,
+      focusConfirm: false,
+      confirmButtonText: '<i class="fas fa-x"></i> Close',
+      theme: adjustTheme(),
+    });
+  });
   clickEvent("settingsButton", openSettings);
   clickEvent("settingsClose", closeSettings);
   clickEvent("hotak0CurseButton", initCurse);
