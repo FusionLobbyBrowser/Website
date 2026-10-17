@@ -38,7 +38,7 @@ async function init() {
 
     account
       .getElementsByClassName("steamSmall")[0]
-      .setAttribute("src", self.avatarUrl);
+      .setAttribute("src", getAvatar(self.steamId));
     account
       .getElementsByClassName("steamName")[0]
       .getElementsByClassName("elemContent")[0].textContent = self.nickname;

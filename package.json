@@ -15,7 +15,7 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
     "start": "node index.js",
-    "dev": "parcel ./public/**/*",
+    "dev": "node index.js",
     "build": "parcel build ./public/**/*",
     "watch": "parcel watch src/client/index.js src/client/subPage.js src/client/style.css --no-hmr"
   },

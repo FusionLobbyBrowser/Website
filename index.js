@@ -11,9 +11,40 @@ const manifestPath = path.join(__dirname, "./dist/parcel-manifest.json");
 
 const allowedHosts = ["fusion.hahoos.dev", "www.hoodrp.com", "hoodrp.com"];
 
+var env = process.env.NODE_ENV || "development";
+
+let imgSrc = ["'self'", "blob:", "'api.hoodrp.com'", "'fusionapi.hahoos.dev'"];
+let connectSrc = ["'self'", "fusionapi.hahoos.dev", "api.hoodrp.com"];
+
+if (env == "development") {
+  imgSrc.push("localhost:7073");
+  connectSrc.push("localhost:7073");
+}
+
 app.set("view engine", "ejs");
 app.set("views", "./views");
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "default-src": ["'self'"],
+        "script-src": [
+          "'self'",
+          "ajax.cloudflare.com",
+          "static.cloudflareinsights.com",
+        ],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "img-src": imgSrc,
+        "connect-src": connectSrc,
+        "font-src": ["'self'"],
+        "object-src": ["'none'"],
+        "media-src": ["'self'"],
+        "frame-src": ["'none'"],
+        "worker-src": ["'none'"],
+      },
+    },
+  }),
+);
 app.use(express.static("./dist"));
 app.use(express.static("./src/public"));
 
