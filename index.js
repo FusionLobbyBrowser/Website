@@ -146,16 +146,35 @@ app.get("/faq", (req, res) => {
   res.render("faq", { host: getHost(req) });
 });
 
+let cacheReplace = [];
+
 async function dynamicHostReplace(
   req,
   res,
   fileName,
   contentType = "application/xml",
 ) {
-  const file = await fsAsync.readFile(fileName, "utf8");
-  const val = file.replaceAll("[[host]]", getHost(req));
+  let content = null;
+  let index = -1;
+  for (i = 0; i < cacheReplace.length; i++) {
+    if (cacheReplace[i].name == fileName) {
+      index = i;
+      if (Date.now() - cacheReplace[i].time < 120)
+        content = cacheReplace[i].content;
+    }
+  }
+
+  if (!content) {
+    const file = await fsAsync.readFile(fileName, "utf8");
+    content = file.replaceAll("[[host]]", getHost(req));
+  }
+
+  const obj = { name: fileName, time: Date.now(), content: content };
+  if (index == -1) cacheReplace.push(obj);
+  else cacheReplace[i] = obj;
+
   res.contentType(contentType);
-  res.send(val);
+  res.send(content);
 }
 
 app.get("/sitemap.xml", async (req, res) => {
