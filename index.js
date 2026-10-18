@@ -7,7 +7,7 @@ const helmet = require("helmet");
 const app = express();
 const port = 3000;
 
-const manifestPath = path.join(__dirname, "./dist/parcel-manifest.json");
+const manifestPath = path.join(__dirname, "dist/parcel-manifest.json");
 
 const allowedHosts = ["fusion.hahoos.dev", "www.hoodrp.com", "hoodrp.com"];
 
@@ -22,7 +22,7 @@ if (env == "development") {
 }
 
 app.set("view engine", "ejs");
-app.set("views", "./views");
+app.set("views", "views");
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -45,8 +45,8 @@ app.use(
     },
   }),
 );
-app.use(express.static("./dist"));
-app.use(express.static("./src/public"));
+app.use(express.static("dist"));
+app.use(express.static("src/public"));
 
 function loadManifest() {
   if (!fs.existsSync(manifestPath)) {
@@ -178,11 +178,11 @@ async function dynamicHostReplace(
 }
 
 app.get("/sitemap.xml", async (req, res) => {
-  dynamicHostReplace(req, res, "./sitemap.xml");
+  dynamicHostReplace(req, res, "sitemap.xml");
 });
 
 app.get("/robots.txt", async (req, res) => {
-  dynamicHostReplace(req, res, "./robots.txt", "text/plain");
+  dynamicHostReplace(req, res, "robots.txt", "text/plain");
 });
 
 app.listen(port, () => {
