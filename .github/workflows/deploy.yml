@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: screen -dmS FLB_Frontend bash -c 'cd ${{ secrets.SSH_FRONTEND_LOCATION }}; npm start'
+          script: screen -dmS FLB_Frontend bash -c '${{ secrets.SSH_FRONTEND_LOCATION }}/start.sh'
       - name: Purge Cache
         uses: jakejarvis/cloudflare-purge-action@master
         env:
