@@ -59,6 +59,7 @@
   <link rel="manifest" href="/manifest.json" />
 
   <% if(lobby) { %>
+    <meta name="robots" content="noindex">
     <script id="discord:component-embed" type="application/json" data-lobby-code="<%= lobby.lobbyCode %>"
       data-lobby-platform="<%= lobby.lobbyPlatform %>" data-lobby-id="<%= lobby.lobbyID %>">{
   "components": [
@@ -89,13 +90,13 @@
               "type": 2,
               "style": 5,
               "label": "View Info",
-              "url": "https://fusion.hahoos.dev/?lobby=<%= lobby.lobbyID %>"
+              "url": "https://<%= host %>/?lobby=<%= lobby.lobbyID %>"
             },
             {
               "type": 2,
               "style": 5,
               "label": "Join",
-              "url": "https://fusion.hahoos.dev/<%= lobby.lobbyID %>"
+              "url": "https://<%= host %>/<%= lobby.lobbyID %>"
             }
           ]
         }
