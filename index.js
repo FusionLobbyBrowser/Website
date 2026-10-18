@@ -118,6 +118,10 @@ app.get("/join/:query", async (req, res) => {
       json.lobbyDescription = strip(removeRichText(json.lobbyDescription));
       json.lobbyHostName = strip(removeRichText(json.lobbyHostName));
       json.levelTitle = strip(removeRichText(json.levelTitle));
+      if (!json.lobbyName || json.lobbyName == "")
+        json.levelTitle = strip(`${json.lobbyHostName}'s Lobby`);
+      if (!json.lobbyDescription || json.lobbyDescription == "")
+        json.lobbyDescription = "No description provided";
       json.lobbyCode = strip(json.lobbyCode);
       if (
         !validate(json.lobbyCode) ||
