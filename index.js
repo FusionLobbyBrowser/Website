@@ -130,7 +130,7 @@ app.get("/join/:query", async (req, res) => {
         );
         return;
       }
-      json.thumbnailUrl = `https://fusionapi.hahoos.dev/thumbnail/${json.levelModId}?barcode=${json.levelBarcode}`;
+      json.thumbnailUrl = `https://fusionapi.hahoos.dev/thumbnail/${json.levelModID}?barcode=${json.levelBarcode}`;
       res.render("index", {
         lobby: json,
         host: getHost(req),
