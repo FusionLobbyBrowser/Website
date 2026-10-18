@@ -20,8 +20,8 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "node index.js",
     "dev:client": "npm run watch",
-    "build": "parcel build src/client/asset.html",
-    "watch": "parcel watch src/client/asset.html --no-hmr"
+    "build": "parcel build src/client/main.html src/client/subPage.html ",
+    "watch": "parcel watch src/client/main.html src/client/subPage.html  --no-hmr"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.16.4",
