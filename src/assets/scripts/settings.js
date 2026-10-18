@@ -309,9 +309,9 @@ export let settings = [
     lobbyFilter: true,
     lobbyValidator: (lobby, val) => {
       const name =
-        lobby.lobbyName != ""
+        (lobby.lobbyName != "" && lobby.lobbyName
           ? lobby.lobbyName
-          : `${lobby.lobbyHostName}'s Lobby`;
+          : `${lobby.lobbyHostName}'s Lobby`) ?? "";
       const fuse = new Fuse([Converter.removeRichText(name.toLowerCase())], {
         threshold: 0.35,
       });
