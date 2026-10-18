@@ -41,6 +41,8 @@ app.use(
         "media-src": ["'self'"],
         "frame-src": ["'none'"],
         "worker-src": ["'none'"],
+        "upgrade-insecure-requests": [],
+        "block-all-mixed-content": [],
       },
     },
   }),
