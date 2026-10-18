@@ -14,7 +14,12 @@ const allowedHosts = ["fusion.hahoos.dev", "www.hoodrp.com", "hoodrp.com"];
 var env = process.env.NODE_ENV || "development";
 
 let imgSrc = ["'self'", "blob:", "'api.hoodrp.com'", "'fusionapi.hahoos.dev'"];
-let connectSrc = ["'self'", "fusionapi.hahoos.dev", "api.hoodrp.com"];
+let connectSrc = [
+  "'self'",
+  "fusionapi.hahoos.dev",
+  "api.hoodrp.com",
+  "cloudflareinsights.com",
+];
 
 if (env == "development") {
   imgSrc.push("localhost:7073");
