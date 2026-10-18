@@ -13,7 +13,7 @@ const allowedHosts = ["fusion.hahoos.dev", "www.hoodrp.com", "hoodrp.com"];
 
 var env = process.env.NODE_ENV || "development";
 
-let imgSrc = ["'self'", "blob:", "'api.hoodrp.com'", "'fusionapi.hahoos.dev'"];
+let imgSrc = ["'self'", "blob:", "api.hoodrp.com", "fusionapi.hahoos.dev"];
 let connectSrc = [
   "'self'",
   "fusionapi.hahoos.dev",
