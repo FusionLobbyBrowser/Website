@@ -1,0 +1,47 @@
+{
+  "name": "FusionLobbyBrowser",
+  "version": "1.0.0",
+  "description": "The server that handles the frontend of Fusion Lobby Browser",
+  "homepage": "https://github.com/FusionLobbyBrowser/Website#readme",
+  "bugs": {
+    "url": "https://github.com/FusionLobbyBrowser/Website/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FusionLobbyBrowser/Website.git"
+  },
+  "license": "MIT",
+  "author": "HAHOOS",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "node index.js",
+    "start:client": "npm run build",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "node index.js",
+    "dev:client": "npm run watch",
+    "build": "parcel build src/client/asset.html",
+    "watch": "parcel watch src/client/asset.html --no-hmr"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.16.4",
+    "@parcel/resolver-glob": "^2.16.4",
+    "@parcel/transformer-jsonld": "^2.16.4",
+    "@parcel/transformer-webmanifest": "^2.16.4",
+    "concurrently": "^10.0.6",
+    "cross-env": "^10.1.0",
+    "parcel": "^2.16.4",
+    "parcel-namer-rewrite": "^2.16.4",
+    "parcel-reporter-bundle-manifest": "^1.0.0"
+  },
+  "dependencies": {
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "flag-icons": "^7.6.0",
+    "fuse.js": "^7.5.0",
+    "helmet": "^8.3.0",
+    "isomorphic-dompurify": "^4.6.0",
+    "sweetalert2": "^11.26.25",
+    "tippy.js": "^6.3.7"
+  }
+}

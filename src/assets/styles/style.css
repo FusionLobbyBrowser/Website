@@ -1,3 +1,6 @@
+@import "npm:tippy.js/dist/tippy.css";
+@import "npm:flag-icons/css/flag-icons.min.css";
+
 /* Fonts */
 
 @font-face {
@@ -395,7 +398,8 @@ button,
 label,
 a,
 option,
-input {
+input,
+.swal2-popup {
   font-family: var(--flb-paragraph-font);
   font-weight: 400;
   font-style: normal;
@@ -1016,6 +1020,7 @@ a > .textIcon {
 
   -webkit-animation: 1s linear fadein;
 
+  /* TODO: Improve the animation, current one is not great */
   animation: 1s linear fadein;
   -webkit-transition: 0.75s;
   transition: 0.75s;

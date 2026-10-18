@@ -275,7 +275,7 @@ export class Converter {
   }
 
   static removeRichText(input) {
-    if(!input) return input;
+    if (!input) return input;
     input = input.replaceAll(/<.*?>/g, "");
     return input;
   }

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- General -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO -->
+  <title>Fusion Lobby Browser</title>
+  <meta name="keywords" content="Fusion, LabFusion, BONELAB, BONELAB-Fusion, Boneworks, SLZ, Stress Level Zero" />
+  <meta name="description"
+    content="Some frequently asked questions regarding Fusion Lobby Browser? What is it, how it works, some features you may not have heard of and other!" />
+
+  <link rel="canonical" href="https://fusion.hahoos.dev/faq" />
+  <link rel="alternate" href="https://hoodrp.com/faq" />
+  <link rel="alternate" href="https://www.hoodrp.com/faq" />
+  <script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "url": "https://<%= host %>/",
+    "name": "Fusion Lobby Browser",
+    "alternateName": ["FLB", "LabFusion Lobby Browser"],
+    "description": "Some frequently asked questions regarding Fusion Lobby Browser? What is it, how it works, some features you may not have heard of and other!"
+  }
+  </script>
+
+  <!-- Discord Embed-->
+  <meta property="og:title" content="Fusion Lobby Browser" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://<%= host %>/" />
+  <meta property="og:description"
+    content="Some frequently asked questions regarding Fusion Lobby Browser? What is it, how it works, some features you may not have heard of and other!" />
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://<%= host %>/">
+  <meta name="twitter:title" content="Fusion Lobby Browser">
+  <meta name="twitter:description"
+    content="Some frequently asked questions regarding Fusion Lobby Browser? What is it, how it works, some features you may not have heard of and other!">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-144x144.png" sizes="144x144" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-64x64.png" sizes="64x64" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="FLB" />
+  <meta property="og:image" content="https://<%= host %>/images/favicon/web-app-manifest-192x192.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Scripts & Styles -->
+
+  <!-- Internal -->
+  <script src="<%= asset('subPage.js') %>" type="module" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="<%= asset('style.css') %>" crossorigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/fontawesome.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/brands.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/regular.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="fa/css/solid.css" crossOrigin="anonymous" />
+</head>
+
+<body>
+  <%- include('partials/header') %>
+    <div id="faqContent">
+      <div id="faqHeader">
+        <h1 id="faqTitle"><i class="fas fa-question"></i>FAQ<i class="fas fa-question"></i></h1>
+        <p id="faqDescription">Have an issue? Check out the most frequently asked questions!<br>In case of any
+          additional
+          questions, contact me directly (check question on how to contact below)</p>
+      </div>
+      <div id="questions">
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> What is this website, Fusion Lobby Browser?</h2>
+          </button>
+          <div>
+            <p>Fusion Lobby Browser is a website dedicated to help BONELAB players. BONELAB does not have official
+              multiplayer support, though a mod exists that adds support for it. The website's purpose is to allow
+              players
+              to quickly view the current lobbies in LabFusion (the multiplayer mod), while providing many features to
+              make the browsing experience better.
+            </p>
+          </div>
+        </div>
+
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> Why are the thumbnails on my unlisted avatar/level not displayed?</h2>
+          </button>
+          <div>
+            <p>The backend does not have access to any information regarding unlisted/private mods to which it has not
+              been granted access to. If you'd like for your avatar/level to have the thumbnail displayed, send me on
+              Discord (@hahoos) a link to the preview or (if thats even possible to do) add
+              <code>FusionLobbyBrowser</code> to have preview access
+            </p>
+          </div>
+        </div>
+
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> How do I quickly view the player list on a lobby?</h2>
+          </button>
+          <div>
+            <p>You can do that by hovering your mouse over (or on Mobile, pressing) the player count on a lobby, which
+              should display you a list of players there!</p>
+          </div>
+        </div>
+
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> How do I quickly check the mod where an avatar/level is from?</h2>
+          </button>
+          <div>
+            <p>It's quite simple, simply press the text where the name of the avatar/level is. Though note that
+              sometimes
+              a Mod ID is not associated with them, meaning that you cannot check</p>
+          </div>
+        </div>
+
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> Why do you show Hood RP lobbies and other questionable lobbies?</h2>
+          </button>
+          <div>
+            <p>The purpose of the website is to allow for easier browsing of lobbies, which are sourced from services
+              like
+              Steam and Epic Games Online Services. I have no way of preventing such lobbies from being created. I deem
+              to
+              Hood RP to be "acceptable" to be displayed, though it is questionable to say the least and may be changed
+              in
+              the future. Currently lobbies
+              that try to recreate real life tragedies, such as school shootings, assasinations etc. (known as True
+              Crime
+              Community, or TCC in short) and other less or more questionable (such as lobbies called for example
+              "Abusive
+              Dad RP", yes there were lobbies like that and others) are hidden from the website with no option of
+              displaying them.<br><br>The range of lobbies hidden is subject to change and will be updated when needed.
+              In the case you believe a word should be blacklisted or perhaps
+              that a word should not, make sure to contact me.
+            </p>
+          </div>
+        </div>
+
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> Was AI used in the creation of the website?</h2>
+          </button>
+          <div>
+            <p>I try to limit the usage of AI as much as possible, but sometimes there are issues that I couldn't fix
+              for
+              a very long time no matter what and just gave up and used AI. AI has been mostly used to fix
+              layout-related
+              issues in CSS and fixing RegEx. Artificial Intelligence was not used at any point in the creation of the
+              design of the website nor has it been used to create entire new features, but only to fix a few bugs. And
+              I
+              do not mean to say that with those bugs I used AI immiediately, prior I tried many things to fix them with
+              no result. When it comes to the backend, it was used to implement Steam login (or at least to fix it,
+              because i already had some code but didn't really understand how Steam's OpenID login works with the
+              backend
+              even after reading a lot of things about it), and to try and fix a bug with the GC (Garbage Collection)
+              with
+              no success</p>
+          </div>
+        </div>
+
+        <div class="collapsable">
+          <button class="textButton" data-toggle="collapse">
+            <h2 class="questionTitle"><b>Q:</b> How do I contact you?</h2>
+          </button>
+          <div>
+            <p>In the case that you need to contact me for various reasons, you can either e-mail me at <a
+                href="mailto:hahoos@hahoos.dev">hahoos@hahoos.dev</a> or DM me on Discord @hahoos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+
+</html>

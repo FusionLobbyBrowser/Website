@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- General -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO -->
+  <title>Fusion Lobby Browser</title>
+  <meta name="keywords" content="Fusion, LabFusion, BONELAB, BONELAB-Fusion, Boneworks, SLZ, Stress Level Zero" />
+  <meta name="description" content="Oops! Seems like the page you are trying to find doesn't exist" />
+  <meta name="robots" content="noindex">
+
+  <script type="application/ld+json">
+    {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "url": "https://<%= host %>",
+    "name": "Fusion Lobby Browser",
+    "alternateName": ["FLB", "LabFusion Lobby Browser"],
+    "description": "Oops! Seems like the page you are trying to find doesn't exist"
+  }
+  </script>
+
+  <!-- Discord Embed-->
+  <meta property="og:title" content="Fusion Lobby Browser" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://<%= host %>/" />
+  <meta property="og:description" content="Oops! Seems like the page you are trying to find doesn't exist" />
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://<%= host %>/">
+  <meta name="twitter:title" content="Fusion Lobby Browser">
+  <meta name="twitter:description" content="Oops! Seems like the page you are trying to find doesn't exist">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-144x144.png" sizes="144x144" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-64x64.png" sizes="64x64" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="/images/favicon/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="FLB" />
+  <meta property="og:image" content="https://<%= host %>/images/favicon/web-app-manifest-192x192.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Scripts & Styles -->
+
+  <!-- Internal -->
+  <script src="<%= asset('subPage.js') %>" type="module" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="<%= asset('style.css') %>" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/fa/css/fontawesome.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="/fa/css/brands.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="/fa/css/regular.css" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="/fa/css/solid.css" crossOrigin="anonymous" />
+</head>
+
+<body>
+  <%- include('partials/header') %>
+    <div id="faqContent">
+      <div>
+        <h1 id="notFoundIcon"><i class="fas fa-face-frown"></i></h1>
+        <h1 id="notFoundTitle">404!</h1>
+        <p id="notFoundDescription">Oops! Seems like the page you are trying to find doesn't exist</p>
+      </div>
+    </div>
+</body>
+
+</html>

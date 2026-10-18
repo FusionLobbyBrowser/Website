@@ -1,7 +1,9 @@
-import { Converter } from "unityRichText";
-import { barcodes, layers } from "const";
-import { getSelf, getFriends } from "steam";
-import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.4.1/dist/fuse.min.mjs";
+import { Converter } from "./unityRichText.js";
+import { barcodes, layers } from "./const.js";
+import { getSelf, getFriends, getAvatar } from "./steam.js";
+import tippy from "tippy.js";
+import DOMPurify from "isomorphic-dompurify";
+import Fuse from "fuse.js";
 
 // Is this overkill? probably
 
@@ -188,13 +190,7 @@ let categories = [
           avatar.width = 32;
           avatar.height = 32;
           avatar.setAttribute("alt", `Avatar of ${f.nickname}`);
-          avatar.setAttribute(
-            "src",
-            f.avatarUrl.replace(
-              "avatars.steamstatic.com",
-              "avatars.fastly.steamstatic.com",
-            ),
-          );
+          avatar.setAttribute("src", getAvatar(Number(f.steamId)));
           const username = elem.getElementsByClassName("friendUsername")[0];
           username.textContent = f.nickname;
           username.href = f.profileUrl;

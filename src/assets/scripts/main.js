@@ -1,4 +1,4 @@
-import { Converter } from "unityRichText";
+import { Converter } from "./unityRichText.js";
 import {
   barcodes,
   layers,
@@ -6,9 +6,9 @@ import {
   permsList,
   gamemodes,
   statuses,
-} from "const";
-import { getProfile } from "steam";
-import Discord from "discord";
+} from "./const.js";
+import { getProfile, getAvatar } from "./steam.js";
+import Discord from "./discord.js";
 import {
   init as settingsInit,
   getSettingValue,
@@ -20,7 +20,11 @@ import {
   getSetting,
   setFriendsInLobby,
   friends,
-} from "settings";
+} from "./settings.js";
+
+import tippy from "tippy.js";
+import DOMPurify from "isomorphic-dompurify";
+import Swal from "sweetalert2";
 
 let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 const LOBBY_LIST = "[host]lobby/all";
@@ -1111,7 +1115,7 @@ async function createPlayerView(player, thumbnail, platform) {
     const req = await getProfile(player.platformID);
     if (req && !req.error) {
       const avatar = view.getElementsByClassName("steamAvatar")[0];
-      avatar.setAttribute("src", req.avatarFullUrl);
+      avatar.setAttribute("src", getAvatar(Number(req.steamId)));
       const indicator = view.getElementsByClassName("statusIndicator")[0];
       indicator.setAttribute(
         "class",
@@ -1267,6 +1271,18 @@ function setURLParams() {
   window.history.pushState(null, "", url.toString());
 }
 
+function redirectToIndex() {
+  const url = new URL(window.location.href);
+  url.pathname = "/";
+  if (infoView != -1) {
+    url.searchParams.set(LOBBY_PARAM, infoView);
+  } else url.searchParams.delete(LOBBY_PARAM);
+  if (url.searchParams.size <= 0)
+    url.searchParams.forEach((_, key) => url.searchParams.delete(key));
+
+  window.history.pushState(null, "", url.toString());
+}
+
 let processed = [];
 
 async function getThumbnail(modId, title, barcode, isAvatar) {
@@ -1367,7 +1383,7 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
     const alt = Converter.removeRichText(
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
-    elem.setAttribute("src", "images/errorThumbnail.webp");
+    elem.setAttribute("src", "/images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
   });
 
@@ -1378,10 +1394,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
         `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. The thumbnail was not found, so a placeholder was displayed instead`,
       );
       spinner?.classList?.add("hidden");
-      elem.setAttribute("src", "images/default/Mods_Level.webp");
+      elem.setAttribute("src", "/images/default/Mods_Level.webp");
       elem.setAttribute("alt", alt);
       return {
-        thumbnail: "images/default/Mods_Level.webp",
+        thumbnail: "/images/default/Mods_Level.webp",
         alt: alt,
         nsfw: false,
       };
@@ -1390,10 +1406,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"} titled '${title}'. An error occurred while loading, so an error was displayed instead`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", "images/errorThumbnail.webp");
+    elem.setAttribute("src", "/images/errorThumbnail.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: "images/errorThumbnail.webp",
+      thumbnail: "/images/errorThumbnail.webp",
       alt: alt,
       nsfw: false,
     };
@@ -1402,10 +1418,10 @@ async function setThumbnail(elem, modId, title, barcode, isAvatar) {
       `The thumbnail of ${isAvatar ? "an avatar" : "a level"}. The thumbnail and name was censored as it is an NSFW one.`,
     );
     spinner?.classList?.add("hidden");
-    elem.setAttribute("src", "images/nsfwCover.webp");
+    elem.setAttribute("src", "/images/nsfwCover.webp");
     elem.setAttribute("alt", alt);
     return {
-      thumbnail: "images/nsfwCover.webp",
+      thumbnail: "/images/nsfwCover.webp",
       alt: alt,
       nsfw: true,
     };
@@ -1690,6 +1706,20 @@ async function init() {
     HOST = "https://localhost:7073/";
   }
 
+  if (window.location.pathname.startsWith("/join/")) {
+    const embed = document.getElementById("discord:component-embed");
+    if (embed) {
+      const code = embed.getAttribute("data-lobby-code");
+      const platform = embed.getAttribute("data-lobby-platform");
+      const id = embed.getAttribute("data-lobby-id");
+      if (code && platform && id) {
+        requestJoin(code, platform);
+        infoView = Number(id);
+        redirectToIndex();
+      }
+    }
+  }
+
   collapsableMenus();
 
   // Do not require lobby list to be created again
@@ -1707,6 +1737,19 @@ async function init() {
 
   clickEvent("refreshButton", async () => await fetchAndCreateLobbies());
   clickEvent("info-close", () => hideShow(true));
+  clickEvent("info-share", () => {
+    if (infoView == -1) return;
+
+    Swal.fire({
+      title: "Share the Link!",
+      html: `If you'd like to share with your friends the details of a certain lobby, send the following link:<br><code>https://${window.location.hostname}/?lobby=${DOMPurify.sanitize(infoView)}</code><br><br>Or perhaps you want to a link that will instantly join the lobby!<br><code>https://${window.location.hostname}/join/${DOMPurify.sanitize(infoView)}</code>`,
+      showCloseButton: true,
+      showDenyButton: false,
+      focusConfirm: false,
+      confirmButtonText: '<i class="fas fa-x"></i> Close',
+      theme: adjustTheme(),
+    });
+  });
   clickEvent("settingsButton", openSettings);
   clickEvent("settingsClose", closeSettings);
   clickEvent("hotak0CurseButton", initCurse);

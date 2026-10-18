@@ -1,18 +1,20 @@
-import { Converter } from "unityRichText";
+import { Converter } from "./unityRichText.js";
+import tippy from "tippy.js";
+import DOMPurify from "isomorphic-dompurify";
+
+let HOST = "https://fusionapi.hahoos.dev/"; // https://localhost:7073/
 
 const regex = new RegExp(
   /(?:https:\/\/discord[\.\,]com\/invite\/|(?<=^|\s)(?:discord)?[\.\,]com\/invite\/|https?:\/\/discord[\.\,]gg\/|(?<=^|\s)(?:discord)?[\.\,]gg\/|Discord(?: Server| Link| Code|):(?: |))(?<code>[a-zA-Z0-9-]+)(?=\s|$)/im,
 );
 
 function getServerIconURL(guildId, id, size = 256, animated = true) {
-  return `https://cdn.discordapp.com/icons/${guildId}/${id}.webp?size=${size}&animated=${animated}`;
+  return `${HOST}discord/guild/${guildId}/icon/${id}?size=${size}&animated=${animated}`;
 }
 
 async function getServerInfo(inviteCode) {
   try {
-    const res = await fetch(
-      `https://discord.com/api/invite/${inviteCode}?with_counts=true`,
-    );
+    const res = await fetch(`${HOST}discord/invite/${inviteCode}`);
     if (res.ok) {
       const json = res.json();
       return json;
@@ -99,6 +101,18 @@ function createTooltip(e, content, placement = "top", maxWidth = 350) {
 }
 
 export default async function elem(text) {
+  if (
+    window.location.hostname == "hoodrp.com" ||
+    window.location.hostname == "www.hoodrp.com"
+  ) {
+    HOST = "https://api.hoodrp.com/";
+  } else if (
+    window.location.hostname == "localhost:5500" ||
+    window.location.hostname == "localhost"
+  ) {
+    HOST = "https://localhost:7073/";
+  }
+
   const match = regex.exec(Converter.removeRichText(text));
   if (match) {
     const g = match.groups["code"];
