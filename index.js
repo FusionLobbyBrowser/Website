@@ -85,6 +85,9 @@ function removeRichText(input) {
 
 function getHost(req) {
   let host = req.host;
+  const split = host.split(":");
+  if (split && split.length == 2) host = split[0];
+  console.log(host);
   if (!host || !allowedHosts.some((x) => x == host)) host = "fusion.hahoos.dev";
 
   return host;
