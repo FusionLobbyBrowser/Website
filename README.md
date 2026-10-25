@@ -37,24 +37,4 @@ For it to be displayed, you need to actually "link" a discord server. This can b
 
 Website is licensed under the MIT License. See [LICENSE](https://github.com/FusionLobbyBrowser/Website/blob/main/LICENSE) for the full License.
 
-**Third-party Libraries used as Source Code:**
-
-* [DOMPurify](https://github.com/cure53/DOMPurify) is licensed under the Apache License, Version 2.0. See [LICENSE](https://github.com/cure53/DOMPurify/blob/main/LICENSE) for the full License.
-
-* [unity-rich-text-converter](https://github.com/AWaterColorPen/unity-rich-text-converter) is licensed under the MIT License. See [LICENSE](https://github.com/AWaterColorPen/unity-rich-text-converter/blob/master/LICENSE) for the full License.
-
-* [oneko.js](https://github.com/adryd325/oneko.js/) is licensed under the MIT License. See [LICENSE](https://github.com/adryd325/oneko.js/blob/main/LICENSE) for the full License.
-
-* [Font-Awesome](https://github.com/fortawesome/font-awesome) is licensed under the SIL OFL 1.1 and MIT License. See [LICENSE](https://github.com/fortawesome/font-awesome/blob/7.x/LICENSE.txt) for the full License.
-
-**Third-party Libraries/Resources imported when opened:**
-
-* [tippyjs](https://github.com/atomiks/tippyjs) is licensed under the MIT License. See [LICENSE](https://github.com/atomiks/tippyjs/blob/master/LICENSE) for the full License.
-
-* [sweetalert2](https://github.com/sweetalert2/sweetalert2) is licensed under the MIT License. See [LICENSE](https://github.com/sweetalert2/sweetalert2/blob/main/LICENSE) for the full License.
-
-* [flag-icons](https://github.com/lipis/flag-icons) is licensed under the MIT License. See [LICENSE](https://github.com/lipis/flag-icons/blob/main/LICENSE) for the full License.
-
-* [Fuse.js](https://github.com/krisk/fuse) is licensed under the Apache License 2.0. See [LICENSE](https://github.com/krisk/Fuse/blob/main/LICENSE) for the full License.
-
-* [LabFusion](https://github.com/Lakatrazz/BONELAB-Fusion) (Icons) is licensed under the MIT License. See [LICENSE](https://github.com/Lakatrazz/BONELAB-Fusion/blob/main/LICENSE) for the full License.
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite.svg?type=large&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FFusionLobbyBrowser%2FWebsite?ref=badge_large&issueType=license)
