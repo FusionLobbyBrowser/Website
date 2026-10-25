@@ -190,7 +190,7 @@ let categories = [
           avatar.width = 32;
           avatar.height = 32;
           avatar.setAttribute("alt", `Avatar of ${f.nickname}`);
-          avatar.setAttribute("src", getAvatar(Number(f.steamId)));
+          avatar.setAttribute("src", getAvatar(f.steamId));
           const username = elem.getElementsByClassName("friendUsername")[0];
           username.textContent = f.nickname;
           username.href = f.profileUrl;
