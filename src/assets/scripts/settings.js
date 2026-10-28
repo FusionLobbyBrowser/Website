@@ -222,6 +222,10 @@ let categories = [
               );
           }
 
+          let gameName = `${f.playingGameName && f.playingGameName != "" ? ` - ${f.playingGameName}` : ""}`;
+          if (f.playingGameId == 480)
+            gameName += " (Sailing the seven seas 🏴‍☠️)";
+
           let status;
           switch (f.userStatus) {
             case 0:
@@ -240,7 +244,7 @@ let categories = [
               status = "AFK...";
               break;
             case 6:
-              status = `Playing a game${f.playingGameName && f.playingGameName != "" ? ` - ${f.playingGameName}` : ""}`;
+              status = `Playing a game${gameName}`;
               break;
             default:
               status = "Unknown status";
